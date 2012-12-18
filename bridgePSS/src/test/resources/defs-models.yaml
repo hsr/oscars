@@ -1,0 +1,17 @@
+---
+- id: "juniper-t1600"
+  services: 
+    - id:               bridge
+      configGenerator:  "net.es.oscars.pss.bridge.junos.SC11_T1600ConfigGen"
+    
+- id: "brocade-mlx"
+  services: 
+    - id:               bridge
+      configGenerator:  "net.es.oscars.pss.bridge.brocade.SC11_MLXConfigGen"
+
+- id: "alu-sr"
+  services: 
+    - id:               bridge
+      configGenerator:  "net.es.oscars.pss.bridge.alu.SC11_SRConfigGen"
+    
+

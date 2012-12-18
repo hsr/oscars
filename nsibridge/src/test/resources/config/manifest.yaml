@@ -1,0 +1,37 @@
+---
+
+CoordService:
+    UNITTEST:
+        client-cxf.xml:     'OSCARS_DIST/coordinator/config/client-cxf-http.xml'
+        config.yaml:        'OSCARS_DIST/coordinator/config/config.HTTP.yaml'
+        wsdl:               'OSCARS_DIST/common-soap/src/main/resources/coord/coord.wsdl'
+    DEVELOPMENT:
+        client-cxf.xml:     'OSCARS_HOME/CoordService/conf/client-cxf-http.xml'
+        config.yaml:        'OSCARS_HOME/CoordService/conf/config.HTTP.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/CoordService/CoordService.wsdl'
+    SDK:
+        client-cxf.xml:     'OSCARS_HOME/CoordService/conf/client-cxf-http.xml'
+        config.yaml:        'OSCARS_HOME/CoordService/conf/config.HTTP.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/CoordService/CoordService.wsdl'
+    PRODUCTION:
+        client-cxf.xml:     'OSCARS_HOME/CoordService/conf/client-cxf-ssl.xml'
+        config.yaml:        'OSCARS_HOME/CoordService/conf/config.SSL.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/CoordService/CoordService.wsdl'
+
+AuthNService:
+    UNITTEST:
+        client-cxf.xml: 'OSCARS_DIST/authN/config/client-cxf-http.xml'
+        config.yaml:    'OSCARS_DIST/authN/config/authN.HTTP.yaml'
+        wsdl:           'OSCARS_DIST/common-soap/src/main/resources/authN/authN.wsdl'
+    DEVELOPMENT:
+        client-cxf.xml: 'OSCARS_HOME/AuthNService/conf/client-cxf-ssl.xml'
+        config.yaml:    'OSCARS_HOME/AuthNService/conf/authN.HTTP.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/AuthNService/AuthNService.wsdl'
+    SDK:
+        client-cxf.xml: 'OSCARS_HOME/AuthNService/conf/client-cxf-http.xml'
+        config.yaml:    'OSCARS_HOME/AuthNService/conf/authN.HTTP.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/AuthNService/AuthNService.wsdl'
+    PRODUCTION:
+        client-cxf.xml: 'OSCARS_HOME/AuthNService/conf/client-cxf-ssl.xml'
+        config.yaml:    'OSCARS_HOME/AuthNService/conf/authN.SSL.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/AuthNService/AuthNService.wsdl'

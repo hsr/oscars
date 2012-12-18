@@ -1,0 +1,41 @@
+---
+create:
+
+        gri:            ''
+        login:          'client'
+
+        layer:          '2'
+
+        src:            'urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-2:link=link-1'
+        dst:            'urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-2:link=link-1'
+
+        bandwidth:      100 
+        
+        description:    'a timer-automatic reservation'
+
+# start time (yyyy-MM-dd HH:mm)
+        start-time:     'now'
+        #start-time:     '2011-06-08 13:55'
+        end-time:       '+00:00:04'
+
+# this may be timer-automatic or signal-xml . generally leave at timer-automatic
+        path-setup-mode:        'timer-automatic'
+
+# strict or loose
+        path-type:      'strict'
+
+        srcvlan:        'any'
+        dstvlan:        'any'
+
+# mpls parameters
+# should not be input for layer2 resevations
+# either both must be ommitted or both be present
+#        burstLimit:     20
+#        lspClass:       4
+# optional: path, an array of urns. Must be enclosed in single quotes.
+        optionalConstraint:
+            - category:      'test1'
+              value:         'this is a test value'
+            - category:      'test'
+              value:         'this is s second test value'
+

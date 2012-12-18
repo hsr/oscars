@@ -1,0 +1,155 @@
+#!/bin/sh
+#################################################################################
+# Script to modify MySql Password used to access AuthZ, AuthN and RM tables.
+# Usage: idc-dbpassmod
+#
+#################################################################################
+#Set some variables
+# SQL
+if [ ! -z `which mysql` ]; then
+    SQL=mysql
+elif [ ! -z `which mysql5` ]; then
+    SQL=mysql5
+else
+    echo mysql not found on path
+    #echo "Please refer to GETTINGSTARTED in $OSCARS_DIST"
+    exit -1
+fi
+#oscars username
+USER="oscars"
+
+REPO_PATH=""
+# If OSCARS_HOME is not set, exit. Right now, we only modify the deploy path
+if [ -n "$OSCARS_HOME" ]; then
+        REPO_PATH=OSCARS_HOME
+else
+        echo "ERROR: OSCARS_HOME is not set. Re-run this script after setting OSCARS_HOME."
+        exit 1
+fi
+
+
+###############################################################################
+# SUBROUTINES
+#Note: We are not using the "OLD PASSWORD" supplied by user in this subroutine.
+#It is somewhat useless to check for an old "textual" DB-password equality in the 
+#OSCARS related files before resetting them. However, it may be used in future -
+#So retaining the "OLD_PASSWD" for this subroutine too
+###############################################################################
+change_oscars_file_pswd ()
+{
+        #### Files to be edited. These may be changed/moved into another file
+	# This list does not need to be "context" specific. Hence, not reading from the manifest files
+        _files=($OSCARS_HOME/AuthNService/conf/authN.SSL.yaml $OSCARS_HOME/AuthNService/conf/authN.HTTP.yaml
+        $OSCARS_HOME/AuthZService/conf/authZ.HTTP.yaml
+        $OSCARS_HOME/AuthZService/conf/authZ.SSL.yaml
+        $OSCARS_HOME/ResourceManagerService/conf/config.SSL.yaml
+        $OSCARS_HOME/ResourceManagerService/conf/config.HTTP.yaml
+        $OSCARS_HOME/IONUIService/conf/config.SSL.yaml
+        $OSCARS_HOME/IONUIService/conf/config.HTTP.yaml
+        )
+
+        #NEW_PWD= "$1";
+        #echo "--Changing password to '$NEW_PASSWD'";
+        #change password in oscars related files
+        for fileN in ${_files[@]}
+        do
+                sed -i -e "s/password: '.*'/password: '$NEW_PASSWD'/"  $fileN;
+                if [ $? != 0 ]; then
+                        echo "-- Sed returned an error when updating $fileN. Please manually change the field password: '$OLD_PASSWD' to your new password.";
+                        exit 1;
+                else
+                        echo "-- Password changed in $fileN";
+                fi
+        done
+}
+
+
+prompt_for_passwd() 
+{
+while [ 1 ]; do
+        OLD_PASSWD="";
+        printf "Enter the old database password for your "oscars" user: "
+        stty -echo;
+        read OLD_PASSWD;
+        stty echo;
+        echo "";
+
+        NEW_PASSWD="";
+        printf "Enter the new database password for your "oscars" user: "
+        stty -echo;
+        read NEW_PASSWD;
+        stty echo;
+        echo "";
+
+        NEW_PASSWD2="";
+        printf "Re-enter the new keystore password: "
+        stty -echo;
+        read NEW_PASSWD2;
+        stty echo;
+        echo "";
+
+        if [ -z "$NEW_PASSWD" ] || [ -z "$NEW_PASSWD2" ] || [ "$NEW_PASSWD" != "$NEW_PASSWD2" ]; then
+                echo "The passwords provided do not match, or are empty. Pls try again...";
+                continue;
+	else
+		break;
+        fi
+	
+	#exit 0;
+done
+}
+
+change_mysql_pswd()
+{
+	echo "--Trying to change MySQL DB password for user $USER to $NEW_PASSWD:";
+        #look if this old password can be used to reach the DB.
+        $SQL -u $USER -p$OLD_PASSWD -e "quit";
+        if [ $? != 0 ]; then
+                echo "-- Cannot access MySql Db using the password supplied. Please re-run this script after confirming your MySQL password for user \"$USER\"";
+                exit 1;
+	fi;
+
+        mysql -u $USER -p$OLD_PASSWD -e "set password=password('$NEW_PASSWD')";
+
+        if [ $? != 0 ]; then
+                echo "-- MySQL returned an error when updating your password. Please manually change the password of your $USER user in MySql.";
+                echo "-- The OSCARS references to the old password will NOT be changed. You can re-run this script later to set just the OSCARS file passwords.";
+                exit 1;
+        fi
+	echo "--MySQL DB password changed";
+}
+
+###############################################################################
+# MAIN
+###############################################################################
+# Get the user's choice
+while [ 1 ]; do
+    echo "What would you like to do?";
+    echo "    1. Change Database password in ALL locations (Default option)";
+    echo "    2. Change OSCARS references to Database password";
+    echo "    3. Change MySQL Database password";
+
+    printf "Enter choice: ";
+    read OPCHOICE;
+
+	if [ "$OPCHOICE" == "1" ]; then
+		prompt_for_passwd "";
+		change_mysql_pswd "";
+       		change_oscars_file_pswd	;
+        	break;
+    	elif [ "$OPCHOICE" == "2" ]; then
+		prompt_for_passwd "";
+       		change_oscars_file_pswd	;
+        	break;
+    	elif [ "$OPCHOICE" == "3" ]; then
+		prompt_for_passwd "";
+		change_mysql_pswd "";
+        	break;
+    	else
+       		echo "Invalid choice. Please choose 1, 2, or 3.";
+	fi
+	exit 0;
+
+done
+
+

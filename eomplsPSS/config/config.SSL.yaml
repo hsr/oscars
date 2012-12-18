@@ -1,0 +1,59 @@
+---
+soap:
+    publishTo:  'https://localhost:9050/OSCARS/PSSService'
+
+circuitService:
+    id:                 'eompls'
+    stub:               true
+    logRequest:         true
+    logResponse:        true
+
+definitions:
+    models:             'defs-models.yaml'
+    services:           'defs-services.yaml'
+
+# generic impl / params config from here on
+
+verify:
+    impl:               'net.es.oscars.pss.eompls.verify.EoMPLSVerifier'
+    params:
+        performVerify:      false
+        verifyTries:        3
+        delaySec:           10
+        tryIntervalSec:     15
+        cleanupOnFail:      true
+
+
+notify:
+    impl:               'net.es.oscars.pss.notify.CoordNotifier'
+    params: 
+        coordUrl:       'https://localhost:9003/OSCARS/Coord'
+
+connectorDirectory:
+    impl:               'net.es.oscars.pss.connect.YAMLConnectorDirectory'
+    params:
+        configFile:     'config-connector-directory.yaml'
+
+deviceConnectorMap:
+    impl:               'net.es.oscars.pss.connect.YAMLDeviceConnectorMap'
+    params:
+        configFile:     'config-device-connectors.yaml'
+
+deviceModelMap:
+    impl:               'net.es.oscars.pss.model.YAMLDeviceModelMap'
+    params:
+        configFile:     'config-device-models.yaml'
+
+deviceResolve:            
+    impl:               'net.es.oscars.pss.resolve.YAMLDeviceResolver'
+    params:
+        configFile:     'config-device-addresses.yaml'
+
+
+workflow:
+    impl:               'net.es.oscars.pss.workflow.FifoWF'
+
+validate:
+    impl:               'net.es.oscars.pss.validate.SimpleValidator'
+    params: 
+        localDomainId:  'foo.net'

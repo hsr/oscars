@@ -1,0 +1,110 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="AuthZService"
+    targetNamespace="http://oscars.es.net/OSCARS/authZ"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/"
+    xmlns:com="http://oscars.es.net/OSCARS/common"
+    xmlns:tns="http://oscars.es.net/OSCARS/authZ">
+
+    <wsdl:documentation>
+        This is WSDL for the OSCARS authorization interface.
+    </wsdl:documentation>
+
+   <!--  defines common OSCARSFaultMessage -->
+   <wsdl:import namespace="http://oscars.es.net/OSCARS/common" location="../common.wsdl"/>
+   
+   <!-- Element definitons -->
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://oscars.es.net/OSCARS/authZ"
+            elementFormDefault="qualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:tns="http://oscars.es.net/OSCARS/authZ">
+            <xsd:include schemaLocation="authZ.xsd" />
+            <xsd:import namespace="http://oscars.es.net/OSCARS/common" 
+                  schemaLocation="../common.xsd" />
+        </xsd:schema>
+    </wsdl:types>
+   
+    <!--   Message definitions -->
+
+    <!--   Authorization calls -->
+
+    <wsdl:message name="checkAccessReqMsg">
+        <wsdl:part name="checkAccessReqMsg"
+            element="tns:checkAccessRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="checkAccessRespMsg">
+        <wsdl:part name="checkAccessRespMsg"
+            element="tns:checkAccessResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="checkMultiAccessReqMsg">
+        <wsdl:part name="checkMultiAccessReqMsg"
+            element="tns:checkMultiAccessRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="checkMultiAccessRespMsg">
+        <wsdl:part name="checkMultiAccessRespMsg"
+            element="tns:checkMultiAccessResponse" />
+    </wsdl:message>
+    
+    <wsdl:portType name="AuthZPortType">
+        <wsdl:operation name="checkAccess">
+            <wsdl:input message="tns:checkAccessReqMsg" />
+            <wsdl:output message="tns:checkAccessRespMsg" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="checkMultiAccess">
+            <wsdl:input message="tns:checkMultiAccessReqMsg" />
+            <wsdl:output message="tns:checkMultiAccessRespMsg" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+    </wsdl:portType>
+
+     <wsdl:binding name="AuthZBinding" type="tns:AuthZPortType">
+        <soap:binding style="document"
+            transport="http://schemas.xmlsoap.org/soap/http" />
+
+        <wsdl:operation name="checkAccess">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/authZ/checkAccess" />
+            <wsdl:input>
+                <soap:body use="literal" parts="checkAccessReqMsg" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="checkAccessRespMsg" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+       <wsdl:operation name="checkMultiAccess">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/authZ/checkMultiAccess" />
+            <wsdl:input>
+                <soap:body use="literal" parts="checkMultiAccessReqMsg" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="checkMultiAccessRespMsg" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+ 
+    <wsdl:service name="AuthZService">
+        <wsdl:port name="AuthZPort" binding="tns:AuthZBinding">
+            <soap:address location=""/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

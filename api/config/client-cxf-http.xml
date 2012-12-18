@@ -1,0 +1,82 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:http="http://cxf.apache.org/transports/http/configuration"
+      xmlns:jaxws="http://cxf.apache.org/jaxws"
+      xmlns:cxf="http://cxf.apache.org/core"
+      xmlns:p="http://cxf.apache.org/policy"
+      xmlns:sec="http://cxf.apache.org/configuration/security"
+      xsi:schemaLocation="
+          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://cxf.apache.org/transports/http/configuration   http://cxf.apache.org/schemas/configuration/http-conf.xsd
+          http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+          http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+          http://cxf.apache.org/policy http://cxf.apache.org/schemas/policy.xsd
+          http://cxf.apache.org/configuration/security http://cxf.apache.org/schemas/configuration/security.xsd">
+          
+    <!-- Enable cxf message logging and ws-security policy message signing-->      
+    <cxf:bus>
+        <cxf:features>
+            <cxf:logging/>
+            <p:policies ignoreUnknownAssertions="true"/>
+        </cxf:features>
+    </cxf:bus> 
+
+    <!-- configuration  for signed messages -->
+
+    <jaxws:client name="{http://oscars.es.net/OSCARS/06}OSCARS"
+      createdFromAPI="true">
+
+      <jaxws:properties>
+        <entry key="ws-security.signature.username" value="mykey" />
+        <entry key="ws-security.callback-handler" 
+          value="net.es.oscars.utils.clients.ClientX509PasswordCB"/>
+        <entry key="ws-security.signature.properties"
+          value="clientKeystore.properties" />
+          <!--  the following keeps jsse from loading all the default cacerts 
+                unlike the cxf security stuff, jsse does not  need a password for the trust store -->
+        <entry key="jaxen.net.ssl.trustStore" value="keystore-truststore.jks"/>
+      </jaxws:properties>
+    </jaxws:client>
+
+    <jaxws:client name="{http://oscars.es.net/OSCARS}OSCARS"
+      createdFromAPI="true">
+      <jaxws:properties>
+        <entry key="ws-security.signature.username" value="mykey" />
+        <entry key="ws-security.callback-handler"
+          value="net.es.oscars.utils.clients.ClientX509PasswordCB"/>
+        <entry key="ws-security.signature.properties"
+          value="clientKeystore.properties" />
+        <!--  the following keeps jsse from loading all the default cacerts 
+                unlike the cxf security stuff, jsse does not  need a password for the trust store -->
+        <entry key="jaxen.net.ssl.trustStore" value="keystore-truststore.jks"/>
+      </jaxws:properties>
+    </jaxws:client>
+    
+    <jaxws:client name="{http://oscars.es.net/OSCARS}OSCARSNotify"
+      createdFromAPI="true">
+      <jaxws:properties>
+        <entry key="ws-security.signature.username" value="mykey" />
+        <entry key="ws-security.callback-handler"
+          value="net.es.oscars.utils.clients.ClientX509PasswordCB"/>
+        <entry key="ws-security.signature.properties"
+          value="clientKeystore.properties" />
+        <!--  the following keeps jsse from loading all the default cacerts 
+                unlike the cxf security stuff, jsse does not  need a password for the trust store -->
+        <entry key="jaxen.net.ssl.trustStore" value="keystore-truststore.jks"/>
+      </jaxws:properties>
+    </jaxws:client>
+    
+    <jaxws:client name="{http://oscars.es.net/OSCARS/wsnbroker}WSNBrokerPort"
+      createdFromAPI="true">
+      <jaxws:properties>
+        <entry key="ws-security.signature.username" value="mykey" />
+        <entry key="ws-security.callback-handler" 
+          value="net.es.oscars.utils.clients.ClientX509PasswordCB"/>
+        <entry key="ws-security.signature.properties"
+          value="clientKeystore.properties" />
+      </jaxws:properties>
+    </jaxws:client>
+    
+</beans>

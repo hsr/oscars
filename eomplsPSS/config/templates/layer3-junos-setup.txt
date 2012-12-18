@@ -1,0 +1,160 @@
+<junoscript version="1.0" release="7.3">
+<rpc><lock-configuration /></rpc>
+<rpc>
+<load-configuration>
+<configuration>
+
+
+<#-- configure the LSP -->
+    <protocols>
+        <mpls>
+            <label-switched-path>
+                <name>${lsp.name}</name>
+                <from>${lsp.from}</from>                                <#-- local loopback -->
+                <to>${lsp.to}</to>                                      <#-- address of the inwards-facing interface at the egress router -->
+                <metric>65535</metric>
+                <bandwidth>
+                    <per-traffic-class-bandwidth>${lsp.bandwidth?string.computer}</per-traffic-class-bandwidth>
+                </bandwidth>
+                <setup-priority>4</setup-priority>
+                <reservation-priority>4</reservation-priority>
+                <primary>
+                    <name>${path.name}</name>
+                </primary>
+                <policing>
+                    <filter>${filters.policing.name}</filter>
+                </policing>
+            </label-switched-path>
+
+            <path>
+                <name>${path.name}</name>
+<#list path.hops as hop>
+                <path-list>
+                    <name>${hop}</name><strict/>
+                </path-list>
+</#list>
+            </path>
+        </mpls>
+    </protocols>
+<#-- the source and destination prefix lists -->
+    <policy-options>
+        <prefix-list>
+            <name>${prefixes.src.name}</name>
+<#list prefixes.src.items as prefix>
+            <prefix-list-item>
+                <name>${prefix}</name><strict/>
+            </prefix-list-item>
+</#list>
+        </prefix-list>
+
+        <prefix-list>
+            <name>${prefixes.dst.name}</name>
+<#list prefixes.dst.items as prefix>
+            <prefix-list-item>
+                <name>${prefix}</name><strict/>
+            </prefix-list-item>
+</#list>
+        </prefix-list>
+    </policy-options>
+    <firewall>
+<#-- define a policer -->
+        <policer>
+            <name>${policer.name}</name>
+            <if-exceeding>
+                <bandwidth-limit>${policer.bandwidth_limit?string.computer}</bandwidth-limit>
+                <burst-size-limit>${policer.burst_size_limit?string.computer}</burst-size-limit>
+            </if-exceeding>
+            <then>
+                <forwarding-class>scavenger-service</forwarding-class>
+            </then>
+        </policer>
+
+
+        <family>
+            <inet>
+<#-- multiple inet filters -->
+<#list filters.inet as filter>
+                <filter>
+                    <name>${filter.name}</name>
+                    <term>
+                        <name>${filter.term}</name>
+                        <from>
+                            <source-prefix-list>${prefixes.src.name}</source-prefix-list>
+                            <destination-prefix-list>${prefixes.dst.name}</destination-prefix-list>
+<#if inet.dscp??>
+                            <dscp optional="yes">${inet.dscp}</dscp>
+</#if>
+<#if inet.protocol??>
+                            <protocol optional="yes">${inet.protocol}</protocol>
+</#if>
+<#if inet.srcport??>
+                            <source-port optional="yes">${inet.srcport}</source-port>
+</#if>
+<#if inet.dstport??>
+                            <destination-port optional="yes">${inet.dstport}</destination-port>
+</#if>
+                        </from>
+                        <then>
+                            <count>${filter.count}</count>
+                            <forwarding-class>expedited-forwarding</forwarding-class>
+                            <routing-instance>${routinginstance.name}</routing-instance>
+                        </then>
+                    </term>
+                    <term insert="after" name="${filter.marker}">
+                        <name>${filter.term}</name>
+                    </term>
+                </filter>
+</#list>
+            </inet>
+
+
+            <#-- policing filter -->
+            <any>
+                <filter>
+                    <name>${filters.policing.name}</name>
+                    <term>
+                        <name>${filters.policing.term}</name>
+                        <then>
+                            <policer>${policer.name}</policer>
+                            <count>${filters.policing.count}</count>
+                            <forwarding-class>expedited-forwarding</forwarding-class>
+                            <accept/>
+                        </then>
+                    </term>
+                </filter>
+            </any>
+        </family>
+    </firewall>
+
+
+
+    <routing-instances>
+        <instance>
+        <name>${routinginstance.name}</name>
+        <instance-type>forwarding</instance-type>
+            <routing-options>
+                <rib>
+                    <name>${routinginstance.ribname}</name>
+                    <static>
+
+<#list prefixes.dst.items as prefix>
+                        <route>
+                            <destination>${prefix}</destination>
+                            <lsp-next-hop>
+                                <name>${lsp.name}</name>
+                            </lsp-next-hop>
+                        </route>
+</#list>
+                    </static>
+                </rib>
+            </routing-options>
+        </instance>
+    </routing-instances>
+
+
+</configuration>
+</load-configuration>
+</rpc>
+<rpc><commit-configuration /></rpc>
+<rpc><unlock-configuration /></rpc>
+</junoscript>

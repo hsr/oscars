@@ -1,0 +1,34 @@
+#!/bin/sh
+#
+# Export configuration files from the distribution directory into the production directory.
+#
+# syntax: exportconfig <path_to_distribution> <patch_to_production>
+#
+#
+
+OSCARS_DIST=$1
+OSCARS_HOME=$2
+
+SERVICE=StubPCE
+
+# Create configuration directory and copy config files
+mkdir -p $OSCARS_HOME/$SERVICE/
+mkdir -p $OSCARS_HOME/$SERVICE/conf
+if [ ! -f $OSCARS_HOME/$SERVICE/conf/config.yaml ]; then
+    cp $OSCARS_DIST/stubPCE/config/config.yaml $OSCARS_HOME/$SERVICE/conf/config.yaml
+fi
+if [ ! -f $OSCARS_HOME/$SERVICE/conf/pce-configuration.xml ]; then
+    cp $OSCARS_DIST/stubPCE/config/pce-configuration.xml $OSCARS_HOME/$SERVICE/conf/pce-configuration.xml
+fi
+
+if [ ! -f $OSCARS_HOME/$SERVICE/conf/server-cxf.xml ]; then
+    cp $OSCARS_DIST/stubPCE/config/server-cxf.xml $OSCARS_HOME/$SERVICE/conf/server-cxf.xml
+fi
+if [ ! -f $OSCARS_HOME/$SERVICE/conf/log4j.properties ]; then
+    cp $OSCARS_DIST/stubPCE/config/log4j.properties $OSCARS_HOME/$SERVICE/conf/log4j.properties
+fi
+sed s,$SERVICE.log,$OSCARS_HOME/logs/$SERVICE.log, < $OSCARS_DIST/stubPCE/config/log4j.properties > $OSCARS_HOME/$SERVICE/conf/log4j.properties
+
+
+# log4j
+mkdir -p $OSCARS_HOME/logs

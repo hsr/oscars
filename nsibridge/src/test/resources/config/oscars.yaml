@@ -1,0 +1,5 @@
+---
+
+userDN:     "foo.net:foobar"
+issuerDN:   "foo.net:xyzzy"
+stub:       true

@@ -1,0 +1,40 @@
+---
+soap:
+    publishTo:  'https://localhost:9050/OSCARS/PSSService'
+
+circuitService:
+    id:                 'stub'
+    stub:               true
+    logRequest:         true
+    logResponse:        true
+
+definitions:
+    models:             'defs-models.yaml'
+    services:           'defs-services.yaml'
+
+# generic impl / params config from here on
+verify:
+    impl:               'net.es.oscars.pss.stub.StubVerifier'
+    params:
+
+notify:
+    impl:               'net.es.oscars.pss.stub.StubNotifier'
+
+connectorDirectory:
+    impl:               'net.es.oscars.pss.stub.StubConnectorDirectory'
+
+deviceConnectorMap:
+    impl:               'net.es.oscars.pss.stub.StubDeviceConnectorMap'
+
+deviceModelMap:
+    impl:               'net.es.oscars.pss.stub.StubDeviceModelMap'
+
+deviceResolve:            
+    impl:               'net.es.oscars.pss.stub.StubDeviceAddressResolver'
+
+workflow:
+    impl:               'net.es.oscars.pss.workflow.FifoWF'
+
+validate:
+    impl:               'net.es.oscars.pss.stub.StubValidator'
+

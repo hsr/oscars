@@ -1,0 +1,115 @@
+#!/bin/sh 
+#usage idc-importkeypair -s key_store -a alias_in_store -p store_and_key_passi
+#     -k private_key -c signed_cert -P PEM_passphrase -O (override)
+
+usage()
+{
+cat << EOF
+usage: $0 options
+
+OPTIONS:
+   -h      Show this message
+   -s      Keystore path
+   -p      Keystore (and key) password
+   -a      Key alias
+   -k      Private key in PEM format
+   -P      PEM pass phrase for private key
+   -c      Signed cert in PEM format
+EOF
+}
+
+
+KEYSTORE="";
+ALIAS="";
+KEY_PASS="";
+KEY_FILE="";
+CERT_FILE="";
+PEM_PASS="";
+OVERRIDE="";
+
+while getopts "s:a:p:k:c:P:Oh" OPTION
+do
+    case $OPTION in 
+      s)
+        KEYSTORE=$OPTARG
+        ;;
+      a)
+        ALIAS=$OPTARG
+        ;;
+      p)
+        KEY_PASS=$OPTARG
+        ;;
+      k)
+        KEY_FILE=$OPTARG
+        ;;
+      c)
+        CERT_FILE=$OPTARG
+        ;;
+      P)
+        PEM_PASS=$OPTARG
+        ;;
+      O)
+        OVERRIDE="-O"
+        ;;
+      h)
+        usage
+        exit 1
+        ;;
+      ?)
+        usage
+        ;;
+    esac
+done
+
+if [ "$KEYSTORE" == "" ]; then
+    printf "Enter keystore path: ";
+    read INPUT;
+    KEYSTORE="$INPUT";
+fi
+
+if [ "$ALIAS" == "" ]; then
+    printf "Enter key alias: ";
+    read INPUT;
+    ALIAS="$INPUT";
+fi
+
+if [ "$KEY_PASS" == "" ]; then
+    printf "Enter keystore pass: ";
+    read INPUT;
+    KEY_PASS="$INPUT";
+fi
+
+if [ "$KEY_FILE" == "" ]; then
+    printf "Enter private key file (pem): ";
+    read INPUT;
+    KEY_FILE="$INPUT";
+fi
+
+if [ "$PEM_PASS" == "" ]; then
+    printf "Enter PEM pass phrase: ";
+    read INPUT;
+    PEM_PASS="$INPUT";
+fi
+
+if [ "$CERT_FILE" == "" ]; then
+    printf "Enter signed cert file (pem): ";
+    read INPUT;
+    CERT_FILE="$INPUT";
+fi
+
+# convert PEM into DER
+if [ "$PEM_PASS" == "" ] || [ "$PEM_PASS" == "none" ]; then
+    openssl pkcs8 -topk8 -nocrypt -in $KEY_FILE -inform PEM -out $KEY_FILE.der -outform DER 
+else
+    openssl pkcs8 -topk8 -nocrypt -in $KEY_FILE -inform PEM -out $KEY_FILE.der -outform DER -passin pass:$PEM_PASS
+fi
+openssl x509 -in $CERT_FILE -inform PEM -out $CERT_FILE.der -outform DER
+
+# make keychain
+#openssl x509 -in intermediateCA_cer.pem -inform PEM -out intermediateCA_cer.der -outform DER
+#cat intermediateCA_cer.der $CERT.der > $CERT_all.der
+#mv -f $CERT_all.der $CERT.der
+
+# import key+crt
+vers=`cat $OSCARS_DIST/VERSION`
+java -Done-jar.main.class=net.es.oscars.tools.utils.IDCImportKeyPair -jar $OSCARS_DIST/tools/target/tools-$vers.one-jar.jar -s $KEYSTORE -k $KEY_FILE.der -c $CERT_FILE.der -a $ALIAS -p $KEY_PASS $OVERRIDE

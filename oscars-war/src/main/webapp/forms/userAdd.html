@@ -1,0 +1,170 @@
+<html>
+<head>
+    <script type="text/javascript">
+        dojo.connect(dijit.byId("userAddPane"), "onLoad", oscars.UserAdd.init);
+    </script>
+</head>
+
+<body>
+<p>Required fields are outlined in green.</p>
+<form id="userAddForm" dojoType="dijit.form.Form">
+<input type="hidden" name="userAddInstsUpdated" id="userAddInstsUpdated" />
+<input type="hidden" name="userAddAttrsUpdated" id="userAddAttrsUpdated" />
+
+  <table>
+  <tbody>
+  <tr>
+    <td>
+      <button dojoType="dijit.form.Button" id="userAdd">
+         Add User 
+         <script type="dojo/method" event="onClick">
+             oscars.UserAdd.postUserAdd();
+        </script>
+      </button>
+    </td>
+    <td>
+      <input type="reset" value="Reset form fields" />
+    </td>
+  </tr>
+
+  <tr>
+    <td>Login Name</td>
+    <td class="required">
+        <input type="text" name="profileName" id="newProfileName"
+               dojoType="dijit.form.ValidationTextBox"
+               required="true"
+               promptMessage="Enter a login name"
+               invalidMessage="You must enter a login name" />
+    </td>
+  </tr>
+  <tr>
+    <td>Password (Enter twice)</td>
+    <td class="required">
+      <input type="password" name="password" id="newPassword"
+             dojoType="dijit.form.ValidationTextBox"
+             required="true"
+             promptMessage="Enter an account password"
+             invalidMessage="You must enter an account password" />
+    </td>
+  </tr>
+  <tr>
+    <td>Password Confirmation</td>
+    <td class="required">
+      <input type="password"
+             name="passwordConfirmation" id="newPasswordConfirmation"
+             dojoType="dijit.form.ValidationTextBox"
+             required="true"
+             promptMessage="Reconfirm the account password"
+             invalidMessage="You must reconfirm the account password" />
+    </td>
+  </tr>
+  <tr>
+    <td>First Name</td>
+    <td class="required">
+      <input type="text" name="firstName" id="newFirstName"
+             dojoType="dijit.form.ValidationTextBox"
+             regExp="[\w]+" required="true"
+             promptMessage="Enter the first name"
+             invalidMessage="You must enter the first name" />
+    </td>
+  </tr>
+  <tr>
+    <td>Last Name</td>
+    <td class="required">
+      <input type="text" name="lastName" id="newLastName"
+             dojoType="dijit.form.ValidationTextBox"
+             regExp="[\w]+" required="true"
+             promptMessage="Enter the last name"
+             invalidMessage="You must enter the last name" />
+    </td>
+  </tr>
+  <tr>
+    <td>X.509 subject name (X.500 format)</td>
+    <td>
+      <input type="text" name="certSubject" id="newCertSubject"
+             dojoType="dijit.form.ValidationTextBox"
+             promptMessage="Enter the certificate subject: e.g. CN=name, OU=orgUnit, O=Oganization, C=Country"" />
+    </td>
+  </tr>
+  <tr>
+    <td>X.509 issuer name (X.500 format)</td>
+    <td>
+      <input type="text" name="certIssuer" id="newCertIssuer"
+             dojoType="dijit.form.ValidationTextBox"
+             promptMessage="Enter the issuer of the certificate: e.g. CN=RAname, OU=orgUnit, O=Oganization, C=Country"" />
+    </td>
+  </tr>
+  <tr>
+    <td>Organization</td>
+    <td>
+        <select name="institutionName" id="newInstitution">
+        </select>
+    </td>
+  </tr>
+  <tr>
+    <td>Choose Roles</td>
+    <td>
+    <a href="/OSCARS/docs/attributes.html" target="_blank">Documentation</a>
+    </td>
+  </tr>
+  <tr>
+    <td colspan="2">
+        <select name="attributeName" id="newAttributeName"
+            multiple="true"
+            onChange="oscars.Utils.constrainAttributeChoices('newAttributeName');
+                     return false;">
+        </select>
+    </td>
+  </tr>
+  <tr>
+    <td>Personal Description</td>
+    <td>
+       <input name="description" id="newDescription"
+              dojoType="dijit.form.TextBox"
+              promptMessage="Enter a personal description" />
+    </td>
+  </tr>
+  <tr>
+    <td>E-mail (Primary)</td>
+    <td class="required">
+      <input name="emailPrimary" id="newEmailPrimary"
+             dojoType="dijit.form.ValidationTextBox"
+             regExp="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$"
+             required="true"
+             promptMessage="Enter the primary email address"
+             invalidMessage="You must enter the primary email address" />
+    </td>
+  </tr>
+  <tr>
+    <td>E-mail (Secondary)</td>
+    <td>
+      <input name="emailSecondary" id="newEmailSecondary"
+             dojoType="dijit.form.ValidationTextBox"
+             regExp="^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,4}$"
+             promptMessage="Enter a secondary email address"
+             invalidMessage="You must enter a valid secondary email address" />
+    </td>
+  </tr>
+  <tr>
+    <td>Phone Number (Primary)</td>
+    <td class="required">
+      <input name="phonePrimary" id="newPhonePrimary"
+             dojoType="dijit.form.ValidationTextBox"
+             required="true"
+             promptMessage="Enter the primary phone number"
+             invalidMessage="You must enter the primary phone number" />
+    </td>
+  </tr>
+  <tr>
+    <td>Phone Number (Secondary)</td>
+    <td>
+      <input name="phoneSecondary" id="newPhoneSecondary"
+             dojoType="dijit.form.ValidationTextBox"
+             promptMessage="Enter a secondary phone number" />
+    </td>
+  </tr>
+  </tbody>
+  </table>
+</form>
+</body>
+</html>

@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<wsdl:definitions 
+	name="PSSDefinitions"
+	targetNamespace = 	"http://oscars.es.net/OSCARS/pss"
+    xmlns:tns = 		"http://oscars.es.net/OSCARS/pss"
+    xmlns:xsd =			"http://www.w3.org/2001/XMLSchema"
+    xmlns:wsdl =		"http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap = 		"http://schemas.xmlsoap.org/wsdl/soap12/" >
+    
+
+    <wsdl:documentation>
+        This is WSDL for the PSS internal circuit setup interface.
+    </wsdl:documentation>
+   
+   <!-- Element definitions -->
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://oscars.es.net/OSCARS/pss"
+            elementFormDefault="qualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:tns="http://oscars.es.net/OSCARS/pss">
+            <xsd:include schemaLocation="pss.xsd" />
+        </xsd:schema>
+    </wsdl:types>
+
+
+    <wsdl:message name="setupReq">
+        <wsdl:part name="setupReq" 	element="tns:setupReq" />
+    </wsdl:message>
+    
+    <wsdl:message name="modifyReq">
+        <wsdl:part name="modifyReq"  element="tns:modifyReq" />
+    </wsdl:message>
+    
+    <wsdl:message name="teardownReq">
+        <wsdl:part name="teardownReq" 	element="tns:teardownReq" />
+    </wsdl:message>
+    
+    <wsdl:message name="statusReq">
+        <wsdl:part name="statusReq"   element="tns:statusReq" />
+    </wsdl:message>
+    
+
+    <wsdl:portType name="PSSPortType">
+
+        <wsdl:operation name="setup">
+            <wsdl:input message="tns:setupReq" />
+        </wsdl:operation>
+
+        <wsdl:operation name="modify">
+            <wsdl:input message="tns:modifyReq" />
+        </wsdl:operation>
+
+        <wsdl:operation name="status">
+            <wsdl:input message="tns:statusReq" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="teardown">
+            <wsdl:input message="tns:teardownReq" />
+        </wsdl:operation>
+    </wsdl:portType>
+    
+	<wsdl:binding name="PSSBinding" type="tns:PSSPortType">
+    
+        <soap:binding style="document"
+            transport="http://schemas.xmlsoap.org/soap/http" />
+
+        <wsdl:operation name="setup">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/pss/setup" />
+            <wsdl:input>
+                <soap:body use="literal" parts="setupReq" />
+            </wsdl:input>
+        </wsdl:operation>
+
+        <wsdl:operation name="modify">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/pss/modify" />
+            <wsdl:input>
+                <soap:body use="literal" parts="modifyReq" />
+            </wsdl:input>
+        </wsdl:operation>
+
+        <wsdl:operation name="status">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/pss/status" />
+            <wsdl:input>
+                <soap:body use="literal" parts="statusReq" />
+            </wsdl:input>
+        </wsdl:operation>
+        
+        <wsdl:operation name="teardown">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/pss/teardown" />
+            <wsdl:input>
+                <soap:body use="literal" parts="teardownReq" />
+            </wsdl:input>
+        </wsdl:operation>
+
+    </wsdl:binding>
+
+
+    <wsdl:service name="PSSService">
+        <wsdl:port name="PSSPort" binding="tns:PSSBinding">
+            <soap:address location="https://oscars.es.net/OSCARS/pss" />
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

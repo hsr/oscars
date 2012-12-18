@@ -1,0 +1,88 @@
+<html>
+<head>
+<script type="text/javascript">
+    var attributeLayout = [
+         {name: 'Name', field: 'name', width: "15em"},
+         {name: 'Description', field: 'description', width: "32em"},
+         {name: 'Type', field: 'type', width: "10em"}
+    ];
+</script>
+</head>
+
+<body>
+<p>Use this form to manage the attribute table.
+Further information on attributes is available
+<a href="/OSCARS/docs/attributes.html" target="_blank">here</a>.
+Clicking on ADD will clear the EDIT text field.  Add the row by adding
+text and clicking on SAVE.
+Clicking on a row will bring up its name in the EDIT text field and take you
+out of ADD mode.
+To then modify that name, edit the text and click on the SAVE button.
+To delete that row, click on the DELETE button.  This will not succeed unless
+there are no users possessing that attribute, and no authorizations using
+that attribute.
+</p>
+
+<form id="attributesForm" dojoType="dijit.form.Form">
+    <input type="hidden" name="saveAttrName" id="saveAttrName" />
+    <input type="hidden" name="saveAttrType" id="saveAttrType" />
+    <input type="hidden" name="saveAttrDescription" id="saveAttrDescription" />
+
+        Attributes ->
+      <button dojoType="dijit.form.Button" id="attributeAddButton">
+        ADD
+        <script type="dojo/method" event="onClick">
+            oscars.Attributes.manage("add");
+        </script>
+      </button>
+      <button dojoType="dijit.form.Button" id="attributeSaveButton">
+        SAVE
+        <script type="dojo/method" event="onClick">
+            oscars.Attributes.manage("save");
+        </script>
+      </button>
+      <button dojoType="dijit.form.Button" id="attributeDeleteButton">
+        DELETE
+        <script type="dojo/method" event="onClick">
+            oscars.Attributes.manage("delete");
+        </script>
+      </button>
+  <table width="80%">
+  <tbody>
+  <tr>
+    <td width="4%">EDIT NAME</td>
+    <td class="required" width="30%">
+        <input type="text" name="attributeEditName" id="attributeEditName"
+               dojoType="dijit.form.ValidationTextBox"
+               promptMessage="Enter an attribute name" />
+    </td>
+    <td width ="6%" id="attributeOpChoice">
+    </td>
+  </tr>
+  <tr>
+    <td>DESCRIPTION</td>
+    <td colspan="2" class="required">
+        <input type="text" name="attributeEditDescription"
+          id="attributeEditDescription"
+               dojoType="dijit.form.ValidationTextBox"
+               promptMessage="Enter the attribute's description" />
+    </td>
+  </tr>
+  <tr>
+    <td colspan="3">Type:
+    <select name="attributeTypes" id="attributeTypes">
+      <option value="role" selected="selected">role</option>
+      <option value="privilege">privilege</option>
+    </select>
+    </td>
+  <tr>
+  </tr>
+  </tbody>
+  </table>
+  <div id="attributeGrid" dojoType="dojox.grid.DataGrid"
+      structure="attributeLayout" autoWidth="true" autoHeight="true"
+      elasticView="2">
+  </div>
+</form>
+</body>
+</html>

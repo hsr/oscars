@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="OSCARSCommon"
+    targetNamespace="http://oscars.es.net/OSCARS/common"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/"
+    xmlns:com="http://oscars.es.net/OSCARS/common"
+    xmlns:tns="http://oscars.es.net/OSCARS/common">
+    
+    <wsdl:documentation>
+        This is WSDL for common elements in OSCARS interface.
+    </wsdl:documentation>
+
+  <!-- Element definitons -->
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://oscars.es.net/OSCARS/common"
+            elementFormDefault="qualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:tns="http://oscars.es.net/OSCARS/commmon">
+            <xsd:include schemaLocation="common.xsd" />
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="OSCARSFaultMessage">
+         <wsdl:part name="fault" element="com:OSCARSFault"/>
+    </wsdl:message>
+    
+</wsdl:definitions>

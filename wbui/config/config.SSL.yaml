@@ -1,0 +1,9 @@
+---
+http:
+    warFile:	'/oscars-war/oscars-war-OSCARS_VERSION.war'
+    warTempDir: '/oscars-temp-dir'
+    
+wbui:
+    userName: 'oscars'
+    sessionName: 'oscarssess'
+    secureCookie: '1'

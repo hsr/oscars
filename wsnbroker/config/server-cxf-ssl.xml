@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:http="http://cxf.apache.org/transports/http/configuration"
+      xmlns:httpj="http://cxf.apache.org/transports/http-jetty/configuration"
+      xmlns:jaxws="http://cxf.apache.org/jaxws"
+      xmlns:cxf="http://cxf.apache.org/core"
+      xmlns:p="http://cxf.apache.org/policy"
+      xmlns:sec="http://cxf.apache.org/configuration/security"
+      xmlns:tns="http://oscars.es.net/OSCARS/wsnbroker"
+      xsi:schemaLocation="
+          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://cxf.apache.org/transports/http/configuration   http://cxf.apache.org/schemas/configuration/http-conf.xsd
+          http://cxf.apache.org/transports/http-jetty/configuration http://cxf.apache.org/schemas/configuration/http-jetty.xsd
+          http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+          http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+          http://cxf.apache.org/policy http://cxf.apache.org/schemas/policy.xsd
+          http://cxf.apache.org/configuration/security
+          http://cxf.apache.org/schemas/configuration/security.xsd">
+          
+  <!--  Comment out the following to suppress printing of messages -->
+  <cxf:bus>
+        <cxf:features>
+            <cxf:logging/>
+            <p:policies ignoreUnknownAssertions="true"/>
+        </cxf:features>
+  </cxf:bus>
+
+
+  <httpj:engine-factory>
+   <httpj:engine port="9013">
+    <httpj:tlsServerParameters>
+      <sec:keyManagers keyPassword="changeit">
+           <sec:keyStore type="JKS" password="changeit"
+                file="keystore-server.jks"/>
+      </sec:keyManagers>
+      <sec:trustManagers>
+          <sec:keyStore type="JKS" password="changeit"
+               file="keystore-truststore.jks"/>
+      </sec:trustManagers>
+
+     <sec:cipherSuitesFilter>
+        <!-- these filters ensure that a ciphersuite with
+          export-suitable or null encryption is used,
+          but exclude anonymous Diffie-Hellman key change as
+          this is vulnerable to man-in-the-middle attacks -->
+        <sec:include>.*_EXPORT_.*</sec:include>
+        <sec:include>.*_EXPORT1024_.*</sec:include>
+        <sec:include>.*_WITH_DES_.*</sec:include>
+        <sec:include>.*_WITH_NULL_.*</sec:include>
+        <sec:exclude>.*_DH_anon_.*</sec:exclude>
+      </sec:cipherSuitesFilter>
+      <sec:clientAuthentication want="false" required="false"/>
+    </httpj:tlsServerParameters>
+   </httpj:engine>
+  </httpj:engine-factory>
+  
+  <jaxws:endpoint id="WSSEC"
+      serviceName="tns:WSNBrokerService" endpointName="tns:WSNBrokerPort"
+      address="https://deploy-host/OSCARS/wsnbroker"
+      wsdlLocation="wsdl-location/WSNBrokerService.wsdl"
+      implementor="net.es.oscars.wsnbroker.http.WSNBrokerSoapHandler">
+    <jaxws:properties>
+        <entry key="ws-security.callback-handler"
+          value="net.es.oscars.wsnbroker.common.ServerX509PasswordCB" />
+          
+        <entry key="ws-security.signature.username" value="mykey" />
+        
+        <entry key="ws-security.signature.properties"
+          value="serverKeystore.properties" />
+        
+        <entry key="allow-multiplex-endpoint" value="true"/>
+        
+        <entry key="ProtocolVersion" value="http://oscars.es.net/OSCARS/wsnbroker" />
+    </jaxws:properties>
+  </jaxws:endpoint>
+</beans>

@@ -1,0 +1,36 @@
+@charset "UTF-8";
+/* Internet2 ION 
+Design:  Iman A Muttardy   iam at internet2 dot edu
+*/
+
+body{background: #858585 url('../images/top-bg-new.png') repeat-x top center; padding:0; margin:0; font-family:Verdana, Arial, Helvetica, sans-serif;}
+
+#outer {/*background:url('../images/map-bg.jpg') repeat-x top;*/ width:100%; height:100%; margin:0 0 0 0; padding:0 0 0 0;}
+
+#container {margin: 0px auto; width:1020px; height:100%;}
+#header {/*background:url(../images/header-bg-1k.png) no-repeat top center;*/ margin:0; padding: 0 9px 0 8px; height:123px;}
+#logo {margin-left:5px;}
+#top-nav{ margin-top:0; width: 490px; float:right; background:url('../images/top-nav-bg.png') no-repeat right top; height:36px; padding-top:1px; padding-bottom:1px; margin-right:1px;} 
+#top-nav a {color:#8cb9cb; text-decoration:none; display:block; padding: 5px 0 5px 0; width: 120px; text-align:center; float:left; margin-top:1px;} 
+#top-nav a:hover{color:#FFFFFF;}
+#top-nav a.left-end {background:url(../images/top-nav-divider-left.png) no-repeat right;}
+#top-nav a.right-end {background:url(../images/top-nav-divider-right.png) no-repeat left;}
+#top-nav a.cen {background:url(../images/top-nav-divider-cen.png) no-repeat center;}
+#main-nav {background:url(../images/content-bg-shadow.png) no-repeat bottom; text-align:right; height:90px; padding-left: 10px;}
+#primary {clear:both; width:100%; height:39px; display:block; padding-top:10px; z-index:0;}
+#primary a {display:block; padding: 5px 30px 25px 30px; float:left; width: 190px; text-align:center; text-decoration:none; color:#FFFFFF;  margin-top:-5px; z-index:-1;} 
+#primary a.selected {background:url(../images/primary-selected-bg.png) no-repeat top; margin-top:0; color:#007297;}
+#secondary {clear:both; height: 30px; width: 979px; margin-top:1px; padding-left:10px; padding-right:10px; display:block; background:url('../images/nav-lower-bg.jpg') repeat-x bottom; z-index:1;position:relative;}
+#secondary a {display:block; padding: 20px 15px 20px 15px; float:left; text-decoration:none; color:#007297; margin-top:-25px; z-index:99; }
+#secondary a.selected {background:url(../images/secondary-selected-bg.png) repeat-x center; }
+#secondary a.unvisited {color:#000000; cursor: default; }
+
+#content{background:url(../images/content-bg-all.png) repeat-y bottom; padding: 10px 20px 10px 20px;}
+#content a{color:#007297;}
+p.clearall {clear:both;}
+#footer {background:url(../images/footer-bg-rounded.png) no-repeat bottom;padding: 10px 20px 30px 20px; margin-top:0; text-align:center;}
+#footer a {color:#007297; text-decoration:none;}
+#footer a:hover{text-decoration:underline;}
+#sub-footer {color:#FFFFFF;/*color:#8cb9cb;*/ text-align:center; font-size:70%;}
+#sub-footer a {color:#FFFFFF;font-weight:bold; text-decoration:none; /*color:#8cb9cb;*/}
+#sub-footer a:hover{text-decoration:underline;}

@@ -1,0 +1,100 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema 
+    targetNamespace = "http://oscars.es.net/OSCARS/lookup"
+    xmlns:tns = "http://oscars.es.net/OSCARS/lookup"
+    xmlns:xsd = "http://www.w3.org/2001/XMLSchema"
+    xmlns:authP = "http://oscars.es.net/OSCARS/authParams"
+    elementFormDefault = "qualified" >
+    
+    <xsd:import 
+        namespace="http://oscars.es.net/OSCARS/authParams" 
+        schemaLocation="../authParams.xsd" />
+        
+    <xsd:element name="lookupRequest" type="tns:lookupRequestContent" />
+
+    <xsd:element name="lookupResponse" type="tns:lookupResponseContent" />
+
+    <xsd:element name="registerRequest" type="tns:registerRequestContent" />
+
+    <xsd:element name="registerResponse" type="tns:registerResponseContent" />
+
+    <xsd:element name="LookupFault">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="msg" type="xsd:string" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+
+     <xsd:complexType name="lookupRequestContent">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type="authP:messagePropertiesType" />
+            <xsd:element name="type" type="xsd:string" />
+            <xsd:choice>
+                <xsd:element name="hasLocation" type="xsd:string" />
+                <xsd:element name="hasRelationship" type="tns:relationship"/>
+            </xsd:choice>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="lookupResponseContent">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type="authP:messagePropertiesType" />
+            <xsd:element name="type" type="xsd:string" />
+            <xsd:element name="protocol" type="tns:protocol" minOccurs="1" maxOccurs="unbounded"/>
+            <xsd:element name="relationship" type="tns:relationship" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="registerRequestContent">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type="authP:messagePropertiesType" />
+        	<xsd:element name="name" type="xsd:string" />
+            <xsd:element name="type" type="xsd:string" />
+            <xsd:element name="description" type="xsd:string" />
+            <xsd:element name="protocol" type="tns:protocol" minOccurs="1" maxOccurs="unbounded"/>
+            <xsd:element name="relationship" type="tns:relationship" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="geoLocation" type="tns:geoLocation" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="registerResponseContent">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type="authP:messagePropertiesType" />
+            <xsd:element name="success" type="xsd:boolean" />
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="protocol">
+        <xsd:sequence>
+            <xsd:element name="type" type="xsd:string" />
+            <xsd:element name="location" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="relationship">
+        <xsd:sequence>
+            <xsd:element name="type" type="xsd:string" />
+            <xsd:element name="relatedTo" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="geoLocation">
+        <xsd:sequence>
+            <xsd:element name="streetAddress" type="xsd:string" minOccurs="0" maxOccurs="1" />
+            <xsd:element name="city" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="state" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="zipCode" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="country" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="continent" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="institution" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="floor" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="rack" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="room" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="cage" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="shelf" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="latitude" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+            <xsd:element name="longitude" type="xsd:string" minOccurs="0" maxOccurs="1"/>
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>

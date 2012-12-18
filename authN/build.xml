@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="authN">
+    <property environment="env"/>
+    <property name="oscars.dist" value="${env.OSCARS_DIST}"/>
+    <available property="props.installed" file="${basedir}/config/authN.TESTING.yaml"/>
+    <target name="copyProps" unless="props.installed" description="copy default properties file">
+        <copy file="${basedir}/config/authN.HTTP.yaml.template" tofile="${basedir}/config/authN.HTTP.yaml"/>
+        <copy file="${basedir}/config/authN.SSL.yaml.template" tofile="${basedir}/config/authN.SSL.yaml"/>
+        <copy file="${basedir}/config/authN.TESTING.yaml.template" tofile="${basedir}/config/authN.TESTING.yaml"/>
+    </target>
+</project>

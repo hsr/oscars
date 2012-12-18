@@ -1,0 +1,6 @@
+# MODIFY THIS TEMPLATE AND REPLACE THE INGRESS_QOS_ID and EGRESS_QOS_ID AS NEEDED
+
+configure service epipe ${epipe.id} sap ${ifce.name}:${ifce.vlan} ingress qos "INGRESS_QOS_ID"
+configure service epipe ${epipe.id} sap ${ifce.name}:${ifce.vlan} egress qos "EGRESS_QOS_ID"
+admin rollback save
+admin save

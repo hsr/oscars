@@ -1,0 +1,35 @@
+#!/bin/sh
+#
+# Export configuration files from the distribution directory into the production directory.
+#
+# syntax: exportconfig <path_to_distribution> <patch_to_production>
+#
+#
+
+OSCARS_DIST=$1
+OSCARS_HOME=$2
+DST_LOGDIR=$3
+BUILD_ROOT=$4
+
+MODULE=template
+SERVICE=TemplateService
+SRC_DIR=$OSCARS_DIST/$MODULE/config
+DST_DIR=$OSCARS_HOME/$SERVICE/conf
+if [ -n "$BUILD_ROOT" ]; then
+    DST_DIR=${BUILD_ROOT}/${DST_DIR}
+fi
+if [ -z "$DST_LOGDIR" ]; then
+    DST_LOGDIR=${OSCARS_HOME}/logs
+fi
+
+# Create configuration directory and copy config files
+mkdir -p $DST_DIR
+cp ${SRC_DIR}/config.yaml ${DST_DIR}/config.yaml
+cp ${SRC_DIR}/template/config/client-cxf.xml ${DST_DIR}/client-cxf.xml
+cp ${SRC_DIR}/template/config/server-cxf.xml ${DST_DIR}/server-cxf.xml
+
+# log4j
+mkdir -p $DST_LOGDIR
+sed s,template.log,${DST_LOGDIR}/${SERVICE}.log, < ${SRC_DIR}/log4j.properties > ${DST_DIR}/log4j.properties
+
+

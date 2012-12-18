@@ -1,0 +1,296 @@
+#!/bin/sh 
+#
+# Licensed to the Apache Software Foundation (ASF) under one
+# or more contributor license agreements. See the NOTICE file
+# distributed with this work for additional information
+# regarding copyright ownership. The ASF licenses this file
+# to you under the Apache License, Version 2.0 (the
+# "License"); you may not use this file except in compliance
+# with the License. You may obtain a copy of the License at
+#
+# http://www.apache.org/licenses/LICENSE-2.0
+#
+# Unless required by applicable law or agreed to in writing,
+# software distributed under the License is distributed on an
+# "AS IS" BASIS, WITHOUT WARRANTIES OR CONDITIONS OF ANY
+# KIND, either express or implied. See the License for the
+# specific language governing permissions and limitations
+# under the License.
+#################################################################
+#
+# This file uses openssl and keytool to generate 4 chains of 3 certificates
+# and 4 Keystores each containing the keyEntry for one of the chains
+#   client.jks      CN=Client, CN=TheRA, CN=TheCA          
+#   localhost.jks   CN=localhost, CN=TheRA, CN=TheCA - used when accessed by services on the same host
+#   oscarsidc.jks     CN=<hostname>, CN=TheRA, CN=TheCA  - used when accessed by a remote client, or peerIDC
+#   service.jks     CN=IDCService, CN=TheRA, CN=TheCA
+#
+#  the localhost and oscarsidc keystores are used for SSL authentication
+#  the client and service keystores are used for message signing
+#  This file also serves as a specification on what needs to be done to
+#  get the underlying CXF to work correctly.
+#  For the most part, you need to use only JKS (Java Key Store) formatted
+#  keystores and truststores.
+
+# On the primary IDC domain, use an empty BUILDDIR which will cause a new CA, RA, client, localhost
+# and oscarsidc keystores to be created. On peerIDCs which you want to use the same CA and RA
+# copy the sharedCred.tar file that was created in the first domain into the BUILDDIR on
+# the peerIDC host. Then this command will use the shared RA to generate and sign a new oscarsidc
+# certificate and keystore.
+
+ERROR=0
+ERR_MSG=''
+if [ $# -ne 1 ] && [ $# -ne 2 ]
+then
+    ERROR=1
+    ERR_MSG='Invalid number of arguments'
+fi
+
+
+if [ $ERROR -eq 0 ] && [ -z $1 ]
+then
+    ERROR=2
+    ERR_MSG='Empty build dir'
+fi
+
+
+if [ $ERROR -eq 0 ] && [ -e $1 ] && ! [ -d $1 ]
+then
+    ERROR=3
+    ERR_MSG='Target exists but is not a directory'
+fi
+
+if [ $ERROR -eq 0 ] && [ -d $1 ] && ! [ -w $1 ]
+then
+    ERROR=4
+    ERR_MSG='Target directory not writable'
+fi
+
+if [ -n $2 ]
+then
+    if [ -z $OSCARS_DIST ]
+    then
+        OSCARS_DIST=$2
+        echo "Overrode environment OSCARS_DIST with: $2"
+    fi
+else
+    if [ -n $OSCARS_DIST ]
+    then
+        echo "Environment OSCARS_DIST: $OSCARS_DIST"
+    else
+        ERROR=5
+        ERR_MSG='No $OSCARS_DIST in env or args'
+    fi
+fi
+
+
+
+if [ $ERROR -ne 0 ]
+then
+    echo $ERR_MSG
+    echo "Usage: $0 $OSCARS_HOME/sampleDomain/certs [$OSCARS_DIST]"
+    echo "Will create the build directory if it does not exist,"
+    echo "and place generated certs there.\n\n"
+    echo "Environment variables: OSCARS_DIST - yours: $OSCARS_DIST"
+    exit $ERROR
+fi
+
+BUILDDIR=$1
+
+if ! [ -d $BUILDDIR ]
+then
+    mkdir -p $BUILDDIR
+fi
+
+cd $BUILDDIR
+
+# Initialize the default openssl DataBase.
+# According to a default /usr/lib/ssl/openssl.cnf file it is ./demoCA
+# Depending on the Openssl version, comment out "crlnumber" in config file.
+# We echo 1345 to start the certificate serial number counter.
+
+rm -rf demoCA
+mkdir -p demoCA/newcerts
+cp /dev/null demoCA/index.txt
+#echo "1345" > demoCA/serial
+#CA_random_serial=$RANDOM #random serial number - this did not work;method below worked
+CA_random_serial=`echo $(date +%Y%m%d%H%M)0001`
+echo "Using new random serial #:$CA_random_serial"
+echo $CA_random_serial > demoCA/serial
+
+# This file makes sure that the certificate for CN=TheRA can be a Certificate
+# Authority, i.e. can sign the user certificates, e.g. "CN=Client".
+
+cat <<EOF > exts
+[x509_extensions]
+basicConstraints=CA:TRUE
+EOF
+
+if [ ! -f sharedCred.tar ]; then
+# this is the primary IDC where the CA and RA are created
+
+# Create the CA's keypair and self-signed certificate
+#   -x509 means create self-sign cert
+#   -keyout means generate keypair
+#   -nodes means do not encrypt private key.
+#   -set_serial sets the serial number of the certificate
+
+#generate random serial num
+random_serial=$RANDOM
+echo "Random number=$random_serial"
+    openssl req -verbose -x509 -new -nodes -set_serial $random_serial \
+    -subj "/CN=TheCA/OU=NOT FOR PRODUCTION/O=ESNET/ST=CA/C=US" \
+    -days 365 -out cacert.pem -keyout caprivkey.pem -config $OSCARS_DIST/sampleDomain/bin/openssl.cnf
+
+# Create the RA's keypair and Certificate Request
+#    without -x509, we generate an x509 cert request.
+#   -keyout means generate keypair
+#   -nodes means do not encrypt private key.
+
+    openssl req -verbose -new -nodes \
+    -subj "/CN=TheRA/OU=NOT FOR PRODUCTION/O=ESNET/ST=CA/C=US" \
+    -days 365 -out csrra.pem -keyout raprivkey.pem -config $OSCARS_DIST/sampleDomain/bin/openssl.cnf
+
+# Have the CN=TheCA issue a certificate for the CN=TheRA
+# We need -extfile exts -extensions x509_extensions to make sure
+# CN=TheRA can be a Certificate Authority.
+
+    openssl ca -batch -days 364 -cert cacert.pem -keyfile caprivkey.pem \
+    -in csrra.pem -out ra-ca-cert.pem -extfile exts -extensions x509_extensions \
+    -config $OSCARS_DIST/sampleDomain/bin/openssl.cnf
+
+
+# Create keypairs and Cert Request for a certificate for CN=Client, CN=Service used to sign messages
+# CN=localhost and the public hostname of the server used for SSL connections.
+# This procedure must be done in JKS, because we need to use a JKS keystore.
+# The current version of CXF using PCKS12 will not work for a number of
+# internal CXF reasons.
+
+    rm -f client.jks
+
+    keytool -genkey \
+    -dname "CN=Client, OU=NOT FOR PRODUCTION, O=ESNET, ST=CA, C=US" \
+    -keystore client.jks -keyalg RSA -storetype jks -storepass changeit -keypass changeit
+
+    keytool -certreq -keystore client.jks -storetype jks -storepass changeit \
+    -keypass changeit -file csrclient.pem
+
+    rm -f service.jks
+
+    keytool -genkey \
+    -dname "CN=IDCService, OU=NOT FOR PRODUCTION, O=ESNET, ST=CA, C=US" \
+    -keystore service.jks -keyalg RSA -storetype jks -storepass changeit -keypass changeit
+
+    keytool -certreq -keystore service.jks -storetype jks -storepass changeit \
+    -keypass changeit -file csrservice.pem
+
+    rm -f localhost.jks
+
+    keytool -genkey \
+    -dname "CN=localhost, OU=NOT FOR PRODUCTION, O=ESNET, ST=CA, C=US" \
+    -keystore localhost.jks -keyalg RSA -storetype jks -storepass changeit -keypass changeit
+
+    keytool -certreq -keystore localhost.jks -storetype jks -storepass changeit \
+    -keypass changeit  -file csrlocalhost.pem
+
+
+# Have the CN=TheRA issue the certificates for the 3 requests via
+# their Certificate Requests.
+
+   openssl ca -batch -days 364 -cert ra-ca-cert.pem -keyfile raprivkey.pem \
+   -in csrclient.pem -out client-ra-cert.pem -config $OSCARS_DIST/sampleDomain/bin/openssl.cnf
+   openssl ca -batch -days 364 -cert ra-ca-cert.pem -keyfile raprivkey.pem \
+   -in csrservice.pem -out service-ra-cert.pem -config $OSCARS_DIST/sampleDomain/bin/openssl.cnf
+   openssl ca -batch -days 364 -cert ra-ca-cert.pem -keyfile raprivkey.pem \
+   -in csrlocalhost.pem -out localhost-ra-cert.pem -config $OSCARS_DIST/sampleDomain/bin/openssl.cnf
+
+# Rewrite the certificates in PEM only format. This allows us to concatenate
+# them into chains.
+
+    openssl x509 -in cacert.pem -out cacert.pem -outform PEM
+    openssl x509 -in ra-ca-cert.pem -out ra-ca-cert.pem -outform PEM
+    openssl x509 -in client-ra-cert.pem -out client-ra-cert.pem -outform PEM
+    openssl x509 -in service-ra-cert.pem -out service-ra-cert.pem -outform PEM
+    openssl x509 -in localhost-ra-cert.pem -out localhost-ra-cert.pem -outform PEM
+    
+# Create a chain readable by CertificateFactory.getCertificates.
+
+    cat client-ra-cert.pem ra-ca-cert.pem cacert.pem > client.chain
+    cat service-ra-cert.pem ra-ca-cert.pem cacert.pem > service.chain
+    cat localhost-ra-cert.pem ra-ca-cert.pem cacert.pem > localhost.chain
+    
+# Add the CA and RA certificates and replace the keyEntry certificates in the keystores 
+# with their respective signed certificates.
+
+    keytool -import -alias thera -file ra-ca-cert.pem  -keystore client.jks -storetype jks \
+    -storepass changeit -keypass changeit -noprompt
+    keytool -import -alias theca -file cacert.pem -keystore client.jks -storetype jks \
+    -storepass changeit -keypass changeit -noprompt
+    keytool -import -file client.chain -keystore client.jks -storetype jks \
+    -storepass changeit -keypass changeit -noprompt
+
+    keytool -import -alias thera -file ra-ca-cert.pem  -keystore service.jks -storetype jks \
+    -storepass changeit -keypass changeit -noprompt
+    keytool -import -alias theca -file cacert.pem -keystore service.jks -storetype jks \
+    -storepass changeit -keypass changeit -noprompt
+    keytool -import -file service.chain -keystore service.jks -storetype jks \
+    -storepass changeit -keypass changeit -noprompt
+    
+    keytool -import -file localhost.chain -keystore localhost.jks -storetype jks \
+    -storepass changeit -keypass changeit -noprompt
+
+
+# Create the Truststore file containing the CA cert.
+
+    rm -f truststore.jks
+
+    keytool -import -file cacert.pem -alias TheCA -keystore truststore.jks \
+    -storepass changeit -noprompt
+
+# Save the shared keys and certificate chainsRA cert and private key for later use for other peer IDCs
+    tar -cf sharedCred.tar cacert.pem ra-ca-cert.pem raprivkey.pem localhost.{jks,chain} client.{jks,chain} service.{jks,chain} truststore.jks 
+    
+else  # extract ra Certificate and private key to sign this host's certificate
+     tar -xf sharedCred.tar 
+fi
+
+#   Generate a keystore for this host
+    rm -f oscarsidc.jks
+    localhost=`hostname -f`
+    echo "Generating a keystore for CN=$localhost"
+    keytool -genkey \
+    -dname "CN=$localhost, OU=NOT FOR PRODUCTION, O=ESNET, ST=CA, C=US" \
+    -keystore oscarsidc.jks -keyalg RSA -storetype jks -storepass changeit -keypass changeit
+
+    keytool -certreq -keystore oscarsidc.jks -storetype jks -storepass changeit \
+    -keypass changeit  -file csroscarsidc.pem
+    
+# have RA issue the host certificate
+  openssl ca -batch -days 364 -cert ra-ca-cert.pem -keyfile raprivkey.pem \
+   -in csroscarsidc.pem -out oscarsidc-ra-cert.pem -config $OSCARS_DIST/sampleDomain/bin/openssl.cnf
+
+# rewrite in pem only
+    openssl x509 -in oscarsidc-ra-cert.pem -out oscarsidc-ra-cert.pem -outform PEM
+
+# create a chain
+    cat oscarsidc-ra-cert.pem ra-ca-cert.pem cacert.pem > oscarsidc.chain
+    
+# Add the CA and RA trustedCert and replace the keyEntry certificate with the signed one
+    keytool -import -alias thera -file ra-ca-cert.pem  -keystore oscarsidc.jks -storetype jks \
+    -storepass changeit -keypass changeit -noprompt
+    keytool -import -alias theca -file cacert.pem -keystore oscarsidc.jks -storetype jks \
+    -storepass changeit -keypass changeit -noprompt
+    keytool -import -file oscarsidc.chain -keystore oscarsidc.jks -storetype jks \
+    -storepass changeit -keypass changeit -noprompt
+    
+    
+# Uncomment to see what's in the Keystores and CRL
+#    keytool -v -list -keystore client.jks -storepass changeit
+#    keytool -v -list -keystore service.jks -storepass changeit
+#    keytool -v -list -keystore localhost.jks -storepass changeit
+#    keytool -v -list -keystore truststore.jks -storepass changeit
+#    openssl crl -in ca.crl -text -noout
+
+# Get rid of everything but client.chain and the keystores and the RA credential
+rm -rf  *.pem exts demoCA *pk12
+

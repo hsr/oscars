@@ -1,0 +1,99 @@
+#!/bin/sh 
+#
+# Export configuration files from the distribution directory into the production directory.
+#
+# syntax: exportconfig <path_to_distribution> <patch_to_production>
+#
+#
+
+SERVICE=PSSService
+MODULE=bridgePSS
+
+OSCARS_DIST=$1
+OSCARS_HOME=$2
+DST_LOGDIR=$3
+BUILD_ROOT=$4
+
+source $OSCARS_DIST/utils/bin/configLib.sh
+
+verifyArgs $OSCARS_DIST $OSCARS_HOME
+verifySvcName $SERVICE
+
+SRC_DIR=$OSCARS_DIST/$MODULE/config/
+DST_DIR=$OSCARS_HOME/$SERVICE/conf
+if [ -n "$BUILD_ROOT" ]; then
+    DST_DIR=${BUILD_ROOT}/${DST_DIR}
+fi
+if [ -z "$DST_LOGDIR" ]; then
+    DST_LOGDIR=${OSCARS_HOME}/logs
+fi
+
+mkdir -p $DST_LOGDIR
+mkdir -p $DST_DIR
+
+#cxf configuration iles
+if [ ! -f $DST_DIR/$CONFIG_HTTP ] ; then
+    cp $SRC_DIR/$CONFIG_HTTP  $DST_DIR/$CONFIG_HTTP 
+fi
+if [ ! -f $DST_DIR/$CONFIG_SSL  ] ; then
+    cp $SRC_DIR/$CONFIG_SSL  $DST_DIR/$CONFIG_SSL 
+fi
+if [ ! -f $DST_DIR/$CXF_SERVER_HTTP_CFG ] ; then
+    cp $SRC_DIR/$CXF_SERVER_HTTP_CFG  $DST_DIR/$CXF_SERVER_HTTP_CFG
+fi
+if [ ! -f $DST_DIR/$CXF_SERVER_SSL_CFG ] ; then
+    cp $SRC_DIR/$CXF_SERVER_SSL_CFG  $DST_DIR/$CXF_SERVER_SSL_CFG
+fi
+if [ ! -f $DST_DIR/$CXF_CLIENT_HTTP_CFG ] ; then
+    cp $SRC_DIR/$CXF_CLIENT_HTTP_CFG  $DST_DIR/$CXF_CLIENT_HTTP_CFG
+fi
+if [ ! -f $DST_DIR/$CXF_CLIENT_SSL_CFG ] ; then
+    cp $SRC_DIR/$CXF_CLIENT_SSL_CFG  $DST_DIR/$CXF_CLIENT_SSL_CFG
+fi
+
+#log4j files
+if [ ! -f $DST_DIR/$LOG4J_PROPS_INFO ] ; then
+    sed -e "s,$MODULE\.log,$DST_LOGDIR/$SERVICE.log," -e "s,oscars\.log,$DST_LOGDIR/oscars.log,"  < $SRC_DIR/$LOG4J_PROPS_INFO > $DST_DIR/$LOG4J_PROPS_INFO
+fi
+if [ ! -f $DST_DIR/$LOG4J_PROPS_DEBUG ] ; then
+    sed s,$MODULE\.log,$DST_LOGDIR/$SERVICE.log, <  $SRC_DIR/$LOG4J_PROPS_DEBUG > $DST_DIR/$LOG4J_PROPS_DEBUG
+    fi
+if [ ! -f $DST_DIR/$LOG4J_PROPS_MESSAGE ] ; then
+    sed s,$MODULE\.log,$DST_LOGDIR/$SERVICE.log, <  $SRC_DIR/$LOG4J_PROPS_MESSAGE > $DST_DIR/$LOG4J_PROPS_MESSAGE
+fi
+
+# definitions
+if [ ! -f $DST_DIR/defs-services.yaml ] ; then
+    cp $SRC_DIR/defs-services.yaml  $DST_DIR/defs-services.yaml
+fi
+
+if [ ! -f $DST_DIR/defs-models.yaml ] ; then
+    cp $SRC_DIR/defs-models.yaml  $DST_DIR/defs-models.yaml
+fi
+
+
+# sample config files
+if [ ! -f $DST_DIR/config-connector-directory.yaml ] ; then
+    cp $SRC_DIR/config-connector-directory.yaml  $DST_DIR/config-connector-directory.yaml
+fi
+
+if [ ! -f $DST_DIR/config-device-addresses.yaml ] ; then
+    cp $SRC_DIR/config-device-addresses.yaml  $DST_DIR/config-device-addresses.yaml
+fi
+
+if [ ! -f $DST_DIR/config-device-connectors.yaml ] ; then
+    cp $SRC_DIR/config-device-connectors.yaml  $DST_DIR/config-device-connectors.yaml
+fi
+
+if [ ! -f $DST_DIR/config-device-models.yaml ] ; then
+    cp $SRC_DIR/config-device-models.yaml  $DST_DIR/config-device-models.yaml
+fi
+
+if [ ! -f $DST_DIR/config-ifce-aliases.yaml ] ; then
+    cp $SRC_DIR/config-ifce-aliases.yaml  $DST_DIR/config-ifce-aliases.yaml
+fi
+
+# manifest
+if [ ! -f $DST_DIR/manifest.yaml ] ; then
+    cp $SRC_DIR/manifest.yaml  $DST_DIR/manifest.yaml
+fi

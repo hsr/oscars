@@ -1,0 +1,38 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+
+<class name="net.es.oscars.resourceManager.beans.PathElem" table="pathElems">
+    <meta attribute="class-description" inherit="false">
+       @hibernate.class table="pathElems"
+    </meta>
+
+    <cache usage="read-write" />
+
+    <id name="id" column="id">
+        <meta attribute="field-description">
+           @hibernate.id generator-class="identity"
+        </meta>
+        <generator class="identity" />
+    </id>
+
+    <property name="seqNumber" not-null="true" insert="false" update="false">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>
+    </property>
+
+    <property name="urn" />
+
+    <!-- Associations -->
+
+    <set name="pathElemParams" fetch="subselect" cascade="all, delete-orphan">
+        <key column="pathElemId" not-null="true" />
+        <one-to-many class="net.es.oscars.resourceManager.beans.PathElemParam" />
+    </set>
+
+</class>
+</hibernate-mapping>

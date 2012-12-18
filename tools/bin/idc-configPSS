@@ -1,0 +1,172 @@
+#!/bin/sh
+##################################################################################
+# Script to help configure PSS
+# Based on user input, call dragonPSS/Stub/OpenFlow(/EOMPLSPSS) configuration scripts
+##################################################################################
+
+#######################################################################
+# Subroutine to print usage
+# While developers can still run the unittest mode, not enabling this 
+#    production purposes
+#######################################################################
+printUsage() {
+        echo -e "\nusage idc-configPSS <context>"
+        echo "<context> is one of: PRODUCTION|pro DEVELOPMENT|dev SDK|sdk"
+        exit 1;
+}
+
+#######################################################################
+#subroutine to get configFile
+#######################################################################
+getConfigFile () {
+        if [ $# -lt 3 ]; then
+                echo "Error: Argument list insufficient"
+                exit 1;
+        fi
+#       echo "$1, $2, $3"
+#TDB run from OSCARS_HOME?
+        Config=$(sh $OSCARS_DIST/bin/parseManifest.sh $1 $2 $3 | sed "s/'//g")
+#       echo "Config in local Method :$Config"
+        Service=$(echo $Config | awk -F/ '$1~//{print $2}')
+        Conf=$(echo $Config | awk -F/ '$1~//{print $3}')
+        Yaml=$(echo $Config | awk -F/ '$1~//{print $4}' | sed "s/'//g")
+#       echo "2. $Service, $Conf, $Yaml"
+        if [ "$Conf" == "conf" ]; then
+                configFile=$OSCARS_HOME/$Service/$Conf/$Yaml
+        elif [ "$Conf" == "config" ]; then
+                configFile=$OSCARS_DIST/$Service/$Conf/$Yaml
+        fi
+        #echo "3. Config File: $configFile"
+        echo $configFile
+}
+
+###################################################################
+# silly sub to convert into uppercase
+###################################################################
+toUpper() {
+	echo $1 | tr  "[:lower:]" "[:upper:]"
+}
+
+##################################################################
+# Sub to call Dragon or Eompls PSS
+##################################################################
+configPSS() {
+	DRAGONPSS="DRAGON"
+	EOMPLSPSS="EOMPLS"
+	OPENFLOWPSS="OPENFLOW"
+	STUBPSS="STUB"
+	#call subroutine based on selection
+	whichPSS=$1
+	echo "Trying to configure PSS: $whichPSS in context $CONTEXT"
+	if [ "$whichPSS" == "$DRAGONPSS" ]; then
+		#TBD: Run from OSCARS_HOME?
+		#Also, the configurePSS itself could be placed anywhere (inside dragonPSS or in tools/bin)
+		(sh $OSCARS_DIST/tools/bin/confDragonPSS $CONTEXT) #confDragonPSS.sh
+        # Comment out call to configure EomplsPSS
+	#elif [ "$whichPSS" == "$EOMPLSPSS" ]; then
+	#	sh $OSCARS_DIST/tools/bin/confEomplsPSS	
+	elif [ "$whichPSS" == "$OPENFLOWPSS" ]; then
+		sh $OSCARS_DIST/tools/bin/confOpenflowPSS	
+	elif [ "$whichPSS" == "$STUBPSS" ]; then
+		(sh $OSCARS_DIST/tools/bin/confStubPSS $CONTEXT)
+	fi
+	#echo "Ran : $outConf"
+}
+######################Execution starts here######
+#check if $OSCARS_HOME is set
+REPO_PATH=""
+if [ -n "$OSCARS_HOME" ]; then
+        REPO_PATH=OSCARS_HOME
+else
+        echo "ERROR: OSCARS_HOME is not set. Re-run this script after setting OSCARS_HOME."
+        exit 1
+fi
+
+#TBD remove later
+if  [ -z $OSCARS_DIST ]; then
+    echo "Please set the environment var OSCARS_DIST to the OSCARS source directory"
+    exit -1
+fi
+
+#if no context provided, quit
+if [ $# -lt 1 ]; then
+        printUsage
+fi
+
+#Assign context
+case $1 in
+    d|D|dev|DEV) CONTEXT="DEVELOPMENT";;
+    p|P|pro|PRO) CONTEXT="PRODUCTION";;
+    t|T|test|TEST) CONTEXT="UNITTEST";;
+    s|S|sdk) CONTEXT="SDK";;
+	*) echo "Invalid choice of Context"; exit 1;;
+esac
+
+#constants
+PSSChoice="PSSChoice"
+#DRAGONPSS="DRAGONPSS"
+#EOMPLSPSS="EOMPLSPSS"
+#OPENFLOWPSS="OPENFLOWPSS"
+#STUBPSS="STUBPSS"
+
+
+#Search topology file and get the values
+#Config2=$(getConfigFile Utils $CONTEXT utils) #configFile
+Config2=$(getConfigFile Utils Utils $CONTEXT) #configFile
+#if file not found, return
+if [ -z $Config2 ] || [ ! -f $Config2 ]; then
+        echo "The configuration file is not found. Check if your $OSCARS_HOME/Utils/conf folder has configuration files present"
+        exit 1
+fi
+#echo "The config file location is $Config2"
+
+#prompt user for new domain
+# Deleting prompt for EoMPLS; adding prompt for OPENFLOW
+# printf "Enter the PSS (Path setup subsystem) you would like to use: Stub/Dragon/EoMPLS? ";
+printf "Enter the PSS (Path setup subsystem) you would like to use: Stub/Dragon/OpenFlow? ";
+user_choice=0;
+while [ $user_choice == 0 ]; do
+        read user_choice;
+	user_choice=$(toUpper "$user_choice")
+	#echo "User input =$user_choice"
+	# Deleting check for EoMPLS 
+        #if [ "$user_choice" != "STUB" ] && [ "$user_choice" != "DRAGON" ] && [ "$user_choice" != "EOMPLS" ] &&  [ "$user_choice" != "OPENFLOW" ]; then
+        if [ "$user_choice" != "STUB" ] && [ "$user_choice" != "DRAGON" ] &&  [ "$user_choice" != "OPENFLOW" ]; then
+                user_choice=0;
+        fi
+done
+
+#get data to write into file and do so:
+PSSLine="PSSChoice:\t$user_choice"
+#write into Utils/topo file
+#TBD write if not found/replace
+#echo -e "$PSSLine" >> $Config2
+ifPSSChoicePresent=$(awk -F: '$1~/PSSChoice/{print "FOUND"}' $Config2)
+#echo "PSS found: :$ifPSSChoicePresent:, config=$Config2, PSSLine=$PSSLine, Choice=:$PSSChoice:"
+if [ "$ifPSSChoicePresent" == "FOUND" ]; then
+	sed -i -e "s/"$PSSChoice":.*/"$PSSLine"/" $Config2
+	#sed -i -e "s/.*/"$PSSLine"/" $Config2
+else
+	#echo "2-------------: $PSSLine"
+	echo -e "$PSSLine" >> $Config2
+fi
+
+if [ $? == 0 ]; then
+        echo "Choice of PSS Domain $user_choice added succesfully"
+else
+        echo "There was an error while adding the PSS choice to $Config2. Please add line $PSSLine to this file manually"
+fi
+
+#Now, ask user if he wants to configure PSS. If yes, call shell script based on his choice
+printf "Would you like to configure PSS Options now? y/n ";
+ans=0;
+while [ $ans == 0 ]; do
+	read ans;
+	if [ "$ans" != "y" ] && [ "$ans" != "Y" ] && [ "$ans" != "n" ] && [ "$ans" != "N" ]; then
+       		ans=0;
+	fi
+done
+
+if [ "$ans" == "y" ] || [ "$ans" == "Y" ]; then
+	configPSS "$user_choice"
+fi

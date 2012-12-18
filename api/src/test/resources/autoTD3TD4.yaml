@@ -1,0 +1,47 @@
+---
+create:
+
+# typically leave gri blank, server will set it.
+        gri:            ''
+        login:		'client'
+# layer can be 2 or 3
+        layer:          '2'
+# source and destination are urn-style or dns-style friendly names.
+# Note ':' characters are significant in YAML,
+# so remember to enclose URNs in single quotes
+        src:            'urn:ogf:network:domain=testdomain-3:node=switch1:port=3:link=11.2.1.2'
+        dst:            'urn:ogf:network:domain=testdomain-4:node=switch1:port=3:link=11.2.1.2' 
+
+# bandwidth, in Mbps, integer
+        bandwidth:      25
+        
+# description, a string
+        description:    'a timer-automatic reservation'
+
+# start time may be a date expression (yyyy-MM-dd HH:mm) or 'now'
+# end time may be a date expression, or can start with a '+' sign
+# to specify a duration, the format is : '+DD:HH:mm'
+# Remember to enclose date expressions in single quotes
+        start-time:     'now'
+        end-time:       '+00:00:04'
+
+# this may be timer-automatic or signal-xml . generally leave at timer-automatic
+        path-setup-mode:        'timer-automatic'
+
+# this may be strict or loose. will default to loose if  not set here
+        path-type:      'strict'
+
+# vlans may be 'any' or a vlan range 2-4095. Only used for layer == 2. 
+# Should put in quotes even if a single vlan
+        srcvlan:        'any'
+        dstvlan:        'any'
+
+# mpls parameters
+# should not be input for layer2 resevations
+# either both must be ommitted or both be present
+
+#        burstLimit:     20
+#        lspClass:       4
+
+# optional: path, an array of urns. Must be enclosed in single quotes.
+

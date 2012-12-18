@@ -1,0 +1,30 @@
+configure private
+<#assign all_vlans = "">
+
+<#list vlans as vlan> 
+
+<#assign vlan_no = vlan?number>
+<#assign all_vlans = all_vlans+" "+vlan>
+<#assign mod = vlan_no % 2>
+
+<#if portA = "et-0/0/0" || portA = "et-1/0/0" || portA = "et-2/0/0">
+<#assign newPortA = portA + ":" + mod>
+<#else>
+<#assign newPortA = portA>
+</#if>
+
+<#if portZ = "et-0/0/0" || portZ = "et-1/0/0" || portZ = "et-2/0/0">
+<#assign newPortZ = portZ + ":" + mod>
+<#else>
+<#assign newPortZ = portZ>
+</#if>
+
+delete interfaces ${newPortA} unit ${vlan} 
+delete interfaces ${newPortZ} unit ${vlan} 
+
+delete routing-instances vlan${vlan}
+
+</#list>
+
+commit and-quit synchronize comment "IDC removed vpls: ${newPortA} ,  ${newPortZ} vlan(s): ${all_vlans}"
+

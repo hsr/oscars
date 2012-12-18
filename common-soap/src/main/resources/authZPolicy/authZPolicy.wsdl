@@ -1,0 +1,429 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="AuthZPolicyService"
+    targetNamespace="http://oscars.es.net/OSCARS/authZPolicy"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/"
+    xmlns:com="http://oscars.es.net/OSCARS/common"
+    xmlns:tns="http://oscars.es.net/OSCARS/authZPolicy">
+
+    <wsdl:documentation>
+        This is WSDL for the OSCARS authorization policy management interface.
+    </wsdl:documentation>
+
+   <!--  defines common OSCARSFaultMessage -->
+   <wsdl:import namespace="http://oscars.es.net/OSCARS/common" location="../common.wsdl"/>
+   
+   <!-- Element definitons -->
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://oscars.es.net/OSCARS/authZPolicy"
+            elementFormDefault="qualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:tns="http://oscars.es.net/OSCARS/authZPolicy">
+            <xsd:include schemaLocation="authZPolicy.xsd" />
+            <xsd:import namespace="http://oscars.es.net/OSCARS/common" 
+                  schemaLocation="../common.xsd" />
+        </xsd:schema>
+    </wsdl:types>
+   
+    <!--   Message definitions -->
+
+    <wsdl:message name="listAuthsReqMsg">
+        <wsdl:part name="listAuthsReqMsg"
+            element="tns:listAuthsRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="listAuthsRespMsg">
+        <wsdl:part name="listAuthsRespMsg"
+            element="tns:listAuthsResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="addAuthReqMsg">
+        <wsdl:part name="addAuthReqMsg"
+            element="tns:addAuthRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="addAuthRespMsg">
+        <wsdl:part name="addAuthRespMsg"
+            element="tns:addAuthResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="modifyAuthReqMsg">
+        <wsdl:part name="modifyAuthReqMsg"
+            element="tns:modifyAuthRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="modifyAuthRespMsg">
+        <wsdl:part name="modifyAuthRespMsg"
+            element="tns:modifyAuthResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="removeAuthReqMsg">
+        <wsdl:part name="removeAuthReqMsg"
+            element="tns:removeAuthRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="removeAuthRespMsg">
+        <wsdl:part name="removeAuthRespMsg"
+            element="tns:removeAuthResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="listAttrsReqMsg">
+        <wsdl:part name="listAttrsReqMsg"
+            element="tns:listAttrsRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="listAttrsRespMsg">
+        <wsdl:part name="listAttrsRespMsg"
+            element="tns:listAttrsResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="addAttrReqMsg">
+        <wsdl:part name="addAttrReqMsg"
+            element="tns:addAttrRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="addAttrRespMsg">
+        <wsdl:part name="addAttrRespMsg"
+            element="tns:addAttrResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="modifyAttrReqMsg">
+        <wsdl:part name="modifyAttrReqMsg"
+            element="tns:modifyAttrRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="modifyAttrRespMsg">
+        <wsdl:part name="modifyAttrRespMsg"
+            element="tns:modifyAttrResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="removeAttrReqMsg">
+        <wsdl:part name="removeAttrReqMsg"
+            element="tns:removeAttrRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="removeAttrRespMsg">
+        <wsdl:part name="removeAttrRespMsg"
+            element="tns:removeAttrResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="listResourcesReqMsg">
+        <wsdl:part name="listResourcesReqMsg"
+            element="tns:listResourcesRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="listResourcesRespMsg">
+        <wsdl:part name="listResourcesRespMsg"
+            element="tns:listResourcesResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="listPermissionsReqMsg">
+        <wsdl:part name="listPermissionsReqMsg"
+            element="tns:listPermissionsRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="listPermissionsRespMsg">
+        <wsdl:part name="listPermissionsRespMsg"
+            element="tns:listPermissionsResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="listConstraintsReqMsg">
+        <wsdl:part name="listConstraintsReqMsg"
+            element="tns:listConstraintsRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="listConstraintsRespMsg">
+        <wsdl:part name="listConstraintsRespMsg"
+            element="tns:listConstraintsResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="listRpcsReqMsg">
+        <wsdl:part name="listRpcsReqMsg"
+            element="tns:listRpcsRequest">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="listRpcsRespMsg">
+        <wsdl:part name="listRpcsRespMsg"
+            element="tns:listRpcsResponse" />
+    </wsdl:message>
+    
+    <wsdl:portType name="AuthZPolicyPortType">
+        <wsdl:operation name="listAuths">
+            <wsdl:input message="tns:listAuthsReqMsg" />
+            <wsdl:output message="tns:listAuthsRespMsg" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="addAuth">
+		<wsdl:input message="tns:addAuthReqMsg" />
+            <wsdl:output message="tns:addAuthRespMsg" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="modifyAuth">
+            <wsdl:input message="tns:modifyAuthReqMsg" />
+            <wsdl:output message="tns:modifyAuthRespMsg" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="removeAuth">
+            <wsdl:input message="tns:removeAuthReqMsg" />
+            <wsdl:output message="tns:removeAuthRespMsg" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="listAttrs">
+            <wsdl:input message="tns:listAttrsReqMsg" />
+            <wsdl:output message="tns:listAttrsRespMsg" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="addAttr">
+		<wsdl:input message="tns:addAttrReqMsg" />
+            <wsdl:output message="tns:addAttrRespMsg" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="modifyAttr">
+            <wsdl:input message="tns:modifyAttrReqMsg" />
+            <wsdl:output message="tns:modifyAttrRespMsg" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="removeAttr">
+            <wsdl:input message="tns:removeAttrReqMsg" />
+            <wsdl:output message="tns:removeAttrRespMsg" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="listResources">
+            <wsdl:input message="tns:listResourcesReqMsg" />
+            <wsdl:output message="tns:listResourcesRespMsg" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="listPermissions">
+            <wsdl:input message="tns:listPermissionsReqMsg" />
+            <wsdl:output message="tns:listPermissionsRespMsg" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="listConstraints">
+            <wsdl:input message="tns:listConstraintsReqMsg" />
+            <wsdl:output message="tns:listConstraintsRespMsg" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="listRpcs">
+            <wsdl:input message="tns:listRpcsReqMsg" />
+            <wsdl:output message="tns:listRpcsRespMsg" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+    </wsdl:portType>
+
+     <wsdl:binding name="AuthZPolicyBinding" type="tns:AuthZPolicyPortType">
+        <soap:binding style="document"
+            transport="http://schemas.xmlsoap.org/soap/http" />
+
+        <wsdl:operation name="listAuths">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/authZPolicy/listAuths" />
+            <wsdl:input>
+                <soap:body use="literal" parts="listAuthsReqMsg" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="listAuthsRespMsg" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="addAuth">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/authZPolicy/addAuth" />
+            <wsdl:input>
+                <soap:body use="literal" parts="addAuthReqMsg" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="addAuthRespMsg" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="modifyAuth">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/authZPolicy/modifyAuth" />
+            <wsdl:input>
+                <soap:body use="literal" parts="modifyAuthReqMsg" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="modifyAuthRespMsg" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="removeAuth">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/authZPolicy/removeAuth" />
+            <wsdl:input>
+                <soap:body use="literal" parts="removeAuthReqMsg" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="removeAuthRespMsg" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="listAttrs">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/authZPolicy/listAttrs" />
+            <wsdl:input>
+                <soap:body use="literal" parts="listAttrsReqMsg" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="listAttrsRespMsg" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="addAttr">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/authZPolicy/addAttr" />
+            <wsdl:input>
+                <soap:body use="literal" parts="addAttrReqMsg" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="addAttrRespMsg" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="modifyAttr">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/authZPolicy/modifyAttr" />
+            <wsdl:input>
+                <soap:body use="literal" parts="modifyAttrReqMsg" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="modifyAttrRespMsg" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="removeAttr">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/authZPolicy/removeAttr" />
+            <wsdl:input>
+                <soap:body use="literal" parts="removeAttrReqMsg" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="removeAttrRespMsg" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="listResources">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/authZPolicy/listResources" />
+            <wsdl:input>
+                <soap:body use="literal" parts="listResourcesReqMsg" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="listResourcesRespMsg" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="listPermissions">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/authZPolicy/listPermissions" />
+            <wsdl:input>
+                <soap:body use="literal" parts="listPermissionsReqMsg" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="listPermissionsRespMsg" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="listConstraints">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/authZPolicy/listConstraints" />
+            <wsdl:input>
+                <soap:body use="literal" parts="listConstraintsReqMsg" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="listConstraintsRespMsg" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="listRpcs">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/authZPolicy/listRpcs" />
+            <wsdl:input>
+                <soap:body use="literal" parts="listRpcsReqMsg" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="listRpcsRespMsg" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+    </wsdl:binding>
+ 
+    <wsdl:service name="AuthZPolicyService">
+        <wsdl:port name="AuthZPolicyPort" binding="tns:AuthZPolicyBinding">
+            <soap:address location=""/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

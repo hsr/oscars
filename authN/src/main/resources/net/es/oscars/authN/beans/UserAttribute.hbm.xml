@@ -1,0 +1,29 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+
+<class name="net.es.oscars.authN.beans.UserAttribute" table="userAttributes">
+    <meta attribute="class-description" inherit="false">
+       @hibernate.class table="userAttributes"
+    </meta>
+
+    <id name="id">
+        <meta attribute="field-description">
+           @hibernate.id generator-class="identity"
+        </meta>
+        <generator class="identity" />
+    </id>
+
+    <!-- Associations -->
+    <many-to-one name="user" column="userId"
+        unique="true" class="net.es.oscars.authN.beans.User" />
+
+    <many-to-one name="attribute" column="attributeId"
+        unique="true" class="net.es.oscars.authN.beans.Attribute" />
+
+
+</class>
+</hibernate-mapping>

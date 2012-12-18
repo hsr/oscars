@@ -1,0 +1,112 @@
+configure private
+
+# interfaces
+<#list ifces as ifce>
+edit interfaces ${ifce.name}
+edit unit ${ifce.vlan}
+set description ${ifce.description}
+set encapsulation vlan-vpls
+set vlan-id ${ifce.vlan}
+set output-vlan-map swap
+set family vpls filter input ${filters.stats}
+set family vpls filter output ${filters.stats}
+top
+</#list>
+
+
+
+
+<#if lsps??>
+# not for same-device
+# lsps
+<#list lsps as lsp>
+edit protocols mpls label-switched-path ${lsp.name}
+set from ${lsp.from}
+set to ${lsp.to}
+set metric 65535
+set bandwidth ${lsp.bandwidth?string.computer}
+set priority 4 4
+set primary ${lsp.path}
+set policing filter ${filters.policing}
+top
+</#list>
+</#if>
+
+
+<#if lsps??>
+# not for same-device
+# routing
+edit routing-options
+set forwarding-table export [ ${policy} ]
+top
+</#if>
+
+
+<#if paths??>
+# not for same-device
+# paths
+<#list paths as path>
+edit protocols mpls path ${path.name}
+<#list path.hops as hop>
+set ${hop} strict
+</#list>
+top
+</#list>
+</#if>
+
+
+<#if lsps??>
+# not for same-device
+# policy
+edit policy-options policy-statement ${policy} term oscars
+set from community ${community.name}
+set then install-nexthop lsp [ <#list lsps as lsp>${lsp.name} </#list>]
+set then accept
+top
+set policy-options community ${community.name} members ${community.members}
+top
+</#if>
+
+# firewall
+edit firewall family vpls filter ${filters.stats}
+set interface-specific
+set term oscars then count oscars_counter
+set term oscars then accept
+top
+edit firewall family any filter ${filters.policing} term oscars
+set then policer ${policer.name}
+set then count oscars
+set then forwarding-class expedited-forwarding
+set then accept
+top
+edit firewall policer ${policer.name}
+set if-exceeding bandwidth-limit ${policer.bandwidth_limit?string.computer}
+set if-exceeding burst-size-limit ${policer.burst_size_limit?string.computer}
+set then forwarding-class scavenger
+
+# vpls
+top
+edit routing-instances ${vpls.name}
+set instance-type vpls
+<#list ifces as ifce>
+set interface ${ifce.name}.${ifce.vlan}
+</#list>
+edit protocols vpls
+set no-tunnel-services
+set vpls-id ${vpls.id}
+set mtu 9100
+top
+
+<#if lsps??>
+# not for same-device
+<#list lsps as lsp>
+edit routing-instances ${vpls.name} protocols vpls neighbor ${lsp.neighbor}
+set psn-tunnel-endpoint ${lsp.to}
+set community ${community.name}
+set encapsulation-type ethernet-vlan
+top
+</#list>
+</#if>
+
+
+commit and-quit

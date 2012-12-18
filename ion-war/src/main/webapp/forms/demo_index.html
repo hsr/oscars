@@ -1,0 +1,61 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<title>Internet2 ION</title>
+<link rel="icon" href="images/favicon.png" type="image/png">
+<link rel="stylesheet" href="style/ion-dojo.css">
+<link href="ion-content.css" rel="stylesheet" type="text/css" media="all" />
+<link rel="stylesheet" href="style/ion.css">
+<link href="ion-style.css" rel="stylesheet" type="text/css" media="all" />
+<style type="text/css">
+	@import "lib/dojo/dijit/themes/tundra/tundra.css";
+</style>
+<script src="http://maps.google.com/maps?file=api&amp;v=2&amp;sensor=false&amp;key=ABQIAAAAsqJB51eIGY0t-4zHbP54GxS_RBo8BKLZ-cjLLaQcaUHfWHXBNBQen_JLKtngwfjgLN-UKO1ZNd1T5A" type="text/javascript"></script>
+<script type="text/javascript" src="http://www.google.com/jsapi"></script>
+<script type="text/javascript" src="lib/dojo/dojo/dojo.js" djConfig="parseOnLoad: true"></script>
+<script type="text/javascript" src="lib/dojo/dojo/dojo-ion.js"></script>
+<script type="text/javascript" src="lib/ion/ion.js"></script>
+<script type="text/javascript" src="lib/ion/ion_demo.js"></script>
+
+</head>
+
+<body>
+<div id="outer">
+<div id="container">
+<div id="header">
+<div id="top-nav">
+<a href="#about" onclick="navAbout()" class="left-end">about</a>  <a href="#support" class="cen">support</a> <a href="#" class="cen" id="topRegister">register</a> <a href="#" class="right-end" id="topSignIn">sign in</a>
+</div><!--/top-nav-->
+<img src="images/ion-logo-transparent.png" id="logo" />
+</div> <!--/header-->
+<div id="main-nav">
+	<div id="primary">
+    	<a href="#new" class="selected">Sign In</a>
+    </div> <!--/primary-->
+</div><!--/main-nav-->
+
+<div id="content">
+	<div dojoType="ion.DemoLoginWidget" verifyURL="servlet/VerifySession" loginURL="servlet/AuthenticateUser" logoutURL="servlet/UserLogout"></div>
+	<div id="contentDiv" dojoType="dijit.layout.ContentPane" class="tundra">
+	</div>
+</div> <!--/content-->
+
+<div id="footer">
+Powered by <a href="http://www.es.net/oscars/" target="_blank">OSCARS</a>, <a href="http://dragon.maxgigapop.net/twiki/bin/view/DRAGON/WebHome" target="_blank">DRAGON</a> and <a href="http://www.perfsonar.net/">perfSONAR</a>.
+</div><!--/footer-->
+<div id="sub-footer">
+ <p>
+	<a href="http://ion.net.internet2.edu/stats" target="_blank">Statistics</a> |
+	<a href="admin.html" target="_blank">Administration</a> |
+	<a href="http://www.internet2.edu" target="_blank">Internet2</a> |
+	<a href="http://noc.net.internet2.edu" target="_blank">Internet2 ION NOC</a>
+ </p>
+</div> <!--/sub-footer-->
+</div> 
+</div> <!--/container-->
+
+&nbsp;
+</div> <!--/outer-->
+</body>
+</html>

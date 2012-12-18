@@ -1,0 +1,12 @@
+---
+soap:
+    publishTo:  'http://localhost:9007/connectivityPCE'
+
+pce-runtime:
+    url: 'http://localhost:10000/OSCARS/PCE'
+
+topoBridgeUrl: 'http://localhost:9019/topoBridge'
+
+# maxSearchDepth: 1
+
+

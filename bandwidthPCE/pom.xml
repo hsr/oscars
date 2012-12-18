@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>OSCARS</artifactId>
+    <groupId>net.es.oscars</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  
+  <artifactId>bandwidthPCE</artifactId>
+  <name>bandwidthPCE</name>
+  <url>http://maven.apache.org</url>
+  
+  <repositories>
+    <repository>
+        <id>OSCARS</id>
+        <name>OSCARS Maven Repository</name>
+        <layout>default</layout>
+        <url>file:///${basedir}/../common-libs/repo</url>
+    </repository>
+  </repositories>
+
+        <!-- puts all code & libraries in one jar -->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>onejar-maven-plugin.googlecode.com</id>
+            <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
+        </pluginRepository>
+    </pluginRepositories>
+    
+  <dependencies>
+    
+    <!-- common SOAP interfaces (from local repository) -->
+   <dependency>
+        <groupId>net.es.oscars</groupId>
+        <artifactId>common-soap</artifactId>
+        <version>${oscars.version}</version>
+    </dependency>
+    
+    <!--  OSCARS PCE libraries -->
+    <dependency>
+        <groupId>net.es.oscars</groupId>
+        <artifactId>pce</artifactId>
+        <version>${oscars.version}</version>
+    </dependency>
+    
+    <!-- OSCARS utilities -->
+    <dependency>
+        <groupId>net.es.oscars</groupId>
+        <artifactId>utils</artifactId>
+        <version>${oscars.version}</version>
+    </dependency>
+    
+    <!-- OSCARS common logging -->
+    <dependency>
+        <groupId>net.es.oscars</groupId>
+        <artifactId>common-logging</artifactId>
+        <version>${oscars.version}</version>
+    </dependency>
+    
+    <!-- OSCARS resource manager -->
+   <dependency>
+        <groupId>net.es.oscars</groupId>
+        <artifactId>resourceManager</artifactId>
+        <version>${oscars.version}</version>
+    </dependency>
+  </dependencies>
+  
+  <build>
+        <plugins>
+            <!-- puts all code & libraries in one jar -->
+            <plugin>
+                <groupId>org.dstovall</groupId>
+                <artifactId>onejar-maven-plugin</artifactId>
+                <version>1.4.1</version>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <mainClass>net.es.oscars.pce.bandwidth.common.Invoker</mainClass>
+                            <classifier>onejar</classifier>
+                        </configuration>
+                        <goals>
+                            <goal>one-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- specifically use java 1.5 to compile -->
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+
+
+        </plugins>
+    </build>
+</project>

@@ -1,0 +1,171 @@
+<junoscript version="1.0" release="7.3">
+<rpc><lock-configuration /></rpc>
+<rpc>
+<load-configuration>
+<configuration>
+
+<#-- the ingress physical interface -->
+    <interfaces>
+        <interface>
+            <name>${ifce.name}</name>
+            <unit>
+                <name>${ifce.vlan}</name>
+                <description>${ifce.description}</description>
+                <encapsulation>vlan-ccc</encapsulation>
+                <vlan-id>${ifce.vlan}</vlan-id>
+<#-- only add this when necessary -->
+<#if ifce.vlan != egressvlan >
+                <input-vlan-map>
+                    <swap/>
+                    <vlan-id>${egressvlan}</vlan-id>
+                </input-vlan-map>
+</#if>
+                <family>
+                    <ccc>
+<#-- use filters to capture stats (both directions) -->
+                        <filter>
+                            <input>${filters.stats.name}</input>
+                            <output>${filters.stats.name}</output>
+                        </filter>
+                    </ccc>
+                </family>
+            </unit>
+        </interface>
+    </interfaces>
+
+<#--  a policy that ties the community to the LSP next hop -->
+    <policy-options>
+        <policy-statement>
+            <name>${policy.name}</name>
+            <term>
+                <name>${policy.term}</name>
+                <from>
+                    <community>${community.name}</community>
+                </from>
+                <then>
+                    <install-nexthop>
+                        <lsp>${lsp.name}</lsp>
+                    </install-nexthop>
+                    <accept/>
+                </then>
+            </term>
+        </policy-statement>
+
+<#-- define the community for this VC, used by the policy and the l2circuit -->
+        <community>
+            <name>${community.name}</name>
+            <members>${community.members}</members>
+        </community>
+    </policy-options>
+
+<#-- adds the policy to the forwarding table -->
+    <routing-options>
+        <forwarding-table>
+            <export>${policy.name}</export>
+        </forwarding-table>
+    </routing-options>
+
+
+<#-- LSP -->
+    <protocols>
+        <mpls>
+            <label-switched-path>
+                <name>${lsp.name}</name>
+                <from>${lsp.from}</from>                                    <#-- local loopback -->
+                <to>${lsp.to}</to>                                          <#-- address of the inwards-facing interface at the egress router -->
+                <metric>65535</metric>
+                <bandwidth>
+                    <per-traffic-class-bandwidth>${lsp.bandwidth?string.computer}</per-traffic-class-bandwidth>
+                </bandwidth>
+                <setup-priority>4</setup-priority>
+                <reservation-priority>4</reservation-priority>
+                <primary>
+                    <name>${path.name}</name>
+                </primary>
+                <policing>
+                    <filter>${filters.policing.name}</filter>
+                </policing>
+            </label-switched-path>
+
+<#-- the path -->
+            <path>
+                <name>${path.name}</name>
+<#list path.hops as hop>
+                <path-list>
+                    <name>${hop}</name><strict/>
+                </path-list>
+</#list>
+            </path>
+        </mpls>
+
+
+<#-- l2circuit -->
+        <l2circuit>
+            <neighbor>
+                <name>${l2circuit.egress}</name>                                <#-- egress loopback -->
+                <interface>
+                    <name>${ifce.name}.${ifce.vlan}</name>
+                    <psn-tunnel-endpoint>${lsp.to}</psn-tunnel-endpoint>
+                    <virtual-circuit-id>${l2circuit.vcid}</virtual-circuit-id>
+                    <description>${l2circuit.description}</description>
+                    <community>${community.name}</community>
+                    <mtu>9174</mtu>
+                </interface>
+            </neighbor>
+        </l2circuit>
+    </protocols>
+
+<#-- the policer -->
+    <firewall>
+        <policer>
+            <name>${policer.name}</name>
+            <if-exceeding>
+                <bandwidth-limit>${policer.bandwidth_limit?string.computer}</bandwidth-limit>
+                <burst-size-limit>${policer.burst_size_limit?string.computer}</burst-size-limit>
+            </if-exceeding>
+            <then>
+                <forwarding-class>scavenger-service</forwarding-class>
+            </then>
+        </policer>
+
+
+<#-- the stats filter -->
+        <family>
+            <ccc>
+                <filter>
+                    <name>${filters.stats.name}</name>
+                    <interface-specific/>
+                    <term>
+                        <name>${filters.stats.term}</name>
+                        <then>
+                            <count>${filters.stats.count}</count>
+                            <accept/>
+                        </then>
+                    </term>
+                </filter>
+            </ccc>
+
+<#-- the policing filter -->
+            <any>
+                <filter>
+                    <name>${filters.policing.name}</name>
+                    <term>
+                        <name>${filters.policing.term}</name>
+                        <then>
+                            <policer>${policer.name}</policer>
+                            <count>${filters.policing.count}</count>
+                            <forwarding-class>expedited-forwarding</forwarding-class>
+                            <accept/>
+                        </then>
+                    </term>
+                </filter>
+            </any>
+        </family>
+    </firewall>
+
+</configuration>
+</load-configuration>
+</rpc>
+<rpc><commit-configuration /></rpc>
+<rpc><unlock-configuration /></rpc>
+</junoscript>

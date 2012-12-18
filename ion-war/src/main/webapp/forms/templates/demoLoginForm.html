@@ -1,0 +1,21 @@
+<div id="loginFormDiv" class="loginForm">
+	<form id="loginForm">
+		<table class="loginTable">
+			<tr>
+				<td width="14%">Email:</td>
+				<td width="86%"><input type="text" name="email" id="email"></td>
+			</tr>
+			<tr>
+				<td>Password:</td>
+		 		<td><input type="password" name="initialPassword" id="initialPassword"></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<input type="hidden" name="userName" id="userName" value="guest">
+					<button type="submit" dojoType="ion.Button" id="loginButton" label="Sign in" onclick="submitEmail()"></button>
+					<input type="submit" style="width:0px;height:0px;border:none;visibility:hidden">
+				</td>
+			</tr>
+		</table>
+	</form>
+</div>

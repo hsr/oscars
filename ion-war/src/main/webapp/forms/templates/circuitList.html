@@ -1,0 +1,44 @@
+<div id="${id}_root">
+	<div class="floatleft">
+		<div id="${id}_refreshButton" dojoType="ion.Button" label="Refresh"></div>
+	</div>
+	<div id="${id}_resultsPerPage" class="listResultsPerPage">
+		<select id="${id}_resultsPerPage_sel">
+			<option value="10">10 Per Page</option>
+			<option value="15">15 Per Page</option>
+			<option value="25">25 Per Page</option>
+			<option value="35">35 Per Page</option>
+			<option value="50">50 Per Page</option>
+		</select>
+	</div>
+	<span id="explan">Click the column header to sort by that column </span>
+	<div id="${id}_list_div" class="circuitListDiv">
+		<table id ="${id}_list_table" class="circuitListTable">
+			<thead class="circuitListTableHead">
+				<tr id="${id}_list_table_head" class="circuitListTableHead"></tr>
+			</thead>
+			<tbody id ="${id}_list_table_body" class="circuitListTableBody">
+			</tbody>
+		</table>
+	</div>
+	
+	<div id="${id}_pageNav" class="circuitListPageNav"></div>
+	
+	<div id="${id}_loadingDialog" dojoType="ion.ModalBox">
+		<span class="circuitListRetrieveMsg">Retrieving reservations...</span>
+		<div dojoType="dijit.ProgressBar" indeterminate="true"></div>
+	</div>
+	
+	<div id="${id}_cancelVerifyDialog" dojoType="ion.ModalBox">
+		<span class="circuitListVerifyCancelMsg">Are you sure you want to cancel this reservation?</span>
+		<div class="dialogButtons">
+			<div dojoType="ion.Button" id="${id}_circuitListYesCancel" label="Yes"></div>
+			<div dojoType="ion.Button" id="${id}_circuitListNoCancel" label="No"></div>
+		</div>
+	</div>
+	
+	<div id="${id}_cancellingDialog" dojoType="ion.ModalBox">
+		<span class="circuitListCancellingMsg">Sending cancellation request...</span>
+		<div dojoType="dijit.ProgressBar" indeterminate="true"></div>
+	</div>
+</div>

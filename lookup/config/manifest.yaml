@@ -1,0 +1,34 @@
+---
+LookupService:
+    UNITTEST:
+        config.yaml:        'OSCARS_DIST/lookup/config/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_DIST/lookup/config/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_DIST/lookup/config/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_DIST/lookup/config/log4j.INFO.properties'
+        derby.home:         'OSCARS_HOME/LookupService/data'
+        wsdl:               'OSCARS_DIST/common-soap/src/main/resources/lookup/lookup.wsdl'
+
+    DEVELOPMENT:
+        config.yaml:        'OSCARS_HOME/LookupService/conf/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/LookupService/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/LookupService/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/LookupService/conf/log4j.MESSAGE.properties'
+        derby.home:         'OSCARS_HOME/LookupService/data'
+        wsdl:               'OSCARS_HOME/wsdl/LookupService/LookupService.wsdl'
+
+    SDK:
+        config.yaml:        'OSCARS_HOME/LookupService/conf/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/LookupService/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/LookupService/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/LookupService/conf/log4j.INFO.properties'
+        derby.home:         'OSCARS_HOME/LookupService/data'
+        wsdl:               'OSCARS_HOME/wsdl/LookupService/LookupService.wsdl'
+
+    PRODUCTION:
+        config.yaml:        'OSCARS_HOME/LookupService/conf/config.SSL.yaml'
+        server-cxf.xml:     'OSCARS_HOME/LookupService/conf/server-cxf-ssl.xml'
+        client-cxf.xml:     'OSCARS_HOME/LookupService/conf/client-cxf-ssl.xml'
+        log4j.properties:   'OSCARS_HOME/LookupService/conf/log4j.INFO.properties'
+        derby.home:         'OSCARS_HOME/LookupService/data'
+        wsdl:               'OSCARS_HOME/wsdl/LookupService/LookupService.wsdl'
+

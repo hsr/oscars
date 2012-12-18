@@ -1,0 +1,95 @@
+NotificationBridgeService:
+    UNITTEST:
+        templateDir:        'OSCARS_DIST/notificationBridge/config'
+        config.yaml:        'OSCARS_DIST/notificationBridge/config/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_DIST/notificationBridge/config/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_DIST/notificationBridge/config/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_DIST/notificationBridge/config/log4j.LOG.properties'
+        clientKeystore.properties: 'OSCARS_DIST/notificationBridge/config/clientKeystore.properties'
+        topicnamespace.xml:        'OSCARS_DIST/notificationBridge/config/topicnamespace.xml'
+        topicset.xml:              'OSCARS_DIST/notificationBridge/config/topicset.xml'
+        mailTemplateDir:           'OSCARS_DIST/notificationBridge/config/mail_templates'
+        wsdl:                      'OSCARS_DIST/common-soap/src/main/resources/notificationBridge.wsdl'
+
+    DEVELOPMENT:
+        templateDir:        'OSCARS_HOME/NotificationBridgeService/conf/'
+        config.yaml:        'OSCARS_HOME/NotificationBridgeService/conf/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/NotificationBridgeService/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/NotificationBridgeService/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/NotificationBridgeService/conf/log4j.MESSAGE.properties'
+        clientKeystore.properties: 'OSCARS_HOME/NotificationBridgeService/conf/clientKeystore.properties'
+        topicnamespace.xml:        'OSCARS_HOME/NotificationBridgeService/conf/topicnamespace.xml'
+        topicset.xml:              'OSCARS_HOME/NotificationBridgeService/conf/topicset.xml'
+        mailTemplateDir:           'OSCARS_HOME/NotificationBridgeService/conf/mail_templates'
+        wsdl:               'OSCARS_HOME/wsdl/OSCARSService/NotificationBridge.wsdl'
+
+    SDK:
+        templateDir:        'OSCARS_HOME/NotificationBridgeService/conf/'
+        config.yaml:        'OSCARS_HOME/NotificationBridgeService/conf/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/NotificationBridgeService/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/NotificationBridgeService/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/NotificationBridgeService/conf/log4j.DEBUG.properties'
+        clientKeystore.properties: 'OSCARS_HOME/NotificationBridgeService/conf/clientKeystore.properties'
+        topicnamespace.xml:        'OSCARS_HOME/NotificationBridgeService/conf/topicnamespace.xml'
+        topicset.xml:              'OSCARS_HOME/NotificationBridgeService/conf/topicset.xml'
+        mailTemplateDir:           'OSCARS_HOME/NotificationBridgeService/conf/mail_templates'
+        wsdl:               'OSCARS_HOME/wsdl/OSCARSService/NotificationBridge.wsdl'
+
+    PRODUCTION:
+        templateDir:        'OSCARS_HOME/NotificationBridgeService/conf/'
+        config.yaml:        'OSCARS_HOME/NotificationBridgeService/conf/config.SSL.yaml'
+        server-cxf.xml:     'OSCARS_HOME/NotificationBridgeService/conf/server-cxf-ssl.xml'
+        client-cxf.xml:     'OSCARS_HOME/NotificationBridgeService/conf/client-cxf-ssl.xml'
+        log4j.properties:   'OSCARS_HOME/NotificationBridgeService/conf/log4j.INFO.properties'
+        clientKeystore.properties: 'OSCARS_HOME/NotificationBridgeService/conf/clientKeystore.properties'
+        topicnamespace.xml:        'OSCARS_HOME/NotificationBridgeService/conf/topicnamespace.xml'
+        topicset.xml:              'OSCARS_HOME/NotificationBridgeService/conf/topicset.xml'
+        mailTemplateDir:           'OSCARS_HOME/NotificationBridgeService/conf/mail_templates'
+        wsdl:               'OSCARS_HOME/wsdl/OSCARSService/NotificationBridge.wsdl'
+Utils:
+    UNITTEST:
+        templateDir:        'OSCARS_DIST/utils/config'
+        config.yaml:        'OSCARS_DIST/utils/config/config.yaml'
+
+    DEVELOPMENT:
+        templateDir:        'OSCARS_HOME/Utils/conf/'
+        config.yaml:        'OSCARS_HOME/Utils/conf/config.yaml'
+
+    SDK:
+        templateDir:        'OSCARS_HOME/Utils/conf/'
+        config.yaml:        'OSCARS_HOME/Utils/conf/config.yaml'
+
+    PRODUCTION:
+        templateDir:        'OSCARS_HOME/Utils/conf/'
+        config.yaml:        'OSCARS_HOME/Utils/conf/config.yaml'
+
+OSCARSService:
+    UNITTEST:
+        config.yaml:        'OSCARS_DIST/api/config/config.HTTP.yaml'
+
+    DEVELOPMENT:
+        config.yaml:        'OSCARS_HOME/OSCARSService/conf/config.HTTP.yaml'
+    
+    SDK:
+        config.yaml:        'OSCARS_HOME/OSCARSService/conf/config.HTTP.yaml'
+
+    PRODUCTION:
+        config.yaml:        'OSCARS_HOME/OSCARSService/conf/config.SSL.yaml'
+
+WSNBrokerService:
+    UNITTEST:
+        config.yaml:        'OSCARS_DIST/wsnbroker/config/config.HTTP.yaml'
+        wsdl:               'OSCARS_DIST/common-soap/src/main/resources/wsnbroker/wsnbroker.wsdl'
+
+    DEVELOPMENT:
+        config.yaml:        'OSCARS_HOME/WSNBrokerService/conf/config.HTTP.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/WSNBrokerService/WSNBrokerService.wsdl'
+
+    SDK:
+        config.yaml:        'OSCARS_HOME/WSNBrokerService/conf/config.HTTP.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/WSNBrokerService/WSNBrokerService.wsdl'
+
+    PRODUCTION:
+        config.yaml:        'OSCARS_HOME/WSNBrokerService/conf/config.SSL.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/WSNBrokerService/WSNBrokerService.wsdl'
+

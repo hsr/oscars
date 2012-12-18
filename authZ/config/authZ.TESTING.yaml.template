@@ -1,0 +1,8 @@
+---
+soap:
+    publishTo: 	'http://localhost:9190/OSCARS/authZ'
+
+authZ:
+    dbname: 'testauthz'
+    username: 'oscars'
+    password: 'mypass'

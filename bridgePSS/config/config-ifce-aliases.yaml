@@ -1,0 +1,12 @@
+---
+    "global": 
+        "foobar":   "xe-3/1/0" 
+
+
+    "core1": 
+        "lag-1":   "ethernet 3/1 ethernet 4/1 ethernet 5/1 ethernet 6/1" 
+        "lag-6":   "ethernet 3/6 ethernet 4/6 ethernet 5/6 ethernet 6/6 ethernet 7/6 ethernet 8/6"
+        "lag-2":   "ethernet 3/2 ethernet 4/2 ethernet 5/2 ethernet 6/2 ethernet 7/2 ethernet 8/2"
+        "lag-3":   "ethernet 3/3 ethernet 4/3 ethernet 5/3 ethernet 6/3 ethernet 7/3 ethernet 8/3"
+        "lag-4":   "ethernet 3/4 ethernet 4/4 ethernet 5/4 ethernet 6/4 ethernet 7/4 ethernet 8/4"
+        "lag-5":   "ethernet 3/5 ethernet 4/5 ethernet 5/5 ethernet 6/5 ethernet 7/5 ethernet 8/5"

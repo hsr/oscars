@@ -1,0 +1,230 @@
+<html>
+<head>
+    <script type="text/javascript">
+        dojo.connect(dijit.byId("reservationCreatePane"), "onLoad",
+                     oscars.ReservationCreate.init);
+    </script>
+</head>
+
+<body>
+<form id="reservationCreateForm" dojoType="dijit.form.Form">
+
+<input type="hidden" name="startSeconds" id="hiddenStartSeconds" />
+<input type="hidden" name="endSeconds" id="hiddenEndSeconds" />
+
+<p>Required inputs are bordered in green.
+The source and destination can be URN topology identifers or a registered friendly name.
+Click on the boxes associated with the start and end dates to bring
+up a calendar widget.  The reservation time slot defaults to
+now, and now + 15 minutes, respectively, if you leave the dates and
+times empty.</p>
+
+<!-- NOTE:  there will be flicker if user is authorized.  Would need to
+            create everything programmatically to avoid. -->
+<div id="authorizedWarningDisplay" style="display:none">
+<p>WARNING: Entering a series of hops in the Path field may alter
+routing behavior for the selected flow.  Hops can be URN topology identifiers or
+registered friendly names. 
+Note that the path field will expand
+to the number of lines occurring in the hops list.
+</p>
+</div>
+
+<table width="100%">
+  <tbody>
+  <tr>
+    <td width="15%">
+      <button dojoType="dijit.form.Button" id="reservationCreate">
+         Create Reservation
+         <script type="dojo/method" event="onClick">
+            oscars.ReservationCreate.createReservation();
+        </script>
+      </button>
+    </td>
+    <td>
+        <input dojoType="dijit.form.CheckBox" id="production"
+            name="productionType" type="checkbox" />
+      <label for="production">Production circuit</label>
+    </td>
+    <td>
+      <!-- straight form reset doesn't reset all fields properly -->
+      <button dojoType="dijit.form.Button" id="reservationCreateReset">
+         Reset form fields
+         <script type="dojo/method" event="onClick">
+            oscars.ReservationCreate.resetFields();
+        </script>
+      </button>
+    </td>
+  </tr>
+  <tr>
+    <td>Source</td>
+    <td class="required" colspan="2">
+      <input type="text" name="source" id="source"
+             dojoType="dijit.form.ValidationTextBox"
+             required="true" />
+    </td>
+  </tr>
+  <tr>
+    <td>Destination</td>
+    <td class="required" colspan="2">
+      <input type="text" name="destination" id="destination"
+             dojoType="dijit.form.ValidationTextBox" 
+             required="true" />
+    </td>
+  </tr>
+    <tr id="authorizedPathDisplay" style="display:none">
+      <td>Path (series of hops)</td>
+      <td class="warning" colspan="2">
+        <textarea name="explicitPath" id="explicitPath"
+                  dojoType="dijit.form.Textarea">
+        </textarea>
+      </td>
+    </tr>
+
+  <tr>
+    <td>Bandwidth (Mbps)</td>
+    <td class="required">
+      <input type="text" name="bandwidth" id="bandwidth"
+           dojoType="dijit.form.NumberTextBox"
+           constraints="{min:1,max:100000,places:0}"
+           promptMessage="Enter a value between 1 and 100000"
+           required="true"
+           invalidMessage="Invalid bandwidth." />
+     </td>
+     <td>( 1-100000 )</td>
+  </tr>
+  <tr>
+    <td>Description</td>
+    <td class="required">
+       <input type="text" name="description" id="reservationDescription"
+              dojoType="dijit.form.ValidationTextBox"
+              promptMessage="Please enter the purpose for this reservation"
+              invalidMessage="You must enter the purpose of this reservation"
+              required="true" />
+    </td>
+    <td>( For our records )</td>
+  </tr>
+
+  <tr>
+    <td>Start date</td>
+    <td><input dojoType="dijit.form.DateTextBox" name="startDate"
+               id="startDate" />
+    </td>
+    <td id="startDateDefault">MM/DD/YYYY</td>
+  </tr>
+  <!-- TimeTextBox is beta as of 1.0.2 and does not include all documented
+       features.  It doesn't allow very fine grained control, and doesn't
+       send the browser's time zone by default in the time.  The dojo.date
+       modules that could change this default behavior are rather opaque to
+       me. -->
+  <tr><td>Start time</td>
+      <td><input dojoType="dijit.form.ValidationTextBox" name="startTime"
+             id="startTime"
+             regExp="[0-2]?[\d]:[0-5][\d]"
+             promptMessage="Enter the start time in format HH:MM"
+             invalidMessage="Invalid format:  use HH:MM" /></td>
+    <td id="startTimeDefault">HH:MM</td>
+  </tr>
+  <tr><td>End date</td>
+    <td><input dojoType="dijit.form.DateTextBox" name="endDate"
+               id="endDate" /></td>
+    <td id="endDateDefault">MM/DD/YYYY</td>
+  </tr>
+  <tr><td>End time</td>
+    <td><input dojoType="dijit.form.ValidationTextBox" name="endTime"
+             id="endTime"
+             regExp="[0-2]?[\d]:[0-5][\d]"
+             promptMessage="Enter the end time in format HH:MM"
+             invalidMessage="Invalid format:  use HH:MM" /></td>
+    <td id="endTimeDefault">HH:MM</td>
+  </tr>
+
+  <tr><td colspan="3"> </td></tr>
+  <!-- toggles whether layer 2 or layer 3 parameters are displayed -->
+  <tr><td colspan="3">
+      <input dojoType="dijit.form.RadioButton" id="layer2" name="layer"
+             checked="checked" value="layer2" type="radio"
+             onClick="oscars.ReservationCreate.layerChooser" />
+      <label for="layer2">Use layer 2 parameters</label>
+      <input dojoType="dijit.form.RadioButton" id="layer3" name="layer"
+             value="layer3" type="radio"
+             onClick="oscars.ReservationCreate.layerChooser" />
+      <label for="layer3">Use layer 3 parameters</label>
+      <span class="layer2">&lt; -- &gt;</span>
+      <input dojoType="dijit.form.CheckBox" id="sameVlan" class="layer2"
+          name="sameVlan" type="checkbox" checked="checked"
+          onClick="oscars.ReservationCreate.toggleDestDisplay" />
+      <label for="sameVlan" class="layer2">Same VLAN on source and destination</label>
+    </td>
+  </td></tr>
+
+  <!-- layer 2 parameters -->
+  <tr class="layer2"><td>Source VLAN</td>
+    <td>
+      <input type="text" dojoType="dijit.form.TextBox" name="srcVlan"
+             id="srcVlan" />
+    </td>
+    <td>tag, or range, e.g. 3000-3100</td></tr>
+  <tr class="layer2"><td>Source VLAN type</td>
+    <td colspan="2">
+      <select name="taggedSrcVlan" id="taggedSrcVlan">
+        <option value="Tagged" selected="selected">Tagged</option>
+        <option value="Untagged">Untagged</option>
+      </select>
+    </td>
+  </tr>
+  <tr class="destVlan" style="display:none"><td>Destination VLAN</td>
+    <td>
+      <input type="text" dojoType="dijit.form.TextBox" name="destVlan"
+             id="destVlan" />
+    </td>
+    <td>tag, or range, e.g. 3000-3100</td></tr>
+  <tr class="layer2"><td>Destination VLAN type</td>
+    <td colspan="2">
+      <select name="taggedDestVlan" id="taggedDestVlan">
+        <option value="Tagged" selected="selected">Tagged</option>
+        <option value="Untagged">Untagged</option>
+      </select>
+    </td>
+  </tr>
+
+  <!-- layer 3 parameters -->
+  <tr class="layer3" style="display:none"><td>Source IP</td>
+    <td><input type="text" dojoType="dijit.form.TextBox" name="srcIP"
+               id="srcIP" />
+    </td>
+    <td>(IP address)</td></tr>
+  <tr class="layer3" style="display:none"><td>Destination IP</td>
+    <td><input type="text" dojoType="dijit.form.TextBox" name="destIP"
+               id="destIP" />
+    </td>
+    <td>(IP address)</td></tr>
+  <tr class="layer3" style="display:none"><td>Source port</td>
+    <td><input type="text" dojoType="dijit.form.TextBox" name="srcPort"
+               id="srcPort" maxlength="5" />
+    </td>
+    <td>(1024-65535)</td></tr>
+  <tr class="layer3" style="display:none"><td>Destination port</td>
+    <td><input type="text" dojoType="dijit.form.TextBox" name="destPort"
+               id="destPort" maxlength="5" />
+    </td>
+    <td>(1024-65535)</td>
+  </tr>
+  <tr class="layer3" style="display:none"><td>Protocol</td>
+    <td><input type="text" dojoType="dijit.form.TextBox" name="protocol"
+               id="protocol" />
+    </td>
+    <td>(0-255, or string)</td></tr>
+  <tr class="layer3" style="display:none"><td>DSCP</td>
+    <td><input dojoType="dijit.form.ValidationTextBox" name="dscp"
+               promptMessage="Enter differentiated service code point"
+               id="dscp" maxlength="2" />
+    </td>
+    <td>(0-63)</td>
+  </tr>
+
+</tbody>
+</table>
+</form>
+</body>
+</html>

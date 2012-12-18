@@ -1,0 +1,9 @@
+---
+- id: "dragon-vlsr"
+  services: 
+    - id:               dragon
+      configGenerator:  "net.es.oscars.pss.dragon.vlsr.VLSRConfigGen"
+    
+    - id:               stub
+      configGenerator: "net.es.oscars.pss.stub.StubConfigGen"
+            

@@ -1,0 +1,8 @@
+# Creates a signal-xml reservation in testDomain 1 with duration of 5 days 
+---
+# 'listReservation'
+        command:     'list'
+        url:         'http://odev-vm-17.es.net:9001/OSCARS'
+        version:     0.6
+        auth-type:   'x509'
+        output-format:    'humanReadable'

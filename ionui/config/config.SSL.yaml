@@ -1,0 +1,19 @@
+---
+http:
+    warFile:	'/ion-war/ion-war-OSCARS_VERSION.war'
+
+ionui:
+    userName: 'ion'
+    sessionName: 'ionsess'
+    secureCookie: '1'
+
+endpoint:
+    endpointData.url: 'http://localhost/friendly_names.csv'
+    endpointData.localDomain: 'testdomain-1'
+
+iondb:
+    dburl: 'jdbc:mysql://localhost:3306/'
+    dbname: 'ion'
+    username: 'oscars'
+    password: 'mypass'
+

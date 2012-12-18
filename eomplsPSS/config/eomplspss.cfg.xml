@@ -1,0 +1,61 @@
+<!DOCTYPE hibernate-configuration PUBLIC
+    "-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+
+<hibernate-configuration>
+    <session-factory>
+        <!-- MySQL section -->
+        <property name="dialect">org.hibernate.dialect.MySQLDialect</property>
+        <property name="connection.driver_class">com.mysql.jdbc.Driver
+        </property>
+        <property name="connection.url">jdbc:mysql:///eomplspss?autoReconnect=true</property>
+        <property name="connection.provider_class">
+            org.hibernate.connection.C3P0ConnectionProvider
+        </property>
+        <property name="connection.autoReconnect">true</property>
+        <property name="connection.autoReconnectForPools">true</property>
+
+        <property name="query.substitutions">yes 'Y', no 'N'</property>
+        <!-- <property name="show_sql">true</property> -->
+        <!-- <property name="format_sql">true</property> -->
+        <property name="max_fetch_depth">5</property>
+        <property name="hibernate.query.factory_class">org.hibernate.hql.classic.ClassicQueryTranslatorFactory</property>
+        <property name="transaction.factory_class">
+            org.hibernate.transaction.JDBCTransactionFactory</property>
+        <property name="current_session_context_class">thread</property>
+        <property name="hibernate.generate_statistics">true</property>
+
+        <!-- connection pool section -->
+        <!-- See http://www.mchange.com/projects/c3p0/index.html before
+         making any changes -->
+        <property name="hibernate.c3p0.acquire_increment">3</property>
+        <property name="hibernate.c3p0.idle_test_period">1800</property>
+        <property name="hibernate.c3p0.timeout">3600</property>
+        <property name="hibernate.c3p0.max_size">21</property>
+        <property name="hibernate.c3p0.max_statements">50</property>
+        <property name="hibernate.c3p0.min_size">3</property>
+        <property name="hibernate.c3p0.preferredTestQuery">select 1;</property>
+
+        <!-- miscellaneous settings section -->
+        <!-- enable batch updates even for versioned data -->
+        <property name="jdbc.batch_versioned_data">true</property>
+        <property name="jdbc.use_streams_for_binary">true</property>
+        <!-- use JDBC 3 PreparedStatement.getGeneratedKeys for id of row -->
+        <property name="jdbc.use_get_generated_keys">true</property>
+        <!-- set a prefix for cache region names -->
+        <property name="cache.region_prefix">hibernate.test</property>
+
+
+        <property name="cache.provider_class">
+                  org.hibernate.cache.HashtableCacheProvider</property>
+
+<!-- ehcache config - still being tested
+        <property name="hibernate.cache.use_second_level_cache">true</property>
+        <property name="hibernate.cache.use_query_cache">true</property>
+        <property name="cache.provider_class">net.sf.ehcache.hibernate.EhCacheProvider</property>
+         <property name="net.sf.ehcache.configurationResourceName">/ehcache-rm.cfg.xml</property>
+-->
+        <mapping resource="net/es/oscars/pss/eompls/beans/ScopedResourceLock.hbm.xml"/>
+        <mapping resource="net/es/oscars/pss/eompls/beans/GeneratedConfig.hbm.xml"/>
+    </session-factory>
+</hibernate-configuration>

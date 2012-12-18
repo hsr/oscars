@@ -1,0 +1,95 @@
+#!/bin/sh
+#
+# Export configuration files from the distribution directory into the production directory.
+#
+# syntax: exportconfig <path_to_distribution> <patch_to_production>
+#
+#
+
+## added the new client side configuration files.
+
+SERVICE=CoordService
+PCESERVICE=PCEService
+MODULE=coordinator
+
+OSCARS_DIST=$1
+OSCARS_HOME=$2
+DST_LOGDIR=$3
+BUILD_ROOT=$4
+
+source $OSCARS_DIST/utils/bin/configLib.sh
+
+verifyArgs $OSCARS_DIST $OSCARS_HOME
+verifySvcName $SERVICE
+
+SRC_DIR=$OSCARS_DIST/$MODULE/config
+DST_DIR=$OSCARS_HOME/$SERVICE/conf
+DST_DIR_PCE=$OSCARS_HOME/$PCESERVICE/conf
+if [ -n "$BUILD_ROOT" ]; then
+    DST_DIR=${BUILD_ROOT}/${DST_DIR}
+    DST_DIR_PCE=${BUILD_ROOT}/${DST_DIR_PCE}
+fi
+if [ -z "$DST_LOGDIR" ]; then
+    DST_LOGDIR=$OSCARS_HOME/logs
+fi
+
+mkdir -p $DST_LOGDIR
+mkdir -p $DST_DIR
+mkdir -p $DST_DIR_PCE
+
+if [ ! -f $DST_DIR/$MANIFEST ] ; then
+    cp $SRC_DIR/$MANIFEST  $DST_DIR/$MANIFEST 
+fi
+if [ ! -f $DST_DIR/$CONFIG_HTTP ] ; then
+    cp $SRC_DIR/$CONFIG_HTTP  $DST_DIR/$CONFIG_HTTP
+fi
+if [ ! -f $DST_DIR/$CONFIG_SSL  ] ; then
+    cp $SRC_DIR/$CONFIG_SSL  $DST_DIR/$CONFIG_SSL 
+fi
+
+#cp $OSCARS_DIST/coordinator/config/config-internal.yaml $OSCARS_HOME/$SERVICE/conf/config-internal.yaml
+
+if [ ! -f $DST_DIR/$CXF_SERVER_HTTP_CFG ] ; then
+    cp $SRC_DIR/$CXF_SERVER_HTTP_CFG  $DST_DIR/$CXF_SERVER_HTTP_CFG
+fi
+
+# SSL
+if [ ! -f $DST_DIR/$CXF_SERVER_HTTP_CFG ] ; then
+    cp $SRC_DIR/$CXF_SERVER_HTTP_CFG  $DST_DIR/$CXF_SERVER_HTTP_CFG
+fi
+if [ ! -f $DST_DIR/$CXF_SERVER_SSL_CFG ] ; then
+    cp $SRC_DIR/$CXF_SERVER_SSL_CFG  $DST_DIR/$CXF_SERVER_SSL_CFG
+fi
+if [ ! -f $DST_DIR/$CXF_CLIENT_HTTP_CFG ] ; then
+    cp $SRC_DIR/$CXF_CLIENT_HTTP_CFG  $DST_DIR/$CXF_CLIENT_HTTP_CFG
+fi
+if [ ! -f $DST_DIR/$CXF_CLIENT_SSL_CFG ] ; then
+    cp $SRC_DIR/$CXF_CLIENT_SSL_CFG  $DST_DIR/$CXF_CLIENT_SSL_CFG
+fi
+
+# log4j
+if [ ! -f $DST_DIR/$LOG4J_PROPS_INFO ] ; then
+    sed -e "s,$MODULE\.log,$DST_LOGDIR/$SERVICE.log," -e "s,oscars\.log,$DST_LOGDIR/oscars.log," < $SRC_DIR/$LOG4J_PROPS_INFO > $DST_DIR/$LOG4J_PROPS_INFO
+fi
+if [ ! -f $DST_DIR/$LOG4J_PROPS_DEBUG ] ; then
+    sed s,$MODULE.log,$DST_LOGDIR/$SERVICE.log, <  $SRC_DIR/$LOG4J_PROPS_DEBUG > $DST_DIR/$LOG4J_PROPS_DEBUG
+    fi
+if [ ! -f $DST_DIR/$LOG4J_PROPS_MESSAGE ] ; then
+    sed s,$MODULE.log,$DST_LOGDIR/$SERVICE.log, <  $SRC_DIR/$LOG4J_PROPS_MESSAGE > $DST_DIR/$LOG4J_PROPS_MESSAGE
+fi
+# Copy the PCERuntime configuration files
+cp $SRC_DIR/pce-configuration-http.xml $DST_DIR_PCE/pce-configuration-http.xml
+cp $SRC_DIR/pce-configuration-ssl.xml $DST_DIR_PCE/pce-configuration-ssl.xml
+
+cp $SRC_DIR/pce-runtime.HTTP.yaml $DST_DIR_PCE/pce-runtime.HTTP.yaml
+cp $SRC_DIR/pce-runtime.SSL.yaml $DST_DIR_PCE/pce-runtime.SSL.yaml
+
+# CFX-SSL configuration for pceruntime
+CFX_SERVER_SSL_PCERUNTIME=pce-runtime-server-cxf-ssl.xml
+CFX_CLIENT_SSL_PCERUNTIME=pce-runtime-client-cxf-ssl.xml
+if [ ! -f $DST_DIR_PCE/$CXF_SERVER_SSL_PCERUNTIME ] ; then
+    cp $SRC_DIR/$CFX_SERVER_SSL_PCERUNTIME $DST_DIR_PCE/$CFX_SERVER_SSL_PCERUNTIME
+fi
+if [ ! -f $DST_DIR_PCE/$CXF_CLIENT_SSL_PCERUNTIME ] ; then
+    cp $SRC_DIR/$CFX_CLIENT_SSL_PCERUNTIME $DST_DIR_PCE/$CFX_CLIENT_SSL_PCERUNTIME
+fi

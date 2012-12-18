@@ -1,0 +1,75 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+
+<class name="net.es.oscars.authN.beans.User" table="users">
+    <meta attribute="class-description" inherit="false">
+       @hibernate.class table="users"
+    </meta>
+
+    <id name="id">
+        <meta attribute="field-description">
+           @hibernate.id generator-class="identity"
+        </meta>
+        <generator class="identity" />
+    </id>
+
+    <property name="login" not-null="true">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>    
+    </property>
+
+    <property name="certIssuer" />
+
+    <property name="certSubject" />
+
+    <property name="lastName" not-null="true">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>    
+    </property>
+
+    <property name="firstName" not-null="true">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>    
+    </property>
+
+    <property name="emailPrimary" not-null="true">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>    
+    </property>
+
+    <property name="phonePrimary" not-null="true">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>    
+    </property>
+
+    <property name="password" />
+
+    <property name="description" />
+
+    <property name="emailSecondary" />
+
+    <property name="phoneSecondary" />
+
+    <property name="status" />
+
+    <property name="activationKey" />
+
+    <property name="loginTime" />
+
+    <property name="cookieHash" />
+
+    <!-- Associations -->
+
+    <many-to-one name="institution" column="institutionId"
+	    class="net.es.oscars.authN.beans.Institution" not-null="true" />
+</class>
+</hibernate-mapping>

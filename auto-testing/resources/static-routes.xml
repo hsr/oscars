@@ -1,0 +1,319 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<staticPathDatabase xmlns="http://hopi.internet2.edu/DRAGON/TERCE/RCE/STATICPATHS" id="testdomain-4.net">
+
+	<!-- Node-1, Port-2 to Node-2, Port-2 -->
+    <staticPathEntry id="n1p2_n2p2.local">
+        <srcEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-2:link=link-1</srcEndpoint>
+        <destEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-2:link=link-1</destEndpoint>
+        <path id="n1p2_n2p2.local">
+            <hop id="1">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-2:link=link-1</linkIdRef>
+            </hop>
+            <hop id="2">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-2:link=link-1</linkIdRef>
+            </hop>
+        </path>
+        <availableVtags></availableVtags>  <!-- deprecated: leave blank -->
+    </staticPathEntry>
+
+	<!-- Node-1, Port-3 to Node-2, Port-3 -->
+    <staticPathEntry id="n1p3_n2p3.local">
+        <srcEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-3:link=link-1</srcEndpoint>
+        <destEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-3:link=link-1</destEndpoint>
+        <path id="n1p3_n2p3.local">
+            <hop id="1">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-3:link=link-1</linkIdRef>
+            </hop>
+            <hop id="2">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-3:link=link-1</linkIdRef>
+            </hop>
+        </path>
+        <availableVtags></availableVtags>  <!-- deprecated: leave blank -->
+    </staticPathEntry>
+
+	<!-- Node-1, Port-4 to Node-2, Port-4 -->
+    <staticPathEntry id="n1p4_n2p4.local">
+        <srcEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-4:link=link-1</srcEndpoint>
+        <destEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-4:link=link-1</destEndpoint>
+        <path id="n1p4_n2p4.local">
+            <hop id="1">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-4:link=link-1</linkIdRef>
+            </hop>
+            <hop id="2">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-4:link=link-1</linkIdRef>
+            </hop>
+        </path>
+        <availableVtags></availableVtags>  <!-- deprecated: leave blank -->
+    </staticPathEntry>
+
+	<!-- Node-1, Port-5 to Node-2, Port-5 -->
+    <staticPathEntry id="n1p5_n2p5.local">
+        <srcEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-5:link=link-1</srcEndpoint>
+        <destEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-5:link=link-1</destEndpoint>
+        <path id=".local">
+            <hop id="1">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-5:link=link-1</linkIdRef>
+            </hop>
+            <hop id="2">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-5:link=link-1</linkIdRef>
+            </hop>
+        </path>
+        <availableVtags></availableVtags>  <!-- deprecated: leave blank -->
+    </staticPathEntry>
+
+	<!-- Node-1, Port-6 to Node-2, Port-6 -->
+    <staticPathEntry id="n1p6_n2p6.local">
+        <srcEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-6:link=link-1"</srcEndpoint>
+        <destEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-6:link=link-1</destEndpoint>
+        <path id="n1p6_n2p6.local">
+            <hop id="1">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-6:link=link-1"</linkIdRef>
+            </hop>
+            <hop id="2">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-6:link=link-1</linkIdRef>
+            </hop>
+        </path>
+        <availableVtags></availableVtags>  <!-- deprecated: leave blank -->
+    </staticPathEntry>
+
+	<!-- Node-1, Port-7 to Node-2, Port-7 -->
+    <staticPathEntry id="n1p7_n2p7.local">
+        <srcEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-7:link=link-1</srcEndpoint>
+        <destEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-7:link=link-1</destEndpoint>
+        <path id=".local">
+            <hop id="1">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-7:link=link-1</linkIdRef>
+            </hop>
+            <hop id="2">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-7:link=link-1</linkIdRef>
+            </hop>
+        </path>
+        <availableVtags></availableVtags>  <!-- deprecated: leave blank -->
+    </staticPathEntry>
+
+	<!-- Node-1, Port-8 to Node-2, Port-8 -->
+    <staticPathEntry id="n1p8_n2p8.local">
+        <srcEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-8:link=link-1</srcEndpoint>
+        <destEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-8:link=link-1</destEndpoint>
+        <path id="n1p8_n2p8.local">
+            <hop id="1">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-8:link=link-1</linkIdRef>
+            </hop>
+            <hop id="2">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-8:link=link-1</linkIdRef>
+            </hop>
+        </path>
+        <availableVtags></availableVtags>  <!-- deprecated: leave blank -->
+    </staticPathEntry>
+
+	<!-- Node-1, Port-9 to Node-2, Port-9 -->
+    <staticPathEntry id="n1p9_n2p9.local">
+        <srcEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-9:link=link-1</srcEndpoint>
+        <destEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-9:link=link-1</destEndpoint>
+        <path id="n1p9_n2p9.local">
+            <hop id="1">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-9:link=link-1</linkIdRef>
+            </hop>
+            <hop id="2">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-9:link=link-1</linkIdRef>
+            </hop>
+        </path>
+        <availableVtags></availableVtags>  <!-- deprecated: leave blank -->
+    </staticPathEntry>
+
+	<!-- Node-1, Port-10 to Node-1, Port-11 -->
+    <staticPathEntry id="n1p10_n1p11.local">
+        <srcEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-10:link=link-1</srcEndpoint>
+        <destEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-11:link=link-1</destEndpoint>
+        <path id="n1p10_n1p11.local">
+            <hop id="1">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-10:link=link-1</linkIdRef>
+            </hop>
+            <hop id="2">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-11:link=link-1</linkIdRef>
+            </hop>
+        </path>
+        <availableVtags></availableVtags>  <!-- deprecated: leave blank -->
+    </staticPathEntry>
+
+	<!-- Node-1, Port-11 to Node-1, Port-10 -->
+    <staticPathEntry id="n1p11_n1p10.local">
+        <srcEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-11:link=link-1</srcEndpoint>
+        <destEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-10:link=link-1</destEndpoint>
+        <path id="n1p11_n1p10.local">
+            <hop id="1">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-11:link=link-1</linkIdRef>
+            </hop>
+            <hop id="2">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-10:link=link-1</linkIdRef>
+            </hop>
+        </path>
+        <availableVtags></availableVtags>  <!-- deprecated: leave blank -->
+    </staticPathEntry>
+
+	<!-- Node-1, Port-12, to Node-1, Port-13 -->
+    <staticPathEntry id="n1p12_n1p13.local">
+        <srcEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-12:link=link-1</srcEndpoint>
+        <destEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-13:link=link-1</destEndpoint>
+        <path id="n1p12_n1p13.local">
+            <hop id="1">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-12:link=link-1</linkIdRef>
+            </hop>
+            <hop id="2">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-13:link=link-1</linkIdRef>
+            </hop>
+        </path>
+        <availableVtags></availableVtags>  <!-- deprecated: leave blank -->
+    </staticPathEntry>
+
+	<!-- Node-1, Port-13 to Node-2, Port-12 -->
+    <staticPathEntry id="n1p13_n1p12.local">
+        <srcEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-13:link=link-1</srcEndpoint>
+        <destEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-12:link=link-1</destEndpoint>
+        <path id="n1p13_n1p12.local">
+            <hop id="1">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-13:link=link-1</linkIdRef>
+            </hop>
+            <hop id="2">
+                <linkIdRef>uurn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-12:link=link-1</linkIdRef>
+            </hop>
+        </path>
+        <availableVtags></availableVtags>  <!-- deprecated: leave blank -->
+    </staticPathEntry>
+
+	<!-- Node-2, Port-2 to Node-1, Port-2 -->
+    <staticPathEntry id="n2p2_n1ps.local">
+        <srcEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-2:link=link-1</srcEndpoint>
+        <destEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-2:link=link-1</destEndpoint>
+        <path id="n2p2_n1ps.local">
+            <hop id="1">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-2:link=link-1</linkIdRef>
+            </hop>
+            <hop id="2">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-2:link=link-1</linkIdRef>
+            </hop>
+        </path>
+        <availableVtags></availableVtags>  <!-- deprecated: leave blank -->
+    </staticPathEntry>
+
+	<!-- Node-2, Port-3 to Node-1, Port-3 -->
+    <staticPathEntry id="n1p2_n1p3.local">
+        <srcEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-3:link=link-1</srcEndpoint>
+        <destEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-3:link=link-1</destEndpoint>
+        <path id="n1p2_n1p3.local">
+            <hop id="1">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-3:link=link-1</linkIdRef>
+            </hop>
+            <hop id="2">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-3:link=link-1</linkIdRef>
+            </hop>
+        </path>
+        <availableVtags></availableVtags>  <!-- deprecated: leave blank -->
+    </staticPathEntry>
+
+	<!-- Node-2, Port-4, to Node-1, Port-4 -->
+    <staticPathEntry id="n2p4_n1p4.local">
+        <srcEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-4:link=link-1</srcEndpoint>
+        <destEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-4:link=link-1</destEndpoint>
+        <path id="n2p4_n1p4.local">
+            <hop id="1">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-4:link=link-1</linkIdRef>
+            </hop>
+            <hop id="2">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-4:link=link-1</linkIdRef>
+            </hop>
+        </path>
+        <availableVtags></availableVtags>  <!-- deprecated: leave blank -->
+    </staticPathEntry>
+
+	<!-- Node-2, Port-5 to Node-1, Port-5 -->
+    <staticPathEntry id="n2p5_n1p5.local">
+        <srcEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-5:link=link-1</srcEndpoint>
+        <destEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-5:link=link-1</destEndpoint>
+        <path id="n2p5_n1p5.local">
+            <hop id="1">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-5:link=link-1</linkIdRef>
+            </hop>
+            <hop id="2">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-5:link=link-1</linkIdRef>
+            </hop>
+        </path>
+        <availableVtags></availableVtags>  <!-- deprecated: leave blank -->
+    </staticPathEntry>
+
+	<!-- Node-2, Port-6 to Node-1, Port-6 -->
+    <staticPathEntry id="n2p6_t1p6.local">
+        <srcEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-6:link=link-1</srcEndpoint>
+        <destEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-6:link=link-1</destEndpoint>
+        <path id="n2p6_t1p6.local">
+            <hop id="1">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-6:link=link-1</linkIdRef>
+            </hop>
+            <hop id="2">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-6:link=link-1</linkIdRef>
+            </hop>
+        </path>
+        <availableVtags></availableVtags>  <!-- deprecated: leave blank -->
+    </staticPathEntry>
+
+	<!-- Node-2, Port-7 to Node-1, Port-7 -->
+    <staticPathEntry id="n2p7_n1p7.local">
+        <srcEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-7:link=link-1</srcEndpoint>
+        <destEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-7:link=link-1</destEndpoint>
+        <path id="n2p7_n1p7.local">
+            <hop id="1">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-7:link=link-1</linkIdRef>
+            </hop>
+            <hop id="2">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-7:link=link-1</linkIdRef>
+            </hop>
+        </path>
+        <availableVtags></availableVtags>  <!-- deprecated: leave blank -->
+    </staticPathEntry>
+
+	<!-- Node-2, Port-8 to Node-1, Port-8 -->
+    <staticPathEntry id="n2p8_n1p8.local">
+        <srcEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-8:link=link-1</srcEndpoint>
+        <destEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-8:link=link-1</destEndpoint>
+        <path id="n2p8_n1p8.local">
+            <hop id="1">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-8:link=link-1</linkIdRef>
+            </hop>
+            <hop id="2">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-8:link=link-1</linkIdRef>
+            </hop>
+        </path>
+        <availableVtags></availableVtags>  <!-- deprecated: leave blank -->
+    </staticPathEntry>
+
+	<!-- Node-2, Port-9 to Node-1, Port-9 -->
+    <staticPathEntry id="n2p9_n1p9.local">
+        <srcEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-9:link=link-1</srcEndpoint>
+        <destEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-9:link=link-1</destEndpoint>
+        <path id="n2p9_n1p9.local">
+            <hop id="1">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-2:port=port-9:link=link-1</linkIdRef>
+            </hop>
+            <hop id="2">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-1:port=port-9:link=link-1</linkIdRef>
+            </hop>
+        </path>
+        <availableVtags></availableVtags>  <!-- deprecated: leave blank -->
+    </staticPathEntry>
+
+	<!-- Node-5, Port-2 to testdomain-2.net Node-5, Port-2 -->
+    <staticPathEntry id="n5p2_d2_n5p2.local">
+        <srcEndpoint>urn:ogf:network:domain=testdomain-4.net:node=node-5:port=port-2:link=link-1</srcEndpoint>
+        <destEndpoint>urn:ogf:network:domain=testdomain-2.net:node=node-5:port=port-2:link=link-1</destEndpoint>
+        <path id="n5p2_d2_n5p2.local">
+            <hop id="1">
+                <linkIdRef>urn:ogf:network:domain=testdomain-4.net:node=node-5:port=port-2:link=link-1</linkIdRef>
+            </hop>
+            <hop id="2">
+                <linkIdRef>urn:ogf:network:domain=testdomain-2.net:node=node-5:port=port-2:link=link-1</linkIdRef>
+            </hop>
+        </path>
+        <availableVtags></availableVtags>  <!-- deprecated: leave blank -->
+    </staticPathEntry>
+
+</staticPathDatabase>

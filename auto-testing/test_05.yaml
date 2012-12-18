@@ -1,0 +1,28 @@
+---
+create:
+
+        gri:            ''
+        login:		'client'
+        layer:          '2'
+
+        src:            'urn:ogf:network:domain=testdomain-2.net:node=node-5:port=port-2:link=link-1'
+        dst:            'urn:ogf:network:domain=testdomain-4.net:node=node-5:port=port-2:link=link-1'
+
+        bandwidth:      25
+        
+        description:    'a timer-automatic reservation'
+
+        start-time:     'now'
+        end-time:       '+00:00:04'
+
+# this may be timer-automatic or signal-xml . generally leave at timer-automatic
+        path-setup-mode:        'timer-automatic'
+
+# this may be strict or loose. will default to loose if  not set here
+        path-type:      'strict'
+
+# vlans may be 'any' or a vlan range 2-4095. Only used for layer == 2. 
+# Should put in quotes even if a single vlan
+        srcvlan:        'any'
+        dstvlan:        'any'
+

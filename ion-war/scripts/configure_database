@@ -1,0 +1,68 @@
+#!/bin/bash
+
+MYSQL_USER="root"
+MYSQL_PASSWORD=""
+
+function print_usage(){
+   echo "Usage: $0 [-u <user>] [-p] [-h] <sql-script-dir>"
+   echo "   <sql-script-dir>: the directory with the sql scripts to run"
+   echo "   -h: Prints this help message"
+   echo "   -u <user>: MySQL user with admin privileges. Defaults to root."
+   echo "   -p: Prompts for mysql password. Defaults to no password"
+}
+
+while getopts u:ph o
+do    case "$o" in
+          u) MYSQL_USER="$OPTARG";;
+          p) printf "Enter MySQL password: "
+             stty -echo
+             read MYSQL_PASSWORD
+             stty echo
+             MYSQL_PASSWORD="-p${MYSQL_PASSWORD}";;
+          h) print_usage
+             exit 1;;
+        [?]) print_usage
+             exit 1;;
+      esac
+done
+shift $[$OPTIND - 1]
+
+
+SQL_DIR=$1
+if [ -z "$SQL_DIR" ]; then
+    echo "Missing sql script directory"
+    print_usage
+    exit 1
+fi
+
+#make sure mysql is running
+status=`/etc/init.d/mysqld status | awk '{ print $NF }'`
+if [ "$status" == "stopped" ]; then
+    /etc/init.d/mysqld start
+fi
+
+#Test if tables are already installed. this will avoid errors that appear when trying to create Index
+DB06=0
+mysql -u $MYSQL_USER ${MYSQL_PASSWORD} --execute "show tables" ion > /dev/null 2>&1
+if [ $? -eq  0 ]; then
+    DB06=1
+fi
+
+if [ $DB06 -eq 1 ]; then
+    ###tables already exist - nothing to do
+    exit 0
+else
+	mysql -u $MYSQL_USER ${MYSQL_PASSWORD}< $SQL_DIR/createTables.sql
+	if [ $? -ne 0 ]; then
+	echo "WARN: Unable to create mysql ION tables"
+		echo "WARN: Manually run $0 -u <mysql-root-user> -p $SQL_DIR to correct"
+		exit 1 
+	fi
+
+	mysql -u $MYSQL_USER ${MYSQL_PASSWORD}< $SQL_DIR/adminSetup.sql
+	if [ $? -ne 0 ]; then
+		echo "WARN: Unable to modify mysql tables with values for ION Admin functionality"
+		echo "WARN: Manually run $0 -u <mysql-root-user> -p $SQL_DIR to correct"
+		exit 1
+	fi
+fi

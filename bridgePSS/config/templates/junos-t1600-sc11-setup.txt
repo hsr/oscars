@@ -1,0 +1,53 @@
+configure private
+<#assign all_vlans = "">
+
+<#list vlans as vlan> 
+<#assign vlan_no = vlan?number>
+<#assign all_vlans = all_vlans+" "+vlan>
+<#assign mod = vlan_no % 2>
+
+<#if portA = "et-0/0/0" || portA = "et-1/0/0" || portA = "et-2/0/0">
+<#assign newPortA = portA + ":" + mod>
+<#else>
+<#assign newPortA = portA>
+</#if>
+
+<#if portZ = "et-0/0/0" || portZ = "et-1/0/0" || portZ = "et-2/0/0">
+<#assign newPortZ = portZ + ":" + mod>
+<#else>
+<#assign newPortZ = portZ>
+</#if>
+
+
+# delete interfaces ${newPortA} unit ${vlan} 
+# delete interfaces ${newPortZ} unit ${vlan} 
+
+# delete protocols l2circuit local-switching interface ${newPortA}.${vlan} 
+
+
+set routing-instances vlan${vlan} instance-type vpls
+set routing-instances vlan${vlan} protocols vpls
+
+set routing-instances vlan${vlan} interface ${newPortA}.${vlan}
+set routing-instances vlan${vlan} interface ${newPortZ}.${vlan}
+
+set routing-instances vlan${vlan} route-distinguisher 140.221.251.243:${vlan}
+set routing-instances vlan${vlan} vrf-target target:14031:${vlan};
+
+set routing-instances vlan${vlan} forwarding-options family vpls flood input CONTROL-FLOODING
+
+
+set interfaces ${newPortA} unit ${vlan} vlan-id ${vlan}
+set interfaces ${newPortA} unit ${vlan} encapsulation vlan-vpls
+set interfaces ${newPortA} unit ${vlan} family vpls
+set interfaces ${newPortA} unit ${vlan} description "IDC vlan ${vlan} -> ${newPortZ}"
+
+set interfaces ${newPortZ} unit ${vlan} vlan-id ${vlan}
+set interfaces ${newPortZ} unit ${vlan} encapsulation vlan-vpls
+set interfaces ${newPortZ} unit ${vlan} family vpls
+set interfaces ${newPortZ} unit ${vlan} description "IDC vlan ${vlan} -> ${newPortA}"
+
+</#list>
+
+commit and-quit synchronize comment "IDC vpls: ${newPortA} ,  ${newPortZ}, vlan(s) ${all_vlans}"
+

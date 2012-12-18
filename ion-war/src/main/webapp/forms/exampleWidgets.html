@@ -1,0 +1,21 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN" "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+	<head>
+		<meta http-equiv="Content-Type" content="text/html; charset=iso-8859-1">
+		<title>Endpoint Browser</title>
+		<style type="text/css">
+        	@import "lib/dojo/dijit/themes/tundra/tundra.css";
+			@import "lib/dojo/dojo/resources/dojo.css";
+    	</style>
+		<script type="text/javascript" src="lib/dojo/dojo/dojo.js" djConfig="parseOnLoad: true"></script>
+		<script type="text/javascript" src="lib/dojo/dojo/dojo-ion.js"></script>
+		<script type="text/javascript" src="lib/ion/ion.js"></script>
+		<link rel="stylesheet" href="style/ion.css">
+	</head>
+	<body class="tundra">
+		<div dojoType="ion.EndpointComboBox" url="servlet/EndpointNameList" inputId="endpointCombo"></div>
+		<div dojoType="ion.EndpointBrowser" url="servlet/EndpointBrowser" target="endpointCombo"
+			prevPageIcon="images/prev.png" nextPageIcon="images/next.png" 
+			folderIcon="images/folder-icon.png" initialCategory="institution"></div>
+	</body>
+</html>

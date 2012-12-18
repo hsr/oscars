@@ -1,0 +1,63 @@
+---
+
+soap:
+    publishTo:          'http://localhost:9050/testPSS'
+
+
+circuitService:
+    id:                 'stub'
+    stub:               true
+    logRequest:         true
+    logResponse:        true
+
+definitions:
+    models:             'defs-models.yaml'
+    services:           'defs-services.yaml'
+
+
+
+# generic impl / params config from here on
+
+verify:
+    impl:               'net.es.oscars.pss.stub.StubVerifier'
+    params:
+
+notify:
+    impl:               'net.es.oscars.pss.stub.StubNotifier'
+    params: 
+        coordUrl:       'http://localhost:9003/OSCARS/Coord'
+
+
+connectorDirectory:
+    impl:               'net.es.oscars.pss.connect.YAMLConnectorDirectory'
+    params:
+        configFile:     'config-connector-directory.yaml'
+
+deviceConnectorMap:
+    impl:               'net.es.oscars.pss.connect.YAMLDeviceConnectorMap'
+    params:
+        configFile:     'config-device-connectors.yaml'
+
+deviceModelMap:
+    impl:               'net.es.oscars.pss.model.YAMLDeviceModelMap'
+    params:
+        configFile:     'config-device-models.yaml'
+
+deviceResolve:            
+    impl:               'net.es.oscars.pss.stub.StubDeviceAddressResolver'
+
+#    impl:               'net.es.oscars.pss.resolve.YAMLResolver'
+#    params:
+#        configFile:   'config-device-addresses.yaml'
+
+#    impl:               'net.es.oscars.pss.resolve.DNSResolver'
+#    params:
+#        domainSuffix: 'foo.net'
+
+workflow:
+    impl:               'net.es.oscars.pss.workflow.FifoWF'
+
+validate:
+    impl:               'net.es.oscars.pss.validate.SimpleValidator'
+    params: 
+        localDomainId:  'foo.net'

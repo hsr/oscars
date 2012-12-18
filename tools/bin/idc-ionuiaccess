@@ -1,0 +1,134 @@
+#!/bin/sh 
+############################################################################
+# Script to allow access to ionui for outside hosts 
+# Usage: idc-ionuiaccess <context> <allow|deny>
+# TBD: Run from OSCARS_HOME?
+############################################################################
+#check if $OSCARS_HOME is set
+REPO_PATH=""
+if [ -n "$OSCARS_HOME" ]; then
+        REPO_PATH=OSCARS_HOME
+else
+        echo "ERROR: OSCARS_HOME is not set. Re-run this script after setting OSCARS_HOME."
+        exit 1
+fi
+
+#TBD Remove later
+if  [ -z $OSCARS_DIST ]; then
+	echo "Please set the environment var OSCARS_DIST to the OSCARS source directory"
+	exit -1
+fi
+
+
+###########################################################################
+#Subroutine to print usage details
+###########################################################################
+printUsage() {
+	echo -e "\nusage idc-ionuiaccess <context> <option>"
+	echo "<context> is one of: PRODUCTION|pro DEVELOPMENT|dev SDK|sdk"
+	echo "<option> is one of : ALLOW|allow DENY|deny"
+	exit 1
+}
+
+viewIONUIPort(){
+	#Config=$(sh $OSCARS_DIST/bin/parseManifest.sh IONUIService $CONTEXT ionui jetty.xml)
+	Config=$(sh $OSCARS_DIST/bin/parseManifest.sh IONUIService IONUIService $CONTEXT jetty.xml)
+	if [ -z $Config ]; then
+                echo "The configuration file is not found. Have you run the bin/copyTemplates.sh and/or bin/exportconfig commands?"
+                exit 1
+        fi
+	Service=$(echo $Config | awk -F/ '$1~//{print $2}')
+	Conf=$(echo $Config | awk -F/ '$1~//{print $3}')
+	Yaml=$(echo $Config | awk -F/ '$1~//{print $4}' | sed "s/'//g")
+	if [ "$Conf" == "conf" ]; then
+		configfile=$OSCARS_HOME/$Service/$Conf/$Yaml
+	elif [ "$Conf" == "config" ]; then
+		configfile=$OSCARS_DIST/$Service/$Conf/$Yaml
+	fi
+	#echo "Config file:$configfile"
+	 if [ -z $configfile ] || [ ! -f $configfile ]; then
+                echo "The configuration file is not found. You either have to :"
+                echo "  1. Rerun this script after running copyTemplates.sh and/or bin/exportconfig, or "
+                echo "  2. Change files \"$OSCARS_HOME/WBUIService/conf/jetty.HTTP.xml or jetty.SSL.xml\" files manually to allow access to all hosts"
+                exit 1
+        fi
+
+	ALLOW="Allow"
+	DENY="Deny"
+        action=$1
+	if [ "$action" == "$ALLOW" ]; then
+		#change the current "host name", mostly "localhost" to the current system_name. 
+		# This will be enough to allow access from outside to this host
+		#get hostname
+        	hostname=`hostname -f`
+        	#echo "Allow: Hostname obtained: $hostname"
+	else
+		if [ "$action" == "$DENY" ]; then
+			hostname="localhost" # this will deny access
+			#echo "Deny: $hostname"
+		fi
+	fi
+	#Now get line number details of what is to be replaced and proceed
+        linenum=$(awk -F\>  '{if ($1~"<Set name=\"host\"" ) print NR}' $configfile)
+        #echo "Line num found =$linenum"
+        currenthost=$(awk -F\>  '{if ($1~"<Set name=\"host\"" ) print $2}' $configfile)
+	# Extract string like "localhost" From localhost</Set> 
+        currenthost=$(echo $currenthost | awk -F\<  '$1~//{print $1}')
+        #echo "Current host=$currenthost"
+	#Check if current host is an "empty string". If so, just insert a string
+	if [ -z $currenthost ]; then
+		#echo "Trying to replace with $hostname"
+		temp="\"host\">$hostname"
+		#echo "HERE: $temp"
+		sed -i -e ""$linenum"s/\"host\">/$temp/" $configfile
+	else
+		#Replace value at line number
+ 		sed -i -e ""$linenum"s/$currenthost/$hostname/" $configfile;
+	fi
+	if [ $? == 0 ]; then
+		echo "--Completed"
+	else
+		echo "--The change to allow access to outside hosts was not successful."
+		echo "--Please change it manually by changing the entry in lines like '<Set name=\"host\">localhost</Set>' in file $configfile"
+		exit 1;
+        fi
+}
+
+#######
+# execution starts here
+if [ $# -lt 2 ]; then
+    printUsage
+fi
+
+currDir=$(pwd)
+CONTEXT=$1
+case $1 in
+        d|D|dev|DEV) CONTEXT="DEVELOPMENT";;
+        p|P|pro|PRO) CONTEXT="PRODUCTION";;
+        s|S|sdk) CONTEXT="SDK";;
+	t|T|test|TEST) CONTEXT="UNITTEST";;
+esac
+
+WHAT=$2
+#echo WHAT=$WHAT
+case $2 in
+    a|A|allow|ALLOW) WHAT="Allow";;
+    d|D|deny|DENY) WHAT="Deny";;
+	*) WHAT="quit";
+esac
+
+#echo $WHAT   
+if [ "$CONTEXT" ==  "PRODUCTION" ] || [ "$CONTEXT" == "UNITTEST" ] || [ "$CONTEXT" == "DEVELOPMENT" ] || [ "$CONTEXT" == "SDK" ]; then
+	if [ "$WHAT" != "quit" ]; then
+    		echo ""$WHAT"ing IONUI access to external hosts in CONTEXT $CONTEXT"
+	else
+		echo "You choice of action is not recognized. Quitting now"
+		exit 1;
+	fi
+else
+	echo "CONTEXT  $CONTEXT is not recognized"
+	printUsage
+fi
+
+viewIONUIPort $WHAT;
+

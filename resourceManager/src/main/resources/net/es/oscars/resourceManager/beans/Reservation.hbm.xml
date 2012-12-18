@@ -1,0 +1,104 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+<!--
+    Adapted from mapping created by the Middlegen Hibernate plugin 2.1.
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class name="net.es.oscars.resourceManager.beans.Reservation" table="reservations">
+    <meta attribute="class-description" inherit="false">
+       @hibernate.class table="reservations"
+    </meta>
+
+    <cache usage="read-write" />
+
+    <id name="id">
+        <meta attribute="field-description">
+           @hibernate.id generator-class="identity"
+        </meta>
+        <generator class="identity" />
+    </id>
+
+    <property name="startTime" not-null="true">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>
+    </property>
+
+    <property name="endTime" not-null="true">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>
+    </property>
+
+    <property name="createdTime" not-null="true">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>
+    </property>
+
+    <property name="bandwidth" not-null="true">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>
+    </property>
+
+    <property name="login" not-null="true">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>
+    </property>
+
+    <property name="payloadSender" />
+
+    <property name="status" not-null="true">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>
+    </property>
+
+    <property name="localStatus" />
+
+    <property name="description" />
+
+    <property name="statusMessage" />
+
+    <property name="globalReservationId" />
+
+    <!-- Associations -->
+
+    <map name="constraintMap" fetch="subselect" cascade="all, delete-orphan">
+        <key column="reservationId" not-null="true" />
+        <map-key column="constraintType" type="string" />
+        <one-to-many class="net.es.oscars.resourceManager.beans.StdConstraint" />
+    </map>
+
+    <!--   <set name="optConstraintSet" cascade="all, delete-orphan">
+        <key column="reservationId" not-null="true" />
+        <one-to-many class="net.es.oscars.resourceManager.beans.OptConstraint" />
+    </set> -->
+    
+    <list name="optConstraintList" fetch="subselect" cascade="all, delete-orphan">
+        <key column="reservationId" not-null="true" />
+        <list-index column="seqNumber" />
+        <one-to-many class="net.es.oscars.resourceManager.beans.OptConstraint" />
+    </list>
+    
+
+    <one-to-one name="token"
+        class="net.es.oscars.resourceManager.beans.Token"
+        property-ref="reservation" />
+
+    <list name="errorReports" fetch="subselect" cascade="all, delete-orphan">
+        <key column="reservationId" not-null="true" />
+        <list-index column="seqNumber" />
+     <one-to-many class="net.es.oscars.resourceManager.beans.ErrorReportData" />
+    </list>
+</class>
+</hibernate-mapping>

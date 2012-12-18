@@ -1,0 +1,339 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<wsdl:definitions 
+	name="LookupDefinitions"
+	targetNamespace = 	"http://oscars.es.net/OSCARS/lookup"
+    xmlns:tns = 		"http://oscars.es.net/OSCARS/lookup"
+    xmlns:admin = 		"http://oscars.es.net/OSCARS/lookup/admin"
+    xmlns:xsd =			"http://www.w3.org/2001/XMLSchema"
+    xmlns:wsdl =		"http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap = 		"http://schemas.xmlsoap.org/wsdl/soap12/" >
+    
+
+    <wsdl:documentation>
+        This is WSDL for the OSCARS Lookup component's internal interface.
+        This API allows the discovery of remote services as well as the 
+        registration of a service.
+    </wsdl:documentation>
+   
+   <!-- Element definitions -->
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://oscars.es.net/OSCARS/lookup"
+            elementFormDefault="qualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:tns="http://oscars.es.net/OSCARS/lookup">
+            <xsd:include schemaLocation="lookup.xsd" />
+        </xsd:schema>
+        <xsd:schema targetNamespace="http://oscars.es.net/OSCARS/lookup/admin"
+            elementFormDefault="qualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:tns="http://oscars.es.net/OSCARS/lookup/admin">
+            <xsd:include schemaLocation="lookup-admin.xsd" />
+        </xsd:schema>
+    </wsdl:types>
+    
+    <!-- Messages used by non-admininistrator clients such as the coordinator -->
+    <wsdl:message name="lookupRequest">
+        <wsdl:part name="lookupRequest" 	element="tns:lookupRequest" />
+    </wsdl:message>
+    
+    <wsdl:message name="lookupResponse">
+        <wsdl:part name="lookupResponse" 	element="tns:lookupResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="registerRequest">
+        <wsdl:part name="registerRequest" 	element="tns:registerRequest" />
+    </wsdl:message>
+    
+    <wsdl:message name="registerResponse">
+        <wsdl:part name="registerResponse" 	element="tns:registerResponse" />
+    </wsdl:message>
+    
+    <wsdl:message name="LookupFaultMessage">
+        <wsdl:part name="fault" element="tns:LookupFault" />
+    </wsdl:message>
+    
+    <!-- Administrator messages -->
+    <wsdl:message name="adminAddCacheEntryRequest">
+        <wsdl:part name="adminAddCacheEntryRequest" 	element="admin:adminAddCacheEntryRequest" />
+    </wsdl:message>
+    
+    <wsdl:message name="adminAddCacheEntryResponse">
+        <wsdl:part name="adminAddCacheEntryResponse" element="admin:adminAddCacheEntryResponse" />
+    </wsdl:message>
+    
+    <wsdl:message name="adminModifyCacheEntryRequest">
+        <wsdl:part name="adminModifyCacheEntryRequest" 	element="admin:adminModifyCacheEntryRequest" />
+    </wsdl:message>
+    
+    <wsdl:message name="adminModifyCacheEntryResponse">
+        <wsdl:part name="adminModifyCacheEntryResponse" element="admin:adminModifyCacheEntryResponse" />
+    </wsdl:message>
+    
+    <wsdl:message name="adminDeleteCacheEntryRequest">
+        <wsdl:part name="adminDeleteCacheEntryRequest" 	element="admin:adminDeleteCacheEntryRequest" />
+    </wsdl:message>
+    
+    <wsdl:message name="adminDeleteCacheEntryResponse">
+        <wsdl:part name="adminDeleteCacheEntryResponse" element="admin:adminDeleteCacheEntryResponse" />
+    </wsdl:message>
+    
+    <wsdl:message name="adminViewCacheRequest">
+        <wsdl:part name="adminViewCacheRequest" 	element="admin:adminViewCacheRequest" />
+    </wsdl:message>
+    
+    <wsdl:message name="adminViewCacheResponse">
+        <wsdl:part name="adminViewCacheResponse" element="admin:adminViewCacheResponse" />
+    </wsdl:message>
+    
+    <wsdl:message name="adminAddRegistrationRequest">
+        <wsdl:part name="adminAddRegistrationRequest" 	element="admin:adminAddRegistrationRequest" />
+    </wsdl:message>
+    
+    <wsdl:message name="adminAddRegistrationResponse">
+        <wsdl:part name="adminAddRegistrationResponse" element="admin:adminAddRegistrationResponse" />
+    </wsdl:message>
+    
+    <wsdl:message name="adminModifyRegistrationRequest">
+        <wsdl:part name="adminModifyRegistrationRequest" 	element="admin:adminModifyRegistrationRequest" />
+    </wsdl:message>
+    
+    <wsdl:message name="adminModifyRegistrationResponse">
+        <wsdl:part name="adminModifyRegistrationResponse" element="admin:adminModifyRegistrationResponse" />
+    </wsdl:message>
+    
+    <wsdl:message name="adminDeleteRegistrationRequest">
+        <wsdl:part name="adminDeleteRegistrationRequest" 	element="admin:adminDeleteRegistrationRequest" />
+    </wsdl:message>
+    
+    <wsdl:message name="adminDeleteRegistrationResponse">
+        <wsdl:part name="adminDeleteRegistrationResponse" element="admin:adminDeleteRegistrationResponse" />
+    </wsdl:message>
+    
+    <wsdl:message name="adminViewRegistrationsRequest">
+        <wsdl:part name="adminViewRegistrationsRequest" 	element="admin:adminViewRegistrationsRequest" />
+    </wsdl:message>
+    
+    <wsdl:message name="adminViewRegistrationsResponse">
+        <wsdl:part name="adminViewRegistrationsResponse" element="admin:adminViewRegistrationsResponse" />
+    </wsdl:message>
+    
+    <wsdl:portType name="LookupPortType">
+
+        <wsdl:operation name="lookup">
+            <wsdl:input message="tns:lookupRequest" />
+            <wsdl:output message="tns:lookupResponse" />
+            <wsdl:fault name="LookupErrorException" message="tns:LookupFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="register">
+            <wsdl:input message="tns:registerRequest" />
+            <wsdl:output message="tns:registerResponse" />
+            <wsdl:fault name="LookupErrorException" message="tns:LookupFaultMessage" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="adminAddCacheEntry">
+            <wsdl:input message="tns:adminAddCacheEntryRequest" />
+            <wsdl:output message="tns:adminAddCacheEntryResponse" />
+            <wsdl:fault name="LookupErrorException" message="tns:LookupFaultMessage" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="adminModifyCacheEntry">
+            <wsdl:input message="tns:adminModifyCacheEntryRequest" />
+            <wsdl:output message="tns:adminModifyCacheEntryResponse" />
+            <wsdl:fault name="LookupErrorException" message="tns:LookupFaultMessage" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="adminDeleteCacheEntry">
+            <wsdl:input message="tns:adminDeleteCacheEntryRequest" />
+            <wsdl:output message="tns:adminDeleteCacheEntryResponse" />
+            <wsdl:fault name="LookupErrorException" message="tns:LookupFaultMessage" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="adminViewCache">
+            <wsdl:input message="tns:adminViewCacheRequest" />
+            <wsdl:output message="tns:adminViewCacheResponse" />
+            <wsdl:fault name="LookupErrorException" message="tns:LookupFaultMessage" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="adminAddRegistration">
+            <wsdl:input message="tns:adminAddRegistrationRequest" />
+            <wsdl:output message="tns:adminAddRegistrationResponse" />
+            <wsdl:fault name="LookupErrorException" message="tns:LookupFaultMessage" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="adminModifyRegistration">
+            <wsdl:input message="tns:adminModifyRegistrationRequest" />
+            <wsdl:output message="tns:adminModifyRegistrationResponse" />
+            <wsdl:fault name="LookupErrorException" message="tns:LookupFaultMessage" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="adminDeleteRegistration">
+            <wsdl:input message="tns:adminDeleteRegistrationRequest" />
+            <wsdl:output message="tns:adminDeleteRegistrationResponse" />
+            <wsdl:fault name="LookupErrorException" message="tns:LookupFaultMessage" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="adminViewRegistrations">
+            <wsdl:input message="tns:adminViewRegistrationsRequest" />
+            <wsdl:output message="tns:adminViewRegistrationsResponse" />
+            <wsdl:fault name="LookupErrorException" message="tns:LookupFaultMessage" />
+        </wsdl:operation>
+        
+    </wsdl:portType>
+    
+	<wsdl:binding name="LookupBinding" type="tns:LookupPortType">
+    
+        <soap:binding style="document"
+            transport="http://schemas.xmlsoap.org/soap/http" />
+
+        <wsdl:operation name="lookup">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/lookup/lookup" />
+            <wsdl:input>
+                <soap:body use="literal" parts="lookupRequest" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="lookupRequest" />
+            </wsdl:output>
+            <wsdl:fault name="LookupErrorException">
+                <soap:fault name="LookupErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="register">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/lookup/register" />
+            <wsdl:input>
+                <soap:body use="literal" parts="registerRequest" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="registerResponse" />
+            </wsdl:output>
+            <wsdl:fault name="LookupErrorException">
+                <soap:fault name="LookupErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="adminAddCacheEntry">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/lookup/admin/addCacheEntry" />
+            <wsdl:input>
+                <soap:body use="literal" parts="adminAddCacheEntryRequest" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="adminAddCacheEntryResponse" />
+            </wsdl:output>
+            <wsdl:fault name="LookupErrorException">
+                <soap:fault name="LookupErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="adminModifyCacheEntry">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/lookup/admin/modifyCacheEntry" />
+            <wsdl:input>
+                <soap:body use="literal" parts="adminModifyCacheEntryRequest" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="adminModifyCacheEntryResponse" />
+            </wsdl:output>
+            <wsdl:fault name="LookupErrorException">
+                <soap:fault name="LookupErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="adminDeleteCacheEntry">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/lookup/admin/deleteCacheEntry" />
+            <wsdl:input>
+                <soap:body use="literal" parts="adminDeleteCacheEntryRequest" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="adminDeleteCacheEntryResponse" />
+            </wsdl:output>
+            <wsdl:fault name="LookupErrorException">
+                <soap:fault name="LookupErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="adminViewCache">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/lookup/admin/viewCache" />
+            <wsdl:input>
+                <soap:body use="literal" parts="adminViewCacheRequest" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="adminViewCacheResponse" />
+            </wsdl:output>
+            <wsdl:fault name="LookupErrorException">
+                <soap:fault name="LookupErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="adminAddRegistration">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/lookup/admin/addRegistration" />
+            <wsdl:input>
+                <soap:body use="literal" parts="adminAddRegistrationRequest" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="adminAddRegistrationResponse" />
+            </wsdl:output>
+            <wsdl:fault name="LookupErrorException">
+                <soap:fault name="LookupErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="adminModifyRegistration">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/lookup/admin/modifyRegistration" />
+            <wsdl:input>
+                <soap:body use="literal" parts="adminModifyRegistrationRequest" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="adminModifyRegistrationResponse" />
+            </wsdl:output>
+            <wsdl:fault name="LookupErrorException">
+                <soap:fault name="LookupErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="adminDeleteRegistration">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/lookup/admin/deleteRegistration" />
+            <wsdl:input>
+                <soap:body use="literal" parts="adminDeleteRegistrationRequest" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="adminDeleteRegistrationResponse" />
+            </wsdl:output>
+            <wsdl:fault name="LookupErrorException">
+                <soap:fault name="LookupErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="adminViewRegistrations">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/lookup/admin/viewRegistrations" />
+            <wsdl:input>
+                <soap:body use="literal" parts="adminViewRegistrationsRequest" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="adminViewRegistrationsResponse" />
+            </wsdl:output>
+            <wsdl:fault name="LookupErrorException">
+                <soap:fault name="LookupErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+    </wsdl:binding>
+
+
+    <wsdl:service name="LookupService">
+        <wsdl:port name="LookupPort" binding="tns:LookupBinding">
+            <soap:address
+                location="https://oscars.es.net/OSCARS/lookup" />
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

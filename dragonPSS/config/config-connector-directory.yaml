@@ -1,0 +1,32 @@
+---
+-   id:                 "junoscript"
+    impl:               "net.es.oscars.pss.connect.JunoscriptConnector"
+    params:
+        "login":        "oscars"
+        "keystore":     "/home/oscars/pss-keystore.jks"
+        "passphrase":   "secret"
+
+-   id:                 "clogin"
+    impl:               "net.es.oscars.pss.connect.RancidConnector"
+    params:
+        "executable":   "/opt/rancid/clogin"
+
+-   id:                 "dragon-vlsr"
+    impl:               "net.es.oscars.pss.dragon.vlsr.VLSRConnector"
+    params:
+        cliUser:            'dragon'
+        cliPassword:        'dragon'
+        promptPattern:      'vlsr'
+        # sshPortForward config - begin
+        sshPortForward:     true
+        sshUser:            'dragon'
+        sshKey:             '/home/dragon/.ssh/id_rsa'
+        sshPort:            22
+        localAddress:       '127.0.0.1'
+        remotePort:         2611
+        # sshPortForward config - end
+        hasNarb:            true
+        setERO:             true
+        # cienaTunnelMode (optional)
+        tunnelMode:         false
+

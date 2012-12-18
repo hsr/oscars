@@ -1,0 +1,28 @@
+<div class="left-content">
+	<table>
+		<tr>
+			<td>Destination:</td>
+			<td>
+				<div dojoType="ion.EndpointComboBox" url="servlet/EndpointNameList" inputId="tmpDestination">
+					<script type="dojo/connect">
+						dojo.byId('tmpDestination').value = dojo.byId('destination').value;
+					</script>
+				</div>
+				<div dojoType="ion.EndpointBrowser" url="servlet/EndpointBrowser" target="tmpDestination"
+						prevPageIcon="images/previous.png" nextPageIcon="images/next.png" 
+						folderIcon="images/folder-icon.png" initialCategory="institution">
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="buttonRow">
+				<div dojoType="ion.Button" label="Back" id="wizBackButton"></div>
+				<div dojoType="ion.Button" label="Next" id="wizNextButton"></div>
+			</td>
+		</tr>
+	</table>
+</div>
+<div class="right-content">
+	<div class="right-top">Destination </div> 
+	<span>An endpoint on any network that you would like to connect to the source. You can type in the beginning of the endpoint name to get a suggestion, or use “browse” to find endpoints by organization, keyword, name, or search.</span>
+</div> <!--/rightcontent-->

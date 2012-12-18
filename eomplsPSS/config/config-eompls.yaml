@@ -1,0 +1,18 @@
+---
+
+
+eomplsDeviceAddressResolve:            
+    impl:               'net.es.oscars.pss.eompls.resolve.YAMLEoMPLSDeviceResolver'
+    params:
+        configFile:     'config-eompls-device-addresses.yaml'
+
+eomplsIfceAddressResolve:            
+    impl:               'net.es.oscars.pss.eompls.resolve.YAMLEoMPLSIfceResolver'
+    params:
+        configFile:     'config-eompls-ifce-addresses.yaml'
+
+database:
+    dbname: 'eomplspss'
+    username: 'oscars'
+    password: 'mypass'
+

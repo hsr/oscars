@@ -1,0 +1,7 @@
+configure terminal
+<#list vlans as vlan> 
+no vlan ${vlan}
+</#list> 
+
+exit
+

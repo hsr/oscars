@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://oscars.es.net/OSCARS/authN"
+    elementFormDefault="qualified"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+    xmlns:com="http://oscars.es.net/OSCARS/common"
+    xmlns:authP="http://oscars.es.net/OSCARS/authParams"
+    xmlns:tns="http://oscars.es.net/OSCARS/authN">
+    
+
+    <xsd:import 
+        namespace="http://oscars.es.net/OSCARS/authParams" 
+        schemaLocation="../authParams.xsd" />
+    
+    <!-- Element definitions -->
+    <xsd:element name="verifyDNReq" type="tns:verifyDNReqType" />
+
+    <xsd:element name="verifyLoginReq" type="tns:verifyLoginReqType" />
+
+    <xsd:element name="verifyOriginatorReq" type="tns:verifyOrigReqType" />
+
+    <xsd:element name="verifyResp" type="tns:verifyReply" />
+
+    
+    <!--  Types  -->
+    
+  <xsd:complexType name = "verifyDNReqType">
+        <xsd:sequence>
+             <xsd:element name ="transactionId" type = "xsd:string"/>
+             <xsd:element name = "DN" type = "tns:DNType"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name = "verifyLoginReqType">
+        <xsd:sequence>
+             <xsd:element name ="transactionId" type = "xsd:string"/>
+             <xsd:element name = "loginId" type = "tns:loginId"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+   <xsd:complexType name = "verifyOrigReqType">
+        <xsd:sequence>
+             <xsd:element name ="transactionId" type = "xsd:string"/>
+             <xsd:element name = "originator" type = "authP:subjectAttributes"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="verifyReply">
+        <xsd:sequence>
+            <xsd:element name ="transactionId" type = "xsd:string"/>
+            <xsd:element name="subjectAttributes" type="authP:subjectAttributes"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="loginId">
+        <xsd:sequence>
+            <xsd:element name="loginName" type="xsd:string"/>
+            <xsd:element name="password" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="DNType">
+        <xsd:sequence>
+            <xsd:element name="subjectDN" type="xsd:string" />
+            <xsd:element name="issuerDN" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+  
+</xsd:schema>

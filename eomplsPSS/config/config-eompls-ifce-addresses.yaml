@@ -1,0 +1,12 @@
+---
+"urn:ogf:network:foo.net:alpha:xe-2/0/0:beta":                  "10.1.0.1"
+"urn:ogf:network:foo.net:beta:1/1/1:alpha":                     "10.1.0.2"
+
+"urn:ogf:network:foo.net:alpha:xe-3/0/0:gamma":                 "10.2.0.1"
+"urn:ogf:network:foo.net:gamma:TenGigabitEthernet3/2:alpha":    "10.2.0.2"
+
+"urn:ogf:network:foo.net:beta:2/1/1:gamma":                     "10.3.0.1"
+"urn:ogf:network:foo.net:gamma:TenGigabitEthernet0/1:beta":     "10.3.0.2"
+
+"urn:ogf:network:foo.net:beta:3/1/1:delta":                     "10.4.0.1"
+"urn:ogf:network:foo.net:delta:1/1/1:beta":                     "10.4.0.2"

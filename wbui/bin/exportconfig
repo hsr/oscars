@@ -1,0 +1,80 @@
+#!/bin/sh
+#
+# Export configuration files from the distribution directory into the production directory.
+#
+# syntax: exportconfig <path_to_distribution> <patch_to_production>
+#
+#
+
+OSCARS_DIST=$1
+OSCARS_HOME=$2
+DST_LOGDIR=$3
+BUILD_ROOT=$4
+
+SERVICE=WBUIService
+MODULE=wbui
+
+source $OSCARS_DIST/utils/bin/configLib.sh
+
+vers=`cat $OSCARS_DIST/VERSION`
+localhost=`hostname -f`
+verifyArgs $OSCARS_DIST $OSCARS_HOME
+verifySvcName $SERVICE
+
+SRC_DIR=$OSCARS_DIST/$MODULE/config/
+DST_DIR=$OSCARS_HOME/$SERVICE/conf
+if [ -n "$BUILD_ROOT" ]; then
+    DST_DIR=${BUILD_ROOT}/${DST_DIR}
+fi
+if [ -z "$DST_LOGDIR" ]; then
+    DST_LOGDIR=${OSCARS_HOME}/logs
+fi
+
+JETTY_CONFIG_SSL=jetty.SSL.xml
+JETTY_CONFIG_HTTP=jetty.HTTP.xml
+
+mkdir -p $DST_LOGDIR
+mkdir -p $DST_DIR
+
+if [ ! -f $DST_DIR/$MANIFEST ] ; then
+    cp $SRC_DIR/$MANIFEST  $DST_DIR/$MANIFEST      
+fi
+if [ ! -f $DST_DIR/$CONFIG_HTTP ]  ; then
+    cp $SRC_DIR/$CONFIG_HTTP  $DST_DIR/$CONFIG_HTTP 
+fi
+if [ ! -f $DST_DIR/$CONFIG_SSL ] ; then
+    cp $SRC_DIR/$CONFIG_SSL  $DST_DIR/$CONFIG_SSL
+fi
+# Run over http only if accessible to localhost
+if [ ! -f $DST_DIR/$JETTY-CONFIG_HTTP  ] ; then
+    cp $SRC_DIR/$JETTY_CONFIG_HTTP  $DST_DIR/$JETTY_CONFIG_HTTP 
+fi
+# when run over ssl, make accessible to outside hosts.
+if [ ! -f $DST_DIR/$JETTY_CONFIG_SSL  ] ; then
+    sed s,localhost,$localhost, < $SRC_DIR/$JETTY_CONFIG_SSL > $DST_DIR/$JETTY_CONFIG_SSL
+fi
+
+if [ ! -f $DST_DIR/$CXF_CLIENT_HTTP_CFG ] ; then
+    cp $SRC_DIR/$CXF_CLIENT_HTTP_CFG  $DST_DIR/$CXF_CLIENT_HTTP_CFG
+fi
+if [ ! -f $DST_DIR/$CXF_CLIENT_SSL_CFG ] ; then
+    cp $SRC_DIR/$CXF_CLIENT_SSL_CFG  $DST_DIR/$CXF_CLIENT_SSL_CFG
+fi
+if [ ! -f $DST_DIR/$LOG4J_PROPS_INFO ] ; then
+    sed -e "s,$MODULE\.log,$DST_LOGDIR/$SERVICE.log," -e "s,oscars\.log,$DST_LOGDIR/oscars.log," < $SRC_DIR/$LOG4J_PROPS_INFO > $DST_DIR/$LOG4J_PROPS_INFO
+fi
+if [ ! -f $DST_DIR/$LOG4J_PROPS_DEBUG ] ; then
+    sed s,$MODULE\.log,$DST_LOGDIR/$SERVICE.log, <  $SRC_DIR/$LOG4J_PROPS_DEBUG > $DST_DIR/$LOG4J_PROPS_DEBUG
+    fi
+if [ ! -f $DST_DIR/$LOG4J_PROPS_MESSAGE ] ; then
+    sed s,$MODULE\.log,$DST_LOGDIR/$SERVICE.log, <  $SRC_DIR/$LOG4J_PROPS_MESSAGE > $DST_DIR/$LOG4J_PROPS_MESSAGE
+fi
+
+# TODO: better solution later
+if [ -z "$BUILD_ROOT" ]; then
+    mkdir -p $OSCARS_HOME/$SERVICE/tmp
+    sed -e s,/oscars-war,$OSCARS_HOME/$SERVICE, -e s/OSCARS_VERSION/$vers/ -e  s,/oscars-temp-dir,$OSCARS_HOME/$SERVICE/tmp, < $SRC_DIR/$CONFIG_HTTP > $DST_DIR/$CONFIG_HTTP
+    sed -e s,/oscars-war,$OSCARS_HOME/$SERVICE, -e s/OSCARS_VERSION/$vers/ -e  s,/oscars-temp-dir,$OSCARS_HOME/$SERVICE/tmp, < $SRC_DIR/$CONFIG_SSL > $DST_DIR/$CONFIG_SSL
+    cp $OSCARS_DIST/oscars-war/target/oscars-war-$vers.war $OSCARS_HOME/$SERVICE/
+fi
+

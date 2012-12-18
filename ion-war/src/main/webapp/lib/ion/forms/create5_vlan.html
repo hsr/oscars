@@ -1,0 +1,168 @@
+<div class="left-content">	
+	<table>
+		<tr>
+			<td colspan="2">
+				<div id="wizSameVlan" dojoType="dijit.form.CheckBox" checked="checked">
+					<!-- load function at bottom because guarentees all fields are loaded -->
+					<script type="dojo/connect" event="onChange">
+						if(dijit.byId("tmpDestVlan") == null || dijit.byId("wizSuggestDest") == null){
+							return;
+						}
+						if(dijit.byId('wizSameVlan').checked){
+							dijit.byId("tmpDestVlan").setDisabled(true);
+							dijit.byId("wizSuggestDest").setDisabled(true);
+							dijit.byId("tmpDestVlan").setValue(dijit.byId("tmpSrcVlan").getValue());
+						}else{
+							dijit.byId("tmpDestVlan").setDisabled(false);
+							dijit.byId("wizSuggestDest").setDisabled(false);
+						}
+					</script>
+				</div>
+				<label for="wizSameVlan">Same VLAN number on source and destination</label>
+			</td>
+		</tr>
+		<tr>
+			<td>VLAN (Source):</td>
+			<td>
+				<div id="tmpSrcVlan" dojoType="dijit.form.ValidationTextBox" value="any"  required="true" 
+						regexp="(any|((([2-9])|([1-9]\d\d?)|([1-3]\d\d\d)|(40\d[0-4]))(,|-))*(([2-9])|([1-9]\d\d?)|([1-3]\d\d\d)|(40\d[0-4])))">
+					<script type="dojo/connect">
+						if(dojo.byId('srcVlan').value != ""){
+							dijit.byId('tmpSrcVlan').setValue(dojo.byId('srcVlan').value);
+						}
+						//also check source tagged here
+						if(dojo.byId('taggedSrcVlan').value != ""){
+							dojo.byId('tmpTaggedSrcVlan').selectedIndex = (dojo.byId('taggedSrcVlan').value == "Tagged" ? 0 : 1);
+						}
+					</script>
+					<script type="dojo/connect" event="onChange">
+						if(dijit.byId('wizSuggestSrc') == null){
+							return;
+						}
+						if(dijit.byId("tmpSrcVlan").getValue() == 'any' || dijit.byId("tmpSrcVlan").getValue() == '2-4094'){
+							dijit.byId('wizSuggestSrc').setChecked(true);
+						}else{
+							dijit.byId('wizSuggestSrc').setChecked(false);
+						}
+						
+						//mirror in dest if same
+						if(dijit.byId('wizSameVlan').checked){
+							dijit.byId('tmpDestVlan').setValue(dijit.byId('tmpSrcVlan').getValue());
+						}
+					</script>
+				</div>
+				<br>
+				<div id="wizSuggestSrc" dojoType="dijit.form.CheckBox" checked="checked">
+					<script type="dojo/connect">
+						if(dojo.byId('srcVlan').value != ""){
+							if(dojo.byId('srcVlan').value == 'any' || dojo.byId('srcVlan').value == '2-4094'){
+								dijit.byId('wizSuggestSrc').setChecked(true);
+							}else{
+								dijit.byId('wizSuggestSrc').setChecked(false);
+							}
+						}
+					</script>
+					<script type="dojo/connect" event="onChange">
+						if(dijit.byId("tmpSrcVlan") == null){
+							return;
+						}
+						if(dijit.byId('wizSuggestSrc').checked){
+							dijit.byId("tmpSrcVlan").setValue('any');
+						}
+					</script>
+				</div>
+				<label for="wizSuggestSrc">Auto-assign VLAN</label>
+			</td>
+		</tr>
+		<tr>
+			<td>VLAN (Dest):</td>
+			<td>
+				<div  disabled="true" id="tmpDestVlan" dojoType="dijit.form.ValidationTextBox" value="any" required="true" 
+						regexp="(any|((([2-9])|([1-9]\d\d?)|([1-3]\d\d\d)|(40\d[0-4]))(,|-))*(([2-9])|([1-9]\d\d?)|([1-3]\d\d\d)|(40\d[0-4])))">
+					<script type="dojo/connect">
+						if(dojo.byId('destVlan').value != ""){
+							dijit.byId('tmpDestVlan').setValue(dojo.byId('destVlan').value);
+						}
+						//also check dest tagged here
+						if(dojo.byId('taggedDestVlan').value != ""){
+							dojo.byId('tmpTaggedDestVlan').selectedIndex = (dojo.byId('taggedDestVlan').value == "Tagged" ? 0 : 1);
+						}
+					</script>
+					<script type="dojo/connect" event="onChange">
+						if(dijit.byId('wizSuggestDest') == null){
+							return;
+						}
+						if(dijit.byId("tmpDestVlan").getValue() == 'any' || dijit.byId("tmpDestVlan").getValue() == '2-4094'){
+							dijit.byId('wizSuggestDest').setChecked(true);
+						}else{
+							dijit.byId('wizSuggestDest').setChecked(false);
+						}
+					</script>
+				</div>
+				<br>
+				<div id="wizSuggestDest" disabled="true" dojoType="dijit.form.CheckBox" checked="checked">
+					<script type="dojo/connect">
+						if(dojo.byId('destVlan').value != ""){
+							if(dojo.byId('destVlan').value == 'any' || dojo.byId('destVlan').value == '2-4094'){
+								dijit.byId('wizSuggestDest').setChecked(true);
+							}else{
+								dijit.byId('wizSuggestDest').setChecked(false);
+							}
+						}
+					</script>
+					<script type="dojo/connect" event="onChange">
+						if(dijit.byId("tmpDestVlan") == null){
+							return;
+						}
+						if(dijit.byId('wizSuggestDest').checked){
+							dijit.byId("tmpDestVlan").setValue('any');
+						}
+					</script>
+				</div>
+				<label for="wizSuggestDest">Auto-assign VLAN</label>
+			</td>
+		</tr>
+		<tr>
+			<td>Source VLAN type:</td>
+			<td>
+				<select id="tmpTaggedSrcVlan">
+					<option value="Tagged">Tagged</option>
+					<option value="Untagged">Untagged</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td>Dest VLAN type:</td>
+			<td>
+				<select id="tmpTaggedDestVlan">
+					<option value="Tagged">Tagged</option>
+					<option value="Untagged">Untagged</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="buttonRow">
+				<div dojoType="ion.Button" label="Back" id="wizBackButton">
+					<!-- put down here because guarantees evrything else has loaded -->
+					<script type="dojo/connect">
+						if(dojo.byId('srcVlan').value != "" && dojo.byId('destVlan').value != ""){
+							dijit.byId('wizSameVlan').setChecked(dojo.byId('srcVlan').value == dojo.byId('destVlan').value);
+						}
+					</script>
+				</div>
+				<div dojoType="ion.Button" label="Next" id="wizNextButton"></div>
+			</td>
+		</tr>
+	</table>
+</div>
+<div class="right-content">
+	<div class="right-top">VLAN (Source) </div> 
+	<span>The VLAN number to assign to the source port. You can allow the system to assign a VLAN for you by selecting the <i>Auto-assign VLAN</i> checkbox. You may alternatively request a specific VLAN number (i.e. 3000) or provide a range in which one may be chosen (i.e. 3000-4000)</span>
+	<div class="right-header">VLAN (Dest)</div>
+	<span>The VLAN number to assign to the destination port. If the <i>Same VLAN on source and destination</i> box is selected then this will be given the same limits as the <i>VLAN (Source)</i> field. If a different VLAN is selected then VLAN translation will occur between the source and destination. </span>
+	<div class="right-header">Source VLAN type</div>
+	<span>If 'Tagged' is chosen then only data marked with the source VLAN number in the 802.1Q headers will be able to use the circuit. If 'Untagged' then all unmarked packets will be allowed. If 'Untagged' is chosen then no other circuits can be built on the source port until the reservation ends.</span>
+	<div class="right-header">Dest VLAN type</div>
+	<span>The same as <i>Source VLAN type</i> except applied to the destination port.</span>
+	
+</div> <!--/rightcontent-->

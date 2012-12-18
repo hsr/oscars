@@ -1,0 +1,100 @@
+<div class="left-content">
+	<table class="summaryTable">
+		<tr class="tdheader">
+			<td colspan="2">Circuit Details</td>
+		</tr>
+		<tr>
+			<td>Description:</td>
+			<td><span id="wizSum_description"></span></td>
+		</tr>
+		<tr class="oddrow">
+			<td>Source:</td>
+			<td><span id="wizSum_source"></span></td>
+		</tr>
+		<tr>
+			<td>Destination:</td>
+			<td><span id="wizSum_destination"></span></td>
+		</tr>
+		<tr class="oddrow">
+			<td>Start Date:</td>
+			<td><span id="wizSum_startSeconds_date"></span></td>
+		</tr>
+		<tr>
+			<td>Start Time:</td>
+			<td><span id="wizSum_startSeconds_time"></span></td>
+		</tr>
+		<tr class="oddrow">
+			<td>End Date:</td>
+			<td><span id="wizSum_endSeconds_date"></span></td>
+		</tr>
+		<tr>
+			<td>End Time:</td>
+			<td><span id="wizSum_endSeconds_time"></span></td>
+		</tr>
+		<tr class="oddrow">
+			<td>Duration:</td>
+			<td><span id="wizDuration"></span></td>
+		</tr>
+		<tr >
+			<td>Bandwidth:</td>
+			<td><span id="wizSum_bandwidth"></span></td>
+		</tr>
+		<tr class="oddrow">
+			<td>Source VLAN:</td>
+			<td><span id="wizSum_srcVlan"></span></td>
+		</tr>
+		<tr>
+			<td>Source VLAN type:</td>
+			<td><span id="wizSum_taggedSrcVlan"></span></td>
+		</tr>
+		<tr class="oddrow">
+			<td>Destination VLAN:</td>
+			<td><span id="wizSum_destVlan"></span></td>
+		</tr>
+		<tr>
+			<td>Destination VLAN type:</td>
+			<td><span id="wizSum_taggedDestVlan"></span></td>
+		</tr>
+		<tr class="oddrow">
+			<td colspan="2">
+				<div id="wizSaveAsFavCheck" dojoType="dijit.form.CheckBox">
+					<script type="dojo/connect" event="onChange">
+						if(dijit.byId('wizSaveAsFavCheck').checked){
+							dojo.byId('saveAsFavorite').value = 1;
+						}else{
+							dojo.byId('saveAsFavorite').value = 0;
+						}
+					</script>
+					<script type="dojo/connect">
+						if(dojo.byId('saveAsFavorite').value == 1){
+							dijit.byId('wizSaveAsFavCheck').setChecked(true);
+						}else{
+							dijit.byId('wizSaveAsFavCheck').setChecked(false);
+						}
+					</script>
+				</div>
+				<img src="images/favorite.png">&nbsp;<label for="wizSaveAsFavCheck">Save as favorite</label>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="buttonRow">
+				<br>
+				<div dojoType="ion.Button" label="Back" id="wizBackButton"></div>
+				<div dojoType="ion.Button" label="Reserve" id="wizReserveButton"></div>
+			</td>
+		</tr>
+	</table>
+	
+	<div id="wizReservingDialog" dojoType="dijit.Dialog">
+		<span class="reserveMessage">Reserving circuit...</span>
+		<div dojoType="dijit.ProgressBar" indeterminate="true"></div>
+		<span class="reserveSubMessage">Please be patient while the system attempts to reserve your circuit.</span>
+		<span class="reserveSubMessage">This may take 30 seconds or more.</span>
+	</div>
+</div>
+<div class="right-content">
+	<div class="right-top">Review </div> 
+	<span>Review the parameters of the circuit. Click <i>Reserve</i> to place the reservation or <i>Back</i> to make changes.</span>
+	<div class="right-header">Favorite </div> 
+	<span>Check the <i>Save as favorite</i> box if you wish to mark the circuit as a favorite. Favorite circuits can easily be found again later for re-creation. You may find this useful if you often build a circuit with the same or similar parameters.</span>
+</div> <!--/rightcontent-->

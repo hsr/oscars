@@ -1,0 +1,8 @@
+This is not an actual module, it's here as a placeholder
+and to contain the repo subdirectory which will be
+used as a Maven repository for common .jar files.
+
+Use a command like this to install more jars to the repo:
+
+mvn deploy:deploy-file -Durl=file:./repo -DrepositoryId=OSCARS -Dfile=./lib/perfsonar.jar -DpomFile=./lib/perfsonar.xml
+

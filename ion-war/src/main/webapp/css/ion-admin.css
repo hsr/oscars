@@ -1,0 +1,30 @@
+/* Buttons */
+.userListPageNav_prev, .userListPageNav_next{
+	background:#000000 url(../images/top-nav-divider-cen.png) repeat-y center; 
+	color:#FFFFFF; 
+	width:120px; 
+	height:40px; 
+	text-align:center; 
+	font-size:12pt; 
+	-moz-user-select: none;
+}
+
+/******* user list table *******/
+/* Table head */
+.userListTableHead { background:#000000 url(../images/blue-bg.png) repeat-x center;}
+#content .userListTableHead tr th a {color:#FFFFFF; text-decoration:none;}
+/* Table body */
+tr.userListOddRow, tr.oddrow {background-color:#EEEEEE;}
+.userListDiv {clear:both;}
+/* Page navigation */
+.userListPageNav_prev, .userListPageNav_next { margin: 0 10px 0 10px; padding: 0 0px 0 5px; width: 115px; border-top:2px solid #FFFFFF; border-left:2px solid #ffffff; border-right:2px solid #989898; border-bottom:2px solid #858585; float:left; }
+div.userListPageNav div a,#content #contentDiv div .userListPageNav div a {color:#FFFFFF; text-decoration:none;}
+.userListPageNav_prev img, .userListPageNav_next img {margin-top: 10px;}
+
+.userInfoInstructions{
+	display: block;
+	margin:5px 5px 5px 5px;
+}
+.userInfoTable{
+	display: block;
+}

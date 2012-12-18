@@ -1,0 +1,11 @@
+configure private
+set interfaces ${portA} unit ${vlan} encapsulation vlan-ccc
+set interfaces ${portA} unit ${vlan} vlan-id ${vlan}
+set interfaces ${portA} unit ${vlan} description "IDC vlan ${vlan} -> ${portZ}"
+set interfaces ${portZ} unit ${vlan} encapsulation vlan-ccc
+set interfaces ${portZ} unit ${vlan} vlan-id ${vlan}
+set interfaces ${portZ} unit ${vlan} description "IDC vlan ${vlan} -> ${portA}"
+set protocols l2circuit local-switching interface ${portA}.${vlan} end-interface interface ${portZ}.${vlan}
+set protocols l2circuit local-switching interface ${portA}.${vlan} ignore-mtu-mismatch
+commit and-quit synchronize comment "IDC local-switched: ${portA}.${vlan} ,  ${portZ}.${vlan}"
+

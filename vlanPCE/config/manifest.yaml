@@ -1,0 +1,67 @@
+VlanPCE:
+    UNITTEST:
+        templateDir:        'OSCARS_DIST/vlanPCE/config'
+        config.yaml:        'OSCARS_DIST/vlanPCE/config/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_DIST/vlanPCE/config/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_DIST/vlanPCE/config/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_DIST/vlanPCE/config/log4j.DEBUG.properties'
+        wsdl:               'OSCARS_DIST/common-soap/src/main/resources/api/pce-0.6.wsdl'
+
+    DEVELOPMENT:
+        templateDir:        'OSCARS_HOME/VlanPCE/conf/'
+        config.yaml:        'OSCARS_HOME/VlanPCE/conf/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/VlanPCE/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/VlanPCE/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/VlanPCE/conf/log4j.MESSAGE.properties'
+        PCEService.xsd:     'OSCARS_HOME/wsdl/OSCARSService/PCEService-0.6.xsd'
+        wsdl:               'OSCARS_HOME/wsdl/OSCARSService/PCEService-0.6.wsdl'
+
+    SDK:
+        templateDir:        'OSCARS_HOME/VlanPCE/conf/'
+        config.yaml:        'OSCARS_HOME/VlanPCE/conf/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/VlanPCE/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/VlanPCE/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/VlanPCE/conf/log4j.DEBUG.properties'
+        wsdl:               'OSCARS_HOME/wsdl/OSCARSService/PCEService-0.6.wsdl'
+
+    PRODUCTION:
+        templateDir:        'OSCARS_HOME/VlanPCE/conf/'
+        config.yaml:        'OSCARS_HOME/VlanPCE/conf/config.SSL.yaml'
+        server-cxf.xml:     'OSCARS_HOME/VlanPCE/conf/server-cxf-ssl.xml'
+        client-cxf.xml:     'OSCARS_HOME/VlanPCE/conf/client-cxf-ssl.xml'
+        log4j.properties:   'OSCARS_HOME/VlanPCE/conf/log4j.INFO.properties'
+        wsdl:               'OSCARS_HOME/wsdl/OSCARSService/PCEService-0.6.wsdl'
+
+ResourceManagerService:
+    UNITTEST:
+        config.yaml:        'OSCARS_DIST/resourceManager/config/config.HTTP.yaml'
+        wsdl:               'OSCARS_DIST/common-soap/src/main/resources/resourceManager/ResourceManager.wsdl'
+
+    DEVELOPMENT:
+        config.yaml:        'OSCARS_HOME/ResourceManagerService/conf/config.HTTP.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/ResourceManagerService/ResourceManagerService.wsdl'
+
+    SDK:
+        config.yaml:        'OSCARS_HOME/ResourceManagerService//conf/config.HTTP.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/ResourceManagerService/ResourceManagerService.wsdl'
+
+    PRODUCTION:
+        config.yaml:        'OSCARS_HOME/ResourceManagerService//conf/config.SSL.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/ResourceManagerService/ResourceManagerService.wsdl'
+
+Utils:
+    UNITTEST:
+        templateDir:        'OSCARS_DIST/Utils/config'
+        config.yaml:        'OSCARS_DIST/Utils/config/config.yaml'
+
+    DEVELOPMENT:
+        templateDir:        'OSCARS_HOME/Utils/conf/'
+        config.yaml:        'OSCARS_HOME/Utils/conf/config.yaml'
+
+    SDK:
+        templateDir:        'OSCARS_HOME/Utils/conf/'
+        config.yaml:        'OSCARS_HOME/Utils/conf/config.yaml'
+
+    PRODUCTION:
+        templateDir:        'OSCARS_HOME/Utils/conf/'
+        config.yaml:        'OSCARS_HOME/Utils/conf/config.yaml'

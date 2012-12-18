@@ -1,0 +1,10 @@
+<oscarsMail>
+
+<contentType>text/plain</contentType>
+<subject>##TAG:PRODUCTION CIRCUIT##Reservation ##gri## through ##eventSource## failed</subject>
+<messageBody>
+Modifying reservation through browser failed with ##errorMessage##
+##reservation##
+</messageBody>
+
+</oscarsMail>

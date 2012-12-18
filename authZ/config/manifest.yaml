@@ -1,0 +1,75 @@
+---
+AuthZService:
+    UNITTEST:
+        templateDir:        'OSCARS_DIST/authZ/config'
+        config.yaml:        'OSCARS_DIST/authZ/config/authZ.TESTING.yaml'
+        server-cxf.xml:     'OSCARS_DIST/authZ/config/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_DIST/authZ/config/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_DIST/authZ/config/log4j.DEBUG.properties'
+        testauthz.cfg.xml:  'OSCARS_DIST/authZ/src/test/resources/testauthz.cfg.xml'
+        wsdl:               'OSCARS_DIST/common-soap/src/main/resources/authZ/authZ.wsdl'
+
+
+    DEVELOPMENT:
+        templateDir:        'OSCARS_HOME/AuthZService/conf/'
+        config.yaml:        'OSCARS_HOME/AuthZService/conf/authZ.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/AuthZService/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/AuthZService/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/AuthZService/conf/log4j.MESSAGE.properties'
+        authz.cfg.xml:      'OSCARS_HOME/AuthZService/conf/authz.cfg.xml'
+        wsdl:               'OSCARS_HOME/wsdl/AuthZService/AuthZService.wsdl'
+
+    SDK:
+        templateDir:        'OSCARS_HOME/AuthZService/conf/'
+        config.yaml:        'OSCARS_HOME/AuthZService/conf/authZ.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/AuthZService/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/AuthZService/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/AuthZService/conf/log4j.DEBUG.properties'
+        authz.cfg.xml:      'OSCARS_HOME/AuthZService/conf/authz.cfg.xml'
+        wsdl:               'OSCARS_HOME/wsdl/AuthZService/AuthZService.wsdl'
+
+    PRODUCTION:
+        templateDir:        'OSCARS_HOME/AuthZService/conf/'
+        config.yaml:        'OSCARS_HOME/AuthZService/conf/authZ.SSL.yaml'
+        server-cxf.xml:     'OSCARS_HOME/AuthZService/conf/server-cxf-ssl.xml'
+        client-cxf.xml:     'OSCARS_HOME/AuthZService/conf/client-cxf-ssl.xml'
+        log4j.properties:   'OSCARS_HOME/AuthZService/conf/log4j.INFO.properties'
+        authz.cfg.xml:      'OSCARS_HOME/AuthZService/conf/authz.cfg.xml'
+        wsdl:               'OSCARS_HOME/wsdl/AuthZService/AuthZService.wsdl'
+
+
+AuthZPolicyService:
+    UNITTEST:
+        templateDir:        'OSCARS_DIST/authZ/config'
+        config.yaml:        'OSCARS_DIST/authZ/config/authZPolicy.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_DIST/authZ/config/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_DIST/authZ/config/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_DIST/authZ/config/log4j.INFO.properties'
+        wsdl:          'OSCARS_DIST/common-soap/src/main/resources/authZPolicy/authZPolicy.wsdl'
+
+
+    DEVELOPMENT:
+        templateDir:        'OSCARS_HOME/AuthZPolicyService/conf/'
+        config.yaml:        'OSCARS_HOME/AuthZPolicyService/conf/authZPolicy.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/AuthZPolicyService/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/AuthZPolicyService/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/AuthZPolicyService/conf/log4j.MESSAGE.properties'
+        wsdl:               'OSCARS_HOME/wsdl/AuthZPolicyService/AuthZPolicyService.wsdl'
+
+    SDK:
+        templateDir:        'OSCARS_HOME/AuthZPolicyService/conf/'
+        config.yaml:        'OSCARS_HOME/AuthZPolicyService/conf/authZPolicy.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/AuthZPolicyService/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/AuthZPolicyService/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/AuthZPolicyService/conf/log4j.DEBUG.properties'
+        wsdl:               'OSCARS_HOME/wsdl/AuthZPolicyService/AuthZPolicyService.wsdl'
+
+
+    PRODUCTION:
+        templateDir:        'OSCARS_HOME/AuthZPolicyService/conf/'
+        config.yaml:        'OSCARS_HOME/AuthZPolicyService/conf/authZPolicy.SSL.yaml'
+        server-cxf.xml:     'OSCARS_HOME/AuthZPolicyService/conf/server-cxf-ssl.xml'
+        client-cxf.xml:     'OSCARS_HOME/AuthZPolicyService/conf/client-cxf-ssl.xml'
+        log4j.properties:   'OSCARS_HOME/AuthZPolicyService/conf/log4j.INFO.properties'
+        wsdl:               'OSCARS_HOME/wsdl/AuthZPolicyService/AuthZPolicyService.wsdl'
+

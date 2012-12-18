@@ -1,0 +1,6 @@
+#!/bin/sh 
+#usage idc-useradd
+#  -Djavax.net.debug=all will dump the ssl messages
+vers=`cat $OSCARS_DIST/VERSION`
+java -Done-jar.main.class=net.es.oscars.tools.utils.IDCSiteUtil -jar $OSCARS_DIST/tools/target/tools-$vers.one-jar.jar list 
+

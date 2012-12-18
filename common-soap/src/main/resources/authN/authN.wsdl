@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="AuthNService"
+    targetNamespace="http://oscars.es.net/OSCARS/authN"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/"
+    xmlns:com="http://oscars.es.net/OSCARS/common"
+    xmlns:tns="http://oscars.es.net/OSCARS/authN">
+
+    <wsdl:documentation>
+        This is WSDL for the OSCARS authentication interface.
+    </wsdl:documentation>
+
+   <!--  defines common OSCARSFaultMessage -->
+   <wsdl:import namespace="http://oscars.es.net/OSCARS/common" location="../common.wsdl"/>
+
+   <!-- Element definitions -->
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://oscars.es.net/OSCARS/authN"
+            elementFormDefault="qualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:tns="http://oscars.es.net/OSCARS/authN">
+            <xsd:include schemaLocation="authN.xsd" />
+            <xsd:import namespace="http://oscars.es.net/OSCARS/common" 
+                  schemaLocation="../common.xsd" />
+        </xsd:schema>
+    </wsdl:types>
+   
+    <!--   Message definitions -->
+   <wsdl:message name="verifyDNReq">
+        <wsdl:part name="verifyDNReq"
+            element="tns:verifyDNReq">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="verifyDNResp">
+        <wsdl:part name="verifyDNResp"
+            element="tns:verifyResp" />
+    </wsdl:message>
+    <wsdl:message name="verifyLoginReq">
+        <wsdl:part name="verifyLoginReq"
+            element="tns:verifyLoginReq">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="verifyLoginResp">
+        <wsdl:part name="verifyLoginResp"
+            element="tns:verifyResp" />
+    </wsdl:message>
+    <wsdl:message name="verifyOriginatorReq">
+        <wsdl:part name="verifyOriginatorReq"
+            element="tns:verifyOriginatorReq">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="verifyOriginatorResp">
+        <wsdl:part name="verifyOriginatorResp"
+            element="tns:verifyResp" >
+        </wsdl:part>
+    </wsdl:message>
+    
+    <wsdl:portType name="AuthNPortType">
+	<!-- authentication operations -->
+        <wsdl:operation name="verifyDN">
+            <wsdl:input message="tns:verifyDNReq"/>
+            <wsdl:output message="tns:verifyDNResp" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="verifyLogin">
+            <wsdl:input message="tns:verifyLoginReq"/>
+            <wsdl:output message="tns:verifyLoginResp" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+       <wsdl:operation name="verifyOriginator">
+            <wsdl:input message="tns:verifyOriginatorReq"/>
+            <wsdl:output message="tns:verifyOriginatorResp" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+    </wsdl:portType>
+
+     <wsdl:binding name="AuthNBinding" type="tns:AuthNPortType">
+        <soap:binding style="document"
+            transport="http://schemas.xmlsoap.org/soap/http" />
+
+        <wsdl:operation name="verifyDN">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/authN/verifyDN" />
+            <wsdl:input>
+                <soap:body use="literal" parts="verifyDNReq" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="verifyDNResp" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal"  />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="verifyLogin">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/authN/verifyLogin" />
+            <wsdl:input>
+                <soap:body use="literal" parts="verifyLoginReq" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="verifyLoginResp" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="verifyOriginator">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/authN/verifyOriginator" />
+            <wsdl:input>
+                <soap:body use="literal" parts="verifyOriginatorReq" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="verifyOriginatorResp" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+ 
+    <wsdl:service name="AuthNService">
+        <wsdl:port name="AuthNPort" binding="tns:AuthNBinding">
+            <soap:address location=""/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

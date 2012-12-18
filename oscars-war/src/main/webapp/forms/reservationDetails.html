@@ -1,0 +1,329 @@
+<html>
+
+<head>
+    <script type="text/javascript">
+      function catchQuery(event) {
+          if (event.keyCode == dojo.keys.ENTER) {
+              oscars.ReservationDetails.postQueryReservation(true);
+              dojo.stopEvent(event);
+          }
+      }
+      function initQuery(event) {
+          dojo.connect(dijit.byId("newGri").domNode, 'onkeypress', catchQuery);
+      }
+      dojo.connect(dijit.byId("reservationDetailsPane"), "onLoad", initQuery);
+    </script>
+</head>
+
+<body>
+<form id="reservationDetailsForm" dojoType="dijit.form.Form">
+<input type="hidden" name="gri" id="gri" />
+<input type="hidden" name="status" id="status" />
+<input type="hidden" name="modifyStartSeconds" id="modifyStartSeconds" />
+<input type="hidden" name="modifyEndSeconds" id="modifyEndSeconds" />
+<!-- not currently modifiable; hidden preferable to fields that look to
+     be modifiable if the user had the proper authorization -->
+<input type="hidden" name="modifyBandwidth" id="modifyBandwidth" />
+<input type="hidden" name="modifyDescription" id="modifyDescription" />
+<input type="hidden" name="forcedStatus" id="forcedStatus" />
+<table>
+  <tbody>
+  <tr>
+    <td>NEW GRI</td>
+    <td>
+      <input type="text" name="newGri" id="newGri"
+             dojoType="dijit.form.ValidationTextBox"
+             promptMessage="Enter a new GRI to retrieve its details" />
+    </td>
+    <td>
+      <button dojoType="dijit.form.Button" id="queryReservation">
+        QUERY 
+      <script type="dojo/method" event="onClick">
+          oscars.ReservationDetails.postQueryReservation(true);
+      </script>
+      </button>
+    </td>
+  </tr>
+  </tbody>
+</table>
+<hr/>
+<span id="reservationDetailsDisplay" style="display:none">
+   <span id="resvRefreshDisplay" style="display:none">
+      <button dojoType="dijit.form.Button" id="refreshReservation">
+        REFRESH
+      <script type="dojo/method" event="onClick">
+          oscars.ReservationDetails.postQueryReservation(false);
+      </script>
+      </button>
+  </span>
+  <span id="resvModifyDisplay" style="display:none">
+      <button dojoType="dijit.form.Button" id="modifyReservation">
+         MODIFY
+         <script type="dojo/method" event="onClick">
+             oscars.ReservationDetails.postModify();
+         </script>
+      </button>
+        <button dojoType="dijit.form.Button" id="cancelReservation"
+                onclick="dijit.byId('cancelDialog').show();">
+        CANCEL 
+      </button>
+  </span>
+  <span id="resvCloneDisplay" style="display:none">
+      <button dojoType="dijit.form.Button" id="cloneReservation">
+         CLONE
+         <script type="dojo/method" event="onClick">
+             oscars.ReservationDetails.cloneReservation();
+         </script>
+      </button>
+  </span>
+  <span id="resvCautionDisplay" style="display:none">
+      <!--
+       <button dojoType="dijit.form.Button" id="createPath"
+           onclick="dijit.byId('createPathDialog').show();"
+           style="color:#FF0000">
+        CREATE PATH
+       </button>
+       <button dojoType="dijit.form.Button" id="teardownPath"
+           onclick="dijit.byId('teardownPathDialog').show();"
+           style="color:#FF0000">
+        TEAR DOWN PATH
+      </button>
+      -->
+       <button dojoType="dijit.form.Button" id="overrideStatus"
+           onclick="dijit.byId('overrideStatusDialog').show();"
+           style="color:#FF0000">
+        OVERRIDE STATUS
+      </button>
+  </span>
+
+<table width="100%">
+  <tbody>
+  <tr>
+      <!-- setting once sets for all in this column -->
+      <td width="15%">GRI</td>
+      <td colspan="2" id="griReplace"></td>
+  </tr>
+  <tr><td>Status</td><td colspan="2" id="statusReplace" /></tr>
+  <tr><td>User</td><td colspan="2" id="userReplace" /></tr>
+  <tr><td>Description</td>
+      <td colspan="2">
+          <input dojoType="dijit.form.TextBox" name="descriptionReplace"
+                id="descriptionReplace" style="width: 28em"/>
+  </tr>
+  <tr>
+    <td>Start date</td>
+    <td colspan="2">
+        <input dojoType="dijit.form.DateTextBox" name="modifyStartDate"
+               id="modifyStartDate" style="width: 28em"" />
+    </td>
+  </tr>
+  <tr><td>Start time</td>
+      <td colspan="2">
+          <input dojoType="dijit.form.ValidationTextBox" name="modifyStartTime"
+             id="modifyStartTime"
+             regExp="[0-2]?[\d]:[0-5][\d]"
+             promptMessage="Enter the start time in format HH:MM"
+             invalidMessage="Invalid format:  use HH:MM" style="width: 28em" /></td>
+  </tr>
+  <tr>
+    <td>End date</td>
+    <td colspan="2">
+        <input dojoType="dijit.form.DateTextBox" name="modifyEndDate"
+               id="modifyEndDate" style="width: 28em"/>
+    </td>
+  </tr>
+  <tr><td>End time</td>
+      <td colspan="2">
+          <input dojoType="dijit.form.ValidationTextBox" name="modifyEndTime"
+             id="modifyEndTime"
+             regExp="[0-2]?[\d]:[0-5][\d]"
+             promptMessage="Enter the end time in format HH:MM"
+             invalidMessage="Invalid format:  use HH:MM" style="width: 28em"" /></td>
+  </tr>
+  <tr>
+      <td>Created time</td> <td colspan="2" id="createdTimeConvert" />
+  </tr>
+
+  <tr>
+      <td>Bandwidth (Mbps)</td>
+      <td colspan="2" >
+        <input type="text" name="bandwidthReplace" id="bandwidthReplace"
+          dojoType="dijit.form.NumberTextBox"
+          constraints="{min:1,max:100000,places:0}"
+          promptMessage="Enter a value between 1 and 100000"
+          invalidMessage="Invalid bandwidth." style="width: 28em"/>
+      </td>
+  </tr>
+
+  <!--<tr><td>Bandwidth (Mbps)</td><td colspan="2" id="bandwidthReplace" /></tr>  -->
+  <tr><td>Source</td><td colspan="2" id="sourceReplace" /></tr>
+  <tr><td>Destination</td><td colspan="2" id="destinationReplace" /></tr>
+
+
+  <tr class="layer2Replace">
+      <td />
+      <td>VLAN</td>
+      <td>Hop</td>
+  </tr>
+  <!--  
+  <tr class="layer2Replace">
+    <td>Local path</td>
+    <td width="6%"><table id="vlanPathReplace"></table></td>
+    <td><table id="pathReplace"></table></td>
+  </tr>
+  -->
+  <tr>
+    <td>Path</td>
+    <td><table class="layer2Replace" id="vlanInterPathReplace"></table></td>
+    <td><table id="interPathReplace"></table></td>
+  </tr>
+  <tr class="layer2Replace"><td>Source VLAN</td><td colspan="2" id="srcVlanReplace" class="layerFields" /></tr>
+  <tr class="layer2Replace"><td>Tagged</td><td colspan="2" id="srcTaggedReplace" class="layerFields"/></tr>
+  <tr class="layer2Replace"><td>Destination VLAN</td><td colspan="2" id="destVlanReplace" class="layerFields"/></tr>
+  <tr class="layer2Replace"><td>Tagged</td><td colspan="2" id="destTaggedReplace" class="layerFields"/></tr>
+  
+  <tr class="layer3Replace" style="display: none">
+    <td>Source IP</td><td colspan="2" id="sourceIPReplace" class="layerFields" />
+  </tr>
+  <tr class="layer3Replace" style="display: none">
+    <td>Destination IP</td><td colspan="2" id="destinationIPReplace" class="layerFields" />
+  </tr>
+  <tr class="layer3Replace" style="display: none">
+    <td>Source port</td><td colspan="2" id="sourcePortReplace" class="layerFields" />
+  </tr>
+  <tr class="layer3Replace" style="display: none">
+    <td>Destination port</td><td colspan="2" id="destinationPortReplace" class="layerFields" />
+  </tr>
+  <tr class="layer3Replace" style="display: none">
+    <td>Protocol</td><td colspan="2" id="protocolReplace" class="layerFields" />
+  </tr>
+  <tr class="layer3Replace" style="display: none">
+    <td>DSCP</td><td colspan="2" id="dscpReplace" class="layerFields" />
+  </tr>
+
+  <tr class="layer3Replace" style="display: none">
+    <td>Burst limit</td><td colspan="2" id="burstLimitReplace" class="layerFields"/>
+  </tr>
+  <tr class="layer3Replace" style="display: none">
+      <td>LSP</td><td colspan="2" id="lspClassReplace" class="layerFields"/>
+  </tr>
+
+  <tr style="color:#FF0000">
+      <td>Error Report</td>
+      <td style="color:#FF0000" colspan="2"><table id="errorReportReplace" ></table></td>
+  </tr >
+  </tbody>
+</table>
+</span>
+</form>
+
+<!-- tooltip section for buttons -->
+<div dojoType = "dijit.Tooltip" connectId="queryReservation" position="after">
+
+    Gets the current status of the reservation identified by NEW GRI from the
+    server.
+</div>
+<div dojoType = "dijit.Tooltip" connectId="refreshReservation" position="above">
+    Gets the current status of the reservation from the server.  Any
+    local modifications on the client are overwritten.
+</div>
+<div dojoType = "dijit.Tooltip" connectId="modifyReservation" position="above">
+    Modifies the start time and end time for the reservation, if they are
+    valid arguments.
+</div>
+<div dojoType = "dijit.Tooltip" connectId="cancelReservation" position="above">
+    Cancels the current reservation if it is pending or active.
+</div>
+<!--
+<div dojoType = "dijit.Tooltip" connectId="createPath" position="below">
+    Forces the recreation of a circuit.  Use with caution.
+</div>
+<div dojoType = "dijit.Tooltip" connectId="teardownPath" position="below">
+    Forces the teardown of a circuit.  Use with caution.
+</div>
+-->
+<div dojoType = "dijit.Tooltip" connectId="overrideStatus" position="below">
+    Immediately changes the status of a reservation.  Use with caution.
+</div>
+<!-- cancel dialog; note that doesn't seem to work inside a form -->
+<div dojoType="dijit.Dialog" id="cancelDialog"
+    style="display:none;" title="Are you sure you want to cancel?"
+    execute="oscars.ReservationDetails.postCancelReservation(arguments[0]);">
+  <table>
+    <tr>
+      <td>
+        <button dojoType="dijit.form.Button" type="submit">YES
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
+<!-- dialogs for buttons to use with extreme caution -->
+<!--
+<div dojoType="dijit.Dialog" id="createPathDialog"
+    style="display:none;" title="Are you sure you want to force path creation?"
+    execute="oscars.ReservationDetails.postCreatePath(arguments[0]);">
+  <p>
+  WARNING: This function will send out the configuration directives to your network equipment to create this circuit, regardless of the reservation's state (which will NOT change). This may result in existing circuits becoming degraded, torn down, or other network misconfiguration. Unless your reservation's status is already ACTIVE, newly created circuits may override the configuration sent out by this function. USE OF THIS FUNCTION MAY RESULT IN SERIOUS INCONSISTENCIES IN THE DATABASE AND IN THE MANAGED NETWORK. EXTREME CAUTION AS WELL AS  EXTENSIVE UNDERSTANDING OF THE SOFTWARE SUITE IS ADVISED.
+  </p>
+  <table>
+    <tr>
+      <td>
+        <button dojoType="dijit.form.Button" type="submit">YES
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
+<div dojoType="dijit.Dialog" id="teardownPathDialog"
+    style="display:none;" title="Are you sure you want to force path teardown?"
+    execute="oscars.ReservationDetails.postTeardownPath(arguments[0]);">
+  <p>
+  WARNING: This function will send out the configuration directives to your network equipment to tear down this circuit, regardless of the reservation's state (which will NOT change). This may result in existing circuits getting accidentally torn down, or other network misconfiguration. USE OF THIS FUNCTION MAY RESULT IN SERIOUS INCONSISTENCIES IN THE DATABASE AND IN THE MANAGED NETWORK. EXTREME CAUTION AS WELL AS  EXTENSIVE UNDERSTANDING OF THE SOFTWARE SUITE IS ADVISED.
+  </p>
+  <table>
+    <tr>
+      <td>
+        <button dojoType="dijit.form.Button" type="submit">YES
+        </button>
+      </td>
+    </tr>
+  </table>
+</div>
+-->
+<div dojoType="dijit.Dialog" id="overrideStatusDialog"
+    style="display:none;" title="Are you sure you want to force status change?"
+    execute="oscars.ReservationDetails.postOverrideStatus(arguments[0]);">
+  <p>
+  WARNING: This function will immediately update this reservation's status without ay guarantees as to correctness. Note that this CAN and probably WILL result in starting some of the several automated network configuration tasks that are triggered by certain reservation states. This may result in circuits getting accidentally torn down, overwritten by others, or experiencing reduced performance. USE OF THIS FUNCTION MAY RESULT IN SERIOUS INCONSISTENCIES IN THE DATABASE AND IN THE MANAGED NETWORK. EXTREME CAUTION AS WELL AS  EXTENSIVE UNDERSTANDING OF THE SOFTWARE SUITE IS ADVISED.
+  </p>
+  <table>
+  <tr>
+  <td>New status:
+      <select name="forcedStatusMenu" id="forcedStatusMenu"
+          onChange="oscars.ReservationDetails.forcedStatus();return false;">
+      <option value="FAILED" selected="selected">FAILED</option>
+      <option value="ACTIVE">ACTIVE</option>
+      <option value="RESERVED">RESERVED</option>
+      <option value="FINISHED">FINISHED</option>
+      <option value="CANCELLED">CANCELLED</option>
+      <option value="ACCEPTED">ACCEPTED</option>
+      <option value="INPATHCALCULATION">INPATHCALCULATION</option>
+      <option value="PATHCALCULATED">PATHCALCULATED</option>
+      <option value="INCOMMIT">INCOMMIT</option>
+      <option value="COMMITTED">INCOMMITED</option>
+      <option value="INSETUP">INSETUP</option>
+      <option value="INTEARDOWN">INTEARDOWN</option>
+      <option value="INMODIFY">INMODIFY</option>
+      <option value="INCANCEL">INCANCEL</option>
+  </select>
+  </td>
+  <td>
+      <button dojoType="dijit.form.Button" type="submit">FORCE
+      </button>
+  </td>
+  </tr>
+  </table>
+</div>
+</body>
+</html>

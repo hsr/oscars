@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="wbui">
+    <available property="dojo.installed" file="${basedir}/src/main/webapp/lib/dojo"/>
+    <target name="installdojo" unless="dojo.installed" description="unzip and untar Dojo material if necessary">
+        <untar src="${basedir}/src/main/webapp/lib/dojo-standard-1.2.3.tar" dest="${basedir}/src/main/webapp/lib"/>
+    </target>
+</project>

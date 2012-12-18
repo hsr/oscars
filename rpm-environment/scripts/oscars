@@ -1,0 +1,84 @@
+#!/bin/bash
+#
+# Init file for OSCARS services
+#
+# chkconfig: 2345 65 20
+# description: Starts all installed OSCARS services
+#
+
+#variables
+MODULES=/etc/oscars/modules/*.enabled
+RESTART_DELAY=10
+
+#functions
+start() {
+    for f in $MODULES
+    do
+        $f start
+    done
+}
+
+stop(){
+    for f in $MODULES
+    do
+        $f stop
+    done
+}
+
+get_status(){
+    for f in $MODULES
+    do
+        $f status
+    done
+}
+
+#handle arguments
+ERROR=0
+ARGV="$@"
+if [ -z "$ARGV" ] ; then 
+    ARGS="help"
+fi
+
+#check that modules are installed
+MODS_INSTALLED=`ls $MODULES 2> /dev/null`
+if [ $? -ne 0 ]; then
+    echo "No OSCARS modules installed"
+    exit 1
+fi
+
+for ARG in $@ $ARGS
+do
+    case $ARG in
+    start)
+        start
+	;;
+    stop)
+	    stop
+	;;
+    restart)
+    	stop
+    	sleep $RESTART_DELAY
+    	start
+	;;
+	status)
+	    get_status
+	;;
+    *)
+	echo "usage: $0 (start|stop|restart|help)"
+	cat <<EOF
+
+start      - start all ${LONG_NAME} services
+stop       - stop ${LONG_NAME}
+restart    - restart all ${LONG_NAME} services
+status     - status of all ${LONG_NAME} services
+help       - this screen
+
+EOF
+	ERROR=2
+    ;;
+
+    esac
+
+done
+
+exit $ERROR

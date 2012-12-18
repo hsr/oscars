@@ -1,0 +1,5 @@
+---
+
+
+-   id:     "bridge"
+    impl:   "net.es.oscars.pss.bridge.service.BridgeService"

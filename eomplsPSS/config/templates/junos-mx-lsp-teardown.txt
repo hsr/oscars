@@ -1,0 +1,69 @@
+<junoscript version="1.0" release="7.3">
+<rpc><lock-configuration /></rpc>
+<rpc>
+<load-configuration>
+<configuration>
+
+    <interfaces>
+        <interface>
+            <name>${ifce.name}</name>
+                <unit delete="delete">
+                    <name>${ifce.vlan}</name>
+                </unit>
+        </interface>
+    </interfaces>
+    <policy-options>
+        <policy-statement delete="delete">
+            <name>${policy.name}</name>
+        </policy-statement>
+        <community delete="delete">
+            <name>${community.name}</name>
+        </community>
+    </policy-options>
+    <routing-options>
+        <forwarding-table>
+            <export delete="delete">${policy.name}</export>
+        </forwarding-table>
+    </routing-options>
+    <protocols>
+        <mpls>
+            <label-switched-path delete="delete">
+                <name>${lsp.name}</name>
+            </label-switched-path>
+            <path delete="delete">
+                <name>${path.name}</name>
+            </path>
+        </mpls>
+        <l2circuit>
+            <neighbor>
+                <name>${l2circuit.egress}</name>
+                <interface delete="delete">
+                    <name>${ifce.name}.${ifce.vlan}</name>
+                </interface>
+            </neighbor>
+        </l2circuit>
+    </protocols>
+    <firewall>
+        <policer delete="delete">
+            <name>${policer.name}</name>
+        </policer>
+        <family>
+            <ccc>
+                <filter delete="delete">
+                    <name>${filters.stats.name}</name>
+                </filter>
+            </ccc>
+            <any>
+                <filter delete="delete">
+                    <name>${filters.policing.name}</name>
+                </filter>
+            </any>
+        </family>
+    </firewall>
+</configuration>
+
+</load-configuration>
+</rpc>
+<rpc><commit-configuration /></rpc>
+<rpc><unlock-configuration /></rpc>
+</junoscript>

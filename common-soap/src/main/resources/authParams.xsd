@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://oscars.es.net/OSCARS/authParams"
+    elementFormDefault="qualified"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:saml = "urn:oasis:names:tc:SAML:2.0:assertion"
+    xmlns:tns="http://oscars.es.net/OSCARS/authParams">
+    
+    <!--  SAML schema needs the cxf wsdl2java -autoNameResolution switch in order to resolve ReferenceType
+       defined in http://www.w3.org/2000/09/xmldsig# and http://www.w3.org/2000/09/xmldsig#   -->
+    <xsd:import namespace="urn:oasis:names:tc:SAML:2.0:assertion" 
+        schemaLocation="saml-schema-assertion-2.0.xsd"/>
+        <!--  official location  
+        schemaLocation="http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd"/>
+        -->
+    <!-- MessageProperties passed in all interdomain and some inter-service messages -->
+    <xsd:complexType name="messagePropertiesType">
+        <xsd:sequence>
+            <xsd:element name="globalTransactionId" type="xsd:string"/> 
+            <xsd:element name="originator" type="tns:subjectAttributes"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+   <!--  A list of subject attributes is returned by AuthN and input to AuthZ -->
+   
+   <xsd:complexType name="subjectAttributes">
+      <xsd:sequence>
+          <xsd:element name="subjectAttribute" type="saml:AttributeType"
+                     minOccurs="1" maxOccurs="unbounded"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   
+   <!--  A list (possibly empty of authorization conditions is returned by AuthZ and 
+         input to PolicyEnforcementPoints such as the resource manager -->
+         
+   
+   <xsd:complexType name="authConditions">
+      <xsd:sequence>
+          <xsd:element name="authCondition" type="tns:authConditionType"
+                     minOccurs="0" maxOccurs="unbounded"/>
+      </xsd:sequence>
+   </xsd:complexType>
+   
+   <xsd:complexType name = "authConditionType">
+       <xsd:sequence>
+           <xsd:element name="conditionValue" type="xsd:string"
+              minOccurs="1" maxOccurs="unbounded" />
+       </xsd:sequence>
+       <xsd:attribute name="name" type="xsd:string" use="required" />
+    </xsd:complexType>
+    
+</xsd:schema>

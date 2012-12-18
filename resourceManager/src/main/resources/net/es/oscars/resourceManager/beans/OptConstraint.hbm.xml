@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+
+<class name="net.es.oscars.resourceManager.beans.OptConstraint" table="optConstraints">
+    <meta attribute="class-description" inherit="false">
+       @hibernate.class table="optConstraints"
+    </meta>
+
+    <cache usage="read-write" />
+
+    <id name="id" column="id">
+        <meta attribute="field-description">
+           @hibernate.id generator-class="identity"
+        </meta>
+        <generator class="identity" />
+    </id>
+
+  <!-- @S bhr  -->
+   <!--  <property name="category" /> -->
+	
+	<property name="constraintType" not-null="true">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>
+    </property>
+	 	
+     <property name="keyName" not-null="true">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>
+    </property>
+
+    <property name="value" not-null="true" >
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>
+    </property>
+    
+    <property name="seqNumber" not-null="true" insert="false" update="false">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>
+    </property>
+    
+    
+ <!--    <property name="reservationId" not-null="true">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>
+   </property> --> 
+    
+	<!-- @E bhr -->    
+ 
+</class>
+</hibernate-mapping>

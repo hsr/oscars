@@ -1,0 +1,38 @@
+---
+store:
+
+# typically leave gri blank, server will set it.
+        gri:            ''
+# blank login means no change
+        login:		''
+# layer 0 means no change 
+        layer:          '0'
+# source and destination are urn-style or dns-style friendly names.
+# Note ':' characters are significant in YAML,
+# so remember to enclose URNs in single quotes
+        src:            'urn:ogf:network:domain=es.net:node=node-0:port=xe-9/1/0:link=*'
+        dst:            'urn:ogf:network:domain=es.net:node=node-10:port=xe-8/2/0:link=*'
+
+# bandwidth, in Mbps, integer
+        bandwidth:      150
+        
+# description, a string
+        description:    'a modified reservation'
+
+# start time may be a date expression (yyyy-MM-dd HH:mm) or 'now'
+# end time may be a date expression, or can start with a '+' sign
+# to specify a short duration, the format is : '+HH:mm'
+# Remember to enclose date expressions in single quotes
+        start-time:     'now'
+        end-time:       '+00:04'
+
+# this may be timer-automatic or signal-xml . generally leave at timer-automatic
+        path-setup-mode:        'timer-automatic'
+
+# vlans may be 'any' or a vlan range 2-4095. Only used for layer == 2. 
+# Should put in quotes even if a single vlan
+        srcvlan:        'any'
+        dstvlan:        'any'
+
+# optional: path, an array of urns. Must be enclosed in single quotes.
+

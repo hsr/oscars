@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+    targetNamespace =         "http://oscars.es.net/OSCARS/topoBridge"
+    xmlns:tns =             "http://oscars.es.net/OSCARS/topoBridge"
+    xmlns:xsd =             "http://www.w3.org/2001/XMLSchema"
+    xmlns:ctrlp =           "http://ogf.org/schema/network/topology/ctrlPlane/20080828/"
+    xmlns:com =             "http://oscars.es.net/OSCARS/common"
+    xmlns:authP=            "http://oscars.es.net/OSCARS/authParams"
+    elementFormDefault =	"qualified" >
+
+    <xsd:import namespace="http://ogf.org/schema/network/topology/ctrlPlane/20080828/"
+        schemaLocation="../nmtopo-ctrlp.xsd" />
+    <xsd:import 
+        namespace="http://oscars.es.net/OSCARS/authParams" 
+        schemaLocation="../authParams.xsd" />
+
+    <xsd:element name="getTopologyRequestType">
+      <xsd:complexType>
+        <xsd:sequence>
+          <xsd:element name="messageProperties" type ="authP:messagePropertiesType" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="domainId" type="xsd:string"></xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+     </xsd:element>
+
+    <xsd:element name="getTopologyResponseType">
+      <xsd:complexType>
+        <xsd:sequence>
+          <xsd:element name="messageProperties" type ="authP:messagePropertiesType" />
+          <xsd:element minOccurs="0" maxOccurs="unbounded" name="topology" type="ctrlp:CtrlPlaneTopologyContent"></xsd:element>
+        </xsd:sequence>
+      </xsd:complexType>
+     </xsd:element>
+</xsd:schema>

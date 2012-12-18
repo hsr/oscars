@@ -1,0 +1,81 @@
+<div>
+	<div class="left-content">
+		<form id="${id}_profileForm" dojoAttachPoint="formNode">
+			<span class="profileInstructions">Modify the fields and click "Save" to change your profile</span>
+			<table class="profileTable">
+				<tr>
+					<td>Username: </td>
+					<td><span id="${id}_profile_user" dojoAttachPoint="userField"></span></td>
+				</tr>
+				<tr>
+					<td>Password: </td>
+					<td><input name="password" type="password" dojoAttachPoint="passwdField"></td>
+				</tr>
+				<tr>
+					<td>Confirm Password: </td>
+					<td><input name="passwordConfirmation" type="password" dojoAttachPoint="passwdConfirmnField"></td>
+				</tr>
+				<tr>
+					<td>First Name: </td>
+					<td>
+						<input name="firstName" type="text" dojoAttachPoint="firstNameField">
+					</td>
+				</tr>
+				<tr>
+					<td>Last Name: </td>
+					<td><input name="lastName" type="text" dojoAttachPoint="lastNameField"></td>
+				</tr>
+				<tr>
+					<td>Organization: </td>
+					<td><span id="${id}_profile_org" dojoAttachPoint="orgField"></span></td>
+				</tr>
+				<tr>
+					<td>Email: </td>
+					<td><input name="emailPrimary" type="text" dojoAttachPoint="emailField"></td>
+				</tr>
+				<tr>
+					<td>Phone: </td>
+					<td><input name="phonePrimary" type="text" dojoAttachPoint="phoneField"></td>
+				</tr>
+				<tr>
+					<td colspan="2" class="buttonRow">
+						<div dojoType="ion.Button" label="Save" dojoAttachEvent="onClick: modifyUser"></div>
+					</td>
+				</tr>
+			</table>
+			<input type="hidden" name="certSubject" dojoAttachPoint="certSubjectField">
+			<input type="hidden" name="phoneSecondary" dojoAttachPoint="phoneSecondaryField">
+			<input type="hidden" name="description" dojoAttachPoint="descriptionField">
+			<input type="hidden" name="emailSecondary" dojoAttachPoint="emailSecondaryField">
+			<input type="hidden" name="institutionName" dojoAttachPoint="institutionNameField">
+		</form>
+	</div>
+	<div class="right-content">
+		<div class="right-top">Username </div> 
+		<span>The name of the account you used to login</span>
+		<div class="right-header">Password</div>
+		<span>Modify this field to change the account password</span>
+		<div class="right-header">Confirm Pass.</div>
+		<span>This field must match the <i>Password</i> field</span>
+		<div class="right-header">First Name</div>
+		<span>The first name of the account owner</span>
+		<div class="right-header">Last Name</div>
+		<span>The last name of the account owner</span>
+		<div class="right-header">Organization</div>
+		<span>Your home organization</span>
+		<div class="right-header">Email</div>
+		<span>An email to contact about this account's circuits</span>
+		<div class="right-header">Phone</div>
+		<span>A phone number to contact about this account's circuits</span>
+	</div>
+	<div dojoType="ion.ModalBox" dojoAttachPoint="modDialog">
+		<span class="profileModifyingingMsg">Modifying profile...</span>
+		<div dojoType="dijit.ProgressBar" indeterminate="true"></div>
+	</div>
+	<div dojoType="dijit.Dialog" dojoAttachPoint="modDoneDialog">
+		<span class="profileSaveMsg">Changes saved!</span>
+		<div class="dialogButtons">
+			<div dojoType="ion.Button" label="Close" dojoAttachEvent="onClick: closeDoneDialog"></div>
+		</div>
+	</div>
+</div>

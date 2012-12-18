@@ -1,0 +1,49 @@
+DijkstraPCE:
+    UNITTEST:
+        templateDir:        'OSCARS_DIST/dijkstraPCE/config'
+        config.yaml:        'OSCARS_DIST/dijkstraPCE/config/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_DIST/dijkstraPCE/config/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_DIST/dijkstraPCE/config/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_DIST/dijkstraPCE/config/log4j.LOG.properties'
+        wsdl:               'OSCARS_DIST/common-soap/src/main/resources/api/pce-0.6.wsdl'
+
+    DEVELOPMENT:
+        templateDir:        'OSCARS_HOME/DijkstraPCE/conf/'
+        config.yaml:        'OSCARS_HOME/DijkstraPCE/conf/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/DijkstraPCE/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/DijkstraPCE/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/DijkstraPCE/conf/log4j.MESSAGE.properties'
+        wsdl:               'OSCARS_HOME/wsdl/OSCARSService/PCEService-0.6.wsdl'
+
+    SDK:
+        templateDir:        'OSCARS_HOME/DijkstraPCE/conf/'
+        config.yaml:        'OSCARS_HOME/DijkstraPCE/conf/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/DijkstraPCE/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/DijkstraPCE/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/DijkstraPCE/conf/log4j.DEBUG.properties'
+        wsdl:               'OSCARS_HOME/wsdl/OSCARSService/PCEService-0.6.wsdl'
+
+    PRODUCTION:
+        templateDir:        'OSCARS_HOME/DijkstraPCE/conf/'
+        config.yaml:        'OSCARS_HOME/DijkstraPCE/conf/config.SSL.yaml'
+        server-cxf.xml:     'OSCARS_HOME/DijkstraPCE/conf/server-cxf-ssl.xml'
+        client-cxf.xml:     'OSCARS_HOME/DijkstraPCE/conf/client-cxf-ssl.xml'
+        log4j.properties:   'OSCARS_HOME/DijkstraPCE/conf/log4j.INFO.properties'
+        wsdl:               'OSCARS_HOME/wsdl/OSCARSService/PCEService-0.6.wsdl'
+
+Utils:
+    UNITTEST:
+        templateDir:        'OSCARS_DIST/Utils/config'
+        config.yaml:        'OSCARS_DIST/Utils/config/config.yaml'
+
+    DEVELOPMENT:
+        templateDir:        'OSCARS_HOME/Utils/conf/'
+        config.yaml:        'OSCARS_HOME/Utils/conf/config.yaml'
+
+    SDK:
+        templateDir:        'OSCARS_HOME/Utils/conf/'
+        config.yaml:        'OSCARS_HOME/Utils/conf/config.yaml'
+
+    PRODUCTION:
+        templateDir:        'OSCARS_HOME/Utils/conf/'
+        config.yaml:        'OSCARS_HOME/Utils/conf/config.yaml'

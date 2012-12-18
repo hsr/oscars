@@ -1,0 +1,105 @@
+#!/bin/sh
+# OSCARS_HOME: deployment directory
+# OSCARS_DIST: OSCARS distribution directory
+
+if [ ! -d $OSCARS_DIST ]; then
+	echo "OSCARS_DIST:$OSCARS_DIST does not exist"
+	exit
+fi
+
+if [ ! -d $OSCARS_HOME ]; then
+	echo "Creating $OSCARS_HOME";
+	mkdir -p $OSCARS_HOME
+fi
+SH=/bin/sh
+
+# First export WSDL/XSD
+$SH $OSCARS_DIST/common-soap/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+
+#utils
+$SH $OSCARS_DIST/utils/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+
+# IDC API
+$SH $OSCARS_DIST/api/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+
+# COORDINATOR
+$SH $OSCARS_DIST/coordinator/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+
+# PCE
+$SH $OSCARS_DIST/pce/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+$SH $OSCARS_DIST/connectivityPCE/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+$SH $OSCARS_DIST/dijkstraPCE/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+$SH $OSCARS_DIST/bandwidthPCE/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+$SH $OSCARS_DIST/vlanPCE/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+$SH $OSCARS_DIST/l3mplsPCE/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+
+# TopoBridge
+$SH $OSCARS_DIST/topoBridge/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+
+# authNStub
+#$SH $OSCARS_DIST/authNStub/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+
+# authentication
+$SH $OSCARS_DIST/authN/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+
+# authorization
+$SH $OSCARS_DIST/authZ/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+
+# resource manager
+$SH $OSCARS_DIST/resourceManager/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+
+# path setup
+DRAGONPSS="DRAGON"
+EOMPLSPSS="EOMPLS"
+CONTEXT="DEVELOPMENT"
+#Get PSS choice, but keep stubPSS the default
+whichPSS="STUB"
+Config=$(sh $OSCARS_DIST/bin/parseManifest.sh Utils utils $CONTEXT)
+Service=$(echo $Config | awk -F/ '$1~//{print $2}')
+Conf=$(echo $Config | awk -F/ '$1~//{print $3}')
+Yaml=$(echo $Config | awk -F/ '$1~//{print $4}' | sed "s/'//g")
+#echo "config:$Config yaml:$Yaml conf:$Conf"
+if [ "$Conf" == "conf" ]; then
+     whichPSS=$(awk -F: '$1~/PSSChoice/{print $2}' $OSCARS_HOME/$Service/$Conf/$Yaml)
+elif [ "$Conf" == "config" ]; then
+     whichPSS=$(awk -F: '$1~/PSSChoice/{print $2}' $OSCARS_DIST/$Service/$Conf/$Yaml)
+fi
+whichPSS=$(echo $whichPSS | sed 's/^ *\(.*\) *$/\1/')
+echo "Exporting configuration files for $whichPSS"
+if [ "$whichPSS" == "$DRAGONPSS" ]; then
+    $SH $OSCARS_DIST/dragonPSS/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+elif [ "$whichPSS" == "$EOMPLSPSS" ]; then
+    $SH $OSCARS_DIST/eomplsPSS/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+else
+    $SH $OSCARS_DIST/stubPSS/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+fi
+
+# Template Service
+#$SH $OSCARS_DIST/template/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+
+# WBUI
+$SH $OSCARS_DIST/wbui/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+
+#lookup Service
+$SH $OSCARS_DIST/lookup/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+
+#notificationBridge
+$SH $OSCARS_DIST/notificationBridge/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+
+#wsnbroker
+$SH $OSCARS_DIST/wsnbroker/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+
+#ion.new addition
+$SH $OSCARS_DIST/ionui/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+
+#
+# SAMPLE DOMAIN SPECIFIC
+#
+# This section must be the last section of the this script.
+# Comment out if you do not want to build the sample domain
+# If it not run, you will need to manually edit the client and server-cxf.xml
+# files in the $OSCARS_HOME/*/conf directories to point to the key and trust stores 
+# that are to be used
+
+$SH $OSCARS_DIST/sampleDomain/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+

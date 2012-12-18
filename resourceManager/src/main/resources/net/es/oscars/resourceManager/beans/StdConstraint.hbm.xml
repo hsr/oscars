@@ -1,0 +1,59 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+
+<class name="net.es.oscars.resourceManager.beans.StdConstraint" table="stdConstraints">
+    <meta attribute="class-description" inherit="false">
+       @hibernate.class table="stdConstraints"
+    </meta>
+
+    <cache usage="read-write" />
+
+    <id name="id" column="id">
+        <meta attribute="field-description">
+           @hibernate.id generator-class="identity"
+        </meta>
+        <generator class="identity" />
+    </id>
+
+    <property name="constraintType" not-null="true" insert="false" update="false">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>
+    </property>
+
+   <property name="startTime" not-null="true">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>
+    </property>
+
+    <property name="endTime" not-null="true">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>
+    </property>
+
+    <property name="bandwidth" not-null="true">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>
+    </property>
+
+    <!-- Associations -->
+    <!--  
+      Note: the many-to-one tag seems to be needed here to make this the parent amd cascading to work.
+            even though there is only a one-to-one relation between constraint and path. Also delete-orphan
+            doesn't parse here, so be careful of detaching a path from a constraint without also deleting it.
+    -->
+    <many-to-one name="path" cascade="all"
+        class="net.es.oscars.resourceManager.beans.Path"
+        column ="pathId"
+        unique = "true"/>
+        
+
+</class>
+</hibernate-mapping>

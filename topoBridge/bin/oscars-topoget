@@ -1,0 +1,4 @@
+#!/bin/bash
+vers=`cat $OSCARS_DIST/VERSION`
+java -Done-jar.main.class=net.es.oscars.topoBridge.utils.TopoBridgeGetUtil -Djava.net.preferIPv4Stack=true -jar $OSCARS_DIST/topoBridge/target/topoBridge-$vers.one-jar.jar $*
+

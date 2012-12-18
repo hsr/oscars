@@ -1,0 +1,58 @@
+<html>
+<head>
+<script type="text/javascript">
+    var userLayout = [
+         {name: 'Login', field: "login", width: "15em"},
+         {name: 'Last Name', field: "lastName", width: "11em"},
+         {name: 'First Name', field: "firstName", width: "10em"},
+         {name: 'Organization', field: "organization", width: "22em"},
+         {name: 'Phone', field: "phone", width: "11em"}
+    ];
+</script>
+</head>
+
+<body>
+<form id="userListForm" dojoType="dijit.form.Form">
+  <input type="hidden" name="userListInstsUpdated" id="userListInstsUpdated" />
+  <input type="hidden" name="userListAttrsUpdated" id="userListAttrsUpdated" />
+
+  <span id="userListHeaderDisplay" style="display:none">
+  <span id="userRowSelectableDisplay" style="display:none">
+  <br />
+  Click on a row to view detailed user information.
+  </span>
+  <span id="attributeInfoDisplay" style="display:none">
+  Use the menu and click on REFRESH to select users with a given attribute.
+  Further information on attributes is available
+  <a href="/OSCARS/docs/attributes.html" target="_blank">here</a>.
+  </span>
+  <br />
+
+  <table width="40%">
+  <tr>
+    <td width="7%">User List</td>
+    <td width="7%">
+      <button dojoType="dijit.form.Button" id="userList">
+       REFRESH 
+       <script type="dojo/method" event="onClick">
+          oscars.UserList.refreshUserGrid();
+       </script>
+      </button>
+    </td>
+  </tr>
+  </table>
+  <div id="attributeMenuDisplay" style="display:none">
+    Attributes ->
+    <select name="attributeName" id="attribute">
+    </select>
+  </div>
+  </span>
+</form>
+
+<br />
+<div id="userGrid" dojoType="dojox.grid.DataGrid" structure="userLayout"
+     autoWidth="true" autoHeight="true" elasticView="2">
+</div>
+</body>
+
+</html>

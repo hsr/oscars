@@ -1,0 +1,41 @@
+# Creates a signal-xml reservation in testDomain 1 with duration of 5 days 
+---
+create:
+
+# typically leave gri blank, server will set it.
+        gri:            ''
+        login:		'client'
+# layer can be 2 or 3
+        layer:          '2'
+# source and destination are urn-style or dns-style friendly names.
+# Note ':' characters are significant in YAML,
+# so remember to enclose URNs in single quotes
+        src:            'urn:ogf:network:domain=testdomain-1:node=node-1-1:port=ge-1/1/0:link=*'
+        dst:            'urn:ogf:network:domain=testdomain-1:node=node-1-2:port=ge-1/1/0:link=*'
+
+# bandwidth, in Mbps, integer
+        bandwidth:      50
+        
+# description, a string
+        description:    'a signal reservation'
+
+# start time may be a date expression (yyyy-MM-dd HH:mm) or 'now'
+# end time may be a date expression, or can start with a '+' sign
+# to specify a duration, the format is : '+DD:HH:mm'
+# Remember to enclose date expressions in single quotes
+        start-time:     'now'
+        end-time:       '+0:02:10'
+
+# this may be timer-automatic or signal-xml . generally leave at timer-automatic
+        path-setup-mode:        'signal-xml'
+
+# this may be strict or loose. will default to loose if  not set here
+        path-type:	'strict'
+
+# vlans may be 'any' or a vlan range 2-4095. Only used for layer == 2. 
+# Should put in quotes even if a single vlan
+        srcvlan:        'any'
+        dstvlan:        'any'
+
+# optional: path, an array of urns. Must be enclosed in single quotes.
+

@@ -1,0 +1,38 @@
+#!/bin/sh
+#
+# Export configuration files from the distribution directory into the production directory.
+#
+# syntax: exportconfig <path_to_distribution> <patch_to_production>
+#
+#
+
+## added the new client side configuration files.
+
+SERVICE=Utils
+MODULE=utils
+
+OSCARS_DIST=$1
+OSCARS_HOME=$2
+BUILD_ROOT=$3
+
+source $OSCARS_DIST/utils/bin/configLib.sh
+
+verifyArgs $OSCARS_DIST $OSCARS_HOME
+verifySvcName $SERVICE
+
+SRC_DIR=$OSCARS_DIST/$MODULE/config
+DST_DIR=$OSCARS_HOME/$SERVICE/conf
+if [ -n "$BUILD_ROOT" ]; then
+    DST_DIR=${BUILD_ROOT}/${DST_DIR}
+fi
+
+mkdir -p $DST_DIR
+
+if [ ! -f $DST_DIR/$CONFIG ] ; then
+    cp $SRC_DIR/$CONFIG  $DST_DIR/$CONFIG 
+fi
+
+if [ ! -f $DST_DIR/$MANIFEST ] ; then
+    cp $SRC_DIR/$MANIFEST  $DST_DIR/$MANIFEST
+fi
+

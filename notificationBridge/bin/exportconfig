@@ -1,0 +1,89 @@
+#!/bin/sh
+#
+# Export configuration files from the distribution directory into the production directory.
+#
+# syntax: exportconfig <path_to_distribution> <patch_to_production>
+#
+#
+
+SERVICE=NotificationBridgeService
+MODULE=notificationBridge
+
+OSCARS_DIST=$1
+OSCARS_HOME=$2
+DST_LOGDIR=$3
+BUILD_ROOT=$4
+
+source $OSCARS_DIST/utils/bin/configLib.sh
+
+verifyArgs $OSCARS_DIST $OSCARS_HOME
+verifySvcName $SERVICE
+
+SRC_DIR=$OSCARS_DIST/$MODULE/config/
+DST_DIR=$OSCARS_HOME/$SERVICE/conf
+if [ -n "$BUILD_ROOT" ]; then
+    DST_DIR=${BUILD_ROOT}/${DST_DIR}
+fi
+if [ -z "$DST_LOGDIR" ]; then
+    DST_LOGDIR=$OSCARS_HOME/logs
+fi
+
+
+mkdir -p $DST_LOGDIR
+mkdir -p $DST_DIR
+
+if [ ! -f $DST_DIR/$MANIFEST ] ; then
+    cp $SRC_DIR/$MANIFEST  $DST_DIR/$MANIFEST      
+fi
+if [ ! -f $DST_DIR/$CONFIG_HTTP  ] ; then
+    cp $SRC_DIR/$CONFIG_HTTP $DST_DIR/$CONFIG_HTTP 
+fi
+if [ ! -f $DST_DIR/$CONFIG_SSL  ] ; then
+    cp $SRC_DIR/$CONFIG_SSL $DST_DIR/$CONFIG_SSL
+fi
+
+
+# cxf configuration files
+if [ ! -f $DST_DIR/$CXF_SERVER_HTTP_CFG ] ; then
+    cp $SRC_DIR/$CXF_SERVER_HTTP_CFG  $DST_DIR/$CXF_SERVER_HTTP_CFG
+fi
+if [ ! -f $DST_DIR/$CXF_SERVER_SSL_CFG ] ; then
+    cp $SRC_DIR/$CXF_SERVER_SSL_CFG  $DST_DIR/$CXF_SERVER_SSL_CFG
+fi
+if [ ! -f $DST_DIR/$CXF_CLIENT_HTTP_CFG ] ; then
+    cp $SRC_DIR/$CXF_CLIENT_HTTP_CFG  $DST_DIR/$CXF_CLIENT_HTTP_CFG
+fi
+if [ ! -f $DST_DIR/$CXF_CLIENT_SSL_CFG ] ; then
+    cp $SRC_DIR/$CXF_CLIENT_SSL_CFG  $DST_DIR/$CXF_CLIENT_SSL_CFG
+fi
+
+# copy topic files
+if [ ! -f $DST_DIR/topicnamespace.xml ] ; then
+    cp $SRC_DIR/topicnamespace.xml  $DST_DIR/topicnamespace.xml
+fi
+
+if [ ! -f $DST_DIR/topicset.xml ] ; then
+    cp $SRC_DIR/topicset.xml  $DST_DIR/topicset.xml
+fi
+
+#keystores
+if [ ! -f $DST_DIR/clientKeystore.properties ] ; then
+    cp $SRC_DIR/clientKeystore.properties $DST_DIR/clientKeystore.properties
+fi
+
+#mail templates
+if [ ! -d $DST_DIR/mail_templates ] ; then
+    cp -r $SRC_DIR/mail_templates $DST_DIR/mail_templates
+fi
+
+# log4j
+if [ ! -f $DST_DIR/$LOG4J_PROPS_INFO ] ; then
+    sed -e "s,$MODULE\.log,$DST_LOGDIR/$SERVICE.log," -e "s,oscars\.log,$DST_LOGDIR/oscars.log,"  < $SRC_DIR/$LOG4J_PROPS_INFO > $DST_DIR/$LOG4J_PROPS_INFO
+fi
+if [ ! -f $DST_DIR/$LOG4J_PROPS_DEBUG ] ; then
+    sed -e "s,$MODULE\.log,$DST_LOGDIR/$SERVICE.log,"  <  $SRC_DIR/$LOG4J_PROPS_DEBUG > $DST_DIR/$LOG4J_PROPS_DEBUG
+    fi
+if [ ! -f $DST_DIR/$LOG4J_PROPS_MESSAGE ] ; then
+    sed -e "s,$MODULE\.log,$DST_LOGDIR/$SERVICE.log," <  $SRC_DIR/$LOG4J_PROPS_MESSAGE > $DST_DIR/$LOG4J_PROPS_MESSAGE
+fi
+

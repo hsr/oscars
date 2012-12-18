@@ -1,0 +1,55 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CtrlPlane:topology xmlns:CtrlPlane="http://ogf.org/schema/network/topology/ctrlPlane/20080828/" id="testdomain-1">
+  <xsd:documentation xmlns:xsd="http://www.w3.org/2001/XMLSchema" lang="en">
+     This file describes a two node topology 
+  </xsd:documentation>
+  
+  <CtrlPlane:idcId>testdomain-1</CtrlPlane:idcId>
+  <CtrlPlane:domain id="testdomain-1">
+    <CtrlPlane:node id="urn:ogf:network:domain=testdomain-1:node=node-1-1">
+      <CtrlPlane:address>10.1.1.1</CtrlPlane:address>
+      <CtrlPlane:port id="urn:ogf:network:domain=testdomain-1:node=node-1-1:port=ge-1/1/0">
+        <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+        <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+        <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+        <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+        <CtrlPlane:link id="urn:ogf:network:domain=testdomain-1:node=node-1-1:port=ge-1/1/0:link=*">
+          <CtrlPlane:remoteLinkId>urn:ogf:network:testdomain-1:node-1-2:ge-1/1/0:*</CtrlPlane:remoteLinkId>
+          <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+          <CtrlPlane:SwitchingCapabilityDescriptors>
+            <CtrlPlane:switchingcapType />
+            <CtrlPlane:encodingType>packet</CtrlPlane:encodingType>
+            <CtrlPlane:switchingCapabilitySpecificInfo>
+              <CtrlPlane:capability />
+              <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+              <CtrlPlane:vlanRangeAvailability>2-4094</CtrlPlane:vlanRangeAvailability>
+            </CtrlPlane:switchingCapabilitySpecificInfo>
+          </CtrlPlane:SwitchingCapabilityDescriptors>
+        </CtrlPlane:link>
+      </CtrlPlane:port>
+    </CtrlPlane:node>
+    
+    <CtrlPlane:node id="urn:ogf:network:domain=testdomain-1:node=node-1-2">
+      <CtrlPlane:address>10.1.1.2</CtrlPlane:address>
+      <CtrlPlane:port id="urn:ogf:network:domain=testdomain-1:node=node-1-2:port=ge-1/1/0">
+        <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+        <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+        <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+        <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+        <CtrlPlane:link id="urn:ogf:network:domain=testdomain-1:node=node-1-2:port=ge-1/1/0:link=*">
+          <CtrlPlane:remoteLinkId>urn:ogf:network:testdomain-1:node-1-1:ge-1/1/0:*</CtrlPlane:remoteLinkId>
+          <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+          <CtrlPlane:SwitchingCapabilityDescriptors>
+            <CtrlPlane:switchingcapType />
+            <CtrlPlane:encodingType>packet</CtrlPlane:encodingType>
+            <CtrlPlane:switchingCapabilitySpecificInfo>
+              <CtrlPlane:capability />
+              <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+              <CtrlPlane:vlanRangeAvailability>2-4094</CtrlPlane:vlanRangeAvailability>
+            </CtrlPlane:switchingCapabilitySpecificInfo>
+          </CtrlPlane:SwitchingCapabilityDescriptors>
+        </CtrlPlane:link>
+      </CtrlPlane:port>
+    </CtrlPlane:node>
+  </CtrlPlane:domain>
+</CtrlPlane:topology>

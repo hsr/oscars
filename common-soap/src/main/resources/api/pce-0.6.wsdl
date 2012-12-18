@@ -1,0 +1,313 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!-- If you change the version number, you need to update pce-0.6.xsd and common-soap/pom.xml as well -->
+<wsdl:definitions name="PCEDefinitions"
+    targetNamespace="http://oscars.es.net/OSCARS/PCE/20090922"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/"
+    xmlns:tns="http://oscars.es.net/OSCARS/PCE/20090922">
+
+    <wsdl:documentation>
+        This is WSDL for the OSCARS PCE public API.
+    </wsdl:documentation>
+    
+   <!-- Element definitions -->
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://oscars.es.net/OSCARS/PCE/20090922"
+            elementFormDefault="qualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema">
+            <xsd:include schemaLocation="pce-0.6.xsd" />
+        </xsd:schema>
+    </wsdl:types>
+
+   
+    <!--   Message definitions -->
+
+    <wsdl:message name="PCECreate">
+        <wsdl:part name="PCECreate"
+            element="tns:PCECreate">
+        </wsdl:part>
+    </wsdl:message>
+ 
+    <wsdl:message name="PCEReply">
+        <wsdl:part name="PCEReply"
+            element="tns:PCEReply">
+        </wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="PCECreateCommit">
+        <wsdl:part name="PCECreateCommit"
+            element="tns:PCECreateCommit">
+        </wsdl:part>
+    </wsdl:message>
+ 
+    <wsdl:message name="PCECreateCommitReply">
+        <wsdl:part name="PCECreateCommitReply"
+            element="tns:PCECreateCommitReply">
+        </wsdl:part>
+    </wsdl:message>
+    
+    <wsdl:message name="PCEModify">
+        <wsdl:part name="PCEModify"
+            element="tns:PCEModify">
+        </wsdl:part>
+    </wsdl:message>
+ 
+    <wsdl:message name="PCEModifyReply">
+        <wsdl:part name="PCEModifyReply"
+            element="tns:PCEModifyReply">
+        </wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="PCEModifyCommit">
+        <wsdl:part name="PCEModifyCommit"
+            element="tns:PCEModifyCommit">
+        </wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="PCEModifyCommitReply">
+        <wsdl:part name="PCEModifyCommitReply"
+            element="tns:PCEModifyCommitReply">
+        </wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="PCECancel">
+        <wsdl:part name="PCECancel"
+            element="tns:PCECancel">
+        </wsdl:part>
+    </wsdl:message>
+ 
+    <wsdl:message name="PCECancelReply">
+        <wsdl:part name="PCECancelReply"
+            element="tns:PCECancelReply">
+        </wsdl:part>
+    </wsdl:message>
+       
+    <wsdl:message name="AggregatorCreate">
+        <wsdl:part name="AggregatorCreate"
+            element="tns:AggregatorCreate">
+        </wsdl:part>
+    </wsdl:message>
+    
+       <wsdl:message name="AggregatorCreateCommit">
+        <wsdl:part name="AggregatorCreateCommit"
+            element="tns:AggregatorCreateCommit">
+        </wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="AggregatorModify">
+        <wsdl:part name="AggregatorModify"
+            element="tns:AggregatorModify">
+        </wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="AggregatorModifyCommit">
+        <wsdl:part name="AggregatorModifyCommit"
+            element="tns:AggregatorModifyCommit">
+        </wsdl:part>
+    </wsdl:message>
+    
+    <wsdl:message name="AggregatorCancel">
+        <wsdl:part name="AggregatorCancel"
+            element="tns:AggregatorCancel">
+        </wsdl:part>
+    </wsdl:message>
+
+    <wsdl:portType name="PCEPortType">
+        <wsdl:operation name="PCECreate">
+            <wsdl:input message="tns:PCECreate" />
+        </wsdl:operation>
+
+        <wsdl:operation name="PCEReply">
+            <wsdl:input message="tns:PCEReply" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="PCECreateCommit">
+            <wsdl:input message="tns:PCECreateCommit" />
+        </wsdl:operation>
+
+        <wsdl:operation name="PCECreateCommitReply">
+            <wsdl:input message="tns:PCECreateCommitReply" />
+        </wsdl:operation>
+
+        <wsdl:operation name="PCEModifyCommit">
+            <wsdl:input message="tns:PCEModifyCommit" />
+        </wsdl:operation>
+
+        <wsdl:operation name="PCEModifyCommitReply">
+            <wsdl:input message="tns:PCEModifyCommitReply" />
+        </wsdl:operation>
+
+ 
+         <wsdl:operation name="PCEModify">
+            <wsdl:input message="tns:PCEModify" />
+        </wsdl:operation>
+
+        <wsdl:operation name="PCEModifyReply">
+            <wsdl:input message="tns:PCEModifyReply" />
+        </wsdl:operation>
+
+        <wsdl:operation name="PCECancel">
+            <wsdl:input message="tns:PCECancel" />
+        </wsdl:operation>
+
+        <wsdl:operation name="PCECancelReply">
+            <wsdl:input message="tns:PCECancelReply" />
+        </wsdl:operation>
+                             
+        <wsdl:operation name="AggregatorCreate">
+            <wsdl:input message="tns:AggregatorCreate" />
+        </wsdl:operation>
+                              
+        <wsdl:operation name="AggregatorModify">
+            <wsdl:input message="tns:AggregatorModify" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="AggregatorCreateCommit">
+            <wsdl:input message="tns:AggregatorCreateCommit" />
+        </wsdl:operation>
+        <wsdl:operation name="AggregatorModifyCommit">
+            <wsdl:input message="tns:AggregatorModifyCommit" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="AggregatorCancel">
+            <wsdl:input message="tns:AggregatorCancel" />
+        </wsdl:operation>
+               
+    </wsdl:portType>
+ 
+                  
+    <wsdl:binding name="PCEBinding" type="tns:PCEPortType">
+    
+        <soap:binding style="document"
+            transport="http://schemas.xmlsoap.org/soap/http" />
+            
+        <wsdl:operation name="PCECreate"> 
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/PCE/PCECreate" />
+            <wsdl:input>
+                <soap:body use="literal" parts="PCECreate" />
+            </wsdl:input>
+        </wsdl:operation>
+        
+        <wsdl:operation name="PCEReply"> 
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/PCE/PCEReply" />
+            <wsdl:input>
+                <soap:body use="literal" parts="PCEReply" />
+            </wsdl:input>
+        </wsdl:operation>
+
+       <wsdl:operation name="PCECreateCommit">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/PCE/PCECreateCommit" />
+            <wsdl:input>
+                <soap:body use="literal" parts="PCECreateCommit" />
+            </wsdl:input>
+        </wsdl:operation>
+ 
+        <wsdl:operation name="PCECreateCommitReply">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/PCE/PCECreateCommitReply" />
+            <wsdl:input>
+                <soap:body use="literal" parts="PCEReply" />
+            </wsdl:input>
+        </wsdl:operation>
+ 
+
+        <wsdl:operation name="PCEModifyCommit">
+             <soap:operation style="document"
+                 soapAction="http://oscars.es.net/OSCARS/PCE/PCEModifyCommit" />
+             <wsdl:input>
+                 <soap:body use="literal" parts="PCEModifyCommit" />
+             </wsdl:input>
+         </wsdl:operation>
+
+         <wsdl:operation name="PCEModifyCommitReply">
+             <soap:operation style="document"
+                 soapAction="http://oscars.es.net/OSCARS/PCE/PCEModifyCommitReply" />
+             <wsdl:input>
+                 <soap:body use="literal" parts="PCEReply" />
+             </wsdl:input>
+         </wsdl:operation>
+
+       <wsdl:operation name="PCEModify"> 
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/PCE/PCEModify" />
+            <wsdl:input>
+                <soap:body use="literal" parts="PCEModify" />
+            </wsdl:input>
+        </wsdl:operation>
+ 
+        <wsdl:operation name="PCEModifyReply"> 
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/PCE/PCEModifyReply" />
+            <wsdl:input>
+                <soap:body use="literal" parts="PCEReply" />
+            </wsdl:input>
+        </wsdl:operation>
+
+
+       <wsdl:operation name="PCECancel"> 
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/PCE/PCECancel" />
+            <wsdl:input>
+                <soap:body use="literal" parts="PCECancel" />
+            </wsdl:input>
+        </wsdl:operation>
+ 
+        <wsdl:operation name="PCECancelReply"> 
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/PCE/PCECancelReply" />
+            <wsdl:input>
+                <soap:body use="literal" parts="PCEReply" />
+            </wsdl:input>
+        </wsdl:operation>                       
+               
+        <wsdl:operation name="AggregatorCreate"> 
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/PCE/AggregatorCreate" />
+            <wsdl:input>
+                <soap:body use="literal" parts="AggregatorCreate" />
+            </wsdl:input>
+        </wsdl:operation>
+              
+        <wsdl:operation name="AggregatorModify"> 
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/PCE/AggregatorModify" />
+            <wsdl:input>
+                <soap:body use="literal" parts="AggregatorModify" />
+            </wsdl:input>
+        </wsdl:operation>
+             
+        <wsdl:operation name="AggregatorCreateCommit">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/PCE/AggregatorCreateCommit" />
+            <wsdl:input>
+                <soap:body use="literal" parts="AggregatorCreateCommit" />
+            </wsdl:input>
+        </wsdl:operation>
+
+        <wsdl:operation name="AggregatorModifyCommit">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/PCE/AggregatorModifyCommit" />
+            <wsdl:input>
+                <soap:body use="literal" parts="AggregatorModifyCommit" />
+            </wsdl:input>
+        </wsdl:operation>
+        <wsdl:operation name="AggregatorCancel"> 
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/PCE/AggregatorCancel" />
+            <wsdl:input>
+                <soap:body use="literal" parts="AggregatorC" />
+            </wsdl:input>
+        </wsdl:operation>
+    </wsdl:binding>
+
+
+    <wsdl:service name="PCEService">
+        <wsdl:port name="PCEPortType" binding="tns:PCEBinding">
+           <soap:address location=""/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

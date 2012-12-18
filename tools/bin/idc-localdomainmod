@@ -1,0 +1,160 @@
+#!/bin/sh
+#########################################################################
+# Script used to view current local domain
+# Usage: idc-domainmod <context>
+# TBD: Removing echo/prints. Retaining expecting future changes
+# TBD: Run from OSCARS_HOME. Right now run from OSCARS_DIST
+#########################################################################
+
+#######################################################################
+# Subroutine to print usage
+#######################################################################
+printUsage() {
+	echo -e "\nusage idc-domainmod <context>"
+	echo "<context> is one of: PRODUCTION|pro DEVELOPMENT|dev SDK|sdk"
+	exit 1;
+}
+
+#######################################################################
+#subroutine to get configFile
+#######################################################################
+getConfigFile () {
+	if [ $# -lt 3 ]; then
+		echo "Error: Argument list insufficient"
+		exit 1;
+	fi
+#TBD run from OSCARS_HOME?
+	Config=$(sh $OSCARS_DIST/bin/parseManifest.sh $1 $2 $3 | sed "s/'//g")
+	#Should find manifest file, and it should have the config line we're looking for.
+	##If not, there is some error in either the manifest file copy, or the manifest file that is copied
+	if [ -z $Config ]; then
+                echo "The manifest file is not found/is invalid. Have you run the bin/copyTemplates.sh and/or bin/exportconfig commands?"
+
+                exit 1
+        fi
+
+#	echo "Config in local Method :$Config"
+	Service=$(echo $Config | awk -F/ '$1~//{print $2}')
+	Conf=$(echo $Config | awk -F/ '$1~//{print $3}')
+	Yaml=$(echo $Config | awk -F/ '$1~//{print $4}' | sed "s/'//g")
+#	echo "2. $Service, $Conf, $Yaml"
+	if [ "$Conf" == "conf" ]; then
+       		configFile=$OSCARS_HOME/$Service/$Conf/$Yaml
+	elif [ "$Conf" == "config" ]; then
+		configFile=$OSCARS_DIST/$Service/$Conf/$Yaml
+	fi
+	#echo "3. Config File: $configFile"
+	echo $configFile
+}
+
+######################Execution starts here######
+#check if $OSCARS_HOME is set
+REPO_PATH=""
+if [ -n "$OSCARS_HOME" ]; then
+	REPO_PATH=OSCARS_HOME
+else
+	echo "ERROR: OSCARS_HOME is not set. Re-run this script after setting OSCARS_HOME."
+	exit 1
+fi
+
+if  [ -z $OSCARS_DIST ]; then
+    echo "Please set the environment var OSCARS_DIST to the OSCARS source directory"
+    exit -1
+fi
+
+#if no context provided, quit
+if [ $# -lt 1 ]; then    
+	printUsage
+fi
+
+#Assign context
+case $1 in
+    d|D|dev|DEV) CONTEXT="DEVELOPMENT";;
+    p|P|pro|PRO) CONTEXT="PRODUCTION";;
+    t|T|test|TEST) CONTEXT="UNITTEST";;
+    s|S|sdk) CONTEXT="SDK";;
+esac
+
+#Search topology file and get the values
+#Config2=$(getConfigFile Utils $CONTEXT utils) #configFile
+Config2=$(getConfigFile Utils Utils $CONTEXT) 
+#if file not found, return
+if [ -z $Config2 ] || [ ! -f $Config2 ]; then
+	echo "The configuration file is not found. Check if your $OSCARS_HOME/Utils/conf folder has configuration files present"
+	exit 1
+fi
+
+
+
+SVCFND=0
+CONTFND=0
+LOCALDOMAIN="localDomain" #Local domain indicator string
+
+#prompt user for new domain 
+printf "Enter the new domain you would like to use as the local domain: ";
+read user_choice;
+stty echo;
+echo "";
+#trim string
+user_choice=$(echo $user_choice | sed 's/^ *\(.*\) *$/\1/')
+
+#Get all topo files to check if this topology is present
+#Edit  $OSCARS_HOME/TopoBridgeService/conf /config.XXX.yaml
+#topoConfigFile=$(getConfigFile TopoBridgeService $CONTEXT topoBridge) #configFile
+topoConfigFile=$(getConfigFile TopoBridgeService TopoBridgeService $CONTEXT) 
+#If file not found, return
+if [ -z $topoConfigFile ] || [ ! -f $topoConfigFile ]; then
+        echo "The configuration file is not found. Have you run the bin/copyTemplates.sh and/or bin/exportconfig commands? "
+        exit 1
+fi
+
+#Check if user's choice is present in current list of topology files
+#echo "Config File where all domains are found= $topoConfigFile"
+#quotes to avoid duplicate matches like testdomain-1, testdomain-11 when searching for testdomain-1
+isDomainFound=$(awk -F: '$1~/'\'$user_choice\''/{print "FOUND"}' $topoConfigFile)
+if [ "$isDomainFound" != "FOUND" ]; then
+	echo "--NOTE: Your choice of domain is not found in the current set of configured topologies."
+	echo "--Run idc-domainadd to add this new domain"
+fi
+
+#get current Local Domain used
+lineNum=0;
+while read i; 
+do
+	Line=$(echo $i)
+	#trimming
+	Line=$(echo $Line | sed 's/^ *\(.*\) *$/\1/')
+	lineNum=`expr $lineNum + 1`
+	#echo "...:$Line"
+	iscomment=$(echo $Line | awk '/^#/ {print "comment"}')
+        if [ "$iscomment" == "comment" ]; then
+                continue;
+	fi
+	if [ $CONTFND -eq 0 ]; then
+		localDmId=$(echo $Line | awk -F: '$1~/'$LOCALDOMAIN'/{print "FOUND"}')
+		if [ "$localDmId" == "FOUND" ]; then
+			CONTFND=1
+		fi
+	elif [ $CONTFND -eq 1 ]; then
+		CON2=$(echo $Line | awk -F: '$1~/^id/{print "FOUND"}')
+        	if [ "$CON2" == "FOUND" ]; then
+			localDomain=$(echo $Line | awk -F: '$1~/id/{print $2}' | sed "s/'//g")
+			CONTFND=0
+		#fi
+		#echo "localDomain=$localDomain. Linenum = $lineNum"
+		#trimming
+                localDomain=$(echo $localDomain | sed 's/^ *\(.*\) *$/\1/')
+		break;
+		fi
+	fi
+done<$Config2
+		
+#got line number and localDomain. Replace now
+echo "--Replacing your current local domain from $localDomain to $user_choice"; 
+#sed -i ""$lineNum"s/$localDomain/$user_choice/" $Config2
+sed -i ""$lineNum"s/id:.*'$localDomain'/id: \'$user_choice\'/" $Config2
+if [ $? != 0 ]; then
+	echo "-- Sed returned an error when updating $Config2. Please manually change the localDomain identifier in this file";
+else
+	echo "--Done."
+fi

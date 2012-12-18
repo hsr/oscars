@@ -1,0 +1,21 @@
+<html>
+
+    <script language="JavaScript">
+    <!--
+    function clickFirstButton()
+    {
+      document.myForm.button1.click();
+    }
+    -->
+    </script>
+    <form name="myForm">
+      <input type="button"
+             value="Display alert box"
+             name="button1"
+             onClick="alert('You clicked the first button.')"><br>
+      <input type="button"
+             value="Call on button 1"
+             name="button2"
+             onClick="clickFirstButton()">
+    </form>    
+    </html>

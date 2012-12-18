@@ -1,0 +1,113 @@
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/maven-v4_0_0.xsd">
+  <modelVersion>4.0.0</modelVersion>
+  <artifactId>oscars-war</artifactId>
+  <name>war file for OSCARS WBUI</name>
+  <packaging>war</packaging>
+
+  <parent>
+    <groupId>net.es.oscars</groupId>
+    <artifactId>OSCARS</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+
+  <dependencies>
+      <!-- internal OSCARS dependencies for clients -->
+       <dependency>
+            <groupId>net.es.oscars</groupId>
+            <artifactId>authN</artifactId>
+            <version>${oscars.version}</version>
+       </dependency>
+
+       <dependency>
+            <groupId>net.es.oscars</groupId>
+            <artifactId>authZ</artifactId>
+            <version>${oscars.version}</version>
+       </dependency>
+
+      <!-- servlets -->
+      <dependency>
+          <groupId>org.apache.geronimo.specs</groupId>
+          <artifactId>geronimo-servlet_2.4_spec</artifactId>
+          <version>1.1.1</version>
+      </dependency>
+
+      <!-- JSON -->
+      <dependency>
+          <groupId>net.sf.json-lib</groupId>
+          <artifactId>json-lib</artifactId>
+          <version>2.2.3</version>
+          <classifier>jdk15</classifier>
+      </dependency> 
+      
+  </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <artifactId>maven-antrun-plugin</artifactId>
+                <executions>
+                    <execution>
+                        <id>untar-dojo</id>
+                        <phase>generate-resources</phase>
+                        <goals>
+                            <goal>run</goal>
+                        </goals>
+                        <configuration>
+                            <tasks>
+                                <ant antfile="${basedir}/build.xml">
+                                    <target name="installdojo"/>
+                                </ant>
+                            </tasks>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- specifically use java 1.5 to compile -->
+            <plugin>
+                <groupId>org.apache.maven.plugins</groupId>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+<plugin>
+            <groupId>org.apache.maven.plugins</groupId>
+            <artifactId>maven-jar-plugin</artifactId>
+            <version>2.3.1</version>
+            <executions>
+            	<execution>
+            		<phase>compile</phase>
+            		<goals>
+            			<goal>jar</goal>
+            		</goals>
+		</execution>
+            </executions>
+</plugin>
+
+<plugin>
+	<groupId>org.apache.maven.plugins</groupId>
+	<artifactId>maven-install-plugin</artifactId>
+	<executions>
+		<execution>
+			<phase>package</phase>
+			<goals>
+				<goal>install-file</goal>
+			</goals>
+			<configuration>
+				<packaging>jar</packaging>
+				<artifactId>${project.artifactId}</artifactId>
+				<version>${project.version}</version>
+				<groupId>${project.groupId}</groupId>
+				<file>
+					${project.build.directory}/${project.artifactId}-${project.version}.jar
+				</file> 
+			</configuration>
+		</execution>
+	</executions>
+</plugin> 
+
+        </plugins>
+    </build>
+</project>

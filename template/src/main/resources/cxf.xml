@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ** This is the CXF runtime configuration file. It currently only includes
+  ** JETTY subsytem. Note that Spring is used only for the purpose of this 
+  ** configuration.
+ -->
+
+

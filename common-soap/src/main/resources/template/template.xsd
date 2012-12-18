@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema 
+	targetNamespace = 		"http://oscars.es.net/OSCARS/template/06"
+    xmlns:tns = 			"http://oscars.es.net/OSCARS/template/06"
+    xmlns:xsd = 			"http://www.w3.org/2001/XMLSchema"
+    elementFormDefault =	"qualified" >
+
+
+    <xsd:element name="RequestType">
+    	<xsd:complexType>
+    		<xsd:sequence>
+    			<xsd:element name="Prefix" type="xsd:string"></xsd:element>
+    			<xsd:element name="InputData" type="xsd:string"></xsd:element>
+    		</xsd:sequence>
+    	</xsd:complexType>
+   	</xsd:element>
+</xsd:schema>

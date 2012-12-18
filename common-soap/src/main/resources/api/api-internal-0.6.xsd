@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://oscars.es.net/OSCARS/06"
+    elementFormDefault="qualified"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:tns="http://oscars.es.net/OSCARS/06">
+ 
+    <!-- Element definitions -->
+    <xsd:element name="Destination" type="xsd:string"  />
+    
+    <!-- Destination Info -->
+    <xsd:complexType name="Destination">
+    	<xsd:sequence> 
+    		<xsd:element name="domainId" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+    	</xsd:sequence>
+    </xsd:complexType>
+    
+    
+</xsd:schema>

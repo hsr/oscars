@@ -1,0 +1,206 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>OSCARS</artifactId>
+    <groupId>net.es.oscars</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  
+  <artifactId>wsnbroker</artifactId>
+  <name>wsnbroker</name>
+  <url>http://maven.apache.org</url>
+  
+  <properties>
+    <notification.dir>wsnbroker</notification.dir>
+  </properties>
+    
+        <!-- puts all code & libraries in one jar -->
+    <pluginRepositories>
+        <pluginRepository>
+            <id>onejar-maven-plugin.googlecode.com</id>
+            <url>http://onejar-maven-plugin.googlecode.com/svn/mavenrepo</url>
+        </pluginRepository>
+    </pluginRepositories>
+
+  <repositories>
+    <repository>
+        <id>OSCARS</id>
+        <name>OSCARS Maven Repository</name>
+        <layout>default</layout>
+        <url>file:///${basedir}/../common-libs/repo</url>
+    </repository>
+  </repositories>
+    
+  <dependencies>
+    
+    <!-- common SOAP interfaces (from local repository) -->
+   <dependency>
+        <groupId>net.es.oscars</groupId>
+        <artifactId>common-soap</artifactId>
+        <version>${oscars.version}</version>
+    </dependency>
+
+    <!-- OSCARS utilities -->
+    <dependency>
+        <groupId>net.es.oscars</groupId>
+        <artifactId>utils</artifactId>
+        <version>${oscars.version}</version>
+    </dependency>
+    
+    <!-- OSCARS common logging -->
+    <dependency>
+        <groupId>net.es.oscars</groupId>
+        <artifactId>common-logging</artifactId>
+        <version>${oscars.version}</version>
+    </dependency>
+    
+    <dependency>
+            <groupId>net.es.oscars</groupId>
+            <artifactId>coordinator</artifactId>
+            <version>${oscars.version}</version>
+       </dependency>
+
+       <dependency>
+            <groupId>net.es.oscars</groupId>
+            <artifactId>authN</artifactId>
+            <version>${oscars.version}</version>
+       </dependency>
+
+
+    <!-- command-line parsing -->
+    <dependency>
+        <groupId>net.sf.jopt-simple</groupId>
+        <artifactId>jopt-simple</artifactId>
+        <version>3.0.1</version>
+    </dependency>
+        
+    <!-- c3p0 -->
+    <dependency>
+        <groupId>c3p0</groupId>
+        <artifactId>c3p0</artifactId>
+        <version>0.9.1</version>
+    </dependency>
+    
+    <!-- Derby database -->
+    <dependency>
+        <groupId>org.apache.derby</groupId>
+        <artifactId>derby</artifactId>
+        <version>10.5.3.0_1</version>
+    </dependency>
+    
+    <!-- quartz -->
+    <dependency>
+        <groupId>org.opensymphony.quartz</groupId>
+        <artifactId>quartz</artifactId>
+        <version>1.6.1</version>
+    </dependency>
+    <dependency>
+        <groupId>commons-collections</groupId>
+        <artifactId>commons-collections</artifactId>
+        <version>3.2</version>
+        <scope>runtime</scope>
+    </dependency>
+    
+    <!-- httpclient -->
+    <dependency>
+        <groupId>commons-httpclient</groupId>
+        <artifactId>commons-httpclient</artifactId>
+        <version>3.1</version>
+    </dependency>
+
+  </dependencies>
+  
+  
+  
+  <build>
+        <plugins>
+            <!-- puts all code & libraries in one jar -->
+            <plugin>
+                <groupId>org.dstovall</groupId>
+                <artifactId>onejar-maven-plugin</artifactId>
+                <version>1.4.1</version>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <mainClass>net.es.oscars.wsnbroker.common.Invoker</mainClass>
+                            <classifier>onejar</classifier>
+                        </configuration>
+                        <goals>
+                            <goal>one-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <!-- setup database -->
+            <plugin>
+                <groupId>org.codehaus.mojo</groupId>
+                <artifactId>sql-maven-plugin</artifactId>
+                <version>1.2</version>
+
+                <dependencies>
+                    <dependency>
+                        <groupId>org.apache.derby</groupId>
+                        <artifactId>derby</artifactId>
+                        <version>10.5.3.0_1</version>
+                    </dependency>
+                </dependencies>
+
+                <configuration>
+                    <driver>org.apache.derby.jdbc.EmbeddedDriver</driver>
+                    <url>jdbc:derby:${basedir}/config/notifyDb;create=true</url>
+                </configuration>
+
+                <executions>
+                    <!-- Clear the database in case schema changed -->
+                    <execution>
+                        <id>dropTables</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <fileset>
+                                <basedir>${basedir}/sql</basedir>
+                                <includes>
+                                    <include>dropTables.sql</include>
+                                </includes>
+                            </fileset>
+                            <!-- Ignore error when DB does not exist -->
+                            <onError>continue</onError>
+                        </configuration>
+                    </execution>
+                    <!--  Build the db -->
+                    <execution>
+                        <id>createTables</id>
+                        <phase>process-resources</phase>
+                        <goals>
+                            <goal>execute</goal>
+                        </goals>
+                        <configuration>
+                            <fileset>
+                                <basedir>${basedir}/sql</basedir>
+                                <includes>
+                                    <include>createTables.sql</include>
+                                </includes>
+                            </fileset>
+                        </configuration>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <!-- specifically use java 1.5 to compile -->
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+
+
+        </plugins>
+    </build>
+</project>

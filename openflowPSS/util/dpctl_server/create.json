@@ -1,0 +1,17 @@
+{
+ "type" : "oscars-request",
+ "action" : "setup",
+ "version": "1.0", 
+ "gri":"testdomain-1.net-123",
+ "bandwidth":"100Mbps",
+ "path": [
+   {
+     "switch": "10.10.25.14",
+     "add-flows": [ { "port":"1", "vlan_range":"3000"},{"port": "50", "vlan_range": "3000"} ]
+   },
+   {
+      "switch": "10.10.29.14",
+      "add-flows": [ {"port":"51", "vlan_range":"3000"},{"port": "2", "vlan_range": "3000"} ]
+   }
+  ]
+}

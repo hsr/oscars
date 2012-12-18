@@ -1,0 +1,50 @@
+ConnectivityPCE:
+    UNITTEST:
+        templateDir:        'OSCARS_DIST/connectivityPCE/config'
+        config.yaml:        'OSCARS_DIST/connectivityPCE/config/config.TESTING.yaml'
+        server-cxf.xml:     'OSCARS_DIST/connectivityPCE/config/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_DIST/connectivityPCE/config/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_DIST/connectivityPCE/config/log4j.DEBUG.properties'
+        wsdl:               'OSCARS_DIST/common-soap/src/main/resources/api/pce-0.6.wsdl'
+
+    DEVELOPMENT:
+        templateDir:        'OSCARS_HOME/ConnectivityPCE/conf/'
+        config.yaml:        'OSCARS_HOME/ConnectivityPCE/conf/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/ConnectivityPCE/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/ConnectivityPCE/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/ConnectivityPCE/conf/log4j.MESSAGE.properties'
+        wsdl:               'OSCARS_HOME/wsdl/OSCARSService/PCEService-0.6.wsdl'
+
+    SDK:
+        templateDir:        'OSCARS_HOME/ConnectivityPCE/conf/'
+        config.yaml:        'OSCARS_HOME/ConnectivityPCE/conf/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/ConnectivityPCE/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/ConnectivityPCE/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/ConnectivityPCE/conf/log4j.DEBUG.properties'
+        wsdl:               'OSCARS_HOME/wsdl/OSCARSService/PCEService-0.6.wsdl'
+
+    PRODUCTION:
+        templateDir:        'OSCARS_HOME/ConnectivityPCE/conf/'
+        config.yaml:        'OSCARS_HOME/ConnectivityPCE/conf/config.SSL.yaml'
+        server-cxf.xml:     'OSCARS_HOME/ConnectivityPCE/conf/server-cxf-ssl.xml'
+        client-cxf.xml:     'OSCARS_HOME/ConnectivityPCE/conf/client-cxf-ssl.xml'
+        log4j.properties:   'OSCARS_HOME/ConnectivityPCE/conf/log4j.INFO.properties'
+        wsdl:               'OSCARS_HOME/wsdl/OSCARSService/PCEService-0.6.wsdl'
+
+TopoBridgeService:
+    UNITTEST:
+        config.yaml:        'OSCARS_DIST/topoBridge/config/config.HTTP.yaml'
+        wsdl:               'OSCARS_DIST/common-soap/src/main/resources/topoBridge/topoBridge.wsdl'
+
+    DEVELOPMENT:
+        config.yaml:        'OSCARS_HOME/TopoBridgeService/conf/config.HTTP.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/TopoBridgeService/TopoBridgeService.wsdl'
+
+    SDK:
+        config.yaml:        'OSCARS_HOME/ToptBridgeService/conf/config.HTTP.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/TopoBridgeService/TopoBridgeService.wsdl'
+
+    PRODUCTION:
+        config.yaml:        'OSCARS_HOME/TopoBridgeService/conf/config.SSL.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/TopoBridgeService/TopoBridgeService.wsdl'
+

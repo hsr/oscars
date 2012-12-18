@@ -1,0 +1,65 @@
+NullAggregator:
+    UNITTEST:
+        templateDir:        'OSCARS_DIST/pce/config'
+        config.yaml:        'OSCARS_DIST/pce/config/nullagg.TESTING.yaml'
+        server-cxf.xml:     'OSCARS_DIST/pce/config/nullagg-server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_DIST/pce/config/nullagg-client-cxf-http.xml'
+        log4j.properties:   'OSCARS_DIST/pce/config/log4j.DEBUG.properties'
+        wsdl:               'OSCARS_DIST/common-soap/src/main/resources/api/pce-0.6.wsdl'
+
+    DEVELOPMENT:
+        templateDir:        'OSCARS_HOME/PCEService/conf/'
+        config.yaml:        'OSCARS_HOME/PCEService/conf/nullagg.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/PCEService/conf/nullagg-server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/PCEService/conf/nullagg-client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/PCEService/conf/log4j.MESSAGE.properties'
+        wsdl:               'OSCARS_HOME/wsdl/OSCARSService/PCEService-0.6.wsdl'
+
+    SDK:
+        templateDir:        'OSCARS_HOME/PCEService/conf/'
+        config.yaml:        'OSCARS_HOME/PCEService/conf/nullagg.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/PCEService/conf/nullagg-server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/PCEService/conf/nullagg-client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/PCEService/conf/log4j.DEBUG.properties'
+        wsdl:               'OSCARS_HOME/wsdl/OSCARSService/PCEService-0.6.wsdl'
+
+    PRODUCTION:
+        templateDir:        'OSCARS_HOME/PCEService/conf/'
+        config.yaml:        'OSCARS_HOME/PCEService/conf/nullagg.SSL.yaml'
+        server-cxf.xml:     'OSCARS_HOME/PCEService/conf/nullagg-server-cxf-ssl.xml'
+        client-cxf.xml:     'OSCARS_HOME/PCEService/conf/nullagg-client-cxf-ssl.xml'
+        log4j.properties:   'OSCARS_HOME/PCEService/conf/log4j.INFO.properties'
+        wsdl:               'OSCARS_HOME/wsdl/OSCARSService/PCEService-0.6.wsdl'
+
+PCEService:
+    UNITTEST:
+        templateDir:        'OSCARS_DIST/pce/config'
+        config.yaml:        'OSCARS_DIST/pce/config/nullpce.TESTING.yaml'
+        server-cxf.xml:     'OSCARS_DIST/pce/config/nullpce-server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_DIST/pce/config/nullpce-client-cxf-http.xml'
+        log4j.properties:   'OSCARS_DIST/pce/config/log4j.DEBUG.properties'
+        wsdl:               'OSCARS_DIST/common-soap/src/main/resources/api/pce-0.6.wsdl'
+
+    DEVELOPMENT:
+        templateDir:        'OSCARS_HOME/PCEService/conf/'
+        config.yaml:        'OSCARS_HOME/PCEService/conf/nullpce.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/PCEService/conf/nullpce-server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/PCEService/conf/nullpce-client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/PCEService/conf/log4j.MESSAGE.properties'
+        wsdl:               'OSCARS_HOME/wsdl/OSCARSService/PCEService-0.6.wsdl'
+
+    SDK:
+        templateDir:        'OSCARS_HOME/PCEService/conf/'
+        config.yaml:        'OSCARS_HOME/PCEService/conf/nullpce.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/PCEService/conf/nullpce-server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/PCEService/conf/nullpce-client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/PCEService/conf/log4j.DEBUG.properties'
+        wsdl:               'OSCARS_HOME/wsdl/OSCARSService/PCEService-0.6.wsdl'
+
+    PRODUCTION:
+        templateDir:        'OSCARS_HOME/PCEService/conf/'
+        config.yaml:        'OSCARS_HOME/PCEService/conf/nullpce.SSL.yaml'
+        server-cxf.xml:     'OSCARS_HOME/PCEService/conf/nullpce-server-cxf-ssl.xml'
+        client-cxf.xml:     'OSCARS_HOME/PCEService/conf/nullpce-client-cxf-ssl.xml'
+        log4j.properties:   'OSCARS_HOME/PCEService/conf/log4j.INFO.properties'
+        wsdl:               'OSCARS_HOME/wsdl/OSCARSService/PCEService-0.6.wsdl'

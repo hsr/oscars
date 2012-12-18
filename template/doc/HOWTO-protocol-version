@@ -1,0 +1,181 @@
+		Protocol backward compatibility proposal
+		========================================
+
+
+1 - Overview/High level
+-----------------------
+
+The objective is to allow a web service based module to implement the current version of its protocol while supporting older versions.
+Between versions of a protocol, the following elements may change:
+
+	- WSDL
+	- Data type 
+	- Internal API
+	- Overall semantics 
+	
+A service supporting different version of the same protocol would need to:
+
+	- manage a collection of WSDL and XSD files, each of them referring to a given version. 
+	- each WSDL/XSD generates its set of Java classes (port type, data type...)
+	- an older version of the WSDL/XSD (i.e. older version of the protocol) will require an adapter to transform the older API/data types
+	  into the current API/data types. A change in semantics is also handled by the adapter
+	  
+
+The following diagrams describes the relationships between the components:
+
+protocol X                                              protocol X
+version 0.5                                             version 0.6 (current)
+-----------                                             ---------------------
+
+WSDL-0.5                                                WSDL-0.6
+XSD-0.5                                                 XSD-0.5
+   |                                                       |
+   |                                                       |
+   v                                                       v
+ Generated Java classes                                 Generated Java classes 
+   |                                                       |
+   |                                                       |
+   v                                                       v
+ Soap Server 0.5 (0.5 publish URL)                      Soap Server 0.6 (0.6 publish URL)
+   |                                                       |
+   |                                                       |
+   v                                                       v
+ Adapter from 0.5 to 0.6 ------------------------------> 0.6 implementation of the protocol X
+ 
+ 
+ From this model, the following rules/guidelines can be defined:
+ 
+ 1) If an action, a data type, a message change between version, the name much change accordingly. The reason is that Java classes are generated for each of
+    those and their names is made off the name of the elements in the WSDL/XSD. Since both version of the protocol reside in the same server, it is necessary to
+    avoid naming collision. This is done by setting the older versions of the generated classes to be in a distinct package. For instance, if the package for the
+    current version for generated classes is net.es.oscars.pss.cxf, the package for an older version must be, for instance, net.es.oscars.pss.v05.cxf.
+    
+ 2) Since SOAP does not include a standard manner to tag a protocol (WSDL/XSD) with a version ID, it is necessary to separate the "entry points", i.e., the publishing URL.
+    Also, it is impossible, from just downloading the WSDL, to determine what is the current version. The propoal is to:
+    
+   a) use the "normal" URL for the current version, for instance: https://xx.xx.xx:nnnn/OSCARS/PSS/whateverAPI
+   b) have an alternate URL for older versions, for instance: https://xx.xx.xx:nnnn/OSCARS/0.5/PSS/whateverAPI
+ 
+ 
+ When a newer version of a protocol is released and becomes the current version, the previously current version of the protocol becomes an older version, the following steps must be followed:
+ 
+ 	step 1) rename WSDL/XSD files if their name did not include the version number (we could make a rule saying that the name of the WSDL/XSD files must contain the version number, but I do not see this
+ 	        as necessary). 
+    
+    step 2) write the adapter class. Note that if we want to support more than just the previous version of the protocol, in other words, for instance, version 0.3, 0.4 and 0.5 while deploying version 0.6,
+            all adapter classes may have to be rewritten: it might be that the manner to adapt version 0.4 to 0.5 is not the same as adapting 0.4 to 0.6. An alternative would be to deploy the adapters in a
+            daisy chain manner, in other words, when a 0.4 query is handled, it is first transformed into 0.5 query by the 0.4-to-0.5 adapter, and then handed to the 05-to-0.6 adapter. While this allow to
+            re-use, as is, previous adapter, it complicates the work flow of the queries.
+            
+    step 3) change the publishing URL of the previously current protocol to include the version (rule 2).
+    
+    step 4) change pom.xml (or build.xml if using ant) to reflect the change of package for the generated java classes (rule 1)
+    
+    step 5) modify the bootstrap of the service, so the previously current version of the service is started (instantiate server, bind to Endpoint) and add the new current version server/endpoint
+    
+    step 6) previously current version client need to point to the new URL (the one including now the version number). Trying to access the new current version endpoint will generate a schema error
+            (that is a good thing).
+            
+
+  
+2 - Implementation
+------------------
+
+Many of the necessary steps to deploy a new version is to be done manually. For instance, it is very difficult, if not impossible, to script/program the generation of the adapter classes, especially
+if the semantics of a given API has changed. However, tools can help packaging. The "template" project in the 0.6 branch includes an example of a multi-version service and provides a couple of tools:
+
+A base class, net.es.oscars.template.common.SoapServer implements:
+
+	- Computation of the publishing URL of the servive
+	- Instantiation of the adapter class
+	- Instantiation of the Endpoint (currently both HTTP and HTTPS)
+	- Activation of the service (for a given version)
+	
+This base class relies on an annotation interface, net.es.oscars.template.common.ServerVersion to stitch all those elements together. The following example is a current version SOAP server class:
+
+
+
+		package net.es.oscars.template.http;
+
+		import net.es.oscars.template.common.SoapServer;
+
+		@net.es.oscars.template.common.ServerVersion (
+				version = "0.6",
+				defaultVersion = true,
+				implementor = "net.es.oscars.template.http.TemplateSoapHandler"
+		)
+		public class TemplateSoapServer extends SoapServer {
+
+			private static TemplateSoapServer instance;
+	    
+			public static TemplateSoapServer getInstance() {
+        		if (instance == null) {
+            		instance = new TemplateSoapServer();
+        		}
+        		return instance;
+    		}
+	     
+    		private TemplateSoapServer() {
+        		super();
+    		}
+		}
+
+
+The annotation is made off three elements:
+
+"version": string containing the version identifier. This string will be added to the URL, so it must contain only legal characters for a URL.
+           In this example, the publishing URL will be http://xx.xx.xx:nnnn/template/0.5/...
+"defaultVersion": boolean. This server is defined as to implement the current version of the protocol if defaultVersio is set to true. If it is set to
+           false, then the server is defined as to implement an older version of the protocol.
+"implementor": string containing the fully qualified class name of the SOAP message handler. This handler is the actual implementation of the protocol
+           if related to the current version server, or the adapter if set to an older version.
+           
+ 
+ NOTE: I am going to move getInstance() into the base class at some point :-)
+ 
+
+An older version of the same service is:
+
+		package net.es.oscars.template.http;
+
+		import net.es.oscars.template.common.SoapServer;
+
+		@net.es.oscars.template.common.ServerVersion (
+				version = "0.5",
+				defaultVersion = false,
+				implementor = "net.es.oscars.template.http.TemplateSoapHandler05"
+		)
+		public class TemplateSoapServer05 extends SoapServer {
+
+			private static TemplateSoapServer05 instance;
+	    
+			public static TemplateSoapServer05 getInstance() {
+        		if (instance == null) {
+            		instance = new TemplateSoapServer05();
+        		}
+        		return instance;
+    		}
+	     
+    		private TemplateSoapServer05() {
+        		super();
+    		}
+		} 
+ 
+ 
+ 
+ Instantiating both version is done by:
+ 
+         	// Instantiate current version of the protocol
+        	TemplateSoapServer server = TemplateSoapServer.getInstance();
+        	server.startServer();
+        	
+        	// Instantiate 0.5 version of the protocol
+        	TemplateSoapServer05 server05 = TemplateSoapServer05.getInstance();
+        	server05.startServer();
+ 
+ Eventually, we may want to add a mechanism to keep track of all deployed version, so this last step could be done in an automated fashion.
+ 
+
+
+
+	

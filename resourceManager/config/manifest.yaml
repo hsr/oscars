@@ -1,0 +1,83 @@
+---
+ResourceManagerService:
+    UNITTEST:
+        templateDir:        'OSCARS_DIST/resourceManager/config'
+        config.yaml:        'OSCARS_DIST/resourceManager/config/config.TESTING.yaml'
+        server-cxf.xml:     'OSCARS_DIST/resourceManager/config/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_DIST/resourceManager/config/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_DIST/resourceManager/config/log4j.DEBUG.properties'
+        testrm.cfg.xml:     'OSCARS_DIST/resourceManager/src/test/resources/testrm.cfg.xml'
+        wsdl:    'OSCARS_DIST/common-soap/src/main/resources/resourceManager/resourceManager.wsdl'
+
+    DEVELOPMENT:
+        templateDir:        'OSCARS_HOME/ResourceManagerService/conf/'
+        config.yaml:        'OSCARS_HOME/ResourceManagerService/conf/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/ResourceManagerService/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/ResourceManagerService/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/ResourceManagerService/conf/log4j.MESSAGE.properties'
+        rm.cfg.xml:         'OSCARS_HOME/ResourceManagerService/conf/rm.cfg.xml'
+        wsdl:               'OSCARS_HOME/wsdl/ResourceManagerService/ResourceManagerService.wsdl'
+
+
+    SDK:
+        templateDir:        'OSCARS_HOME/ResourceManagerService/conf/'
+        config.yaml:        'OSCARS_HOME/ResourceManagerService/conf/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/ResourceManagerService/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/ResourceManagerService/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/ResourceManagerService/conf/log4j.DEBUG.properties'
+        rm.cfg.xml:         'OSCARS_HOME/ResourceManagerService/conf/rm.cfg.xml'
+        wsdl:               'OSCARS_HOME/wsdl/ResourceManagerService/ResourceManagerService.wsdl'
+
+
+    PRODUCTION:
+        templateDir:        'OSCARS_HOME/ResourceManagerService/conf/'
+        config.yaml:        'OSCARS_HOME/ResourceManagerService/conf/config.SSL.yaml'
+        server-cxf.xml:     'OSCARS_HOME/ResourceManagerService/conf/server-cxf-ssl.xml'
+        client-cxf.xml:     'OSCARS_HOME/ResourceManagerService/conf/client-cxf-ssl.xml'
+        log4j.properties:   'OSCARS_HOME/ResourceManagerService/conf/log4j.INFO.properties'
+        rm.cfg.xml:         'OSCARS_HOME/ResourceManagerService/conf/rm.cfg.xml'
+        wsdl:               'OSCARS_HOME/wsdl/ResourceManagerService/ResourceManagerService.wsdl'
+
+
+CoordService:
+    UNITTEST:
+        config.yaml:        'OSCARS_DIST/coordinator/config/config.HTTP.yaml'
+        wsdl:               'OSCARS_DIST/common-soap/src/main/resources/coord/coord.wsdl'
+
+    DEVELOPMENT:
+        config.yaml:        'OSCARS_HOME/CoordService/conf/config.HTTP.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/CoordService/CoordService.wsdl'
+
+    SDK:
+        config.yaml:        'OSCARS_HOME/CoordService/conf/config.HTTP.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/CoordService/CoordService.wsdl'
+
+    PRODUCTION:
+        config.yaml:        'OSCARS_HOME/CoordService/conf/config.SSL.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/CoordService/CoordService.wsdl'
+
+NotificationBridgeService:
+    UNITTEST:
+        config.yaml:    'OSCARS_DIST/notificationBridge/config/config.HTTP.yaml'
+        wsdl:           'OSCARS_DIST/common-soap/src/main/resources/notificationBridge/notificationBridge.wsdl'
+    DEVELOPMENT:
+        config.yaml:    'OSCARS_HOME/NotificationBridgeService/conf/config.HTTP.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/NotificationBridgeService/NotificationBridgeService.wsdl'
+    SDK:
+        config.yaml:    'OSCARS_HOME/NotificationBridgeService/conf/config.HTTP.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/NotificationBridgeService/NotificationBridgeService.wsdl'
+    PRODUCTION:
+        config.yaml:    'OSCARS_HOME/NotificationBridgeService/conf/config.SSL.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/NotificationBridgeService/NotificationBridgeService.wsdl'
+
+Utils:
+    UNITTEST:
+        config.yaml:    'OSCARS_DIST/utils/config/config.yaml'
+    DEVELOPMENT:
+        config.yaml:    'OSCARS_HOME/Utils/conf/config.yaml'
+    SDK:
+        config.yaml:    'OSCARS_HOME/Utils/conf/config.yaml'
+    PRODUCTION:
+        config.yaml:    'OSCARS_HOME/Utils/conf/config.yaml'
+
+

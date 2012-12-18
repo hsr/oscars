@@ -1,0 +1,259 @@
+#!/bin/sh 
+############################################################################
+# Script to change ports used by OSCARS services.
+# Call with a context and a list of servers to view ports of .
+# ALL will list all the service ports.Individual server args are:
+#  authN authZ api coord topoBridge rm stubPSS lookup wbui
+#bwPCE connPCE dijPCE vlanPCE nullAGG notifyBridge wsnbroker
+############################################################################
+#check if $OSCARS_HOME is set
+REPO_PATH=""
+if [ -n "$OSCARS_HOME" ]; then
+        REPO_PATH=OSCARS_HOME
+else
+        echo "ERROR: OSCARS_HOME is not set. Re-run this script after setting OSCARS_HOME."
+        exit 1
+fi
+
+if  [ -z $OSCARS_DIST ]; then
+	echo "Please set the environment var OSCARS_DIST to the OSCARS source directory"
+	exit -1
+fi
+
+
+###########################################################################
+#Subroutine to print usage details
+###########################################################################
+printUsage() {
+	echo -e "\nusage idc-portview <context> <server >"
+	echo "<context> is one of: PRODUCTION|pro DEVELOPMENT|dev SDK|sdk"
+	echo "<server> is either ALL or one or more of:"
+	echo -e "\t authN authZ api coord topoBridge rm stubPSS lookup wbui"
+	#echo "\t stubPCE bwPCE connPCE dijPCE vlanPCE nullAGG stubPSS"
+	echo -e "\t bwPCE connPCE dijPCE vlanPCE nullAGG notifyBridge wsnbroker ionui"
+	exit 1
+}
+
+#######################################################################
+#subroutine to get configFile
+# introduced this and removed local fetches of config File
+#######################################################################
+getConfigFile () {
+        if [ $# -lt 3 ]; then
+                echo "Error: Argument list insufficient"
+                exit 1;
+        fi
+	fileArg=$4
+        if [ -z $fileArg ]; then
+		#echo "Filename empty"
+		fileArg=""
+	fi
+        Config=$(sh $OSCARS_DIST/bin/parseManifest.sh $1 $2 $3 $fileArg | sed "s/'//g")
+        #Should find manifest file, and it should have the config line we're looking for.
+        ##If not, there is some error in either the manifest file copy, or the manifest file that is copied
+        if [ -z $Config ]; then
+                #echo "The manifest file is not found/is invalid. Have you run the bin/copyTemplates.sh and/or bin/exportconfig commands?"
+                exit 1
+        fi
+
+	#       echo "Config in local Method :$Config"
+        Service=$(echo $Config | awk -F/ '$1~//{print $2}')
+        Conf=$(echo $Config | awk -F/ '$1~//{print $3}')
+        Yaml=$(echo $Config | awk -F/ '$1~//{print $4}' | sed "s/'//g")
+	#       echo "2. $Service, $Conf, $Yaml"
+        if [ "$Conf" == "conf" ]; then
+                configFile=$OSCARS_HOME/$Service/$Conf/$Yaml
+        elif [ "$Conf" == "config" ]; then
+                configFile=$OSCARS_DIST/$Service/$Conf/$Yaml
+        fi
+        # 	echo "3. Config File: $configFile"
+	echo $configFile
+}
+
+
+###########################################################################
+#Subroutines to find port
+###########################################################################
+findPort() {
+	#prompt user for port number
+	printf "Enter the new port number to run $SERVICE on: "
+	read userport;
+	stty echo;
+	#echo "";
+
+	#if user entered a newline, do not attempt to replace
+	if [ -z "`echo "$userport" | tr -d '\n'`" ]; then
+		echo "--You chose to retain the same port number"
+		return 0;
+	fi
+	#Config=$(sh $OSCARS_DIST/bin/parseManifest.sh $SERVICE $CONTEXT $fileLoc | sed "s/'//g")
+	ConfigFile=$(getConfigFile $fileLoc $SERVICE $CONTEXT $file)
+	if [ -z $ConfigFile ] || [ ! -f $ConfigFile ] ; then
+        	echo "The manifest file is not found/is invalid. "
+		echo "Have you run the bin/copyTemplates .sh and/or bin/exportconfig commands?"
+                exit 1
+        fi
+
+	#get server configuration from server-cxf...yaml now
+	#serverConfig=$(sh $OSCARS_DIST/bin/parseManifest.sh $SERVICE $CONTEXT $fileLoc server-cxf.xml| sed "s/'//g")
+	serverConfig=$(getConfigFile $fileLoc $SERVICE $CONTEXT server-cxf.xml)
+	if [ -z $serverConfig ] || [ ! -f $serverConfig ]; then
+                echo "The configuration file is not found. You either have to :"
+                echo "  1. Rerun this script after running copyTemplates.sh and/or bin/exportconfig, or "
+                echo "  2. Change files \"$OSCARS_HOME/<service>/conf/server-cxf-ssl.xml or server-cxf-http.xml\" "
+		echo " and \" $OSCARS_HOME/<service>/conf/<service>.SSL.xml or HTTP.yaml\" files manually to change port numbers "
+		exit 1
+        fi
+	
+	port=$(awk -F: '$1~/publishTo/{print $4}' $ConfigFile)
+	port=$(echo $port | sed "s/[^0-9]//g") 
+	printf "Are you sure you want to replace port number from $port to $userport? y/n ";
+	ans=0;
+	while [ $ans == 0 ]; do
+   		read ans;
+   		if [ "$ans" != "y" ] && [ "$ans" != "Y" ] && [ "$ans" != "n" ] && [ "$ans" != "N" ]; then
+			ans=0;
+   		fi
+	done	
+	if [ "$ans" == "y" ] || [ "$ans" == "Y" ]; then
+		#sed -i -e "s/[0-9][0-9]*/$userport/g" $OSCARS_HOME/$Service/$Conf/$Yaml;# this would work too
+	  	#######replace the original port with the new one	
+ 		#Implemented earlier suggestion to selectively replace the port number in
+		## the "publishTo" line alone, instead of any numeric that may match the port number		
+		#sed -i -e "s/$port/$userport/g" $OSCARS_HOME/$Service/$Conf/$Yaml;
+		sed -i -e 's_\(http.*:\/\/.*\):\([0-9]*\)_\1:'$userport'_' $ConfigFile
+
+		#replace in server_cxf.xml. Replace whatever value you may find for port currently
+		sed -i -e 's/<httpj:engine port=.*>/<httpj:engine port=\"'$userport'\">/' $serverConfig
+		sed -i -e "s/$port/$userport/g" $serverConfig; #a single file refers to port in another line
+		echo "--The port number for $SERVICE has been replaced to $userport";
+   		echo "--$SERVICE set to run in context $CONTEXT on port $userport."
+		echo "--Restart service to start using this port."
+	fi
+   	port=0  
+}
+
+viewUIPort(){
+	# prompt user for port number
+	printf "Enter the new port number to run $SERVICE on: "
+   	read jettyport;
+   	stty echo;
+   	#echo "";
+
+	#Config=$(sh $OSCARS_DIST/bin/parseManifest.sh WBUIService $CONTEXT wbui jetty.xml)
+	#Config=$(sh $OSCARS_DIST/bin/parseManifest.sh $SERVICE $CONTEXT $fileLoc $file)
+	Config=$(getConfigFile $fileLoc $SERVICE $CONTEXT $file)
+	if [ -z $Config ] || [ ! -f $Config ] ; then
+                echo "The manifest file is not found/is invalid. "
+                echo "Have you run the bin/copyTemplates .sh and/or bin/exportconfig commands?"
+                exit 1
+        fi
+
+	port=$(awk -F\" '$4~/jetty.port/{print $6}' $Config)
+	port=$(echo $port | sed "s/[^0-9]//g")
+	printf "Are you sure you want to replace port number from $port to $jettyport? y/n ";
+ 	ans=0;
+	while [ $ans == 0 ]; do
+		read ans;
+		if [ "$ans" != "y" ] && [ "$ans" != "Y" ] && [ "$ans" != "n" ] && [ "$ans" != "N" ]; then
+			ans=0;
+		fi
+	done
+ 	if [ "$ans" == "y" ] || [ "$ans" == "Y" ]; then
+		#Implemented search for "<SystemProperty name="jetty.port" default="xxxx" before replacing
+ 		#sed -i -e "s/$port/$jettyport/" $Config;
+		sed -i -e 's_SystemProperty name=\"jetty.port\" default=\"'$port'\"_SystemProperty name=\"jetty.port\" default=\"'$jettyport'\"_' $Config
+		echo "--The port number for $SERVICE has been replaced to $jettyport";
+		if [ $? != 0 ]; then
+			echo "--The port number change was not successful."
+			echo "--Please change it manually by changing the entry in lines like "<SystemProperty name="jetty.port" default="xxxx"/>" in file $OSCARS_HOME/$Service/$Conf/$Yaml"
+			exit 1;
+        	fi
+		echo "--$SERVICE set to run in context $CONTEXT on port $jettyport."
+		echo "--Restart this service to start using this port."
+	fi
+
+	
+	#neutralize
+	port=0 
+}
+
+#######
+# execution starts here
+if [ $# -lt 2 ]; then
+    printUsage
+fi
+
+currDir=$(pwd)
+CONTEXT=$1
+case $1 in
+    d|D|dev|DEV) CONTEXT="DEVELOPMENT";;
+    p|P|pro|PRO) CONTEXT="PRODUCTION";;
+    t|T|test|TEST) CONTEXT="UNITTEST";;
+    s|S|sdk) CONTEXT="SDK";;
+esac
+   
+if [ "$CONTEXT" ==  "PRODUCTION" ] || [ "$CONTEXT" == "UNITTEST" ] || [ "$CONTEXT" == "DEVELOPMENT" ] || [ "$CONTEXT" == "SDK" ]; then
+    echo "Finding ports for services in CONTEXT $CONTEXT"
+else
+    echo "CONTEXT  $CONTEXT is not recognized"
+    printUsage
+fi
+shift
+
+#loop for "ALL" option
+#Removed WBUI for specific handling
+#_allServiceDirs=(authN authZ api coordinator topoBridge resourceManager stubPSS lookup pce bandwidthPCE connectivityPCE dijkstraPCE vlanPCE pce notificationBridge wsnbroker) #TBD:nullAGG==pce check
+#_allServices=(AuthNService AuthZService OSCARSService CoordService TopoBridgeService ResourceManagerService PSSService LookupService StubPCE BandwidthPCE ConnectivityPCE DijkstraPCE VlanPCE NullAggregator NotificationBridgeService WSNBrokerService)
+
+#_allServiceDirs not used anymore. But not deleting it in case of future reuse 
+#_allServiceDirs=(authN authZ api coordinator topoBridge resourceManager stubPSS lookup bandwidthPCE connectivityPCE dijkstraPCE vlanPCE pce notificationBridge wsnbroker ) #TBD:nullAGG==pce check
+_allServices=(AuthNService AuthZService OSCARSService CoordService TopoBridgeService ResourceManagerService PSSService LookupService BandwidthPCE ConnectivityPCE DijkstraPCE VlanPCE NullAggregator NotificationBridgeService WSNBrokerService )
+_allServiceDirs=(AuthNService AuthZService OSCARSService CoordService TopoBridgeService ResourceManagerService PSSService LookupService BandwidthPCE ConnectivityPCE DijkstraPCE VlanPCE PCEService NotificationBridgeService WSNBrokerService)
+
+while [ ! -z $1 ]
+    do 
+    case $1 in
+    ALL)
+	index=0;
+	for fileN in ${_allServiceDirs[@]}
+        do
+		SERVICE=${_allServices[$index]};
+		index=`expr $index + 1`;
+		fileLoc=$fileN;
+		findPort;		
+	done
+	# now separately call WBUI processing
+	#viewWebUIPort;
+	#SERVICE=WBUIService; fileLoc=wbui; file=jetty.xml;viewUIPort;
+	#SERVICE=IONUIService; fileLoc=ionui; file=jetty.xml;viewUIPort;
+	SERVICE=WBUIService; fileLoc=WBUIService; file=jetty.xml;viewUIPort;
+	SERVICE=IONUIService; fileLoc=IONUIService; file=jetty.xml;viewUIPort;
+	#file location for each varies
+	;;
+    	authN)    SERVICE=${_allServices[0]}; fileLoc=${_allServiceDirs[0]};findPort ;;#startauthN;;
+    	authZ)    SERVICE=${_allServices[1]}; fileLoc=${_allServiceDirs[1]};findPort;;
+    	api)      SERVICE=${_allServices[2]}; fileLoc=${_allServiceDirs[2]};findPort;;
+    	coord)    SERVICE=${_allServices[3]}; fileLoc=${_allServiceDirs[3]};findPort;;
+    	topoBridge) SERVICE=${_allServices[4]}; fileLoc=${_allServiceDirs[4]};findPort;;
+    	rm)       SERVICE=${_allServices[5]}; fileLoc=${_allServiceDirs[5]};findPort;;
+    	stubPSS)  SERVICE=${_allServices[6]}; fileLoc=${_allServiceDirs[6]};findPort;;
+    	eomplsPSS)  SERVICE=${_allServices[6]}; fileLoc=${_allServiceDirs[6]};findPort;;
+    	dragonPSS)  SERVICE=${_allServices[6]}; fileLoc=${_allServiceDirs[6]};findPort;;
+    	lookup)   SERVICE=${_allServices[7]}; fileLoc=${_allServiceDirs[7]};findPort;;
+    	#wbui)     SERVICE=${_allServices[8]}; fileLoc="${_allServiceDirs[8]} jetty.xml";viewWebUIPort;;
+    	wbui)     SERVICE=WBUIService; fileLoc=WBUIService; file=jetty.xml;viewUIPort;;
+    	#stubPCE)  SERVICE=${_allServices[8]}; fileLoc=${_allServiceDirs[8]};findPort;;
+    	bwPCE)    SERVICE=${_allServices[8]}; fileLoc=${_allServiceDirs[8]};findPort;;
+    	connPCE)  SERVICE=${_allServices[9]}; fileLoc=${_allServiceDirs[9]};findPort;;
+    	dijPCE)   SERVICE=${_allServices[10]}; fileLoc=${_allServiceDirs[10]};findPort;;
+    	vlanPCE)  SERVICE=${_allServices[11]}; fileLoc=${_allServiceDirs[11]};findPort;;
+    	nullAGG)  SERVICE=${_allServices[12]}; fileLoc=${_allServiceDirs[12]};findPort;;
+    	notifyBridge)     SERVICE=${_allServices[13]}; fileLoc=${_allServiceDirs[13]};findPort;;
+    	wsnbroker) SERVICE=${_allServices[14]}; fileLoc=${_allServiceDirs[14]};findPort;;
+	ionui)  SERVICE=IONUIService; fileLoc=IONUIService; file=jetty.xml;viewUIPort;;
+    	*)        echo $1 not a recognized server
+  esac
+  shift
+done
+

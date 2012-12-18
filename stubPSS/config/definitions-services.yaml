@@ -1,0 +1,8 @@
+---
+
+-   id:     "stub"
+    impl:   "net.es.oscars.pss.stub.StubService"
+
+
+-   id:     "eompls"
+    impl:   "net.es.oscars.pss.eompls.EoMPLSService"

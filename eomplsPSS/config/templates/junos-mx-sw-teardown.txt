@@ -1,0 +1,46 @@
+<junoscript version="1.0" release="7.3">
+<rpc><lock-configuration /></rpc>
+<rpc>
+<load-configuration>
+<configuration>
+
+    <interfaces>
+        <interface>
+            <name>${ifce_a.name}</name>
+            <unit delete="delete">
+                <name>${ifce_a.vlan}</name>
+            </unit>
+        </interface>
+        <interface>
+            <name>${ifce_z.name}</name>
+            <unit delete="delete">
+                <name>${ifce_z.vlan}</name>
+            </unit>
+        </interface>
+    </interfaces>
+    <protocols>
+        <connections>
+            <interface-switch delete="delete">
+                <name>${iswitch.name}</name>
+            </interface-switch>
+        </connections>
+    </protocols>
+    <firewall>
+        <policer delete="delete">
+            <name>${policer.name}</name>
+        </policer>
+        <family>
+            <ccc>
+                <filter delete="delete">
+                    <name>${filter.name}</name>
+                </filter>
+            </ccc>
+        </family>
+    </firewall>
+
+</configuration>
+</load-configuration>
+</rpc>
+<rpc><commit-configuration /></rpc>
+<rpc><unlock-configuration /></rpc>
+</junoscript>

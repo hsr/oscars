@@ -1,0 +1,53 @@
+---
+soap:
+    publishTo:  'http://localhost:9050/OSCARS/PSSService'
+
+circuitService:
+    id:                 'dragon'
+    stub:               true
+    logRequest:         true
+    logResponse:        true
+
+definitions:
+    models:             'defs-models.yaml'
+    services:           'defs-services.yaml'
+
+notify:
+    impl:               'net.es.oscars.pss.stub.StubNotifier'
+    params: 
+        coordUrl:       'http://localhost:9003/OSCARS/Coord'
+
+#
+# recommended general configs for DRAGON
+#
+
+# stub
+deviceConnectorMap:
+    impl:               'net.es.oscars.pss.stub.StubDeviceConnectorMap'
+
+# stub
+deviceModelMap:
+    impl:               'net.es.oscars.pss.stub.StubDeviceModelMap'
+
+# this should include the 'dragon-vlsr' connector params
+connectorDirectory:
+    impl:               'net.es.oscars.pss.pss.YAMLConnectorDirectory'
+    params:
+        configFile:     'config-connector-direcotry.yaml'
+
+# pss-default for device-ipaddr mappings for dragon vlsrs
+deviceResolve:            
+    impl:               'net.es.oscars.pss.resolve.YAMLDeviceResolver'
+    params:
+        configFile:     'config-device-addresses.yaml'
+
+# pss-default
+workflow:
+    impl:               'net.es.oscars.pss.workflow.FifoWF'
+
+# pss-default
+validate:
+    impl:               'net.es.oscars.pss.validate.SimpleValidator'
+    params: 
+        localDomainId:  'dragon.maxgigpop.net'
+

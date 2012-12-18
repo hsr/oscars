@@ -1,0 +1,90 @@
+#!/bin/sh
+#
+# Export configuration files from the distribution directory into the production directory.
+#
+# syntax: exportconfig <path_to_distribution> <patch_to_production>
+#
+#
+
+SERVICE=WSNBrokerService
+MODULE=wsnbroker
+PORT=9013
+
+OSCARS_DIST=$1
+OSCARS_HOME=$2
+DST_LOGDIR=$3
+BUILD_ROOT=$4
+
+source $OSCARS_DIST/utils/bin/configLib.sh
+
+verifyArgs $OSCARS_DIST $OSCARS_HOME
+verifySvcName $SERVICE
+
+SRC_DIR=$OSCARS_DIST/$MODULE/config/
+DST_DIR=$OSCARS_HOME/$SERVICE/conf
+DST_DATA_DIR=$OSCARS_HOME/$SERVICE/data
+if [ -n "$BUILD_ROOT" ]; then
+    DST_DIR=${BUILD_ROOT}/${DST_DIR}
+    DST_DATA_DIR=${BUILD_ROOT}/$DST_DATA_DIR
+fi
+if [ -z "$DST_LOGDIR" ]; then
+    DST_LOGDIR=${OSCARS_HOME}/logs
+fi
+
+mkdir -p $DST_LOGDIR
+mkdir -p $DST_DIR
+
+if [ ! -f $DST_DIR/$MANIFEST  ] ; then
+    cp $SRC_DIR/$MANIFEST $DST_DIR/$MANIFEST
+fi
+if [ ! -f $DST_DIR/$CONFIG_HTTP  ] ; then
+    cp $SRC_DIR/$CONFIG_HTTP $DST_DIR/$CONFIG_HTTP 
+fi
+if [ ! -f $DST_DIR/$CONFIG_SSL  ] ; then
+    cp $SRC_DIR/$CONFIG_SSL $DST_DIR/$CONFIG_SSL
+fi
+
+# Path config file so the public API's endpoint is the set to the hostname
+localhost=`hostname -f`
+
+# cxf configuration files
+
+if [ ! -f $DST_DIR/$CXF_SERVER_HTTP_CFG ] ; then
+    sed -e s,deploy-host,$localhost:$PORT,  -e s,wsdl-location,$OSCARS_HOME/wsdl/$SERVICE, < $SRC_DIR/$CXF_SERVER_HTTP_CFG > $DST_DIR/$CXF_SERVER_HTTP_CFG
+fi
+if [ ! -f $DST_DIR/$CXF_SERVER_SSL_CFG ] ; then
+    sed -e s,deploy-host,$localhost:$PORT,  -e s,wsdl-location,$OSCARS_HOME/wsdl/$SERVICE, <  $SRC_DIR/$CXF_SERVER_SSL_CFG > $DST_DIR/$CXF_SERVER_SSL_CFG
+fi
+if [ ! -f $DST_DIR/$CXF_CLIENT_HTTP_CFG ] ; then
+    cp $SRC_DIR/$CXF_CLIENT_HTTP_CFG  $DST_DIR/$CXF_CLIENT_HTTP_CFG
+fi
+if [ ! -f $DST_DIR/$CXF_CLIENT_SSL_CFG ] ; then
+    cp $SRC_DIR/$CXF_CLIENT_SSL_CFG  $DST_DIR/$CXF_CLIENT_SSL_CFG
+fi
+
+# Keystores
+if [ ! -f $DST_DIR/serverKeystore.properties ] ; then
+    cp $SRC_DIR/serverKeystore.properties $DST_DIR/serverKeystore.properties
+fi
+
+if [ ! -f $DST_DIR/clientKeystore.properties ] ; then
+    cp $SRC_DIR/clientKeystore.properties $DST_DIR/clientKeystore.properties
+fi
+
+# log4j
+if [ ! -f $DST_DIR/$LOG4J_PROPS_INFO ] ; then
+    sed -e "s,$MODULE\.log,$DST_LOGDIR/$SERVICE.log,"  <  $SRC_DIR/$LOG4J_PROPS_INFO > $DST_DIR/$LOG4J_PROPS_INFO
+fi
+if [ ! -f $DST_DIR/$LOG4J_PROPS_DEBUG ] ; then
+    sed -e "s,$MODULE\.log,$DST_LOGDIR/$SERVICE.log,"  <  $SRC_DIR/$LOG4J_PROPS_DEBUG > $DST_DIR/$LOG4J_PROPS_DEBUG
+    fi
+if [ ! -f $DST_DIR/$LOG4J_PROPS_MESSAGE ] ; then
+    sed -e "s,$MODULE\.log,$DST_LOGDIR/$SERVICE.log," <  $SRC_DIR/$LOG4J_PROPS_MESSAGE > $DST_DIR/$LOG4J_PROPS_MESSAGE
+fi
+
+#Derby
+mkdir -p $DST_DATA_DIR
+if [ ! -d "$DST_DATA_DIR/notifyDb" ]; then
+    cp -r $SRC_DIR/notifyDb $DST_DATA_DIR/notifyDb
+fi
+

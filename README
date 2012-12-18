@@ -1,0 +1,46 @@
+To build and run all the servers
+
+1. set the environment variables
+     OSCARS_DIST  - directory where sources are kept
+     OSCARS_HOME  - directory where the oscars runtime configurations will be
+
+2. Check for template files in the following config directories
+   authN/config/authN.yaml.template
+   authZ/config/authZ.yaml.template
+   coordinator/config/pce-configuration-template.xml
+   resourceManager/config/resourceManager.yaml.template
+   topoBridge/config/topoBridge.yaml.template
+   wbui/config/wbui.yaml.template
+   and copy/edit them to non-template versions
+
+3. run mvn from $OSCARS_DIST
+      mvn compile - just compiles
+      mvn -DskipTests install - compiles, installs does not run tests
+      mvn -Dmaven.test.failure.ignore=true  install
+           - compiles, runs tests but continues after errors and installs
+      mvn install - compiles, run tests, installs
+
+4.   run $OSCARS_DIST/bin/stopServers.sh [dev|sdk|pro] ALL to start all the servers
+        the output from the servers will be piped to $OSCARS_DIST/*.out
+
+5. run $OSCARS_DIST/bin/stopServers.sh ALL to kill all the servers.
+
+start/stopServers can be used to start or stop individual servers with the params
+    authN, authZ, api, coord, topoBridge, rm, stubPCE, connPCE, dijPCE, vlanPCE, nullAgg, lookup,
+    stubPSS, dragonPSS, eomplsPSS, openflowPSS, PSS, notifyBridge, wnsbroker, wbui, ionui
+
+
+Currently all the tests are passed except for coordinator which requires the
+resource Manager and a PCE to be running.
+
+7. Testing
+    The following command in api/bin can be called to create, modify, query, 
+    list, setup and teardown reservations
+    Use the -h switch to see the required arguments.
+
+    The test programs log to their working directories, eg api/api.log.
+
+    Test programs are also available in authN, authZ, coordinator and
+    resourceManager
+
+

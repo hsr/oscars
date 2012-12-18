@@ -1,0 +1,116 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+      xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+      xmlns:http="http://cxf.apache.org/transports/http/configuration"
+      xmlns:httpj="http://cxf.apache.org/transports/http-jetty/configuration"
+      xmlns:jaxws="http://cxf.apache.org/jaxws"
+      xmlns:cxf="http://cxf.apache.org/core"
+      xmlns:p="http://cxf.apache.org/policy"
+      xmlns:sec="http://cxf.apache.org/configuration/security"
+      xmlns:tns="http://oscars.es.net/OSCARS/06"
+      xmlns:tns05="http://oscars.es.net/OSCARS"
+      xsi:schemaLocation="
+          http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd
+          http://cxf.apache.org/transports/http/configuration   http://cxf.apache.org/schemas/configuration/http-conf.xsd
+          http://cxf.apache.org/transports/http-jetty/configuration http://cxf.apache.org/schemas/configuration/http-jetty.xsd
+          http://cxf.apache.org/jaxws http://cxf.apache.org/schemas/jaxws.xsd
+          http://cxf.apache.org/core http://cxf.apache.org/schemas/core.xsd
+          http://cxf.apache.org/policy http://cxf.apache.org/schemas/policy.xsd
+	  http://cxf.apache.org/configuration/security
+          http://cxf.apache.org/schemas/configuration/security.xsd">
+
+ 
+  <!--  enable message printing and  ws security message signing-->
+  <cxf:bus>
+        <cxf:features>
+            <cxf:logging/>
+            <p:policies ignoreUnknownAssertions="true"/>
+        </cxf:features>
+  </cxf:bus>
+  
+  <httpj:engine-factory>
+   <httpj:engine port="9001">
+   </httpj:engine>
+
+   <httpj:engine port="9002">
+   </httpj:engine>
+  </httpj:engine-factory>
+
+
+  <jaxws:endpoint id="OSCARS06"
+      serviceName="tns:OSCARSService" endpointName="tns:OSCARS"
+      address="http://deploy-host/OSCARS"
+      wsdlLocation="wsdl-location/OSCARSService-0.6.wsdl"
+      implementor="net.es.oscars.api.http.OSCARSSoapHandler06">
+        
+      <!--
+      <jaxws:inInterceptors>
+              <bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor" id="Secure_Request06">
+                <constructor-arg>
+                        <map>
+                                <entry key="action" value="Signature Timestamp"/>
+                                <entry key="signaturePropFile" value="serverKeystore.properties"/>
+                        </map>
+                </constructor-arg>
+              </bean>
+
+              <bean id="VersionInInterceptor" class="net.es.oscars.utils.soap.NamespaceInterceptor"/>
+      </jaxws:inInterceptors>
+      -->
+      
+      <jaxws:properties>
+        <entry key="ws-security.signature.username" value="mykey" />
+        <entry key="ws-security.callback-handler"
+          value="net.es.oscars.api.common.ServerX509PasswordCB" />
+        <entry key="ws-security.signature.properties"
+          value="serverKeystore.properties" />
+        <entry key="allow-multiplex-endpoint" value="true"/>
+        <entry key="ProtocolVersion" value="http://oscars.es.net/OSCARS/06" />
+         <!--  the following keeps jsse from loading all the default cacerts 
+                unlike the cxf security stuff, jsse does not  need a password for  -->
+         <entry key="jaxen.net.ssl.trustStore" value="keystore-truststore.jks"/>
+      </jaxws:properties>
+    </jaxws:endpoint>
+
+
+   <jaxws:endpoint id="OSCARS05"
+      serviceName="tns05:OSCARSService" endpointName="tns05:OSCARS"
+      address="http://deploy-host/OSCARS05"
+      wsdlLocation="wsdl-location/OSCARSService-0.5.wsdl"
+      implementor="net.es.oscars.api.http.OSCARSSoapHandler05">
+    
+      <!--
+      <jaxws:inInterceptors>
+              <bean class="org.apache.cxf.ws.security.wss4j.WSS4JInInterceptor" id="Secure_Request05">
+                <constructor-arg>
+                        <map>
+                                <entry key="action" value="Signature Timestamp"/>
+                                <entry key="signaturePropFile" value="serverKeystore.properties"/>
+                        </map>
+                </constructor-arg>
+              </bean>
+              <bean id="VersionInInterceptor05" class="net.es.oscars.utils.soap.NamespaceInterceptor"/>
+      </jaxws:inInterceptors>
+      -->
+      
+      <jaxws:properties>
+        <entry key="ws-security.signature.username" value="mykey" />
+        <entry key="ws-security.callback-handler"
+          value="net.es.oscars.api.common.ServerX509PasswordCB" />
+        <entry key="ws-security.signature.properties"
+          value="serverKeystore.properties" />
+        <entry key="ProtocolVersion" value="http://oscars.es.net/OSCARS" />
+
+      </jaxws:properties>
+    </jaxws:endpoint>
+    
+    <jaxws:endpoint id="OSCARSNotify05"
+      serviceName="tns05:OSCARSNotifyOnlyService" endpointName="tns05:OSCARSNotifyOnly"
+      address="http://deploy-host/OSCARSNotify05"
+      wsdlLocation="wsdl-location/OSCARSService-0.5-NotifyOnly.wsdl"
+      implementor="net.es.oscars.api.http.OSCARSNotify05SoapHandler">
+    </jaxws:endpoint>
+
+</beans>
+

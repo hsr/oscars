@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema 
+    targetNamespace="http://oscars.es.net/OSCARS/authZ"
+    elementFormDefault="qualified"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:tns="http://oscars.es.net/OSCARS/authZ"
+    xmlns:authP = "http://oscars.es.net/OSCARS/authParams" >
+
+    <xsd:import 
+        namespace="http://oscars.es.net/OSCARS/authParams" 
+        schemaLocation="../authParams.xsd" />
+    
+    <!-- Element definitions -->
+
+    <xsd:element name="checkAccessRequest" type="tns:checkAccessParams" />
+    <xsd:element name="checkAccessResponse" type="tns:checkAccessReply" />
+    <xsd:element name="checkMultiAccessRequest" type="tns:checkMultiAccessParams" />
+    <xsd:element name="checkMultiAccessResponse" type="tns:multiAccessPerms" />
+
+    <xsd:complexType name="checkAccessParams">
+        <xsd:sequence>
+            <xsd:element name ="transactionId" type = "xsd:string"/>
+            <xsd:element name="subjectAttrs" type ="authP:subjectAttributes"/>
+            <xsd:element name="resourceName" type="xsd:string" />
+            <xsd:element name="permissionName" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="checkAccessReply">
+        <xsd:sequence>
+            <xsd:element name ="transactionId" type = "xsd:string"/>
+            <xsd:element name="permission" type = "xsd:string" />
+            <xsd:element name="conditions" type = "authP:authConditions"/>
+        </xsd:sequence>
+    </xsd:complexType>
+ 
+    <xsd:complexType name="checkMultiAccessParams">
+        <xsd:sequence>
+            <xsd:element name ="transactionId" type = "xsd:string"/>
+            <xsd:element name="subjectAttrs" type ="authP:subjectAttributes" />
+            <xsd:element name="reqPermissions" type="tns:reqPermType"
+                    maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="reqPermType">
+       <xsd:sequence>
+           <xsd:element name="reqAction" type="xsd:string"
+               maxOccurs="unbounded"/>
+       </xsd:sequence>
+       <xsd:attribute name="resource" type="xsd:string" use="required"/>
+    </xsd:complexType>
+    
+    <xsd:complexType name="multiAccessPerms">
+        <xsd:sequence>
+            <xsd:element name="accessPerm" type="tns:multiAccessPerm"
+                 maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="multiAccessPerm">
+        <xsd:sequence>
+            <xsd:element name="permissionGranted" type="tns:permType"
+                maxOccurs="unbounded"/>
+        </xsd:sequence>
+        <xsd:attribute name="resource" type="xsd:string" use="required"/>
+    </xsd:complexType>
+   
+    <xsd:complexType name="permType">
+       <xsd:sequence>
+          <xsd:element name="action" type="xsd:string"/>
+          <xsd:element name="permission" type="xsd:string" />
+          <xsd:element name="conditions" type="authP:authConditions"/>
+       </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>
+

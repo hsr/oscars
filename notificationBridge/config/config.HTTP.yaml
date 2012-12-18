@@ -1,0 +1,6 @@
+---
+soap:
+    publishTo:  'http://localhost:9012/notificationBridge'
+    
+observers:
+    - class: 'net.es.oscars.notificationBridge.observers.WSNObserver'

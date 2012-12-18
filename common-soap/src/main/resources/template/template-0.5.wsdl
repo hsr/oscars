@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<wsdl:definitions 
+	name="TemplateDefinitions"
+	targetNamespace = 	"http://oscars.es.net/OSCARS/template/05"
+	xmlns:tns="http://oscars.es.net/OSCARS/template/05" 
+	xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+	xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+	xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:p="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/">
+    
+
+    <wsdl:documentation>
+        This is a template WSDL.
+    </wsdl:documentation>
+   
+   <!-- Element definitions  -->
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://oscars.es.net/OSCARS/template/05"
+            elementFormDefault="qualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:tns="http://oscars.es.net/OSCARS/template/05">
+            <xsd:include schemaLocation="template-0.5.xsd" />
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="Response">
+    	<wsdl:part name="Response" type="xsd:string"></wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="Request">
+    	<wsdl:part name="Request" element="tns:RequestType"></wsdl:part>
+    </wsdl:message>
+  
+  	<wsdl:portType name="TemplatePortType">
+        <wsdl:operation name="Query">
+        	<wsdl:input message="tns:Request" name="Request"/>
+            <wsdl:output message="tns:Response" name="Response"/>
+        </wsdl:operation>
+    </wsdl:portType>
+       
+
+    <wsdl:binding name="TemplateBinding" type="tns:TemplatePortType">
+    	<p:binding style="document"
+    		transport="http://schemas.xmlsoap.org/soap/http" />
+    	<wsdl:operation name="Query">
+    		<p:operation
+    			soapAction="http://oscars.es.net/OSCARS/template/Query" />
+    		<wsdl:input name="Request">
+    			<p:body use="literal" />
+    		</wsdl:input>
+    		<wsdl:output name="Response">
+    			<p:body use="literal" />
+    		</wsdl:output>
+    	</wsdl:operation>
+    </wsdl:binding>
+    <wsdl:service name="TemplateService">
+        <wsdl:port name="TemplatePort" binding="tns:TemplateBinding">
+            <http:address location=""/>
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>
+
+
+
+
+
+
+
+

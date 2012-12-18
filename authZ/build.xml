@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="authZ">
+    <property environment="env"/>
+    <property name="oscars.dist" value="${env.OSCARS_DIST}"/>
+    <available property="props.installed" file="${basedir}/config/authZ.HTTP.yaml"/>
+    <target name="copyProps" unless="props.installed" description="copy default properties file">
+        <copy file="${basedir}/config/authZ.HTTP.yaml.template" tofile="${basedir}/config/authZ.HTTP.yaml"/>
+        <copy file="${basedir}/config/authZ.SSL.yaml.template" tofile="${basedir}/config/authZ.SSL.yaml"/>
+        <copy file="${basedir}/config/authZ.TESTING.yaml.template" tofile="${basedir}/config/authZ.TESTING.yaml"/>
+    </target>
+</project>

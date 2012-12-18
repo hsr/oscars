@@ -1,0 +1,47 @@
+# setting up an example QoS config on an SR box
+
+exit all
+configure qos sap-ingress "SAP_INGRESS_ID" create
+exit all
+configure qos sap-ingress "SAP_INGRESS_ID" description "TYPE_DESCRIPTION_HERE"
+configure qos sap-ingress "SAP_INGRESS_ID" queue 2 create
+exit all
+configure qos sap-ingress "SAP_INGRESS_ID" queue 2 no parent
+configure qos sap-ingress "SAP_INGRESS_ID" queue 2 adaptation-rule pir closest cir closest
+# change 9999 to the Mbps of your choosing
+configure qos sap-ingress "SAP_INGRESS_ID" queue 2 rate max cir 9999
+configure qos sap-ingress "SAP_INGRESS_ID" queue 2 mbs default
+configure qos sap-ingress "SAP_INGRESS_ID" queue 2 cbs default
+configure qos sap-ingress "SAP_INGRESS_ID" queue 2 high-prio-only default
+configure qos sap-ingress "SAP_INGRESS_ID" queue 11 multipoint create
+exit all
+configure qos sap-ingress "SAP_INGRESS_ID" fc "ef" create
+exit all
+configure qos sap-ingress "SAP_INGRESS_ID" fc "ef" queue 2
+exit all
+configure qos sap-ingress "SAP_INGRESS_ID" default-fc "ef"
+configure qos sap-ingress "SAP_INGRESS_ID" default-priority high
+
+
+configure qos sap-egress "SAP_EGRESS_ID" create
+exit all
+configure qos sap-egress "SAP_EGRESS_ID" description "TYPE_DESCRIPTION_HERE"
+configure qos sap-egress "SAP_EGRESS_ID" queue 2 expedite create
+exit all
+configure qos sap-egress "SAP_EGRESS_ID" queue 2 no parent
+configure qos sap-egress "SAP_EGRESS_ID" queue 2 adaptation-rule pir closest cir closest
+configure qos sap-egress "SAP_EGRESS_ID" queue 2 percent-rate 100 cir 100
+configure qos sap-egress "SAP_EGRESS_ID" queue 2 mbs default
+configure qos sap-egress "SAP_EGRESS_ID" queue 2 cbs default
+configure qos sap-egress "SAP_EGRESS_ID" queue 2 high-prio-only default
+configure qos sap-egress "SAP_EGRESS_ID" fc "ef" create
+exit all
+configure qos sap-egress "SAP_EGRESS_ID" fc "ef" queue 2
+exit all
+
+# deleting it
+configure qos no sap-ingress "SAP_INGRESS_ID"
+configure qos no sap-egress "SAP_EGRESS_ID"
+admin rollback save
+admin save
+

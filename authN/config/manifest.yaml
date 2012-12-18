@@ -1,0 +1,73 @@
+---
+AuthNService:
+    UNITTEST:
+        templateDir:        'OSCARS_DIST/authN/config'
+        config.yaml:        'OSCARS_DIST/authN/config/authN.TESTING.yaml'
+        server-cxf.xml:     'OSCARS_DIST/authN/config/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_DIST/authN/config/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_DIST/authN/config/log4j.DEBUG.properties'
+        testauthn.cfg.xml:  'OSCARS_DIST/authN/src/test/resources/testauthn.cfg.xml'
+        wsdl:               'OSCARS_DIST/common-soap/src/main/resources/authN/authN.wsdl'
+
+
+    DEVELOPMENT:
+        templateDir:        'OSCARS_HOME/AuthNService/conf/'
+        config.yaml:        'OSCARS_HOME/AuthNService/conf/authN.SSL.yaml'
+        server-cxf.xml:     'OSCARS_HOME/AuthNService/conf/server-cxf-ssl.xml'
+        client-cxf.xml:     'OSCARS_HOME/AuthNService/conf/client-cxf-ssl.xml'
+        log4j.properties:   'OSCARS_HOME/AuthNService/conf/log4j.MESSAGE.properties'
+        authn.cfg.xml:      'OSCARS_HOME/AuthNService/conf/authn.cfg.xml'
+        wsdl:               'OSCARS_HOME/wsdl/AuthNService/AuthNService.wsdl'
+
+    SDK:
+        templateDir:        'OSCARS_HOME/AuthNService/conf/'
+        config.yaml:        'OSCARS_HOME/AuthNService/conf/authN.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/AuthNService/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/AuthNService/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/AuthNService/conf/log4j.DEBUG.properties'
+        authn.cfg.xml:      'OSCARS_HOME/AuthNService/conf/authn.cfg.xml'
+        wsdl:               'OSCARS_HOME/wsdl/AuthNService/AuthNService.wsdl'
+
+    PRODUCTION:
+        templateDir:        'OSCARS_HOME/AuthNService/conf/'
+        config.yaml:        'OSCARS_HOME/AuthNService/conf/authN.SSL.yaml'
+        server-cxf.xml:     'OSCARS_HOME/AuthNService/conf/server-cxf-ssl.xml'
+        client-cxf.xml:     'OSCARS_HOME/AuthNService/conf/client-cxf-ssl.xml'
+        log4j.properties:   'OSCARS_HOME/AuthNService/conf/log4j.INFO.properties'
+        authn.cfg.xml:      'OSCARS_HOME/AuthNService/conf/authn.cfg.xml'
+        wsdl:               'OSCARS_HOME/wsdl/AuthNService/AuthNService.wsdl'
+
+
+AuthNPolicyService:
+    UNITTEST:
+        templateDir:        'OSCARS_DIST/authN/config'
+        config.yaml:        'OSCARS_DIST/authN/config/authNPolicy.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_DIST/authN/config/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_DIST/authN/config/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_DIST/authN/config/log4j.INFO.properties'
+        wsdl:           'OSCARS_DIST/common-soap/src/main/resources/authNPolicy/authNPolicy.wsdl'
+
+    DEVELOPMENT:
+        templateDir:        'OSCARS_HOME/AuthNPolicyService/conf/'
+        config.yaml:        'OSCARS_HOME/AuthNPolicyService/conf/authNPolicy.SSL.yaml'
+        server-cxf.xml:     'OSCARS_HOME/AuthNPolicyService/conf/server-cxf-ssl.xml'
+        client-cxf.xml:     'OSCARS_HOME/AuthNPolicyService/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/AuthNPolicyService/conf/log4j.MESSAGE.properties'
+        wsdl:               'OSCARS_HOME/wsdl/AuthNPolicyService/AuthNPolicyService.wsdl'
+
+    SDK:
+        templateDir:        'OSCARS_HOME/AuthNPolicyService/conf/'
+        config.yaml:        'OSCARS_HOME/AuthNPolicyService/conf/authNPolicy.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/AuthNPolicyService/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/AuthNPolicyService/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/AuthNPolicyService/conf/log4j.INFO.properties'
+        wsdl:               'OSCARS_HOME/wsdl/AuthNPolicyService/AuthNPolicyService.wsdl'
+
+    PRODUCTION:
+        templateDir:        'OSCARS_HOME/AuthNPolicyService/conf/'
+        config.yaml:        'OSCARS_HOME/AuthNPolicyService/conf/authNPolicy.SSL.yaml'
+        server-cxf.xml:     'OSCARS_HOME/AuthNPolicyService/conf/server-cxf-ssl.xml'
+        client-cxf.xml:     'OSCARS_HOME/AuthNPolicyService/conf/client-cxf-ssl.xml'
+        log4j.properties:   'OSCARS_HOME/AuthNPolicyService/conf/log4j.INFO.properties'
+        wsdl:               'OSCARS_HOME/wsdl/AuthNPolicyService/AuthNPolicyService.wsdl'
+

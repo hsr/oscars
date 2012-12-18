@@ -1,0 +1,9 @@
+---
+- id: "openflow"
+  services: 
+    - id:               openflow
+      configGenerator:  "net.es.oscars.pss.openflow.nox.JSONConfigGen"
+    
+    - id:               stub
+      "configGenerator: "net.es.oscars.pss.stub.StubConfigGen"
+            

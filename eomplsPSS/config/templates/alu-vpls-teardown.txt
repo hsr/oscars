@@ -1,0 +1,44 @@
+configure service vpls ${vpls.id} shutdown
+
+<#if sdps??>
+<#list sdps as sdp>
+configure service vpls ${vpls.id} mesh-sdp ${sdp.id}:${vpls.id} shutdown
+configure service vpls ${vpls.id} no mesh-sdp ${sdp.id}:${vpls.id}
+</#list>
+</#if>
+
+<#list ifces as ifce>
+configure service vpls ${vpls.id} sap ${ifce.name}:${ifce.vlan} shutdown
+configure service vpls ${vpls.id} no sap ${ifce.name}:${ifce.vlan}
+</#list>
+configure service vpls ${vpls.id} shutdown
+configure service no vpls ${vpls.id}
+
+<#if sdps??>
+<#list sdps as sdp>
+configure service sdp ${sdp.id} shutdown
+configure service no sdp ${sdp.id}
+</#list>
+</#if>
+
+<#if lsps??>
+<#list lsps as lsp>
+configure router mpls lsp "${lsp.name}" shutdown
+configure router mpls no lsp "${lsp.name}"
+</#list>
+</#if>
+
+<#if paths??>
+<#list paths as path>
+configure router mpls path "${path.name}" shutdown
+configure router mpls no path "${path.name}"
+</#list>
+</#if>
+
+configure qos no sap-ingress ${ingqos.id}
+
+admin rollback save
+admin save
+
+
+

@@ -1,0 +1,94 @@
+<?xml version="1.0"?>
+<!DOCTYPE Configure PUBLIC "-//Mort Bay Consulting//DTD Configure//EN" "http://jetty.mortbay.org/configure.dtd">
+
+<!-- =============================================================== -->
+<!-- Configure the Jetty Server                                      -->
+<!--                                                                 -->
+<!-- Documentation of this file format can be found at:              -->
+<!-- http://docs.codehaus.org/display/JETTY/jetty.xml                -->
+<!--                                                                 -->
+<!-- =============================================================== -->
+
+
+<Configure id="Server" class="org.mortbay.jetty.Server">
+
+    <!-- =========================================================== -->
+    <!-- Set connectors                                              -->
+    <!-- =========================================================== -->
+    <!-- One of each type!                                           -->
+    <!-- =========================================================== -->
+
+    <!-- Use this connector for many frequently idle connections
+         and for threadless continuations.
+         The set host localhost will restrict listening for
+         requests to the loopback interface. If it is ommitted
+         requests from any host will be accepted.
+     -->
+    <Call name="addConnector">
+      <Arg>
+          <New class="org.mortbay.jetty.nio.SelectChannelConnector">
+            <Set name="host">localhost</Set>
+            <Set name="port"><SystemProperty name="jetty.port" default="9195"/></Set>
+            <Set name="maxIdleTime">30000</Set>
+            <Set name="Acceptors">2</Set>
+            <Set name="statsOn">false</Set>
+            <Set name="confidentialPort">9196</Set>
+	    <Set name="lowResourcesConnections">5000</Set>
+	    <Set name="lowResourcesMaxIdleTime">5000</Set>
+          </New>
+      </Arg>
+    </Call>
+
+    <!-- =========================================================== -->
+    <!-- Set handler Collection Structure                            --> 
+    <!-- =========================================================== -->
+    <Set name="handler">
+      <New id="Handlers" class="org.mortbay.jetty.handler.HandlerCollection">
+        <Set name="handlers">
+         <Array type="org.mortbay.jetty.Handler">
+           <Item>
+             <New id="Contexts" class="org.mortbay.jetty.handler.ContextHandlerCollection"/>
+           </Item>
+           <Item>
+             <New id="DefaultHandler" class="org.mortbay.jetty.handler.DefaultHandler"/>
+           </Item>
+           <Item>
+             <New id="RequestLog" class="org.mortbay.jetty.handler.RequestLogHandler"/>
+           </Item>
+         </Array>
+        </Set>
+      </New>
+    </Set>
+    
+ 
+    <!-- =========================================================== -->
+    <!-- Configure Request Log                                       -->
+    <!-- Request logs  may be configured for the entire server here, -->
+    <!-- or they can be configured for a specific web app in a       -->
+    <!-- contexts configuration (see $(jetty.home)/contexts/test.xml -->
+    <!-- for an example).                                            -->
+    <!-- =========================================================== -->
+    <!-- TODO see if we can make this work  -mrt -->
+    <Ref id="RequestLog">
+      <Set name="requestLog">
+        <New id="RequestLogImpl" class="org.mortbay.jetty.NCSARequestLog">
+          <Set name="filename"><SystemProperty name="jetty.logs" default="./logs"/>/yyyy_mm_dd.request.log</Set>
+          <Set name="filenameDateFormat">yyyy_MM_dd</Set>
+          <Set name="retainDays">90</Set>
+          <Set name="append">true</Set>
+          <Set name="extended">false</Set>
+          <Set name="logCookies">false</Set>
+          <Set name="LogTimeZone">GMT</Set>
+        </New>
+      </Set>
+    </Ref>
+
+    <!-- =========================================================== -->
+    <!-- extra options                                               -->
+    <!-- =========================================================== -->
+    <Set name="stopAtShutdown">true</Set>
+    <Set name="sendServerVersion">true</Set>
+    <Set name="sendDateHeader">true</Set>
+    <Set name="gracefulShutdown">1000</Set>
+
+</Configure>

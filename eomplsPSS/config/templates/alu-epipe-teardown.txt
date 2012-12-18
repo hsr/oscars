@@ -1,0 +1,22 @@
+
+configure service vpls ${epipe.id} shutdown
+configure service vpls ${epipe.id} spoke-sdp ${sdp.id}:${epipe.id} shutdown
+configure service vpls ${epipe.id} no spoke-sdp ${sdp.id}:${epipe.id} 
+configure service vpls ${epipe.id} sap ${ifce.name}:${ifce.vlan} shutdown
+configure service vpls ${epipe.id} no sap ${ifce.name}:${ifce.vlan} 
+configure service no vpls ${epipe.id} 
+
+configure service sdp ${sdp.id} shutdown
+configure service no sdp ${sdp.id} 
+
+
+configure qos no sap-ingress "${ingqos.id}"
+configure qos no sap-egress "${egrqos.id}"
+
+configure router mpls lsp "${lsp.name}" shutdown
+configure router mpls no lsp "${lsp.name}" 
+configure router mpls path "${path.name}" shutdown
+configure router mpls no path "${path.name}" 
+
+admin rollback save
+admin save

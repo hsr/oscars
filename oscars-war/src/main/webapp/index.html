@@ -1,0 +1,151 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.01//EN"
+        "http://www.w3.org/TR/html4/strict.dtd">
+<html>
+  <head>
+    <title>On-demand Secure Circuits and Advance Reservation System</title>
+    <style type="text/css">
+        @import "lib/dojo/dojox/grid/resources/Grid.css";
+        @import "lib/dojo/dojox/grid/resources/tundraGrid.css";
+        @import "lib/dojo/dijit/themes/tundra/tundra.css";
+        @import "lib/dojo/dojo/resources/dojo.css";
+        @import "css/main.css";
+    </style>
+    <script type="text/javascript" src="lib/dojo/dojo/dojo.js"
+        djConfig="parseOnLoad: true, preventBackButtonFix: false">
+    </script>
+    <!-- register namespace for OSCARS Javascript modules -->
+    <script type="text/javascript">
+        dojo.registerModulePath("oscars", "../../../oscars");
+    </script>
+    <script type="text/javascript">
+        dojo.require("oscars.Form");
+        dojo.require("oscars.UserLogin");
+        dojo.require("oscars.UserLogout");
+        dojo.require("oscars.ReservationCreate");
+        dojo.require("oscars.ReservationDetails");
+        dojo.require("oscars.Reservations");
+        dojo.require("oscars.UserAdd");
+        dojo.require("oscars.UserList");
+        dojo.require("oscars.Institutions");
+        dojo.require("oscars.Attributes");
+        dojo.require("oscars.Authorizations");
+        dojo.require("oscars.AuthorizationDetails");
+        dojo.require("oscars.AuthorizationState");
+        dojo.require("oscars.StatusPoll");
+        dojo.require("oscars.UserProfile");
+        dojo.require("oscars.DigitalClock");
+        dojo.require("oscars.Utils");
+    </script>
+    <script type="text/javascript">
+        // required to parse the widgets
+        dojo.require("dojo.parser");
+        // will be required for back and forward buttons to work
+        dojo.require("dojo.back");
+        // all widgets used in all forms
+        dojo.require("dojo.data.ItemFileReadStore");
+        dojo.require("dojo.data.ItemFileWriteStore");
+        dojo.require("dijit.Dialog");
+        dojo.require("dijit.Tooltip");
+        dojo.require("dijit.layout.TabContainer");
+        dojo.require("dijit.form.Form");
+        dojo.require("dijit.form.Button");
+        dojo.require("dijit.form.TextBox");
+        dojo.require("dijit.form.Textarea");
+        dojo.require("dijit.form.DateTextBox");
+        dojo.require("dijit.form.TimeTextBox");
+        dojo.require("dijit.form.NumberTextBox");
+        dojo.require("dijit.form.ValidationTextBox");
+        dojo.require("dijit.form.CheckBox");
+        dojo.require("dojox.layout.ContentPane");
+        dojo.require("dojox.grid.DataGrid");
+    </script>
+    <script type="text/javascript">
+        // declare Dojo class for OSCARS global state
+        dojo.declare("OSCARSState", null, {
+            constructor: function(args, node){
+                dojo.mixin(this, args);
+                this.authorizationState = new oscars.AuthorizationState();
+                this.statusPoll = new oscars.StatusPoll();
+            },
+            login: "",
+            userGridInitialized: false,
+            userRowSelectable: false,
+            resvGridInitialized: false,
+            institutionGridInitialized: false,
+            attributeGridInitialized: false,
+            authGridInitialized: false,
+            loginEntered: false,
+            reservationDetailsEntered: false,
+            reservationsEntered: false
+        });
+    </script>
+    <script type="text/javascript">
+        // these are called after login page is finished parsing
+        // clock in upper left hand corner of page
+        dojo.addOnLoad(oscars.DigitalClock.initClock);
+        // add event for clicking on tab
+        dojo.addOnLoad(function(){
+            var w =dijit.byId("mainTabContainer");
+            dojo.connect(w, "selectChild", oscars.Form.selectedChanged);
+        });
+        // initialize back/forward button state
+        dojo.addOnLoad(oscars.Form.initBackForwardState); 
+    </script>
+  </head>
+  <body class="tundra">
+    <table id="pagetitle">
+      <tr>
+        <td>
+            <img src="images/ESnetLogo.png" width="55" height="58"
+               border="0" alt="ESnet Logo" title="ESnet" />
+        </td>
+        <td>
+          <h1>On-demand Secure Circuits and Advance Reservation System</h1>
+          <div>The OSCARS service is provided by
+              <a href="http://www.es.net/" target="_blank">ESnet</a>, the Energy Sciences Network.
+          </div>
+
+          <div>OSCARS software developed by
+              <a href="http://www.es.net/" target="_blank">ESnet</a>, in collaboration with
+              <a href="http://www.internet2.edu/" target="_blank">Internet2</a> and
+              <a href="http://www.east.isi.edu/" target="_blank">ISI East</a>
+          </div>
+          </td>
+      </tr>
+      <tr>
+        <td>
+            <!-- space for clock -->
+            <div id="clock">&nbsp;</div>
+        </td>
+        <td>
+            <!-- OSCARS status bar -->
+            <div id="oscarsStatus" class="success">Log in to OSCARS.</div>
+        </td>
+      </tr>
+    </table>
+
+    <!-- global OSCARS state; note jsId -->
+    <div dojoType="OSCARSState" jsId="oscarsState">
+    <div id="mainTabContainer" dojoType="dijit.layout.TabContainer" doLayout="false"> 
+    <!-- login/logout page -->
+    <div id="sessionPane" dojoType="dojox.layout.ContentPane" title="Login/Logout"
+         href="forms/session.html" selected="true">
+    </div>
+
+    </div>
+    </div>
+
+    <div id="notices">
+    <p>
+        <a href="/OSCARS/docs" target="_blank">Documentation</a> |
+        <a href="http://www.es.net/" target="_blank">ESnet</a> |
+        <a href="http://www.lbl.gov/" target="_blank">Berkeley Lab</a> |
+        <a href="http://www.lbl.gov/Disclaimers.html" target="_blank">Notice to Users</a>
+    </p>
+    <p><strong>Contacts:</strong>
+        <a href="mailto:chin@es.net">Chin Guok</a>, 
+        <a href="mailto:mrthompson@lbl.gov">Mary Thompson</a>
+    </p>
+    </div>
+</body>
+</html>

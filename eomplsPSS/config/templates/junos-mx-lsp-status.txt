@@ -1,0 +1,5 @@
+<junoscript version="1.0" release="7.3">
+<rpc>
+  <get-l2ckt-connection-information/>
+</rpc>
+</junoscript>

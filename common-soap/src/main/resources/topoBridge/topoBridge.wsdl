@@ -1,0 +1,77 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<wsdl:definitions
+  name="topoBridgeDefinitions"
+  targetNamespace = "http://oscars.es.net/OSCARS/topoBridge"
+  xmlns:tns="http://oscars.es.net/OSCARS/topoBridge"
+  xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+  xmlns:com="http://oscars.es.net/OSCARS/common"
+  xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+  xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/" xmlns:p="http://schemas.xmlsoap.org/wsdl/soap/" xmlns:mime="http://schemas.xmlsoap.org/wsdl/mime/" xmlns:http="http://schemas.xmlsoap.org/wsdl/http/">
+
+
+    <wsdl:documentation>
+        This is the WSDL for the topology server bridge component.
+    </wsdl:documentation>
+
+
+    <wsdl:import namespace="http://oscars.es.net/OSCARS/common" location="../common.wsdl"/>
+
+   <!-- Element definitions  -->
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://oscars.es.net/OSCARS/topoBridge"
+            elementFormDefault="qualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:tns="http://oscars.es.net/OSCARS/topoBridge">
+            <xsd:include schemaLocation="topoBridge.xsd" />
+            <xsd:import namespace="http://oscars.es.net/OSCARS/common"
+                  schemaLocation="../common.xsd" />
+        </xsd:schema>
+    </wsdl:types>
+
+
+    <wsdl:message name="getTopologyRequest">
+      <wsdl:part name="getTopologyRequest" element="tns:getTopologyRequestType"></wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="getTopologyMessage">
+      <wsdl:part name="getTopologyRequest" element="tns:getTopologyRequestType"></wsdl:part>
+    </wsdl:message>
+
+    <wsdl:message name="getTopologyResponse">
+      <wsdl:part name="getTopologyResponse" element="tns:getTopologyResponseType"></wsdl:part>
+    </wsdl:message>
+
+    <wsdl:portType name="TopoBridgePortType">
+        <wsdl:operation name="getTopology">
+          <wsdl:input  message="tns:getTopologyMessage"  name="getTopologyRequest"/>
+          <wsdl:output message="tns:getTopologyResponse" name="getTopologyResponse"/>
+          <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+    </wsdl:portType>
+
+
+    <wsdl:binding name="TopoBridgeBinding" type="tns:TopoBridgePortType">
+      <p:binding style="document" transport="http://schemas.xmlsoap.org/soap/http" />
+      <wsdl:operation name="getTopology">
+        <p:operation soapAction="http://oscars.es.net/OSCARS/topoBridge/getTopology" />
+        <wsdl:input name="getTopologyRequest">
+          <p:body use="literal" />
+        </wsdl:input>
+        <wsdl:output name="getTopologyResponse">
+          <p:body use="literal" />
+        </wsdl:output>
+        <wsdl:fault name="OSCARSErrorException">
+            <soap:fault name="OSCARSErrorException" use="literal" />
+        </wsdl:fault>
+      </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="TopoBridgeService">
+        <wsdl:port name="TopoBridgePort" binding="tns:TopoBridgeBinding">
+            <soap:address location=""/>
+        </wsdl:port>
+    </wsdl:service>
+
+</wsdl:definitions>

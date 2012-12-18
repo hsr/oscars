@@ -1,0 +1,199 @@
+#!/bin/sh
+#########################################################################
+# Script used to modify the details associated with a current domain
+#	User is prompted for a domain name. If not found in current
+#		config file, will exit
+#
+# Usage: idc-domaininfomod <context>
+# TDB:remove echo statements. Retaining expecting changes
+#########################################################################
+
+#check if $OSCARS_HOME is set
+REPO_PATH=""
+if [ -n "$OSCARS_HOME" ]; then
+	REPO_PATH=OSCARS_HOME
+else
+	echo "ERROR: OSCARS_HOME is not set. Re-run this script after setting OSCARS_HOME."
+	exit 1
+fi
+
+#TBD Remove
+if  [ -z $OSCARS_DIST ]; then
+    echo "Please set the environment var OSCARS_DIST to the OSCARS source directory"
+    exit -1
+fi
+
+###########################################################################
+#Subroutine to print usage details
+###########################################################################
+printUsage() {
+        echo -e "\nusage idc-domaininfomod <context> " 
+        echo "<context> is one of: PRODUCTION|pro DEVELOPMENT|dev SDK|sdk"
+	exit 1;
+}
+
+#######################################################################
+#subroutine to get configFile
+#######################################################################
+getConfigFile () {
+        if [ $# -lt 3 ]; then
+                echo "Error: Argument list insufficient"
+                exit 1;
+        fi
+#       echo "$1, $2, $3"
+#TDB run from OSCARS_HOME?
+        Config=$(sh $OSCARS_DIST/bin/parseManifest.sh $1 $2 $3 | sed "s/'//g")
+#       echo "Config in local Method :$Config"
+        Service=$(echo $Config | awk -F/ '$1~//{print $2}')
+        Conf=$(echo $Config | awk -F/ '$1~//{print $3}')
+        Yaml=$(echo $Config | awk -F/ '$1~//{print $4}' | sed "s/'//g")
+#       echo "2. $Service, $Conf, $Yaml"
+        if [ "$Conf" == "conf" ]; then
+                configFile=$OSCARS_HOME/$Service/$Conf/$Yaml
+        elif [ "$Conf" == "config" ]; then
+                configFile=$OSCARS_DIST/$Service/$Conf/$Yaml
+        fi
+        #echo "3. Config File: $configFile"
+        echo $configFile
+}
+
+
+# execution starts here
+if [ $# -lt 1 ]; then
+	printUsage
+fi
+
+currDir=$(pwd)
+CONTEXT=$1
+case $1 in
+	d|D|dev|DEV) CONTEXT="DEVELOPMENT";;
+	p|P|pro|PRO) CONTEXT="PRODUCTION";;
+	s|S|sdk) CONTEXT="SDK";;
+esac
+
+if [ "$CONTEXT" ==  "PRODUCTION" ] || [ "$CONTEXT" == "UNITTEST" ] || [ "$CONTEXT" == "DEVELOPMENT" ] || [ "$CONTEXT" == "SDK" ]; then
+	#prompt user for new domain
+	printf "Enter the domain you would like to modify for context $CONTEXT:";
+	read user_domain;
+	stty echo;
+	#trim string
+        user_domain=$(echo $user_domain | sed 's/^ *\(.*\) *$/\1/')
+	echo "--Trying to locate domain $user_domain..."
+else
+	echo "CONTEXT  $CONTEXT is not recognized"
+	printUsage
+fi
+
+SOURCE="source"
+
+#Search topology file and get the config file name
+#config_file=$(getConfigFile TopoBridgeService $CONTEXT topoBridge)
+config_file=$(getConfigFile TopoBridgeService TopoBridgeService $CONTEXT)
+#if file not found, return
+if [ -z $config_file ] || [ ! -f $config_file ]; then
+        echo "The configuration file is not found. Check if your $OSCARS_HOME/TopoBridgeService/conf folder has configuration files present"
+        exit 1
+fi
+
+SOURCE="source"
+DMNFND=0
+ISTOPOSERVER=0
+SERVERLISTFOUND=0
+TOPOSRVR="topoServer"
+SERVERS="servers"
+STARTDELIM=[
+ENDDELIM=]
+domainLineNum=0
+
+while read i;
+do
+        Line=$(echo $i)
+	#trimming
+        Line=$(echo $Line | sed 's/^ *\(.*\) *$/\1/')
+        lineNum=`expr $lineNum + 1`
+        #echo "...:$Line"
+	#do not process if comment
+        iscomment=$(echo $Line | awk '/^#/ {print "comment"}')
+        if [ "$iscomment" == "comment" ]; then
+                continue;
+        fi
+        #echo "$lineNum:$Line, DNMFND:$DMNFND, ISTOP: $ISTOPOSERVER, SERVER:$SERVERLISTFOUND"
+        if [ $DMNFND -eq 0 ]; then
+                localDmId=$(echo $Line | awk -F: '$1~/'$user_domain'/{print "FOUND"}' ) # '{if ( $1~"$user_domain" ) print "FOUND"}')
+                if [ "$localDmId" == "FOUND" ]; then
+                        DMNFND=1
+                        domainLineNum=$lineNum
+                        #echo "-------$localDmId $user_domain at $domainLineNum"
+                fi
+	elif [ $DMNFND -eq 1 ] && [ $ISTOPOSERVER -eq 0 ]; then
+                isTopoSrc=$(echo $Line | awk -F: '$2~/'$TOPOSRVR'/{print "FOUND"}' ) #awk -F: '{if ( $2~'$TOPOSRVR' ) print "FOUND"}')
+		isFileSrc=$(echo $Line | awk -F: '$2~/'$FILESRC'/{print "FOUND"}' )
+                if [ "$isTopoSrc" == "FOUND" ] || [ "$isFileSrc" == "FOUND" ]; then #&& [ $lineNum == `expr $domainLineNum + 1` ] ; then
+                        ISTOPOSERVER=1
+			#need domain "source" line number
+			srcLine=$lineNum
+                fi
+        elif [ $ISTOPOSERVER -eq 1 ]; then   
+                #server list for relevant domain has been found
+		#need file location line number
+		filenameLine=$lineNum
+                SERVERLISTFOUND=1
+                break;
+	fi
+done<$config_file
+
+#echo "Domain  at $domainLineNum, topo at $srcLine, filename at $filenameLine"
+
+if [ $DMNFND -eq 0 ]; then
+	echo "Domain $user_domain is not found. Exiting now."
+	exit 1;
+elif [ $DMNFND -eq 1 ]; then
+	#Get whether file/topoServer
+	printf "Enter the source of the topology for this domain: file/topoServer?";
+	user_src=0;
+	while [ $user_src == 0 ]; do
+		read user_src;
+		if [ "$user_src" != "file" ] && [ "$user_src" != "topoServer" ]; then
+			user_src=0;
+			#error message to user 
+			echo "--You did not select a valid value for file/toposerver. Quitting now"
+			exit 1;
+		fi
+	done
+	#if file prompt for file location
+	# else prompt for TS URL
+	if [ $user_src == "file" ]; then
+        	USER_SRC_TYPE="file"
+        	printf "Enter topology file name, inclusive of a full/relative path. If using relative path, place file under $OSCARS_HOME/TopoBridgeService/conf: ";
+        	read user_location;
+        	if [ ! -f $user_location ] && [ ! -f $OSCARS_HOME/TopoBridgeService/conf/$user_location ]; then
+               		echo "File specified by you does not exist. Please rerun this script after locating your topology file"
+                	exit 1;
+        	else
+               		user_location="'$user_location'"
+        	fi
+	elif [ $user_src == "topoServer" ]; then
+        	USER_SRC_TYPE="servers"
+        	printf "Enter topology server name: "
+        	read user_location
+        	user_location="['$user_location']"
+	fi
+	
+	#echo "domain found. User location = $user_location"
+fi
+
+# did not see it necessary to parse the file to check for "domains", and then append
+src_line="            $SOURCE:         '$user_src'"
+location_line="            $USER_SRC_TYPE:           $user_location"
+
+sed -i -e ""$srcLine"s/.*/$src_line/" $config_file
+sed -i -e ""$filenameLine"s/.*/$location_line/" $config_file
+
+if [ $? == 0 ]; then
+	echo "Domain $user_domain modified succesfully"
+	#echo "$File : $config_file"
+else
+	echo "There was an error while modifying domain $user_domain in $config_file. Please modify this manually"
+fi
+
+

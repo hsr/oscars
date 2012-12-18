@@ -1,0 +1,10 @@
+<jaxws:bindings
+    wsdlLocation="topoBridge.wsdl"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns="http://java.sun.com/xml/ns/jaxws"
+    xmlns:jaxws="http://java.sun.com/xml/ns/jaxws">
+
+    <enableWrapperStyle>false</enableWrapperStyle>
+
+
+</jaxws:bindings>

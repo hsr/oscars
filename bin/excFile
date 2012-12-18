@@ -1,0 +1,8 @@
+.svn
+target/classes/net
+target/surefire-reports
+target/maven-archiver
+target/tmp
+oscars-war/src/main/webapp/lib/dojo-standard-1.2.3.tar 
+*.log
+

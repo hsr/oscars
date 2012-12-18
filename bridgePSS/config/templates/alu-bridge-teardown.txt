@@ -1,0 +1,8 @@
+exit all
+configure service vpls ${vlan} customer 1 sap ${portA}:${vlan} shutdown
+configure service vpls ${vlan} customer 1 no sap ${portA}:${vlan}   
+configure service vpls ${vlan} customer 1 sap ${portZ}:${vlan} shutdown
+configure service vpls ${vlan} customer 1 no sap ${portZ}:${vlan} 
+configure service vpls ${vlan} no pim-snooping 
+configure service vpls ${vlan} shutdown
+configure service no vpls ${vlan}  

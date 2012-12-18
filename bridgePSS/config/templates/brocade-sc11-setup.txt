@@ -1,0 +1,10 @@
+configure terminal
+<#list vlans as vlan> 
+vlan ${vlan} name vlan${vlan}
+  tagged ${portA} ${portZ}
+  no spanning-tree
+  rstp
+exit
+</#list>
+
+exit

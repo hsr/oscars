@@ -1,0 +1,27 @@
+############################################################################################
+# OSCARS Parameters: The parameters below are used to configure networking on the VM
+#    DOMAIN_ID: The identfier used in the topology to represent your domain (e.g. es.net) 
+#    ORGANIZATION: The full name of the organization to which this OSCARS server belong 
+#        (e.g. Energy Sciences Network)
+#    PUBLISH_SERVICE_INFO: If 1 then your topology and location of you OSCARS server will be 
+#        published in the perfSONAR Topology and Lookup services respectively. If 0 then
+#        they will not be published. You will likely want to set to 0 if the domain will
+#        not be used in productioon.
+############################################################################################
+export DOMAIN_ID=""
+export ORGANIZATION=""
+export PUBLISH_SERVICE_INFO=0
+
+############################################################################################
+# Networking Parameters: The parameters below are used to configure networking on the VM
+#    IDC_HOST: The hostname to assign to the VM (e.g. oscars-vm.mydomain.net)
+#    IDC_IP: The public IP address to assign to the VM (e.g. 198.129.226.142)
+#    IDC_NETMASK: The IP netmask to assign to the VM (e.g. 255.255.255.224)
+#    IDC_GATEWAY: The gateway to assign to the VM (e.g. 198.129.226.129)
+#    IDC_DNS: The DNS nameserver to configure for the VM (e.g. 198.128.2.10)
+############################################################################################
+export IDC_HOST=""
+export IDC_IP=""
+export IDC_NETMASK=""
+export IDC_GATEWAY=""
+export IDC_DNS=""

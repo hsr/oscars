@@ -1,0 +1,34 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ** This is the CXF runtime configuration file. It currently only includes
+  ** JETTY subsytem. Note that Spring is used only for the purpose of this 
+  ** configuration.
+ -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:sec="http://cxf.apache.org/configuration/security"
+  xmlns:http="http://cxf.apache.org/transports/http/configuration"
+  xmlns:cxf="http://cxf.apache.org/core"
+  xmlns:jaxws="http://java.sun.com/xml/ns/jaxws"
+  xsi:schemaLocation="
+           http://cxf.apache.org/configuration/security
+           http://cxf.apache.org/schemas/configuration/security.xsd
+           http://cxf.apache.org/transports/http/configuration
+           http://cxf.apache.org/schemas/configuration/http-conf.xsd
+           http://cxf.apache.org/core
+           http://cxf.apache.org/schemas/core.xsd
+           http://www.springframework.org/schema/beans
+           http://www.springframework.org/schema/beans/spring-beans.xsd">
+           
+<!--  Comment out the following to suppress printing of messages -->          
+ <cxf:bus>
+        <cxf:features>
+            <cxf:logging/>
+        </cxf:features>
+  </cxf:bus> 
+
+  <http:conduit name="*.http-conduit">
+   </http:conduit>
+</beans>
+

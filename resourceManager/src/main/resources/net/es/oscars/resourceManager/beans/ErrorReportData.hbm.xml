@@ -1,0 +1,65 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+<!--
+    Adapted from mapping created by the Middlegen Hibernate plugin 2.1.
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class name="net.es.oscars.resourceManager.beans.ErrorReportData" table="errorReports">
+    <meta attribute="class-description" inherit="false">
+       @hibernate.class table="errorReports"
+    </meta>
+
+    <cache usage="read-write" />
+
+    <id name="id">
+        <meta attribute="field-description">
+           @hibernate.id generator-class="identity"
+        </meta>
+        <generator class="identity" />
+    </id>
+
+    <property name="seqNumber" not-null="true" insert="false" update="false">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>
+    </property>
+
+    <property name="errorCode" not-null="true">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>
+    </property>
+
+    <property name="errorMsg" not-null="true">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>
+    </property>
+
+    <property name="errorType" not-null="true">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>
+    </property>
+
+    <property name="GRI" />
+
+    <property name="transId" />
+
+    <property name="timestamp" />
+
+    <property name="moduleName" />
+
+    <property name="domainId" />
+
+    <!-- Associations -->
+
+</class>
+</hibernate-mapping>

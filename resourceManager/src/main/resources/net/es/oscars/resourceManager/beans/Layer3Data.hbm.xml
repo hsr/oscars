@@ -1,0 +1,37 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+
+<class name="net.es.oscars.resourceManager.beans.Layer3Data" table="layer3Data"
+                                                    lazy="false">
+    <meta attribute="class-description" inherit="false">
+       @hibernate.class table="layer3Data"
+    </meta>
+
+    <cache usage="read-write" />
+
+    <id name="id">
+        <meta attribute="field-description">
+           @hibernate.id generator-class="identity"
+        </meta>
+        <generator class="identity" />
+    </id>
+
+    <property name="srcHost" />
+
+    <property name="destHost" />
+
+    <property name="srcIpPort" />
+
+    <property name="destIpPort" />
+
+    <property name="protocol" />
+
+    <property name="dscp" />
+
+
+</class>
+</hibernate-mapping>

@@ -1,0 +1,4 @@
+---
+soap:
+    publishTo: 	'https://localhost:10002/OSCARS/PCE/NullPCE'
+

@@ -1,0 +1,72 @@
+---
+TopoBridgeService:
+    UNITTEST:
+        config.yaml:        'OSCARS_DIST/TopoBridge/config/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_DIST/TopoBridge/config/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_DIST/TopoBridge/config/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_DIST/TopoBridge/config/log4j.INFO.properties'
+        defaultTopoDir:     'OSCARS_DIST/TopoBridge/config/'
+        testdomain-1.xml:   'OSCARS_DIST/TopoBridge/config/testdomain-1.xml'
+        testdomain-2.xml:   'OSCARS_DIST/TopoBridge/config/testdomain-2.xml'
+        wsdl:               'OSCARS_DIST/common-soap/src/main/resources/TopoBridge/TopoBridge.wsdl'
+
+    DEVELOPMENT:
+        config.yaml:        'OSCARS_HOME/TopoBridgeService/conf/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/TopoBridgeService/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/TopoBridgeService/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/TopoBridgeService/conf/log4j.MESSAGE.properties'
+        defaultTopoDir:     'OSCARS_HOME/TopoBridgeService/conf/'
+        testdomain-1.xml:   'OSCARS_HOME/TopoBridgeService/conf/testdomain-1.xml'
+        testdomain-2.xml:   'OSCARS_HOME/TopoBridgeService/conf/testdomain-2.xml'
+        wsdl:               'OSCARS_HOME/wsdl/TopoBridgeService/TopoBridgeService.wsdl'
+
+    SDK:
+        config.yaml:        'OSCARS_HOME/TopoBridgeService/conf/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/TopoBridgeService/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/TopoBridgeService/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/TopoBridgeService/conf/log4j.DEBUG.properties'
+        defaultTopoDir:     'OSCARS_HOME/TopoBridgeService/conf/'
+        testdomain-1.xml:   'OSCARS_HOME/TopoBridgeService/conf/testdomain-1.xml'
+        testdomain-2.xml:   'OSCARS_HOME/TopoBridgeService/conf/testdomain-2.xml'
+        wsdl:               'OSCARS_HOME/wsdl/TopoBridgeService/TopoBridgeService.wsdl'
+
+    PRODUCTION:
+        config.yaml:        'OSCARS_HOME/TopoBridgeService/conf/config.SSL.yaml'
+        server-cxf.xml:     'OSCARS_HOME/TopoBridgeService/conf/server-cxf-ssl.xml'
+        client-cxf.xml:     'OSCARS_HOME/TopoBridgeService/conf/client-cxf-ssl.xml'
+        log4j.properties:   'OSCARS_HOME/TopoBridgeService/conf/log4j.INFO.properties'
+        defaultTopoDir:     'OSCARS_HOME/TopoBridgeService/conf/'
+        testdomain-1.xml:   'OSCARS_HOME/TopoBridgeService/conf/testdomain-1.xml'
+        testdomain-2.xml:   'OSCARS_HOME/TopoBridgeService/conf/testdomain-2.xml'
+        wsdl:               'OSCARS_HOME/wsdl/TopoBridgeService/TopoBridgeService.wsdl'
+
+Utils:
+    UNITTEST:
+        templateDir:        'OSCARS_DIST/Utils/config'
+        config.yaml:        'OSCARS_DIST/Utils/config/config.yaml'
+
+    DEVELOPMENT:
+        templateDir:        'OSCARS_HOME/Utils/conf/'
+        config.yaml:        'OSCARS_HOME/Utils/conf/config.yaml'
+
+    SDK:
+        templateDir:        'OSCARS_HOME/Utils/conf/'
+        config.yaml:        'OSCARS_HOME/Utils/conf/config.yaml'
+
+    PRODUCTION:
+        templateDir:        'OSCARS_HOME/Utils/conf/'
+        config.yaml:        'OSCARS_HOME/Utils/conf/config.yaml'
+        
+LookupService:
+    UNITTEST:
+        config.yaml:        'OSCARS_DIST/lookup/config/config.HTTP.yaml'
+        wsdl:               'OSCARS_DIST/common-soap/src/main/resources/lookup/lookup.wsdl'
+    DEVELOPMENT:
+        config.yaml:        'OSCARS_HOME/LookupService/conf/config.HTTP.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/LookupService/LookupService.wsdl'
+    SDK:
+        config.yaml:        'OSCARS_HOME/LookupService/conf/config.HTTP.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/LookupService/LookupService.wsdl'
+    PRODUCTION:
+        config.yaml:        'OSCARS_HOME/LookupService/conf/config.SSL.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/LookupService/LookupService.wsdl'

@@ -1,0 +1,216 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+The OGF takes no position regarding the validity or scope of any intellectual property or other rights that might be claimed to pertain to the implementation or use of the technology described in this document or the extent to which any license under such rights might or might not be available; neither does it represent that it has made any effort to identify any such rights.  Copies of claims of rights made available for publication and any assurances of licenses to be made available, or the result of an attempt made to obtain a general license or permission for the use of such proprietary rights by implementers or users of this specification can be obtained from the OGF Secretariat.
+
+The OGF invites any interested party to bring to its attention any copyrights, patents or patent applications, or other proprietary rights which may cover technology that may be required to practice this recommendation.  Please address the information to the OGF Executive Director.
+
+This document and the information contained herein is provided on an "As Is" basis and the OGF disclaims all warranties, express or implied, including but not limited to any warranty that the use of the information herein will not infringe any rights or any implied warranties of merchantability or fitness for a particular purpose.
+
+Copyright (C) Open Grid Forum (2009-2012). All Rights Reserved.
+
+This document and translations of it may be copied and furnished to others, and derivative works that comment on or otherwise explain it or assist in its implementation may be prepared, copied, published and distributed, in whole or in part, without restriction of any kind, provided that the above copyright notice and this paragraph are included on all such copies and derivative works. However, this document itself may not be modified in any way, such as by removing the copyright notice or references to the OGF or other organizations, except as needed for the purpose of developing Grid Recommendations in which case the procedures for copyrights defined in the OGF Document process must be followed, or as required to translate it into languages other than English.
+
+The limited permissions granted above are perpetual and will not be revoked by the OGF or its successors or assignees.
+
+Open Grid Forum NSI Interface Discovery v2.0
+
+Description: This is the NSI Interface Discovery types schema for the reference web services implementation of the OGF NSI Interface Discovery v2.0. Comments and questions can be directed to the mailing list group mailing list (nsi-wg@ogf.org).
+-->
+<xsd:schema targetNamespace="http://schemas.ogf.org/nsi/2012/03/discovery/types"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:ftypes="http://schemas.ogf.org/nsi/2012/03/framework/types"
+    xmlns:tns="http://schemas.ogf.org/nsi/2012/03/discovery/types">
+
+    <xsd:annotation>
+        <xsd:documentation xml:lang="en">
+            This is an XML schema document describing the OGF NSI Interface
+            Discovery types v2.0.
+        </xsd:documentation>
+    </xsd:annotation>
+
+    <!-- Import the common NSI framework types. -->
+    <xsd:import namespace="http://schemas.ogf.org/nsi/2012/03/framework/types"
+        schemaLocation="ogf_nsi_framework_types_v2_0.xsd"/>
+    
+    <!-- ******************************************************************
+        *                       XML base types                           *
+        ****************************************************************** -->
+    <xsd:element name="servicesQuery" type="tns:ServicesQueryType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+                Element definition for the queryServicesRequest query message.
+            </xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+    <xsd:element name="services" type="tns:ServicesType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+                Element definition for the queryServicesResult message
+                containing the matching interface versions.
+            </xsd:documentation>
+        </xsd:annotation>
+    </xsd:element>
+
+    <xsd:complexType name="ServicesQueryType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+                Type definition for the queryServicesRequest query operation.
+                The type parameter is a set of interface types that should
+                be returned. The type string will be matched to the
+                ServiceType:type attribute.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="type" type="xsd:string" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ServicesType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+                Type definition for the result of an interface discovery
+                operation.  The result will be zero or more services matching
+                the request types.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="service" type="tns:ServiceType" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="ServiceType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+                Type definition for a service.  A service may consist of zero
+                or more versions.
+                
+                Elements:
+                description - A user friendly description of the service.
+                
+                versions - Versions of the service supported by the NSA.
+                
+                any - Provides a flexible mechanism allowing additional elements
+                to be provided in the discovery message.  Use of this element
+                field is beyond the current scope of this NSI specification, but
+                may be used in the future to extend the existing protocol without
+                requiring a schema change.  Additionally, the field can be used
+                between peered NSA to provide additional context not covered in
+                the existing specification, however, this is left up to specific
+                peering agreements.                
+                
+                Attributes:
+                type - A string identify the service type such as
+                "ConnectionService", "TopologyService", or "DiscoveryService".
+                
+                anyAttribute - Provides a flexible mechanism allowing additional
+                attributes in the discovery message exchange between two peered
+                NSA.  Use of this attribute field is beyond the current scope of
+                this NSI specification, but may be used in the future to extend
+                the existing protocol without requiring a schema change.
+                Additionally, the field can be used between peered NSA to provide
+                additional context not covered in the existing specification,
+                however, this is left up to specific peering agreements.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="description" type="xsd:string" />
+            <xsd:element name="versions" type="tns:VersionsType" minOccurs="0" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+        <xsd:attribute name="type" use="required" type="xsd:string" />
+        <xsd:anyAttribute namespace="##other" processContents="lax" />
+    </xsd:complexType>
+
+    <xsd:complexType name="VersionsType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+                Type definition for the set of zero or more supported versions
+                of the service.
+                
+                Elements:
+                
+                version - A specific version supported by the service.
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="version" type="tns:VersionType" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="VersionType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+                Type definition for a service.  A service may consist of zero
+                or more versions.
+                
+                Elements:
+                capabilities - a list of capabilities supported by the NSA for
+                this version of the service.
+                
+                any - Provides a flexible mechanism allowing additional elements
+                to be provided in the discovery message.  Use of this element
+                field is beyond the current scope of this NSI specification, but
+                may be used in the future to extend the existing protocol without
+                requiring a schema change.  Additionally, the field can be used
+                between peered NSA to provide additional context not covered in
+                the existing specification, however, this is left up to specific
+                peering agreements.                
+                
+                Attributes:
+                name - A friendly name for the service version such as
+                "NSI-CS-1.SC-Provider", "NSI-CS-1.1-Provider", or
+                "NSI-Topology-2.0-Provider".
+                
+                version - The URL uniquely identifying the service version.
+                For example, the following URL identify NSI-CS-1.SC-Provider"
+                and "NSI-CS-1.1-Provider" respectively:
+                
+                http://schemas.ogf.org/nsi/2011/10/connection/provider
+                http://schemas.ogf.org/nsi/2011/12/connection/provider
+                
+                endpoint - A URL representing the SOAP endpoint on which this
+                version of the service is available.
+                
+                wsdl - An optional URL providing remote download of the WSDL
+                definition.
+                
+                anyAttribute - Provides a flexible mechanism allowing additional
+                attributes in the discovery message exchange between two peered
+                NSA.  Use of this attribute field is beyond the current scope of
+                this NSI specification, but may be used in the future to extend
+                the existing protocol without requiring a schema change.
+                Additionally, the field can be used between peered NSA to provide
+                additional context not covered in the existing specification,
+                however, this is left up to specific peering agreements.                
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="capabilities" type="tns:CapabilitiesType" />
+            <xsd:any namespace="##other" processContents="lax" minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+        <xsd:attribute name="name" use="required" type="xsd:string" />
+        <xsd:attribute name="version" use="required" type="xsd:anyURI" />
+        <xsd:attribute name="endpoint" use="required" type="xsd:anyURI" />
+        <xsd:attribute name="wsdl" use="optional" type="xsd:anyURI" />
+        <xsd:anyAttribute namespace="##other" processContents="lax" />
+    </xsd:complexType>
+
+    <xsd:complexType name="CapabilitiesType">
+        <xsd:annotation>
+            <xsd:documentation xml:lang="en">
+                Type definition for the set of zero or more capabilities
+                supported by the version of the service.
+                
+                Elements:
+                
+                capability - A specific capability supported by the version
+                of the service.                
+            </xsd:documentation>
+        </xsd:annotation>
+        <xsd:sequence>
+            <xsd:element name="capability" type="ftypes:TypeValuePairType" minOccurs="0"
+                maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+</xsd:schema>

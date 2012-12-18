@@ -1,0 +1,169 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://oscars.es.net/OSCARS/authNPolicy"
+    elementFormDefault="qualified"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:saml="urn:oasis:names:tc:SAML:2.0:assertion"
+    xmlns:com="http://oscars.es.net/OSCARS/common"
+    xmlns:acp="http://oscars.es.net/OSCARS/authCommonPolicy"
+    xmlns:tns="http://oscars.es.net/OSCARS/authNPolicy">
+    
+<!--  SAML schema needs the cxf wsdl2java -autoNameResolution switch in order to resolve ReferenceType
+       defined in http://www.w3.org/2000/09/xmldsig# and http://www.w3.org/2000/09/xmldsig#   -->
+    <xsd:import namespace="urn:oasis:names:tc:SAML:2.0:assertion" 
+               schemaLocation="../saml-schema-assertion-2.0.xsd"/>
+       <!--  official location
+        schemaLocation="http://docs.oasis-open.org/security/saml/v2.0/saml-schema-assertion-2.0.xsd"/>
+       -->
+       
+    <xsd:import namespace="http://oscars.es.net/OSCARS/common" 
+	    schemaLocation="../common.xsd" />
+
+    <xsd:import namespace="http://oscars.es.net/OSCARS/authCommonPolicy" 
+	    schemaLocation="../authCommonPolicy.xsd" />
+
+    <!-- Element definitions -->
+
+    <!-- user session related -->
+    <xsd:element name="setSessionRequest" type="tns:sessionOpParams" />
+    <xsd:element name="setSessionResponse" type="com:emptyArg" />
+
+    <xsd:element name="validSessionRequest" type="tns:sessionOpParams" />
+    <xsd:element name="validSessionResponse" type="tns:attrReply" />
+
+    <!-- database related -->
+    <xsd:element name="queryUserRequest" type="xsd:string" />
+    <xsd:element name="queryUserResponse" type="tns:queryUserReply" />
+
+    <xsd:element name="listUsersRequest" type="tns:listUsersParams" />
+    <xsd:element name="listUsersResponse" type="tns:listUsersReply" />
+
+    <xsd:element name="addUserRequest" type="tns:fullUserParams" />
+    <xsd:element name="addUserResponse" type="com:emptyArg" />
+
+    <xsd:element name="modifyUserRequest" type="tns:fullUserParams" />
+    <xsd:element name="modifyUserResponse" type="com:emptyArg" />
+
+    <xsd:element name="removeUserRequest" type="xsd:string" />
+    <xsd:element name="removeUserResponse" type="com:emptyArg" />
+
+    <xsd:element name="listInstsRequest" type="com:emptyArg" />
+    <xsd:element name="listInstsResponse" type="tns:listInstsReply" />
+
+    <xsd:element name="addInstRequest" type="xsd:string" />
+    <xsd:element name="addInstResponse" type="com:emptyArg" />
+
+    <xsd:element name="modifyInstRequest" type="tns:modifyInstParams" />
+    <xsd:element name="modifyInstResponse" type="com:emptyArg" />
+
+    <xsd:element name="removeInstRequest" type="xsd:string" />
+    <xsd:element name="removeInstResponse" type="com:emptyArg" />
+
+    <xsd:element name="listAttrsRequest" type="tns:listAttrsRequest" />
+    <xsd:element name="listAttrsResponse" type="acp:listAttrsReply" />
+
+    <xsd:element name="addAttrRequest" type="acp:attrDetails" />
+    <xsd:element name="addAttrResponse" type="com:emptyArg" />
+
+    <xsd:element name="modifyAttrRequest" type="acp:modifyAttrDetails" />
+    <xsd:element name="modifyAttrResponse" type="com:emptyArg" />
+
+    <xsd:element name="removeAttrRequest" type="xsd:string" />
+    <xsd:element name="removeAttrResponse" type="com:emptyArg" />
+
+
+    <xsd:complexType name="sessionOpParams">
+       <xsd:sequence>
+           <xsd:element name="userName" type="xsd:string" />
+           <xsd:element name="sessionName" type="xsd:string" />
+       </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="queryUserReply">
+        <xsd:sequence>
+           <xsd:element name="userDetails" type="tns:userDetails"/>
+           <xsd:element name="userAttributes" type="tns:attrReply"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="attrReply">
+        <xsd:sequence>
+            <xsd:element name="subjectAttributes" type="saml:AttributeType"
+                     minOccurs="1" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="listUsersParams">
+       <xsd:sequence>
+           <xsd:element name="attribute" type="xsd:string"
+                    minOccurs="0" maxOccurs="1" />
+           <xsd:element name="institution" type="xsd:string"
+                   minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="listUsersReply">
+        <xsd:sequence>
+            <!-- up to particular client about how much to display -->
+            <xsd:element name="userDetails" type="tns:userDetails"
+                maxOccurs="unbounded" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="userDetails">
+       <xsd:sequence>
+           <xsd:element name="login" type="xsd:string" />
+           <xsd:element name="certIssuer" type="xsd:string" 
+              minOccurs = "0" maxOccurs = "1" />
+           <xsd:element name="certSubject" type="xsd:string" 
+              minOccurs = "0" maxOccurs = "1" />
+           <xsd:element name="lastName" type="xsd:string" />
+           <xsd:element name="firstName" type="xsd:string" />
+           <xsd:element name="emailPrimary" type="xsd:string" />
+           <xsd:element name="phonePrimary" type="xsd:string" />
+           <xsd:element name="password" type="xsd:string" 
+              minOccurs = "0" maxOccurs = "1" />
+           <xsd:element name="description" type="xsd:string" 
+              minOccurs = "0" maxOccurs = "1" />
+           <xsd:element name="emailSecondary" type="xsd:string" 
+              minOccurs = "0" maxOccurs = "1" />
+           <xsd:element name="phoneSecondary" type="xsd:string" 
+              minOccurs = "0" maxOccurs = "1" />
+           <xsd:element name="institution" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="fullUserParams">
+        <xsd:sequence>
+            <xsd:element name="userDetails" type="tns:userDetails" />
+	    <!-- following two elements only used by modifyUser -->
+	    <xsd:element name="curAttributes" type="xsd:string"
+                maxOccurs="unbounded" minOccurs="0" />
+	    <xsd:element name="passwordChanged" type="xsd:boolean"
+                maxOccurs="1" minOccurs="0" />
+	    <xsd:element name="newAttributes" type="xsd:string"
+                maxOccurs="unbounded" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="modifyInstParams">
+        <xsd:sequence>
+            <xsd:element name="oldName" type="xsd:string" />
+            <xsd:element name="newName" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="listInstsReply">
+        <xsd:sequence>
+            <xsd:element name="name" type="xsd:string"
+                maxOccurs="unbounded" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="listAttrsRequest">
+       <xsd:sequence>
+           <xsd:element name="param" type="xsd:string" minOccurs="0" />
+           <xsd:element name="value" type="xsd:string" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+</xsd:schema>

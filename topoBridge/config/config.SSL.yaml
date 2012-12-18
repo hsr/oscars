@@ -1,0 +1,33 @@
+---
+soap:
+    publishTo:  'https://localhost:9019/topoBridge'
+
+topoBridge:
+    domainPrefix:   'urn:ogf:network:domain='
+    nsAbbr:         'CtrlPlane'
+    nsUri:          'http://ogf.org/schema/network/topology/ctrlPlane/20080828/'
+    cacheSeconds:   300
+    #uncomment below to register with a topology service
+    #registerUrl:    'http://dcn-ts.internet2.edu:8012/perfSONAR_PS/services/topology'
+
+    domains:
+        'testdomain-1':
+            source:         'file'
+            file:           'testdomain-1.xml'
+
+        'testdomain-2':
+            source:         'file'
+            file:           'testdomain-2.xml'
+
+        'testdomain-3':
+            source:         'file'
+            file:           'testdomain-3.xml'
+            
+        'testdomain-4':
+            source:         'file'
+            file:           'testdomain-4.xml'
+            
+        '*':
+            source:         'topoServer'
+            servers:        [ 'ts-server.domain.org' ]
+

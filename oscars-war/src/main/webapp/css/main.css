@@ -1,0 +1,102 @@
+/*
+CSS for Web pages
+Last modified: December 18, 2007
+David Robertson (dwrobertson@lbl.gov)
+Soo-yeon Hwang (dapi@umich.edu)
+*/
+
+p.notice {
+    font-weight: bold;
+    color: #f00;
+}
+
+th {
+    padding: .2em;
+}
+
+td {
+    padding: .2em;
+}
+
+/* no padding for inner hops tables */
+td.innerHops {
+    padding: 0;
+}
+
+.required {
+    border: 2px solid #0a0;
+    padding: 0;
+}
+
+.warning {
+    border: 2px solid #d00;
+    padding: 0;
+}
+
+.success {
+    border: 2px solid #0a0;
+    padding: 0.2em;
+}
+
+.failure {
+    border: 2px solid #d00;
+    padding: 0.2em;
+}
+
+.inprocess {
+    border: 2px solid #cc0;
+    padding: 0.2em;
+}
+  
+/* settings for title section of Web page */
+#pagetitle {
+    border: 0;
+    margin-bottom: 1em;
+    width: 100%;
+}
+
+#pagetitle img {
+    display: inline;
+    margin: 0 0 0.4em 0;
+}
+
+#pagetitle h1 {
+    font-size: 2.1em;
+    font-weight: bold;
+    line-height: 80%;
+}
+
+
+#clock {
+    color: #0000bb;
+    margin: 1.0em 0.2em;
+    font-weight: bold;
+    text-align: left;
+}
+
+/* settings for notices section at bottom of Web page */
+#notices {
+    color: gray;
+    margin: 0.1em 0.5em;
+}
+
+#mainTabContainer {
+    margin: 0.0em 0.5em;
+}
+
+/* magic to make content pane be able to have varying sizes */
+.dijitTabPaneWrapper {
+    clear: both;
+    padding: 0.0em 0.5em;
+}
+
+/* makes outline of required field generally coincide with table cell */
+.dijitTextBox {
+    width: 100%;
+}
+
+/* overriding dojo/dojox/grid/resources/tundraGrid.css section */
+
+.tundra .dojoxGrid {
+    font-size: 0.95em;
+}

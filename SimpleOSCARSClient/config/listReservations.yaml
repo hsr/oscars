@@ -1,0 +1,16 @@
+---
+command:   listReservations
+url:        'https://localhost:9001/OSCARS'
+
+keystore:   /etc/oscars.keystores.oscars.jks 
+keystore-password: changeit
+key-alias: mykey
+
+##
+#Below applies to https only. If not specified just uses the keystore
+#truststore: /Users/alake/Programming/Java/oscars/trunk/SimpleOSCARSClient/circuitmon.jks
+#truststore-password: password
+
+status:    ACTIVE 
+output-format: humanReadable
+version:    0.6

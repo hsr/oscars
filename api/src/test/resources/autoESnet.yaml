@@ -1,0 +1,48 @@
+---
+create:
+
+# typically leave gri blank, server will set it.
+        gri:            ''
+        login:		'client'
+# layer can be 2 or 3
+        layer:          '2'
+# source and destination are urn-style or dns-style friendly names.
+# Note ':' characters are significant in YAML,
+# so remember to enclose URNs in single quotes
+        src:            'urn:ogf:network:domain=es.net:node=star-sdn1:port=xe-9/1/0:link=*'
+        dst:            'urn:ogf:network:domain=es.net:node=lbl-mr2:port=xe-8/2/0:link=*'
+
+# bandwidth, in Mbps, integer
+        bandwidth:      50
+        
+# description, a string
+        description:    'a reservation'
+
+# start time may be a date expression (yyyy-MM-dd HH:mm) or 'now'
+# end time may be a date expression, or can start with a '+' sign
+# to specify a duration, the format is : '+DD:HH:mm'
+# Remember to enclose date expressions in single quotes
+        start-time:     'now'
+        end-time:       '+00:00:04'
+
+# this may be timer-automatic or signal-xml . generally leave at timer-automatic
+        path-setup-mode:        'timer-automatic'
+
+# vlans may be 'any' or a vlan range 2-4095. Only used for layer == 2. 
+# Should put in quotes even if a single vlan
+        srcvlan:        'any'
+        dstvlan:        'any'
+
+# optional: path, an array of urns. Must be enclosed in single quotes.
+        path:
+          - 'urn:ogf:network:domain=es.net:node=node-0:port=xe-9/1/0:link=*'
+          - 'urn:ogf:network:domain=es.net:node=node-0:port=xe-1/2/0:link=xe-1/2/0.0'
+          - 'urn:ogf:network:domain=es.net:node=node-5:port=xe-1/1/0:link=xe-1/1/0.0'
+          - 'urn:ogf:network:domain=es.net:node=node-5:port=xe-7/0/0:link=xe-7/0/0.0'
+          - 'urn:ogf:network:domain=es.net:node=node-6:port=xe-3/1/0:link=xe-3/1/0.0'
+          - 'urn:ogf:network:domain=es.net:node=node-6:port=xe-3/0/0:link=xe-3/0/0.0'
+          - 'urn:ogf:network:domain=es.net:node=node-8:port=xe-1/1/0:link=xe-1/1/0.0'
+          - 'urn:ogf:network:domain=es.net:node=node-8:port=xe-0/0/0:link=xe-0/0/0.0'
+          - 'urn:ogf:network:domain=es.net:node=node-10:port=xe-0/0/0:link=xe-0/0/0.0'
+          - 'urn:ogf:network:domain=es.net:node=node-10:port=xe-8/2/0:link=*'
+

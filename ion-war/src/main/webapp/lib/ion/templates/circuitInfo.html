@@ -1,0 +1,165 @@
+<div>	
+	<div class="left-content">
+		<table class="circuitInfoTable">
+			<tr class="tdheader">
+				<td>Circuit ID:</td>
+				<td><span id="info_${gri}_gri" class="circuitInfoField"></span></td>
+			</tr>
+			<tr>
+				<td>Description:</td>
+				<td><span id="info_${gri}_description" class="circuitInfoField"></span></td>
+			</tr>
+			
+			<tr class="oddrow">
+				<td>Created By:</td>
+				<td><span id="info_${gri}_user" class="circuitInfoField"></span></td>
+			</tr>
+			<tr>
+				<td>Status:</td>
+				<td><span id="info_${gri}_status" class="circuitInfoField"></span></td>
+			</tr>
+			<tr class="oddrow">
+				<td>Source:</td>
+				<td><span id="info_${gri}_source" class="circuitInfoField"></span></td>
+			</tr>
+			<tr>
+				<td>Destination:</td>
+				<td><span id="info_${gri}_destination" class="circuitInfoField"></span></td>
+			</tr>
+			<tr class="oddrow">
+				<td>Duration:</td>
+				<td><span id="info_${gri}_duration" class="circuitInfoField"></span></td>
+			</tr>
+			<tr>
+				<td>Start Date:</td>
+				<td>
+					<div dojoType="dijit.form.DateTextBox" 
+						name="info_${gri}_modifyStartSeconds_date" 
+						required="true" 
+						id="info_${gri}_modifyStartSeconds_date"
+						class="circuitInfoField">
+					</div>
+				</td>
+			</tr>
+			<tr class="oddrow">
+				<td>Start Time:</td>
+				<td>
+					<div dojoType="dijit.form.ValidationTextBox" 
+						name="info_${gri}_modifyStartSeconds_time" 
+						id="info_${gri}_modifyStartSeconds_time" 
+						class="circuitInfoField"
+						regExp="[0-2]?[\d]:[0-5][\d]"
+						required="true"
+						promptMessage="Enter the start time in format HH:MM"
+						invalidMessage="Invalid format:  use HH:MM">
+					</div>
+			</tr>
+			<tr>
+				<td>End Date:</td>
+				<td>
+					<div dojoType="dijit.form.DateTextBox" 
+						name="info_${gri}_modifyEndSeconds_date" 
+						required="true" 
+						id="info_${gri}_modifyEndSeconds_date"
+						class="circuitInfoField">
+					</div>
+				</td>
+			</tr>
+			<tr class="oddrow">
+				<td>End Time:</td>
+				<td>
+					<div dojoType="dijit.form.ValidationTextBox" 
+						name="info_${gri}_modifyEndSeconds_time" 
+						id="info_${gri}_modifyEndSeconds_time" 
+						class="circuitInfoField"
+						regExp="[0-2]?[\d]:[0-5][\d]"
+						required="true"
+						promptMessage="Enter the start time in format HH:MM"
+						invalidMessage="Invalid format:  use HH:MM">
+					</div>
+				</td>
+			</tr>
+			<tr>
+				<td>Bandwidth:</td>
+				<td><span id="info_${gri}_bandwidth" class="circuitInfoField"></span></td>
+			</tr>
+			<tr class="oddrow">
+				<td>VLAN (Source):</td>
+				<td><span id="info_${gri}_srcVlan" class="circuitInfoField"></span></td>
+			</tr>
+			<tr>
+				<td>Source Vlan type:</td>
+				<td><span id="info_${gri}_srcTagged" class="circuitInfoField"></span></td>
+			</tr>
+			<tr class="oddrow">
+				<td>VLAN (Destination):</td>
+				<td><span id="info_${gri}_destVlan" class="circuitInfoField"></span></td>
+			</tr>
+			<tr>
+				<td>Destination Vlan type:</td>
+				<td><span id="info_${gri}_destTagged" class="circuitInfoField"></span></td>
+			</tr>
+			<tr class="oddrow">
+				<td>Networks:</td>
+				<td><span id="info_${gri}_rawInterPath" class="circuitInfoField"></span></td>
+			</tr>
+			<tr>
+				<td colspan="2">
+					<div id="favoriteCheck" dojoType="dijit.form.CheckBox"></div>
+					<img src="images/favorite.png">&nbsp;<label for="favoriteCheck">Favorite</label>
+				</td>
+			</tr>
+		</table>
+		
+		<div id="info_${gri}_cancelVerifyDialog" dojoType="ion.ModalBox">
+			<span class="circuitListVerifyCancelMsg">Are you sure you want to cancel this reservation?</span>
+			<div class="dialogButtons">
+				<div dojoType="ion.Button" id="info_${gri}_circuitListYesCancel" label="Yes"></div>
+				<div dojoType="ion.Button" id="info_${gri}_circuitListNoCancel" label="No"></div>
+			</div>
+		</div>
+		
+		<div id="info_${gri}_cancellingDialog" dojoType="ion.ModalBox">
+			<span class="circuitListCancellingMsg">Sending cancellation request...</span>
+			<div dojoType="dijit.ProgressBar" indeterminate="true"></div>
+		</div>
+		
+		<div id="info_${gri}_modifyingDialog" dojoType="ion.ModalBox">
+			<span class="circuitListModifyingingMsg">Saving changes to reservation...</span>
+			<div dojoType="dijit.ProgressBar" indeterminate="true"></div>
+		</div>
+		<div id="info_${gri}_saveDialog" dojoType="dijit.Dialog">
+			<span class="circuitListSaveMsg">Favorites updated successfully!</span>
+			<div class="dialogButtons">
+				<div dojoType="ion.Button" id="info_${gri}_circuitListCloseSave" label="Close" dojoAttachEvent="onClick: _closeFavSave"></div>
+			</div>
+		</div>
+	</div>
+	
+	<div>
+        <span class="floatleft">
+            <div id="info_${gri}_refreshButton" dojoType="ion.Button" label="Refresh"></div>
+        </span>
+        <div class="right-content">
+            <div class="right-top">Internet2 Map</div>
+            <span><div id="map_div" style="width: 95%; height:380px"></div></span>
+            <div class="right-header">Utilization</div>
+            <span><div id="ingress_chart_description_div">Circuit Utilization (Ingress Point):</div></span>
+            <span><div id="ingress_chart_div" style="width: 95%; height:190px"></div></span>
+            <span><div id="ingress_chart_description_div">Circuit Utilization (Egress Point):</div></span>
+            <span><div id="egress_chart_div" style="width: 95%; height:190px"></div></span>
+        </div>
+    </div>
+    
+    <div class="infoButtonDiv">
+        <table>
+            <tr>
+                <td colspan="2">
+                    <div id="info_${gri}_saveButton" label="Save" dojoType="ion.Button"></div>
+                    <div id="info_${gri}_cloneButton" label="Clone" dojoType="ion.Button"></div>
+                    <div id="info_${gri}_cancelButton" label="Cancel" dojoType="ion.Button"></div>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

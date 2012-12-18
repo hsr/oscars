@@ -1,0 +1,9 @@
+---
+soap:
+    publishTo:  'https://localhost:9002/OSCARSInternal'
+
+coord:
+    url: 'http://localhost:9003/OSCARS/Coord'
+
+authn:
+    url: 'https://localhost:9090/OSCARS/authN'

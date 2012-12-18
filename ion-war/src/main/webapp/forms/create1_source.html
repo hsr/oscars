@@ -1,0 +1,35 @@
+<div class="left-content">
+<table>
+	<!-- test comment -->
+	<tr>
+		<td>Description: </td>
+		<td><textarea id="tmpDescription" name="tmpDescription"></textarea></td>
+	</tr>
+ 	<tr>
+ 		<td>Source: </td>
+		<td>
+			<div dojoType="ion.EndpointComboBox" url="servlet/EndpointNameList?isSource=1" inputId="tmpSource">
+				<script type="dojo/connect">
+					dojo.byId('tmpSource').value = dojo.byId('source').value;
+					dojo.byId('tmpDescription').value = dojo.byId('description').value;
+				</script>
+			</div>
+			<div dojoType="ion.EndpointBrowser" url="servlet/EndpointBrowser?isSource=1" target="tmpSource"
+				prevPageIcon="images/previous.png" nextPageIcon="images/next.png" 
+				folderIcon="images/folder-icon.png" initialCategory="institution">
+			</div>
+		</td>
+ 	</tr>
+	<tr>
+		<td colspan="2" class="buttonRow">
+			<div dojoType="ion.Button" label="Next" id="wizNextButton"></div>
+		</td>
+	</tr>
+</table>
+</div>
+<div class="right-content">
+	<div class="right-top">Description </div> 
+	<span>This is the name of your circuit. It does not have to be unique. </span>
+	<div class="right-header">Source </div>
+	<span>This is the endpoint on Internet2 where your circuit starts. You can type in the beginning of the endpoint name to get a suggestion, or use “browse” to find endpoints by organization, keyword, name, or search.</span>
+</div> <!--/rightcontent-->

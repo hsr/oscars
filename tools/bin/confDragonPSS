@@ -1,0 +1,319 @@
+#!/bin/sh
+#######################################################################
+# Script to configure Dragon PSS
+#######################################################################
+
+
+#######################################################################
+# Subroutine to print usage
+# While developers can still run the unittest mode, not enabling this
+#    production purposes
+#######################################################################
+printUsage() {
+        echo -e "\nusage confDragonPSS <context>"
+        echo "<context> is one of: PRODUCTION|pro DEVELOPMENT|dev SDK|sdk"
+        exit 1;
+}
+
+#######################################################################
+#subroutine to get configFile
+#######################################################################
+getConfigFile () {
+        if [ $# -lt 3 ]; then
+                echo "Error: Argument list insufficient"
+                exit 1;
+        fi
+        #echo "$1, $2, $3 $4"
+	fileArg=$4
+        if [ -z $fileArg ]; then
+                #echo "Filename empty"
+                fileArg=""
+        fi
+#TDB run from OSCARS_HOME?
+        Config=$(sh $OSCARS_DIST/bin/parseManifest.sh $1 $2 $3 $fileArg| sed "s/'//g")
+#       echo "Config in local Method :$Config"
+        Service=$(echo $Config | awk -F/ '$1~//{print $2}')
+        Conf=$(echo $Config | awk -F/ '$1~//{print $3}')
+        Yaml=$(echo $Config | awk -F/ '$1~//{print $4}' | sed "s/'//g")
+#       echo "2. $Service, $Conf, $Yaml"
+        if [ "$Conf" == "conf" ]; then
+                configFile=$OSCARS_HOME/$Service/$Conf/$Yaml
+        elif [ "$Conf" == "config" ]; then
+                configFile=$OSCARS_DIST/$Service/$Conf/$Yaml
+        fi
+        #echo "3. Config File: $configFile"
+        echo $configFile
+}
+
+#########################################################################
+# Sub to read file and parse values into array
+#########################################################################
+read_file_parse() {
+	CONTFND=0
+	DRGN_VLSR="dragon-vlsr"
+	lineNum=0;
+	next_id_started=0
+	index=0
+
+	while read i;
+	do
+        	Line=$(echo $i)
+        	#Trim
+        	Line=$(echo $Line | sed 's/^ *\(.*\) *$/\1/')
+       		#increment line num
+        	lineNum=`expr $lineNum + 1`
+        	iscomment=$(echo $Line | awk '/^#/ {print "comment"}')
+       		if [ "$iscomment" == "comment" ]; then
+                	#echo "comment found"
+                	continue;
+        	elif [ "$next_id_started" -eq 1 ]; then
+                	break;
+        	fi
+        	#lineNum=`expr $lineNum + 1`
+        	#echo "-$lineNum: $Line"
+        	if [ $CONTFND -eq 0 ]; then
+                	localDmId=$(echo $Line | awk -F: '$2~/'$DRGN_VLSR'/{print "FOUND"}')
+                	if [ "$localDmId" == "FOUND" ]; then
+                       		CONTFND=1
+                        	#echo "FOUND dragon"
+                	fi
+        	elif [ $CONTFND -eq 1 ] && [ $next_id_started -eq 0 ]; then
+                	for paramSearch in ${params[@]}
+                	do
+                        	CON2=$(echo $Line|awk -F: '$1~/'$paramSearch'/{print '$lineNum',":",$1,":",$2}'| sed "s/'//g") # $2 $lineNum }')
+                        	NextID=$(echo $Line | awk -F: '$1~/id/ {print "IDFOUND"}')
+                        	CON2=$(echo $CON2 | sed 's/^ *\(.*\) *$/\1/')
+                        	if [ ! -z "$CON2" ]; then
+                                	values[$index]="$CON2"
+                                	index=`expr $index + 1`
+			        	break;
+                        	elif [  "$NextID" == "IDFOUND" ] ; then
+                                	next_id_started=1
+                                	CONTFND=0
+                                	break;
+                        	fi
+
+                	done
+       		else
+                	break;
+        	fi
+	done<$connector_config
+}
+
+
+#########################################################################
+# sub to prompt user for values to configuration options 
+#   read in from the config file.
+#########################################################################
+prompt_user_entries() {
+	arraySize=${#values[@]};
+	if [ "$arraySize" -gt 0 ]; then
+        	echo "Press RETURN to retain current value. Or enter new value"
+	fi
+	IFS=';'
+	#echo "Array size:${#values[@]}"
+	for val in ${values[@]}
+        	do
+                	#echo -e "\nVal=$val"
+                	if [ -z "`echo "$val" | tr -d '\n'`" ]; then
+                        	continue
+                	fi
+                	lineNum=$(echo $val | awk -F: '{print $1}')
+                	key=$(echo $val | awk -F: '{print $2}')
+                	value=$(echo $val | awk -F: '{print $3}')
+                	#trim value
+                	value=$(echo $value| awk '{gsub(/^[ \t]+|[ \t]+$/,"")};1') #sed 's/^ *\(.*\) *$/\1/')
+                	printf  "\n $key:[$value]?";
+                	read user_value </dev/tty 2>/dev/tty
+                	#read  -sn1 user_value < $(tty)
+                	#stty echo
+                	#-z "`echo "$VARIABLE" | tr -d '\n'`" `
+                	if [ ! -z "`echo "$user_value" | tr -d '\n'`" ]; then
+                        	printf "Changing $value to $user_value"
+                        	sed -i -e ""$lineNum"s%"$value"%"$user_value"%" $connector_config
+                	fi
+                	#error
+                	if [ $? != 0 ]; then
+                        	echo "-- Sed returned an error when updating value "$key:$value". Please change this line manually in file $eonnector_config";
+                	fi
+		done
+} 
+
+
+#************************************************************************
+# sub to find if files exist
+#************************************************************************
+file_exists ()
+{
+    for f in "$@"
+    do
+        [ -f "$f" ] && return;
+    done;
+    return 1
+}
+#Execution starts here
+#Set some variables
+REPO_PATH=""
+# If OSCARS_HOME is not set, exit. Right now, we only modify the deploy path
+if [ -n "$OSCARS_HOME" ]; then
+        REPO_PATH=OSCARS_HOME
+else
+        echo "ERROR: OSCARS_HOME is not set. Re-run this script after setting OSCARS_HOME."
+        exit 1
+fi
+
+#TBD remove later
+if  [ -z $OSCARS_DIST ]; then
+    echo "Please set the environment var OSCARS_DIST to the OSCARS source directory"
+    exit -1
+fi
+
+#if no context provided, quit
+if [ $# -lt 1 ]; then
+        printUsage
+fi
+
+#Assign context
+case $1 in
+    d|D|dev|DEV|DEVELOPMENT|developement) CONTEXT="DEVELOPMENT";;
+    p|P|pro|PRO|PRODUCTION|production) CONTEXT="PRODUCTION";;
+    t|T|test|TEST) CONTEXT="UNITTEST";;
+    s|S|sdk|SDK) CONTEXT="SDK";;
+	*) echo "Invalid choice of context $1. Try again"; exit 1;;
+esac
+
+#PSS deployment path
+PSS_DEPL_CONF="$OSCARS_HOME/PSSService/conf/"
+echo "Configuring Dragon PSS : $CONTEXT"
+
+#Give user option to delete older config files . If he chooses "y"
+## then older files are removed and exportconfig is then run. If "N"
+### then nothing is deleted - exportconfig is not run either. This has the
+#### advantage that just "some subset of files" alone are not replaced.
+##### for ex, both stubPSS and dragonPSS may have "config.http.yaml", but contents are different?
+#file_exists $OSCARS_HOME/PSSService/conf/*
+file_exists $PSS_DEPL_CONF/*
+if [ $? -eq 0 ]; then
+        echo "PSS configuration files already present for PSS. This step will erase them and reconfigure PSS. Is that acceptable? Y|N :"
+        ans=0;
+        while [ $ans == 0 ]; do
+                read ans;
+                if [ "$ans" != "y" ] && [ "$ans" != "Y" ] && [ "$ans" != "n" ] && [ "$ans" != "N" ]; then
+                        ans=0;
+                fi
+        done
+        #if user thinks its ok to blow away, do so
+        if [ "$ans" == "y" ] || [ "$ans" == "Y" ]; then
+		#Remove all other conf files since exportconfig will not
+		## copy config files if already present
+                rm -rf $OSCARS_HOME/PSSService/conf/*
+                #copy DragonPSS files into $OSCARS_HOME/PSSService
+                #TBD Check path
+                (sh $OSCARS_DIST/dragonPSS/bin/exportconfig $OSCARS_DIST $OSCARS_HOME)
+	else                #no files copied. continue with the same set of files
+                nocopy_ans=0;
+                echo "You have chosen to NOT copy necessary template files.";
+                echo "This means you are choosing to work with the old set of configuration files." 
+                echo "It may also result in errors if relevant/necessary files are not found."
+                echo "Would you want to continue? Y|N"
+                #read nocopy_ans;
+                while [ $nocopy_ans == 0 ]; do
+                        read nocopy_ans;
+                        if [ "$nocopy_ans" != "y" ] && [ "$nocopy_ans" != "Y" ] && [ "$nocopy_ans" != "n" ] && [ "$nocopy_ans" != "N" ]; then
+                                nocopy_ans=0;
+                        fi
+                done
+                if [ "$nocopy_ans" == "N" ] || [ "$nocopy_ans" == "n" ]; then
+                        echo "Execution terminated."
+                        echo "Please move/copy your current PSS configuration files from $OSCARS_HOME/PSSService/conf and re-run
+ script"
+                        exit 1;
+                fi
+        fi
+else
+	#run exportconfig to copy DragonPSS files into $OSCARS_HOME/PSSService
+	(sh $OSCARS_DIST/dragonPSS/bin/exportconfig $OSCARS_DIST $OSCARS_HOME)
+fi
+echo "Getting configuration variables ...."
+#constants
+STUB_MODE="stub"
+VALIDATE="validate"
+LOCAL_DOMAIN_ID="localDomainId"
+#CIRCUIT_SERVICE=
+
+#Get all variable values from the file
+#Config2=$(getConfigFile PSSService $CONTEXT dragonPSS)
+Config2=$(getConfigFile PSSService PSSService $CONTEXT)
+#if file not found, return
+if [ -z $Config2 ] || [ ! -f $Config2 ]; then
+        echo "The configuration file is not found. Check if your $OSCARS_HOME/PSSService/conf folder has configuration files present"
+        exit 1
+fi
+
+#echo "config file= $Config2"
+
+#get current Local Domain used
+#TBD parsemanifest.sh and manifest.yaml locations
+
+#get line with "stub:" value
+stubLine=$(awk '/stub.*:/{print $0}' $Config2)
+#echo "Stub=$stubLine"
+
+#constants. config-connector-directory.yaml
+#get whether stub mode
+printf "Would you like to run Dragon PSS in stub mode? false|true:" 
+stubmode=0
+while [ $stubmode == 0 ]; do
+        read stubmode;
+        #user_choice=$(toUpper "$user_choice")
+        #echo "User input=$stubmode"
+        if [ "$stubmode" != "false" ] && [ "$stubmode" != "true" ]; then
+                stubmode=0;
+        fi
+done
+#write into file
+#final_str="\t$STUB_MODE:\t\t$stubmode" 
+final_str="    $STUB_MODE:\t\t$stubmode" #insert 4 spaces instead of tab
+#echo "to write: :$final_str: in place of :$stubLine:"
+sed -i -e "s/$stubLine/$final_str/" $Config2
+
+
+#New file. could move this to another script, but keeping it here for now
+#get other config file
+#config-connector-directory.yaml
+#connector_config=$(getConfigFile PSSService $CONTEXT dragonPSS config-connector-directory.yaml)
+connector_config=$(getConfigFile PSSService PSSService $CONTEXT config-connector-directory.yaml)
+#echo "Connector == $connector_config"
+#if file not found, return
+if [ -z $connector_config ] || [ ! -f $connector_config ]; then
+        echo "The configuration file is not found. Check if your $OSCARS_HOME/PSSService/conf folder has configuration files present"
+        exit 1
+fi
+
+# get values for common input parameters
+params=( cliUser cliPassword promptPattern hasNarb setERO )
+values=( 'dragon' 'dragon' 'vlsr' true true )
+read_file_parse
+prompt_user_entries
+
+# get values for sshPortForward config, if needed by user 
+sshFwd_ans=0;
+printf "\nWould you want to configure sshPortForwarding parameters? Y|N"
+while [ $sshFwd_ans == 0 ]; do
+	read sshFwd_ans;
+	if [ "$sshFwd_ans" != "y" ] && [ "$sshFwd_ans" != "Y" ] && [ "$sshFwd_ans" != "n" ] && [ "$sshFwd_ans" != "N" ]; then
+       		sshFwd_ans=0;
+        fi
+done
+if [ "$sshFwd_ans" == "N" ] || [ "$sshFwd_ans" == "n" ]; then
+	printf "\n--Configuration changed"
+        exit 1;
+fi
+
+params=( sshPortForward sshUser sshKey sshPort localAddress remotePort )
+values=( true 'dragon' '/home/dragon/.ssh/id_rsa' 22 '127.0.0.1' 2611 )
+read_file_parse
+prompt_user_entries
+# end new
+
+printf "\n--Configuration changed"

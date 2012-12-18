@@ -1,0 +1,5 @@
+---
+soap:
+    publishTo:  'https://localhost:9009/bandwidthPCE'
+    
+rmUrl: 'https://localhost:9006/OSCARS/resourceManager'

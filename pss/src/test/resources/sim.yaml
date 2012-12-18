@@ -1,0 +1,35 @@
+---
+
+sim:
+    setupmintime:       1
+    setupmaxtime:       3
+    maxtimebetween:     1
+    requests:           10
+    gris:               3
+    localdomain:        foo.net
+
+
+routers:
+    - id:       alpha
+      type:     juniper
+      address:  10.0.0.1
+    - id:       beta
+      type:     juniper
+      address:  10.0.0.2
+    - id:       gamma
+      type:     juniper
+      address:  10.0.0.3
+    - id:       delta
+      type:     cisco
+      address:  10.0.0.4
+    - id:       central
+      type:     cisco
+      address:  10.0.0.5
+
+
+edge-ports:
+    - 'alpha:ge-2/0/1'
+    - 'beta:ge-2/0/1'
+    - 'gamma:ge-2/0/1'
+    - 'delta:ge-2/0/1'
+

@@ -1,0 +1,24 @@
+---
+-   id:                 "junoscript"
+    impl:               "net.es.oscars.pss.connect.JunoscriptConnector"
+    params:
+        "login":        "oscars"
+        "privkeyfile":  "/home/oscars/privkeyfile"
+        "passphrase":   "secret"
+
+-   id:                 "clogin"
+    impl:               "net.es.oscars.pss.connect.RancidConnector"
+    params:
+        "executable":   "/opt/rancid/clogin"
+
+        
+-   id:                 "alulogin"
+    impl:               "net.es.oscars.pss.connect.RancidConnector"
+    params:
+        "executable":   "/opt/rancid/alulogin"
+
+
+-   id:                 "jlogin"
+    impl:               "net.es.oscars.pss.connect.RancidConnector"
+    params:
+        "executable":   "/opt/rancid/jlogin"

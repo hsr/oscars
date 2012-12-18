@@ -1,0 +1,17 @@
+---
+soap:
+    publishTo:  'http://localhost:9001/OSCARS'
+    
+public:
+##
+# localhost will get changed  by exportconfig to the `hostname` of the host it is deployed on
+# If you want something different change URL below to the URL where you want to allow external access
+    publishTo: 'http://localhost:9001/OSCARS'
+    publishTo05: 'http://localhost:9001/OSCARS'
+    name: 'OSCARS IDC'
+    description: 'OSCARS IDC for reserving circuits on my network '
+##
+#Optional lat/long parameters
+#    latitude:
+#    longitude: 
+

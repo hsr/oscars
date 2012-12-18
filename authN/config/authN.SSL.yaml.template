@@ -1,0 +1,9 @@
+---
+soap:
+    publishTo: 	'https://localhost:9090/OSCARS/authN'
+
+authN:
+    dbname: 'authn'
+    username: 'oscars'
+    password: 'mypass'
+    salt: 'aa'

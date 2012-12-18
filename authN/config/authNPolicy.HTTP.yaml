@@ -1,0 +1,3 @@
+---
+soap:
+    publishTo:  'http://localhost:9004/OSCARS/authNPolicy'

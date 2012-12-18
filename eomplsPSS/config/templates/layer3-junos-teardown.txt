@@ -1,0 +1,61 @@
+<junoscript version="1.0" release="7.3">
+<rpc><lock-configuration /></rpc>
+<rpc>
+<load-configuration>
+<configuration>
+
+    <protocols>
+        <mpls>
+            <label-switched-path delete="delete">
+                <name>${lsp.name}</name>
+            </label-switched-path>
+            <path delete="delete">
+                <name>${path.name}</name>
+            </path>
+        </mpls>
+    </protocols>
+
+    <policy-options>
+        <prefix-list delete="delete">
+            <name>${prefixes.src.name}</name>
+        </prefix-list>
+        <prefix-list delete="delete">
+            <name>${prefixes.dst.name}</name>
+        </prefix-list>
+    </policy-options>
+
+    <firewall>
+        <policer delete="delete">
+            <name>${policer.name}</name>
+        </policer>
+        <family>
+            <inet>
+<#list filters.inet as filter>
+                <filter>
+                    <name>${filter.name}</name>
+                    <term delete="delete">
+                        <name>${filter.term}</name>
+                    </term>
+                </filter>
+</#list>
+            </inet>
+            <any>
+                <filter delete="delete">
+                    <name>${filters.policing.name}</name>
+                </filter>
+            </any>
+        </family>
+    </firewall>
+    <routing-instances>
+        <instance delete="delete">
+            <name>${routinginstance.name}</name>
+        </instance>
+    </routing-instances>
+
+
+</configuration>
+</load-configuration>
+</rpc>
+<rpc><commit-configuration /></rpc>
+<rpc><unlock-configuration /></rpc>
+</junoscript>

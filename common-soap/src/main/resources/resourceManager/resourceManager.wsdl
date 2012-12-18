@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<wsdl:definitions 
+    name="RMDefinitions"
+    targetNamespace = "http://oscars.es.net/OSCARS/resourceManager"
+    xmlns:tns = "http://oscars.es.net/OSCARS/resourceManager"
+    xmlns:com= "http://oscars.es.net/OSCARS/common"
+    xmlns:oscars = "http://oscars.es.net/OSCARS/06"
+    xmlns:authP = "http://oscars.es.net/OSCARS/authParams"
+    xmlns:xsd =	"http://www.w3.org/2001/XMLSchema"
+    xmlns:wsdl = "http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap = "http://schemas.xmlsoap.org/wsdl/soap12/" >
+
+    <wsdl:documentation>
+        This is WSDL for the resource manager internal interface.
+    </wsdl:documentation>
+   
+   <!--  defines common OSCARSFaultMessage -->
+   <wsdl:import namespace="http://oscars.es.net/OSCARS/common" location="../common.wsdl"/>
+
+   <!-- Element definitions -->
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://oscars.es.net/OSCARS/resourceManager"
+            elementFormDefault="qualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:tns="http://oscars.es.net/OSCARS/resourceManager">
+            <xsd:include schemaLocation="resourceManager.xsd" />
+            <xsd:import namespace="http://oscars.es.net/OSCARS/common" 
+                  schemaLocation="../common.xsd" />
+            <xsd:import namespace="http://oscars.es.net/OSCARS/06" 
+                  schemaLocation="../api/OSCARS-0.6.xsd" />
+            <xsd:import 
+                namespace="http://oscars.es.net/OSCARS/authParams" 
+                schemaLocation="../authParams.xsd" />
+        </xsd:schema>
+    </wsdl:types>
+
+    <wsdl:message name="assignGriReq">
+        <wsdl:part name="assignGriReq" 	element="tns:assignGriReq" />
+    </wsdl:message>
+    <wsdl:message name="assignGriResp">
+        <wsdl:part name="assignGriResp"	element="tns:assignGriResp" />
+    </wsdl:message>
+
+    <wsdl:message name="updateStatusReq">
+        <wsdl:part name="updateStatusReq" element="tns:updateStatusReq" />
+    </wsdl:message>
+    <wsdl:message name="updateStatusResp">
+        <wsdl:part name="updateStatusResp" element="tns:updateStatusResp" />
+    </wsdl:message>
+
+       <wsdl:message name="updateFailureStatusReq">
+        <wsdl:part name="updateFailureStatusReq" element="tns:updateFailureStatusReq" />
+    </wsdl:message>
+
+    <wsdl:message name="getStatusReq">
+        <wsdl:part name="getStatusReq" element="tns:getStatusReq" />
+    </wsdl:message>
+    <wsdl:message name="getStatusResp">
+        <wsdl:part name="getStatusResp" element="tns:getStatusResp" />
+    </wsdl:message>
+    
+    <wsdl:message name="storeReq">
+        <wsdl:part name="storeReq" element="tns:storeReq" />
+    </wsdl:message>
+    <wsdl:message name="storeResp">
+        <wsdl:part name="storeResp" element="tns:storeResp" />
+    </wsdl:message>
+
+    <wsdl:message name="queryReservationRequest">
+        <wsdl:part name= "authConditions" type="authP:authConditions"/>
+        <wsdl:part name="queryReservationRequest" element="oscars:queryReservation" />
+    </wsdl:message>
+    <wsdl:message name="queryReservationResponse">
+        <wsdl:part name="queryReservationResponse"
+            element="oscars:queryReservationResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="getErrorReportReq">
+        <wsdl:part name="authConditions" type="authP:authConditions"/>
+        <wsdl:part name="getErrorReportReq"   element="oscars:getErrorReport" />
+    </wsdl:message>
+
+    <wsdl:message name="getErrorReportResp">
+        <wsdl:part name="getErrorReportResp"  element="oscars:getErrorReportResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="listReservations">
+        <wsdl:part name= "authConditions" type="authP:authConditions"/>
+        <wsdl:part name="listReservations" element="oscars:listReservations"/>
+    </wsdl:message>
+    <wsdl:message name="listReservationsResponse">
+        <wsdl:part name="listReservationsResponse"
+            element="oscars:listReservationsResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="cancelReservation">
+        <wsdl:part name= "authConditions" type="authP:authConditions"/>
+        <wsdl:part name="cancelReservation" element="oscars:cancelReservation"/>
+    </wsdl:message>
+    <wsdl:message name="cancelReservationResponse">
+        <wsdl:part name="cancelReservationResponse"
+            element="tns:RMCancelResResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="modifyReservation">
+        <wsdl:part name= "authConditions" type="authP:authConditions"/>
+        <wsdl:part name="modifyReservation" element="oscars:modifyReservation"/>
+    </wsdl:message>
+    <wsdl:message name="modifyReservationResponse">
+        <wsdl:part name="modifyReservationResponse"
+            element="oscars:modifyReservationResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="getAuditDataReq">
+        <wsdl:part name="getAuditDataReq" element="tns:getAuditDataReq" />
+    </wsdl:message>
+    <wsdl:message name="getAuditDataResp">
+        <wsdl:part name="getAuditDataResp" element="tns:getAuditDataResp" />
+    </wsdl:message>
+
+    <wsdl:portType name="RMPortType">
+
+        <wsdl:operation name="assignGri">
+            <wsdl:input message="tns:assignGriReq" />
+            <wsdl:output message="tns:assignGriResp" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+         <wsdl:operation name="updateStatus">
+             <wsdl:input message="tns:updateStatusReq" />
+             <wsdl:output message="tns:updateStatusResp" />
+             <wsdl:fault name="OSCARSErrorException"
+                 message="com:OSCARSFaultMessage" />
+         </wsdl:operation>
+
+        <wsdl:operation name="updateFailureStatus">
+             <wsdl:input message="tns:updateFailureStatusReq" />
+             <wsdl:output message="tns:updateStatusResp" />
+             <wsdl:fault name="OSCARSErrorException"
+                 message="com:OSCARSFaultMessage" />
+         </wsdl:operation>
+
+        <wsdl:operation name="getStatus">
+            <wsdl:input message="tns:getStatusReq" />
+            <wsdl:output message="tns:getStatusResp" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="getErrorReport">
+            <wsdl:input message="tns:getErrorReportReq" />
+            <wsdl:output message="tns:getErrorReportResp" />
+            <wsdl:fault name=" OSCARSErrorException" message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="store">
+            <wsdl:input message="tns:storeReq" />
+            <wsdl:output message="tns:storeResp" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="queryReservation">
+            <wsdl:input message="tns:queryReservationRequest" />
+            <wsdl:output message="tns:queryReservationResponse" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+        
+       <wsdl:operation name="listReservations">
+            <wsdl:input message="tns:listReservations" />
+            <wsdl:output message="tns:listReservationsResponse" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="cancelReservation">
+            <wsdl:input message="tns:cancelReservation" />
+            <wsdl:output message="tns:cancelReservationResponse" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="modifyReservation">
+            <wsdl:input message="tns:modifyReservation" />
+            <wsdl:output message="tns:modifyReservationResponse" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="getAuditData">
+            <wsdl:input message="tns:getAuditDataReq" />
+            <wsdl:output message="tns:getAuditDataResp" />
+            <wsdl:fault name="OSCARSErrorException"
+                message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+    </wsdl:portType>
+    
+	<wsdl:binding name="RMBinding" type="tns:RMPortType">
+    
+        <soap:binding style="document"
+            transport="http://schemas.xmlsoap.org/soap/http" />
+
+        <wsdl:operation name="assignGri">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/resourceManager/assignGri" />
+            <wsdl:input>
+                <soap:body use="literal" parts="assignGriReq" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="assignGriResp" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="updateStatus">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/resourceManager/updateStatus" />
+            <wsdl:input>
+                <soap:body use="literal" parts="updateStatusReq" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="updateStatusResp" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="updateFailureStatus">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/resourceManager/updateFailureStatus" />
+            <wsdl:input>
+                <soap:body use="literal" parts="updateFailureStatusReq" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="updateStatusResp" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getStatus">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/resourceManager/getStatus" />
+            <wsdl:input>
+                <soap:body use="literal" parts="getStatusReq" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="getStatusResp" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+
+        <wsdl:operation name="getErrorReport">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/coord/getErrorReport" />
+            <wsdl:input>
+                <soap:body use="literal" parts="getErrorReportReq" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="getErrorReportResp" />
+            </wsdl:output>
+            <wsdl:fault name=" OSCARSErrorException">
+                <soap:fault name=" OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="store">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/resourceManager/store" />
+            <wsdl:input>
+                <soap:body use="literal" parts="storeReq" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="storeResp" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="queryReservation">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/resourceManager/queryReservation" />
+            <wsdl:input>
+                <soap:body use="literal" parts="queryReservationRequest" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="queryReservationResponse" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="listReservations">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/resourceManager/listReservations" />
+            <wsdl:input>
+                <soap:body use="literal" parts="listReservations" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="listReservationsResponse" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="cancelReservation">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/resourceManager/cancelReservation" />
+            <wsdl:input>
+                <soap:body use="literal" parts="cancelReservationRequest" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="cancelReservationResponse" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="modifyReservation">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/resourceManager/modifyReservation" />
+            <wsdl:input>
+                <soap:body use="literal" parts="modifyReservationRequest" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="modifyReservationResponse" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getAuditData">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/resourceManager/getAuditData" />
+            <wsdl:input>
+                <soap:body use="literal" parts="getAuditDataReq" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="getAuditDataResp" />
+            </wsdl:output>
+            <wsdl:fault name="OSCARSErrorException">
+                <soap:fault name="OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="ResourceManagerService">
+        <wsdl:port name="RMPort" binding="tns:RMBinding">
+            <soap:address
+                location="" />
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

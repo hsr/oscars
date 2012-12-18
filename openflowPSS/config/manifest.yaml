@@ -1,0 +1,110 @@
+---
+PSSService:
+    UNITTEST:
+        config.yaml:        'OSCARS_DIST/openflowPSS/config/config.HTTP.yaml'
+        
+        server-cxf.xml:     'OSCARS_DIST/openflowPSS/config/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_DIST/openflowPSS/config/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_DIST/openflowPSS/config/log4j.DEBUG.properties'
+        PSSService.xsd:     'OSCARS_DIST/common-soap/src/main/resources/pss/pss.xsd'
+        PSSService.wsdl:    'OSCARS_DIST/common-soap/src/main/resources/pss/pss.wsdl'
+        CoordService.xsd:   'OSCARS_DIST/common-soap/src/main/resources/coord/coord.xsd'
+        CoordService.wsdl:  'OSCARS_DIST/common-soap/src/main/resources/coord/coord.wsdl'
+        defs-models.yaml:   'OSCARS_DIST/openflowPSS/config/defs-models.yaml'
+        defs-services.yaml: 'OSCARS_DIST/openflowPSS/config/defs-services.yaml'
+        config-device-addresses.yaml:           'OSCARS_DIST/openflowPSS/config/config-device-addresses.yaml'
+        config-connector-directory.yaml:        'OSCARS_DIST/openflowPSS/config/config-connector-directory.yaml'
+
+
+
+    DEVELOPMENT:
+        config.yaml:        'OSCARS_HOME/PSSService/conf/config.HTTP.yaml'
+        
+        server-cxf.xml:     'OSCARS_HOME/PSSService/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/PSSService/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/PSSService/conf/log4j.MESSAGE.properties'
+        PSSService.wsdl:    'OSCARS_HOME/wsdl/PSSService/PSSService.wsdl'
+        PSSService.xsd:     'OSCARS_HOME/wsdl/PSSService/PSSService.xsd'
+        CoordService.xsd:   'OSCARS_HOME/wsdl/CoordService/CoordService.xsd'
+        CoordService.wsdl:  'OSCARS_HOME/wsdl/CoordService/CoordService.wsdl'
+        defs-models.yaml:   'OSCARS_HOME/PSSService/conf/defs-models.yaml'
+        defs-services.yaml: 'OSCARS_HOME/PSSService/conf/defs-services.yaml'
+        config-device-addresses.yaml:           'OSCARS_HOME/PSSService/conf/config-device-addresses.yaml'
+        config-connector-directory.yaml:        'OSCARS_HOME/PSSService/conf/config-connector-directory.yaml'
+
+
+    SDK:
+        config.yaml:        'OSCARS_HOME/PSSService/conf/config.HTTP.yaml'
+        
+        server-cxf.xml:     'OSCARS_HOME/PSSService/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/PSSService/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/PSSService/conf/log4j.INFO.properties'
+        PSSService.wsdl:    'OSCARS_HOME/wsdl/PSSService/PSSService.wsdl'
+        PSSService.xsd:     'OSCARS_HOME/wsdl/PSSService/PSSService.xsd'
+        CoordService.xsd:   'OSCARS_HOME/wsdl/CoordService/CoordService.xsd'
+        CoordService.wsdl:  'OSCARS_HOME/wsdl/CoordService/CoordService.wsdl'
+        defs-models.yaml:   'OSCARS_HOME/PSSService/conf/defs-models.yaml'
+        defs-services.yaml: 'OSCARS_HOME/PSSService/conf/defs-services.yaml'
+        config-device-addresses.yaml:           'OSCARS_HOME/PSSService/conf/config-device-addresses.yaml'
+        config-connector-directory.yaml:        'OSCARS_HOME/PSSService/conf/config-connector-directory.yaml'
+
+        
+    PRODUCTION:
+        config.yaml:        'OSCARS_HOME/PSSService/conf/config.SSL.yaml'
+        
+        server-cxf.xml:     'OSCARS_HOME/PSSService/conf/server-cxf-ssl.xml'
+        client-cxf.xml:     'OSCARS_HOME/PSSService/conf/client-cxf-ssl.xml'
+        log4j.properties:   'OSCARS_HOME/PSSService/conf/log4j.INFO.properties'
+        PSSService.wsdl:    'OSCARS_HOME/wsdl/PSSService/PSSService.wsdl'
+        PSSService.xsd:     'OSCARS_HOME/wsdl/PSSService/PSSService.xsd'
+        CoordService.xsd:   'OSCARS_HOME/wsdl/CoordService/CoordService.xsd'
+        CoordService.wsdl:  'OSCARS_HOME/wsdl/CoordService/CoordService.wsdl'
+        defs-models.yaml:   'OSCARS_HOME/PSSService/conf/defs-models.yaml'
+        defs-services.yaml: 'OSCARS_HOME/PSSService/conf/defs-services.yaml'
+        config-device-addresses.yaml:           'OSCARS_HOME/PSSService/conf/config-device-addresses.yaml'
+        config-connector-directory.yaml:        'OSCARS_HOME/PSSService/conf/config-connector-directory.yaml'
+
+Utils:
+    UNITTEST:
+        config.yaml:    'OSCARS_DIST/utils/config/config.yaml'
+    DEVELOPMENT:
+        config.yaml:    'OSCARS_HOME/Utils/conf/config.yaml'
+    SDK:
+        config.yaml:    'OSCARS_HOME/Utils/conf/config.yaml'
+    PRODUCTION:
+        config.yaml:    'OSCARS_HOME/Utils/conf/config.yaml'
+
+CoordService:
+    UNITTEST:
+        templateDir:        'OSCARS_DIST/coordinator/config'
+        config.yaml:        'OSCARS_DIST/coordinator/config/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_DIST/coordinator/config/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_DIST/coordinator/config/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_DIST/coordinator/config/log4j.INFO.properties'
+        wsdl:               'OSCARS_DIST/common-soap/src/main/resources/coord/coord.wsdl'
+
+    DEVELOPMENT:
+        templateDir:        'OSCARS_HOME/CoordService/conf/'
+        config.yaml:        'OSCARS_HOME/CoordService/conf/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/CoordService/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/CoordService/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/CoordService/conf/log4j.MESSAGE.properties'
+        wsdl:               'OSCARS_HOME/wsdl/CoordService/CoordService.wsdl'
+
+    SDK:
+        templateDir:        'OSCARS_HOME/CoordService/conf/'
+        config.yaml:        'OSCARS_HOME/CoordService/conf/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/CoordService/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/CoordService/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/CoordService/conf/log4j.DEBUG.properties'
+        wsdl:               'OSCARS_HOME/wsdl/CoordService/CoordService.wsdl'
+
+    PRODUCTION:
+        templateDir:        'OSCARS_HOME/CoordService/conf/'
+        config.yaml:        'OSCARS_HOME/CoordService/conf/config.SSL.yaml'
+        server-cxf.xml:     'OSCARS_HOME/CoordService/conf/server-cxf-ssl.xml'
+        client-cxf.xml:     'OSCARS_HOME/CoordService/conf/client-cxf-ssl.xml'
+        log4j.properties:   'OSCARS_HOME/CoordService/conf/log4j.INFO.properties'
+        wsdl:               'OSCARS_HOME/wsdl/CoordService/CoordService.wsdl'
+
+

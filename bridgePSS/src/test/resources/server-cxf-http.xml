@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<beans xmlns="http://www.springframework.org/schema/beans"  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:sec="http://cxf.apache.org/configuration/security"
+  xmlns:http="http://cxf.apache.org/transports/http/configuration"
+  xmlns:httpj="http://cxf.apache.org/transports/http-jetty/configuration"
+  xmlns:cxf="http://cxf.apache.org/core"
+  xmlns:jaxws="http://java.sun.com/xml/ns/jaxws"
+  xsi:schemaLocation="
+            http://cxf.apache.org/configuration/security
+            http://cxf.apache.org/schemas/configuration/security.xsd
+            http://cxf.apache.org/transports/http/configuration
+            http://cxf.apache.org/schemas/configuration/http-conf.xsd
+            http://cxf.apache.org/transports/http-jetty/configuration
+            http://cxf.apache.org/schemas/configuration/http-jetty.xsd
+            http://cxf.apache.org/core
+            http://cxf.apache.org/schemas/core.xsd
+            http://www.springframework.org/schema/beans
+            http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+           
+<!--  Comment out the following to suppress printing of messages -->
+   <cxf:bus>
+         <cxf:features>
+             <cxf:logging/>
+         </cxf:features>
+   </cxf:bus>
+
+  <httpj:engine-factory>
+   <httpj:engine port="9050">
+   </httpj:engine>
+  </httpj:engine-factory>
+</beans>
+

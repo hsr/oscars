@@ -1,0 +1,24 @@
+<div class="endpointBrowser" dojoAttachPoint="browserDiv">
+	<a href="#" class="epbBrowseButton" dojoAttachPoint="browseButton" 
+		dojoAttachEvent="onclick: openWindow">Browse...</a>
+	<div class="epbWindow" dojoAttachPoint="windowDiv">
+		<div class="epbTitleBar" dojoAttachPoint="titleDiv" id="epbTitleBar">
+			<a href="#" dojoAttachPoint="closeAnchor" class="epbCloseLink" dojoAttachEvent="onclick: closeWindow">X</a>
+		</div>
+		<div class="epbSearch">
+			<form class="epbSearchForm"  dojoAttachPoint="searchForm" dojoAttachEvent="onsubmit: endpointSearch">
+				<input type="text" class="epbQuery" name="query"> 
+				<select class="epbSearchCats" name="cat" dojoAttachPoint="searchCatMenu">
+					<option value="all">All</option>
+				</select>
+				<input type="hidden" name="page" value="0">
+				<input type="hidden" name="pageResults" value="${resultsPerPage}">
+				<input type="submit" class="epbSearchButton" 
+					 value="Search">
+			</form>
+			<span class="epbResultsInfo" dojoAttachPoint="resultInfo"></span>
+		</div>
+		<div class="epbMenu"  dojoAttachPoint="browseMenuDiv"></div>
+		<div class="epbResults" dojoAttachPoint="resultsDiv"></div>
+	</div>
+</div>

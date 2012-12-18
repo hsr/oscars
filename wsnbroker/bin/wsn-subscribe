@@ -1,0 +1,4 @@
+#!/bin/bash
+vers=`cat $OSCARS_DIST/VERSION`
+java -Done-jar.main.class=net.es.oscars.wsnbroker.utils.SubscribeUtil -Djava.net.preferIPv4Stack=true -jar $OSCARS_DIST/wsnbroker/target/wsnbroker-$vers.one-jar.jar $*
+

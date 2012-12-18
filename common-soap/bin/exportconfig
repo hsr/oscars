@@ -1,0 +1,188 @@
+#!/bin/bash
+#
+# Export configuration files from the distribution directory into the
+# production directory. Patches the schema locations of imported schema.
+#
+# syntax: exportconfig <OSCARS_DIST> <OSCARS_HOME>
+#
+
+OSCARS_DIST=$1
+OSCARS_HOME=$2
+BUILD_ROOT=$3
+
+source $OSCARS_DIST/utils/bin/configLib.sh
+#
+# MISC
+#
+DSTDIR="$OSCARS_HOME"
+if [ -n "$BUILD_ROOT" ]; then
+    DSTDIR="${BUILD_ROOT}/${OSCARS_HOME}"
+fi
+
+mkdir -p $DSTDIR/wsdl
+cp $OSCARS_DIST/common-soap/src/main/resources/{*.xsd,*.wsdl} $DSTDIR/wsdl
+
+#
+# OSCARS IDC API
+#
+mkdir -p $DSTDIR/wsdl/OSCARSService
+mkdir -p $DSTDIR/wsdl/OSCARSInternalService
+# copy xsd and xml files
+cp $OSCARS_DIST/common-soap/src/main/resources/api/{sec-policy.wsdl,r-2-idc.xsd,bf-2-idc.xsd,api-internal-0.6.xsd} $DSTDIR/wsdl/OSCARSService
+
+
+# Patch the location of the XSD files in the internal API wsdl
+sed -e "s,api-internal-0\.6\.xsd,$OSCARS_HOME/wsdl/OSCARSInternalService/api-internal-0.6.xsd," -e "s,OSCARS-0\.6\.xsd,$OSCARS_HOME/wsdl/OSCARSService/OSCARS-0.6\.xsd," -e "s,\.\./common\.wsdl,$OSCARS_HOME/wsdl/common.wsdl," -e "s,\.\./common\.xsd,$OSCARS_HOME/wsdl/common.xsd," -e "s,sec-policy\.wsdl,$OSCARS_HOME/wsdl/OSCARSService/sec-policy.wsdl," -e "s,b-2-idc-0\.6\.xsd,$OSCARS_HOME/wsdl/OSCARSService/b-2-idc-0.6.xsd," -e "s,r-2-idc\.xsd,$OSCARS_HOME/wsdl/OSCARSService/r-2-idc.xsd," < $OSCARS_DIST/common-soap/src/main/resources/api/api-internal-0.6.wsdl > $DSTDIR/wsdl/OSCARSInternalService/api-internal-0.6.wsdl
+cp $OSCARS_DIST/common-soap/src/main/resources/api/api-internal-0.6.xsd $DSTDIR/wsdl/OSCARSInternalService
+
+# Patch the location of the XSD files 0.6
+sed -e "s,OSCARS-0.6\.xsd,$OSCARS_HOME/wsdl/OSCARSService/OSCARS-0.6.xsd," -e "s,\.\./common\.wsdl,$OSCARS_HOME/wsdl/common.wsdl," -e "s,\.\./common\.xsd,$OSCARS_HOME/wsdl/common.xsd," -e "s,sec-policy\.wsdl,$OSCARS_HOME/wsdl/OSCARSService/sec-policy.wsdl," -e "s,b-2-idc-0\.6\.xsd,$OSCARS_HOME/wsdl/OSCARSService/b-2-idc-0.6.xsd," -e "s,r-2-idc\.xsd,$OSCARS_HOME/wsdl/OSCARSService/r-2-idc.xsd," < $OSCARS_DIST/common-soap/src/main/resources/api/OSCARS-0.6.wsdl > $DSTDIR/wsdl/OSCARSService/OSCARSService-0.6.wsdl
+sed -e "s,\.\.,$OSCARS_HOME/wsdl," < $OSCARS_DIST/common-soap/src/main/resources/api/OSCARS-0.6.xsd   > $DSTDIR/wsdl/OSCARSService/OSCARS-0.6.xsd
+sed -e "s,ws-addr-idc-0\.6\.xsd,$OSCARS_HOME/wsdl/OSCARSService/ws-addr-idc-0.6.xsd," -e "s,bf-2-idc\.xsd,$OSCARS_HOME/wsdl/OSCARSService/bf-2-idc.xsd," < $OSCARS_DIST/common-soap/src/main/resources/api/b-2-idc-0.6.xsd > $DSTDIR/wsdl/OSCARSService/b-2-idc-0.6.xsd
+sed "s,OSCARS-0\.6\.xsd,$OSCARS_HOME/wsdl/OSCARSService/OSCARS-0.6.xsd," < $OSCARS_DIST/common-soap/src/main/resources/api/ws-addr-idc-0.6.xsd > $DSTDIR/wsdl/OSCARSService/ws-addr-idc-0.6.xsd
+cp $OSCARS_DIST/common-soap/src/main/resources/api/br-2-idc-0.6.xsd $DSTDIR/wsdl/OSCARSService/br-2-idc-0.6.xsd
+
+# Patch the location of the XSD files 0.5
+sed -e "s,OSCARS-0\.5\.xsd,$OSCARS_HOME/wsdl/OSCARSService/OSCARS-0.5.xsd," -e "s,sec-policy\.wsdl,$OSCARS_HOME/wsdl/OSCARSService/sec-policy.wsdl," -e "s,b-2-idc-0\.5\.xsd,$OSCARS_HOME/wsdl/OSCARSService/b-2-idc-0.5.xsd," -e "s,r-2-idc\.xsd,$OSCARS_HOME/wsdl/OSCARSService/r-2-idc.xsd," < $OSCARS_DIST/common-soap/src/main/resources/api/OSCARS-0.5.wsdl > $DSTDIR/wsdl/OSCARSService/OSCARSService-0.5.wsdl
+sed  "s,\.\./nmtopo-ctrlp\.xsd,$OSCARS_HOME/wsdl/nmtopo-ctrlp.xsd," < $OSCARS_DIST/common-soap/src/main/resources/api/OSCARS-0.5.xsd   > $DSTDIR/wsdl/OSCARSService/OSCARS-0.5.xsd
+sed -e "s,ws-addr-idc-0\.5\.xsd,$OSCARS_HOME/wsdl/OSCARSService/ws-addr-idc-0.5.xsd," -e "s,bf-2-idc\.xsd,$OSCARS_HOME/wsdl/OSCARSService/bf-2-idc.xsd," < $OSCARS_DIST/common-soap/src/main/resources/api/b-2-idc-0.5.xsd > $DSTDIR/wsdl/OSCARSService/b-2-idc-0.5.xsd
+sed "s,OSCARS-0\.5\.xsd,$OSCARS_HOME/wsdl/OSCARSService/OSCARS-0.5.xsd," < $OSCARS_DIST/common-soap/src/main/resources/api/ws-addr-idc-0.5.xsd > $DSTDIR/wsdl/OSCARSService/ws-addr-idc-0.5.xsd
+
+# Patch the location of the XSD files for 0.5 Notify
+sed -e "s,OSCARS-0\.5\.xsd,$OSCARS_HOME/wsdl/OSCARSService/OSCARS-0.5.xsd," -e "s,sec-policy\.wsdl,$OSCARS_HOME/wsdl/OSCARSService/sec-policy.wsdl," -e "s,b-2-idc-0\.5\.xsd,$OSCARS_HOME/wsdl/OSCARSService/b-2-idc-0.5.xsd," -e "s,r-2-idc\.xsd,$OSCARS_HOME/wsdl/OSCARSService/r-2-idc.xsd," -e "s,br-2-idc-0.5\.xsd,$OSCARS_HOME/wsdl/OSCARSService/br-2-idc-0.5.xsd," < $OSCARS_DIST/common-soap/src/main/resources/api/OSCARS-0.5-Notify.wsdl > $DSTDIR/wsdl/OSCARSService/OSCARSService-0.5-Notify.wsdl
+cp $OSCARS_DIST/common-soap/src/main/resources/api/br-2-idc-0.5.xsd $DSTDIR/wsdl/OSCARSService/br-2-idc-0.5.xsd
+
+# Patch the location of the XSD files for 0.5 Notify only file
+sed -e "s,b-2-idc-0\.5\.xsd,$OSCARS_HOME/wsdl/OSCARSService/b-2-idc-0.5.xsd," -e "s,r-2-idc\.xsd,$OSCARS_HOME/wsdl/OSCARSService/r-2-idc.xsd," -e "s,br-2-idc-0.5\.xsd,$OSCARS_HOME/wsdl/OSCARSService/br-2-idc-0.5.xsd," < $OSCARS_DIST/common-soap/src/main/resources/api/OSCARS-0.5-NotifyOnly.wsdl > $DSTDIR/wsdl/OSCARSService/OSCARSService-0.5-NotifyOnly.wsdl
+
+#
+# PCE
+#
+sed -e "s,pce-0\.6\.xsd,$OSCARS_HOME/wsdl/OSCARSService/PCEService-0.6.xsd," -e "s,\.\./common\.wsdl,$OSCARS_HOME/wsdl/common.wsdl," -e "s,\.\./common\.xsd,$OSCARS_HOME/wsdl/common.xsd," < $OSCARS_DIST/common-soap/src/main/resources/api/pce-0.6.wsdl > $DSTDIR/wsdl/OSCARSService/PCEService-0.6.wsdl
+
+sed -e "s,OSCARS-0\.6\.xsd,$OSCARS_HOME/wsdl/OSCARSService/OSCARS-0.6.xsd," < $OSCARS_DIST/common-soap/src/main/resources/api/pce-0.6.xsd > $DSTDIR/wsdl/OSCARSService/PCEService-0.6.xsd
+
+#
+# Coordinator
+#
+mkdir -p $DSTDIR/wsdl/CoordService
+# Patch the location of the XSD files
+sed  -e "s,coord\.xsd,file:$OSCARS_HOME/wsdl/CoordService/CoordService.xsd," -e "s,\.\./common\.wsdl,$OSCARS_HOME/wsdl/common.wsdl," -e "s,\.\./api,$OSCARS_HOME/wsdl/OSCARSService,"  -e "s,\.\./resourceManager/resourceManager\.xsd,$OSCARS_HOME/wsdl/ResourceManagerService/ResourceManagerService.xsd," < $OSCARS_DIST/common-soap/src/main/resources/coord/coord.wsdl > $DSTDIR/wsdl/CoordService/CoordService.wsdl
+cp $OSCARS_DIST/common-soap/src/main/resources/coord/coord.xsd  $DSTDIR/wsdl/CoordService/CoordService.xsd
+#
+# Resource Manager
+#
+mkdir -p $DSTDIR/wsdl/ResourceManagerService
+# Patch the location of the XSD files
+sed -e "s,\.\./api/OSCARS-0.6\.xsd,$OSCARS_HOME/wsdl/OSCARSService/OSCARS-0.6.xsd," -e "s,\.\./common\.wsdl,$OSCARS_HOME/wsdl/common.wsdl," -e "s,\.\./common\.xsd,$OSCARS_HOME/wsdl/common.xsd," -e "s,resourceManager\.xsd,file:$OSCARS_HOME/wsdl/ResourceManagerService/ResourceManagerService.xsd," < $OSCARS_DIST/common-soap/src/main/resources/resourceManager/resourceManager.wsdl > $DSTDIR/wsdl/ResourceManagerService/ResourceManagerService.wsdl
+# Patch the location of common files
+sed  -e "s,\.\./api/OSCARS-0.6\.xsd,$OSCARS_HOME/wsdl/OSCARSService/OSCARS-0.6.xsd," -e "s,\.\./common\.xsd,$OSCARS_HOME/wsdl/common.xsd," -e "s,\.\./nmtopo-ctrlp\.xsd,$OSCARS_HOME/wsdl/nmtopo-ctrlp.xsd," < $OSCARS_DIST/common-soap/src/main/resources/resourceManager/resourceManager.xsd > $DSTDIR/wsdl/ResourceManagerService/ResourceManagerService.xsd
+
+#
+# PSS
+#
+mkdir -p $DSTDIR/wsdl/PSSService/
+# Patch the location of the XSD files
+sed "s,pss\.xsd,file:$OSCARS_HOME/wsdl/PSSService/PSSService.xsd," < $OSCARS_DIST/common-soap/src/main/resources/pss/pss.wsdl > $DSTDIR/wsdl/PSSService/PSSService.wsdl
+sed  -e "s,\.\./api/OSCARS-0.6\.xsd,$OSCARS_HOME/wsdl/OSCARSService/OSCARS-0.6.xsd," -e "s,\.\./nmtopo-ctrlp.xsd,file:$OSCARS_HOME/wsdl/nmtopo-ctrlp.xsd," < $OSCARS_DIST/common-soap/src/main/resources/pss/pss.xsd > $DSTDIR/wsdl/PSSService/PSSService.xsd
+
+
+#
+# Template/Sample
+#
+mkdir -p $DSTDIR/wsdl/TemplateService
+cp $OSCARS_DIST/common-soap/src/main/resources/template/* $DSTDIR/wsdl/TemplateService
+# Patch the location of the XSD files
+sed "s,template\.xsd,file:$OSCARS_HOME/wsdl/TemplateService/template.xsd," < $OSCARS_DIST/common-soap/src/main/resources/template/template.wsdl > $DSTDIR/wsdl/TemplateService/TemplateService-0.6.wsdl
+sed "s,template-0\.5\.xsd,file:$OSCARS_HOME/wsdl/TemplateService/template-0.5.xsd," < $OSCARS_DIST/common-soap/src/main/resources/template/template-0.5.wsdl > $DSTDIR/wsdl/TemplateService/TemplateService-0.5.wsdl
+
+#
+# authN
+#
+mkdir -p $DSTDIR/wsdl/AuthNService
+# Copy xsd, and change file name to match service name
+cp $OSCARS_DIST/common-soap/src/main/resources/authN/authN.xsd $DSTDIR/wsdl/AuthNService/AuthNService.xsd
+# Copy, change file name, and patch the location of the XSD file and common files
+sed -e "s,\.\./common\.wsdl,$OSCARS_HOME/wsdl/common.wsdl," -e "s,\.\./common\.xsd,$OSCARS_HOME/wsdl/common.xsd,"  -e "s,authN\.xsd,file:$OSCARS_HOME/wsdl/AuthNService/AuthNService.xsd," < $OSCARS_DIST/common-soap/src/main/resources/authN/authN.wsdl > $DSTDIR/wsdl/AuthNService/AuthNService.wsdl
+
+#
+# authN policy manager
+#
+mkdir -p $DSTDIR/wsdl/AuthNPolicyService
+# Copy xsd, and change file name to match service name
+# Copy, change file name, and patch the location of the XSD file and common files
+sed -e "s,\.\./common\.wsdl,$OSCARS_HOME/wsdl/common.wsdl," -e "s,\.\./common\.xsd,$OSCARS_HOME/wsdl/common.xsd," -e "s,authNPolicy\.xsd,file:$OSCARS_HOME/wsdl/AuthNPolicyService/AuthNPolicyService.xsd," < $OSCARS_DIST/common-soap/src/main/resources/authNPolicy/authNPolicy.wsdl > $DSTDIR/wsdl/AuthNPolicyService/AuthNPolicyService.wsdl
+# patch the location of the common XSD files
+sed -e "s,\.\./common\.xsd,$OSCARS_HOME/wsdl/common.xsd," -e "s,\.\./authCommonPolicy\.xsd,$OSCARS_HOME/wsdl/authCommonPolicy.xsd," < $OSCARS_DIST/common-soap/src/main/resources/authNPolicy/authNPolicy.xsd > $DSTDIR/wsdl/AuthNPolicyService/AuthNPolicyService.xsd
+
+
+#
+# authZ
+#
+mkdir -p $DSTDIR/wsdl/AuthZService
+# Copy xsd, and change file name to match service name
+cp $OSCARS_DIST/common-soap/src/main/resources/authZ/authZ.xsd $DSTDIR/wsdl/AuthZService/AuthZService.xsd
+# Copy, change file name, and patch the location of the XSD file and common files
+sed -e "s,\.\./common\.wsdl,$OSCARS_HOME/wsdl/common.wsdl," -e "s,\.\./common\.xsd,$OSCARS_HOME/wsdl/common.xsd," -e "s,authZ\.xsd,file:$OSCARS_HOME/wsdl/AuthZService/AuthZService.xsd," < $OSCARS_DIST/common-soap/src/main/resources/authZ/authZ.wsdl > $DSTDIR/wsdl/AuthZService/AuthZService.wsdl
+
+#
+# authZ policy manager
+#
+mkdir -p $DSTDIR/wsdl/AuthZPolicyService
+# Copy, change file name, and patch the location of the XSD file
+sed -e "s,\.\./common\.wsdl,$OSCARS_HOME/wsdl/common.wsdl," -e "s,\.\./common\.xsd,$OSCARS_HOME/wsdl/common.xsd," -e "s,authZPolicy\.xsd,file:$OSCARS_HOME/wsdl/AuthZPolicyService/AuthZPolicyService.xsd," < $OSCARS_DIST/common-soap/src/main/resources/authZPolicy/authZPolicy.wsdl > $DSTDIR/wsdl/AuthZPolicyService/AuthZPolicyService.wsdl
+# Patch the location of common XSD files
+sed -e "s,\.\./common\.xsd,$OSCARS_HOME/wsdl/common.xsd," -e "s,\.\./authCommonPolicy\.xsd,$OSCARS_HOME/wsdl/authCommonPolicy.xsd," < $OSCARS_DIST/common-soap/src/main/resources/authZPolicy/authZPolicy.xsd > $DSTDIR/wsdl/AuthZPolicyService/AuthZPolicyService.xsd
+
+#
+# lookup
+#
+SERVICE=$SVC_LOOKUP
+MODULE=lookup
+DST_DIR=$DSTDIR/wsdl/$SERVICE
+SRC_DIR=$OSCARS_DIST/common-soap/src/main/resources/$MODULE
+mkdir -p $DST_DIR
+# Copy xsd, and change file name to match service name
+cp $SRC_DIR/$MODULE.xsd $DST_DIR/$SERVICE.xsd
+cp $SRC_DIR/lookup-admin.xsd $DST_DIR/lookup-admin.xsd
+# Copy wsdl, change file name, and patch the location of the XSD file and common files
+sed -e "s,lookup-admin.xsd,file:$OSCARS_HOME/wsdl/$SERVICE/lookup-admin.xsd," -e "s,\.\./common\.wsdl,$OSCARS_HOME/wsdl/common.wsdl," -e "s,\.\./common\.xsd,$OSCARS_HOME/wsdl/common.xsd," -e "s,$MODULE\.xsd,file:$OSCARS_HOME/wsdl/$SERVICE/$SERVICE.xsd," < $SRC_DIR/$MODULE.wsdl > $DST_DIR/$SERVICE.wsdl
+
+
+# topoBridge
+#
+SERVICE=$SVC_TOPO
+MODULE=topoBridge
+DST_DIR=$DSTDIR/wsdl/$SERVICE
+SRC_DIR=$OSCARS_DIST/common-soap/src/main/resources/$MODULE
+mkdir -p $DST_DIR
+# Copy xsd, and change file name to match service name
+cp $SRC_DIR/$MODULE.xsd $DST_DIR/$SERVICE.xsd
+# Copy wsdl, change file name, and patch the location of the XSD file and common files
+sed -e "s,\.\./common\.wsdl,$OSCARS_HOME/wsdl/common.wsdl," -e "s,\.\./common\.xsd,$OSCARS_HOME/wsdl/common.xsd," -e "s,$MODULE\.xsd,file:$OSCARS_HOME/wsdl/$SERVICE/$SERVICE.xsd," < $SRC_DIR/$MODULE.wsdl > $DST_DIR/$SERVICE.wsdl
+
+#
+# notificationBridge
+#
+SERVICE=$SVC_NOTIFY
+MODULE=notificationBridge
+DST_DIR=$DSTDIR/wsdl/$SERVICE
+SRC_DIR=$OSCARS_DIST/common-soap/src/main/resources/$MODULE
+mkdir -p $DST_DIR
+# Copy xsd, and change file name to match service namecp $SRC_DIR/$MODULE.xsd $DST_DIR/$SERVICE.xsd
+# Copy wsdl, change file name, and patch the location of the XSD file and common files
+sed -e "s,\.\./common\.wsdl,$OSCARS_HOME/wsdl/common.wsdl," -e "s,\.\./common\.xsd,$OSCARS_HOME/wsdl/common.xsd," -e "s,\.\./api,$OSCARS_HOME/wsdl/OSCARSService," -e "s,$MODULE\.xsd,file:$OSCARS_HOME/wsdl/$SERVICE/$SERVICE.xsd," < $SRC_DIR/$MODULE.wsdl > $DST_DIR/$SERVICE.wsdl
+
+#
+# wsnbroker
+#
+SERVICE=$SVC_WSNBROKER
+MODULE=wsnbroker
+DST_DIR=$DSTDIR/wsdl/$SERVICE
+SRC_DIR=$OSCARS_DIST/common-soap/src/main/resources/$MODULE
+mkdir -p $DST_DIR
+# Copy xsd, and change file name to match service namecp $SRC_DIR/$MODULE.xsd $DST_DIR/$SERVICE.xsd
+# Copy wsdl, change file name, and patch the location of the XSD file and common files
+sed -e "s,\.\./api,$OSCARS_HOME/wsdl/OSCARSService," -e "s,\.\./common\.wsdl,$OSCARS_HOME/wsdl/common.wsdl," -e "s,\.\./common\.xsd,$OSCARS_HOME/wsdl/common.xsd," -e "s,$MODULE\.xsd,file:$OSCARS_HOME/wsdl/$SERVICE/$SERVICE.xsd," < $SRC_DIR/$MODULE.wsdl > $DST_DIR/$SERVICE.wsdl
+#this is the one used for the client the wsnbroker uses to send to subscribers
+sed -e "s,\.\./api,$OSCARS_HOME/wsdl/OSCARSService," -e "s,\.\./common\.wsdl,$OSCARS_HOME/wsdl/common.wsdl," -e "s,\.\./common\.xsd,$OSCARS_HOME/wsdl/common.xsd," -e "s,$MODULE\.xsd,file:$OSCARS_HOME/wsdl/$SERVICE/$SERVICE.xsd," < $SRC_DIR/${MODULE}out.wsdl > $DST_DIR/${SERVICE}Out.wsdl

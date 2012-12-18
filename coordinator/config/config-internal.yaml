@@ -1,0 +1,10 @@
+---
+
+rm:
+    url: 'http://localhost:9006/OSCARS/resourceManager'
+
+authz:
+    url: 'http://localhost:9190/OSCARS/authZ'
+
+pss:
+    url: 'http://localhost:9020/OSCARS/PSSService'

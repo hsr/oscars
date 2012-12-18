@@ -1,0 +1,12 @@
+exit all
+configure service vpls ${vlan} customer 1 create sap ${portA}:${vlan} create no shutdown
+configure service vpls ${vlan} customer 1 create sap ${portZ}:${vlan} create no shutdown
+configure service vpls ${vlan} customer 1 service-mtu 9194
+configure service vpls ${vlan} customer 1 stp no shutdown
+configure service vpls ${vlan} customer 1 igmp-snooping no shutdown
+configure service vpls ${vlan} customer 1 pim-snooping no shutdown
+configure service vpls ${vlan} fdb-table-size 4096
+configure service vpls ${vlan} no shutdown
+
+
+

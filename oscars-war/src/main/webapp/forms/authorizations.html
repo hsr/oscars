@@ -1,0 +1,61 @@
+<html>
+<head>
+<script type="text/javascript">
+    var authLayout = [
+         {name: 'Attribute', field: "attribute", width: "15em"},
+         {name: 'Resource', field: "resource", width: "10em"},
+         {name: 'Permission', field: "permission", width: "10em"},
+         {name: 'Constraint', field: "constraint", width: "10em"},
+         {name: 'Constraint Value', field: "constraintVal", width: "11em"}
+    ];
+</script>
+</head>
+
+<body>
+<form id="authListForm" dojoType="dijit.form.Form">
+  <input type="hidden" name="authsAdded" id="authsAdded" />
+  <input type="hidden" name="authListAttrsUpdated" id="authListAttrsUpdated" />
+
+  <p>Click on a row to view and modify an authorization.  Choose an attribute
+  and click on REFRESH to see just authorizations with that attribute.
+  Further information on attributes is available
+  <a href="/OSCARS/docs/attributes.html" target="_blank">here</a>.
+  </p>
+
+  <table>
+  <tr>
+    <td>Authorizations List</td>
+    <td>
+      <button dojoType="dijit.form.Button" id="authList">
+       REFRESH 
+       <script type="dojo/method" event="onClick">
+          oscars.Authorizations.refreshAuthGrid();
+       </script>
+      </button>
+    </td>
+    <td>Attributes ->
+      <select name="attributeName" id="attributeSelect" size="3">
+    </select>
+    </td>
+    <td>
+        <button dojoType="dijit.form.Button" id="goToAuthorization">
+        ADD
+         <script type="dojo/method" event="onClick">
+             oscars.Authorizations.goToAdd();
+         </script>
+      </button>
+    </td>
+  </tr>
+  </table>
+</form>
+<!-- tooltip section for buttons -->
+<div dojoType = "dijit.Tooltip" connectId="addAuthorization" position="above">
+    Add a new authorization.
+</div>
+
+<div id="authGrid" dojoType="dojox.grid.DataGrid" structure="authLayout"
+    autoWidth="true" autoHeight="true" elasticView="2">
+</div>
+</body>
+
+</html>

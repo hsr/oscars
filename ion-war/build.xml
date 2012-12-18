@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="ionui">
+	<property name="dojo.version" value="1.3.1"/>
+	<property name="dojo.filename" value="dojo-release-1.3.1-ion.tar"/>
+    <available property="dojo.installed" file="${basedir}/src/main/webapp/lib/dojo"/>
+    <target name="installdojo" unless="dojo.installed" description="unzip and untar Dojo material if necessary">
+	<gunzip src="${basedir}/src/main/webapp/lib/${dojo.filename}.gz"/>
+        <untar src="${basedir}/src/main/webapp/lib/${dojo.filename}" dest="${basedir}/src/main/webapp/lib"/>
+    </target>
+</project>

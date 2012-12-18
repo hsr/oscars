@@ -1,0 +1,38 @@
+############################################################################################
+# NOTE: Do NOT change the parameters in these files unless you know what you are doing.
+#    Most users should NOT need to make any changes to this file. 
+############################################################################################
+
+############################################################################################
+# VM Parameters: The parameters below are specific to configring the virtual machine
+#    VM_SRC_IMG: The path to the VM image after its downloaded on the host system 
+#    VM_IMG_URL: The URL where the VM image can be downloaded
+#    VM_NAME: The name to give the VM 
+#    BRIDGE_INTERFACE: The bridge interface used for networking
+#    HOST_VM_COMM_IF: The private interface used for communicating with the VM
+############################################################################################
+export VM_SRC_IMG="/var/lib/libvirt/images/OSCARS_VM.img"
+export VM_IMG_URL="https://www.es.net/assets/ESnet-Research/OSCARS/OSCARS_VM-0.6-rc1.img.gz"
+export VM_NAME="OSCARS_VM"
+export BRIDGE_INTERFACE="virbr0"
+export HOST_VM_COMM_IF="virbr0:1"
+
+############################################################################################
+# SSH Parameters: The parameters are used to SSH into the VM during initial setup
+#    VM_SSH_KEY: The path to the SSH private key that is sued to login to the VM during setup
+#    SSHCMD: The SSH command run to login to the VM during networking and OSCARS configuration 
+############################################################################################
+export VM_SSH_KEY="./etc/ssh_keys/oscars_setup_rsa"
+export SSHCMD="/usr/bin/ssh -i $VM_SSH_KEY oscars@10.10.10.2"
+
+############################################################################################
+# OSCARS Parameters: Advanced OSCARS parameters
+#    OSCARS_DIST: Location of the OSCARS source and binaries on the VM system
+#    OSCARS_HOME: The location of the OSCARS config files on the VM system
+#    LS_HOST: The name of the default home lookup service host
+#    TS_HOST: The name of the default topology service host
+############################################################################################
+export OSCARS_DIST=/home/oscars/oscars-0.6-release
+export OSCARS_HOME=/usr/local/oscars
+export LS_HOST=dcn-ls.internet2.edu
+export TS_HOST=dcn-ts.internet2.edu

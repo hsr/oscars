@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="UTF-8"?> 
+<wstop:TopicSet
+    targetNamespace="http://oscars.es.net/OSCARS/06"  
+    xmlns:tns="http://oscars.es.net/OSCARS/06" 
+    xmlns:wstop="http://docs.oasis-open.org/wsn/t-1"> 
+    
+    <!--
+        This files sets which Topics this instance of OSCARS will send to the NotificationBroker.
+        Messages belonging to a particular Topic are only sent if they belong to one or more Topics
+        with an attribute of wstop:topic="true".
+    -->
+    <tns:RESERVATION wstop:topic="true" />
+    
+</wstop:TopicSet>

@@ -1,0 +1,77 @@
+<#if teardownqos>
+
+<#list vlans as vlan> 
+<#list ifces as ifceName> 
+configure service vpls ${vlan} shutdown
+configure service vpls ${vlan} spoke-sdp ${sdp.id}:${vlan} shutdown
+configure service vpls ${vlan} no spoke-sdp ${sdp.id}:${vlan} 
+configure service vpls ${vlan} sap ${ifceName}:${vlan} shutdown
+configure service vpls ${vlan} no sap ${ifceName}:${vlan} 
+configure service no vpls ${vlan} 
+</#list>
+</#list>
+
+
+configure service sdp ${sdp.id} shutdown
+configure service no sdp ${sdp.id} 
+
+
+configure qos no sap-ingress "${ingqosid}"
+
+configure router mpls lsp "${lsp.name}" shutdown
+configure router mpls no lsp "${lsp.name}" 
+configure router mpls path "${path.name}" shutdown
+configure router mpls no path "${path.name}" 
+
+<#else>
+<#list vlans as vlan> 
+<#list ifces as ifceName> 
+# configure service vpls ${vlan} shutdown
+# configure service vpls ${vlan} spoke-sdp ${sdp.id}:${vlan} shutdown
+# configure service vpls ${vlan} no spoke-sdp ${sdp.id}:${vlan} 
+# configure service vpls ${vlan} sap ${ifceName}:${vlan} shutdown
+# configure service vpls ${vlan} no sap ${ifceName}:${vlan} 
+# configure service no vpls ${vlan} 
+</#list>
+</#list>
+
+
+# configure service sdp ${sdp.id} shutdown
+# configure service no sdp ${sdp.id} 
+
+
+# configure qos no sap-ingress "${ingqosid}"
+# configure qos no sap-egress "3000"
+
+# configure router mpls lsp "${lsp.name}" shutdown
+# configure router mpls no lsp "${lsp.name}" 
+# configure router mpls path "${path.name}" shutdown
+# configure router mpls no path "${path.name}" 
+
+
+
+
+
+
+
+
+
+<#list vlans as vlan> 
+<#list ifces as ifceName> 
+
+<#assign hackedIfce = ifceName>
+<#if ifceName = r"7/1/2">
+  <#if vlan = "278">
+    <#assign hackedIfce = r"7/1/3">
+  </#if>
+</#if>
+configure service vpls ${vlan} sap ${hackedIfce}:${vlan} ingress qos "${ingqosid}"
+</#list>
+</#list>
+
+
+</#if>
+
+
+
+

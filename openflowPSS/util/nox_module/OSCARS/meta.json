@@ -1,0 +1,12 @@
+{
+    "components": [
+        {
+            "name": "oscars" ,
+            "dependencies": [
+                "webservice",
+                "python_flow_fetcher"
+            ],
+            "python": "nox.webapps.OSCARS.OSCARS" 
+        }
+    ]
+}

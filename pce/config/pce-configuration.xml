@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+<!-- WARNING: this file currently only contains debuging configuration - lomax@es.net 9/29/2009 -->
+<PCEConfiguration>
+<PCE>
+	<Bindings>
+		<Name>Default Aggregator</Name>
+		<Endpoint>https://localhost:10002/OSCARS/PCE</Endpoint>
+		<Role>Aggregator</Role>
+		<ProxyEndpoint>http://localhost:10000/OSCARS/PCE</ProxyEndpoint>
+		<NeedsPathTag>SampleDomain</NeedsPathTag>
+	</Bindings>
+	<Aggregates>
+		<PCE>
+			<Bindings>
+				<Name>Connectivity PCE</Name>
+				<PathTag>SampleDomain</PathTag>
+				<Endpoint>https://localhost:10001/OSCARS/PCE</Endpoint>
+				<Role>PCE</Role>
+				<ProxyEndpoint>http://localhost:10000/OSCARS/PCE</ProxyEndpoint>
+			</Bindings>
+			<Aggregates>
+				<PCE>
+					<Bindings>
+						<Name>Bandwidth PCE</Name>
+						<PathTag>SampleDomain</PathTag>
+						<Endpoint>https://localhost:10005/OSCARS/PCE</Endpoint>
+						<Role>PCE</Role>
+						<ProxyEndpoint>http://localhost:10000/OSCARS/PCE</ProxyEndpoint>
+					</Bindings>
+					<Aggregates>
+						<PCE>
+							<Bindings>
+								<Name>VLAN PCE</Name>
+								<PathTag>SampleDomain</PathTag>
+								<Endpoint>https://localhost:10004/OSCARS/PCE</Endpoint>
+								<Role>PCE</Role>
+								<ProxyEndpoint>http://localhost:10000/OSCARS/PCE</ProxyEndpoint>
+							</Bindings>	
+                            <Aggregates>
+                                    <PCE>
+                                            <Bindings>
+                                                    <Name>AuthZ PCE</Name>
+                                                    <PathTag>SampleDomain</PathTag>
+                                                    <Endpoint>https://localhost:10003/OSCARS/PCE</Endpoint>
+                                                    <Role>PCE</Role>
+                                                    <ProxyEndpoint>http://localhost:10000/OSCARS/PCE</ProxyEndpoint>
+                                            </Bindings>
+
+                                    </PCE>
+                            </Aggregates>
+
+						</PCE>					
+					</Aggregates>
+				</PCE>
+			</Aggregates>
+		</PCE>
+	</Aggregates>
+</PCE>
+	
+</PCEConfiguration>

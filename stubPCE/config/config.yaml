@@ -1,0 +1,6 @@
+---
+soap:
+    publishTo:  'http://localhost:9007/stubPCE'
+
+pce-runtime:
+    url: 'http://localhost:10000/OSCARS/PCE'

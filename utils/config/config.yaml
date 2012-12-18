@@ -1,0 +1,13 @@
+---
+
+localDomain:
+    id: 'testdomain-1'
+    mpls: 1
+
+notifyNamespaces:
+    idc:        'http://oscars.es.net/OSCARS/06'
+    nmwg-ctrlp: 'http://ogf.org/schema/network/topology/ctrlPlane/20080828/'
+    wsa:        'http://www.w3.org/2005/08/addressing'
+
+# Chose one of STUB, EOMPLS, DRAGON; default is STUB
+PSSChoice:   STUB

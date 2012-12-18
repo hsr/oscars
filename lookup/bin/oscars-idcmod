@@ -1,0 +1,4 @@
+#!/bin/bash
+vers=`cat $OSCARS_DIST/VERSION`
+java -Done-jar.main.class=net.es.oscars.lookup.utils.IDCModUtil -Djava.net.preferIPv4Stack=true -jar $OSCARS_DIST/lookup/target/lookup-$vers.one-jar.jar $*
+

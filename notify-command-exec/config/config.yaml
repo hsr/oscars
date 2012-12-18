@@ -1,0 +1,12 @@
+---
+host: 'localhost'
+port: 8080
+idc: 'https:/my-idc/axis2/services/OSCARS'
+notificationBroker: 'https:/my-nb/axis2/services/OSCARSNotify'
+#setupCommand: 'setup command'
+#teardownCommand: 'teardown command'
+clientKey: 'mykey'
+clientKeystore: 'my-client.jks'
+clientKeystorePassword: 'password'
+sslKeystore: 'my-ssl.jks'
+sslKeystorePassword: 'password'

@@ -1,0 +1,3 @@
+      <script type="dojo/method" event="onClick">
+          oscars.ReservationDetails.postQueryReservation(true);
+      </script>

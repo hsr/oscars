@@ -1,0 +1,318 @@
+<div class="left-content">
+	<table>
+		<tr class="tdheader">
+			<td colspan="2">Circuit Details</td>
+		</tr>
+		<tr>
+			<td>Description: </td>
+			<td><textarea id="tmpDescription" name="tmpDescription"></textarea></td>
+		</tr>
+	 	<tr class="oddrow">
+	 		<td>Source: </td>
+			<td>
+				<div dojoType="ion.EndpointComboBox" url="servlet/EndpointNameList?isSource=1" inputId="tmpSource">
+					<script type="dojo/connect">
+						dojo.byId('tmpSource').value = dojo.byId('source').value;
+						dojo.byId('tmpDescription').value = dojo.byId('description').value;
+					</script>
+				</div>
+				<div dojoType="ion.EndpointBrowser" url="servlet/EndpointBrowser?isSource=1" target="tmpSource"
+					prevPageIcon="images/previous.png" nextPageIcon="images/next.png" 
+					folderIcon="images/folder-icon.png" initialCategory="institution">
+				</div>
+			</td>
+	 	</tr>
+		<tr>
+			<td>Destination:</td>
+			<td>
+				<div dojoType="ion.EndpointComboBox" url="servlet/EndpointNameList" inputId="tmpDestination">
+					<script type="dojo/connect">
+						dojo.byId('tmpDestination').value = dojo.byId('destination').value;
+					</script>
+				</div>
+				<div dojoType="ion.EndpointBrowser" url="servlet/EndpointBrowser" target="tmpDestination"
+						prevPageIcon="images/previous.png" nextPageIcon="images/next.png" 
+						folderIcon="images/folder-icon.png" initialCategory="institution">
+				</div>
+			</td>
+		</tr>
+		<tr class="oddrow">
+			<td>Duration:</td>
+			<td><span id="wizDuration"></span></td>
+		</tr>
+		<tr>
+			<td>Start Date:</td>
+			<td>
+				<div dojoType="dijit.form.DateTextBox" name="startDate" required="true" id="startDate">
+					<script type="dojo/connect" event="onChange">
+						printDuration();
+						dojo.byId("tmpStartSeconds").value = widgetToSeconds("startDate", "startTime");
+					</script>
+				</div>
+			</td>
+		</tr>
+		<tr class="oddrow">
+			<td>Start Time:</td>
+			<td>
+				 <div dojoType="dijit.form.ValidationTextBox" name="startTime" id="startTime" 
+					regExp="[0-2]?[\d]:[0-5][\d]"
+					required="true"
+					promptMessage="Enter the start time in format HH:MM"
+					invalidMessage="Invalid format:  use HH:MM">
+						<script type="dojo/connect" event="onChange">
+							printDuration();
+							dojo.byId("tmpStartSeconds").value = widgetToSeconds("startDate", "startTime");
+						</script>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>End Date:</td>
+			<td>
+				<div dojoType="dijit.form.DateTextBox" required="true" name="endDate" id="endDate" >
+					<script type="dojo/connect" event="onChange">
+						printDuration();
+						dojo.byId("tmpEndSeconds").value = widgetToSeconds("endDate", "endTime");
+					</script>
+				</div>
+			</td>
+		</tr>
+		<tr class="oddrow">
+			<td>End Time:</td>
+			<td>
+				<div dojoType="dijit.form.ValidationTextBox" required="true" name="endTime" id="endTime" 
+					regExp="[0-2]?[\d]:[0-5][\d]"
+				    promptMessage="Enter the end time in format HH:MM"
+				    invalidMessage="Invalid format:  use HH:MM">
+						<script type="dojo/connect">
+							initTimeFields(3600, 'startDate', 'startTime', 'endDate', 'endTime');
+							secondsToWidget(dojo.byId("startSeconds").value, "startDate", "startTime");
+							secondsToWidget(dojo.byId("endSeconds").value, "endDate", "endTime");
+						</script>
+						<script type="dojo/connect" event="onChange">
+							printDuration();
+							dojo.byId("tmpEndSeconds").value = widgetToSeconds("endDate", "endTime");
+						</script>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>Bandwidth:</td>
+			<td>
+				<table>
+					<tr>
+						<td>
+							<div dojoType="dijit.form.HorizontalSlider" id="wizBandwidthSlider" class="bandwidthSlider"
+								minimum="50" maximum="10000" discreteValues="200" value="50" intermediateChanges="true">
+								<script type="dojo/connect">
+									if(dojo.byId('bandwidth').value != ""){
+										dijit.byId('wizBandwidthSlider').setValue(dojo.byId('bandwidth').value);
+									}
+								</script>
+								<script type="dojo/connect" event="onChange">
+									if(dijit.byId("tmpBandwidth") == null){
+										return;
+									}
+									if(dijit.byId("tmpBandwidth").getValue() != dijit.byId("wizBandwidthSlider").getValue()){
+										dijit.byId("tmpBandwidth").setValue(dijit.byId("wizBandwidthSlider").getValue());
+									}
+								</script>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div dojoType="dijit.form.TextBox" id="tmpBandwidth" required="true" value="50" class="bandwidthTextBox">
+								<script type="dojo/connect">
+									if(dojo.byId('bandwidth').value != ""){
+										dijit.byId('tmpBandwidth').setValue(dojo.byId('bandwidth').value);
+									}
+								</script>
+								
+								<script type="dojo/connect" event="onChange">
+									if(dijit.byId("wizBandwidthSlider") == null){ 
+										return; 
+									}
+									if(dijit.byId("tmpBandwidth").getValue() == dijit.byId("wizBandwidthSlider").getValue()){
+										return;
+									}
+									var newValue = dijit.byId("tmpBandwidth").getValue();
+									if((newValue % 50) != 0){
+										newValue = newValue - (newValue % 50) + 50;
+									}
+									if(newValue > 10000){
+										newValue = 10000;
+									}else if(newValue < 50){
+										newValue = 50;
+									}
+									dijit.byId("wizBandwidthSlider").setValue(newValue);
+									if(newValue != dijit.byId("tmpBandwidth").getValue()){
+										dijit.byId("tmpBandwidth").setValue(newValue);
+									}
+								</script>
+							</div>Mbps
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr class="oddrow">
+			<td colspan="2">
+				<div id="wizSameVlan" dojoType="dijit.form.CheckBox" checked="checked">
+					<script type="dojo/connect" event="onChange">
+						if(dijit.byId("tmpDestVlan") == null || dijit.byId("wizSuggestDest") == null){
+							return;
+						}
+						if(dijit.byId('wizSameVlan').checked){
+							dijit.byId("tmpDestVlan").setDisabled(true);
+							dijit.byId("wizSuggestDest").setDisabled(true);
+							dijit.byId("tmpDestVlan").setValue(dijit.byId("tmpSrcVlan").getValue());
+						}else{
+							dijit.byId("tmpDestVlan").setDisabled(false);
+							dijit.byId("wizSuggestDest").setDisabled(false);
+						}
+					</script>
+				</div>
+				<label for="wizSameVlan">Same VLAN number on source and destination</label>
+			</td>
+		</tr>
+		<tr>
+			<td>VLAN (Source):</td>
+			<td>
+				<div id="tmpSrcVlan" dojoType="dijit.form.ValidationTextBox" value="any"  required="true" 
+						regexp="(any|((([2-9])|([1-9]\d\d?)|([1-3]\d\d\d)|(40\d[0-4]))(,|-))*(([2-9])|([1-9]\d\d?)|([1-3]\d\d\d)|(40\d[0-4])))">
+					<script type="dojo/connect">
+						if(dojo.byId('srcVlan').value != ""){
+							dijit.byId('tmpSrcVlan').setValue(dojo.byId('srcVlan').value);
+						}
+						//also check source tagged here
+						if(dojo.byId('taggedSrcVlan').value != ""){
+							dojo.byId('tmpTaggedSrcVlan').selectedIndex = (dojo.byId('taggedSrcVlan').value == "Tagged" ? 0 : 1);
+						}
+					</script>
+					<script type="dojo/connect" event="onChange">
+						if(dijit.byId('wizSuggestSrc') == null){
+							return;
+						}
+						if(dijit.byId("tmpSrcVlan").getValue() == 'any' || dijit.byId("tmpSrcVlan").getValue() == '2-4094'){
+							dijit.byId('wizSuggestSrc').setChecked(true);
+						}else{
+							dijit.byId('wizSuggestSrc').setChecked(false);
+						}
+						
+						//mirror in dest if same
+						if(dijit.byId('wizSameVlan').checked){
+							dijit.byId('tmpDestVlan').setValue(dijit.byId('tmpSrcVlan').getValue());
+						}
+					</script>
+				</div>
+				<br>
+				<div id="wizSuggestSrc" dojoType="dijit.form.CheckBox" checked="checked">
+					<script type="dojo/connect">
+						if(dojo.byId('srcVlan').value != ""){
+							if(dojo.byId('srcVlan').value == 'any' || dojo.byId('srcVlan').value == '2-4094'){
+								dijit.byId('wizSuggestSrc').setChecked(true);
+							}else{
+								dijit.byId('wizSuggestSrc').setChecked(false);
+							}
+						}
+					</script>
+					<script type="dojo/connect" event="onChange">
+						if(dijit.byId("tmpSrcVlan") == null){
+							return;
+						}
+						if(dijit.byId('wizSuggestSrc').checked){
+							dijit.byId("tmpSrcVlan").setValue('any');
+						}
+					</script>
+				</div>
+				<label for="wizSuggestSrc">Auto-assign VLAN</label>
+			</td>
+		</tr>
+		<tr class="oddrow">
+			<td>VLAN (Destination):</td>
+			<td>
+				<div  disabled="true" id="tmpDestVlan" dojoType="dijit.form.ValidationTextBox" value="any" required="true" 
+						regexp="(any|((([2-9])|([1-9]\d\d?)|([1-3]\d\d\d)|(40\d[0-4]))(,|-))*(([2-9])|([1-9]\d\d?)|([1-3]\d\d\d)|(40\d[0-4])))">
+					<script type="dojo/connect">
+						if(dojo.byId('destVlan').value != ""){
+							dijit.byId('tmpDestVlan').setValue(dojo.byId('destVlan').value);
+						}
+						//also check dest tagged here
+						if(dojo.byId('taggedDestVlan').value != ""){
+							dojo.byId('tmpTaggedDestVlan').selectedIndex = (dojo.byId('taggedDestVlan').value == "Tagged" ? 0 : 1);
+						}
+					</script>
+					<script type="dojo/connect" event="onChange">
+						if(dijit.byId('wizSuggestDest') == null){
+							return;
+						}
+						if(dijit.byId("tmpDestVlan").getValue() == 'any' || dijit.byId("tmpDestVlan").getValue() == '2-4094'){
+							dijit.byId('wizSuggestDest').setChecked(true);
+						}else{
+							dijit.byId('wizSuggestDest').setChecked(false);
+						}
+					</script>
+				</div>
+				<br>
+				<div id="wizSuggestDest" disabled="true" dojoType="dijit.form.CheckBox" checked="checked">
+					<script type="dojo/connect">
+						if(dojo.byId('destVlan').value != ""){
+							if(dojo.byId('destVlan').value == 'any' || dojo.byId('destVlan').value == '2-4094'){
+								dijit.byId('wizSuggestDest').setChecked(true);
+							}else{
+								dijit.byId('wizSuggestDest').setChecked(false);
+							}
+						}
+					</script>
+					
+					<script type="dojo/connect" event="onChange">
+						if(dijit.byId("tmpDestVlan") == null){
+							return;
+						}
+						if(dijit.byId('wizSuggestDest').checked){
+							dijit.byId("tmpDestVlan").setValue('any');
+						}
+					</script>
+				</div>
+				<label for="wizSuggestDest">Auto-assign VLAN</label>
+			</td>
+		</tr>
+		<tr>
+			<td>Source VLAN type:</td>
+			<td>
+				<select id="tmpTaggedSrcVlan">
+					<option value="Tagged">Tagged</option>
+					<option value="Untagged">Untagged</option>
+				</select>
+			</td>
+		</tr>
+		<tr class="oddrow">
+			<td>Destination VLAN type:</td>
+			<td>
+				<select id="tmpTaggedDestVlan">
+					<option value="Tagged">Tagged</option>
+					<option value="Untagged">Untagged</option>
+				</select>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2">
+				<input type="hidden" name="tmpStartSeconds" id="tmpStartSeconds" />
+				<input type="hidden" name="tmpEndSeconds" id="tmpEndSeconds" />
+				<div dojoType="ion.Button" label="Next" id="wizNextButton">
+					<!-- put down here because guarantees evrything else has loaded -->
+					<script type="dojo/connect">
+						if(dojo.byId('srcVlan').value != "" && dojo.byId('destVlan').value != ""){
+							dijit.byId('wizSameVlan').setChecked(dojo.byId('srcVlan').value == dojo.byId('destVlan').value);
+						}
+					</script>
+				</div>
+			</td>
+		</tr>
+	</table>
+</div>
+<div class="right-content">
+	<div class="right-top">Clone </div> 
+	<span>Adjust any of the parameters and click <i>Next</i> to review your reservation.</span>
+</div> <!--/rightcontent-->

@@ -1,0 +1,63 @@
+<html>
+<head>
+<script type="text/javascript">
+    var institutionLayout = [
+         {name: 'Name', field: 'name', width: "30em"}
+    ];
+</script>
+</head>
+
+<body>
+<p>Use this form to manage the institution table.
+Clicking on ADD will clear the EDIT text field.  Add the row by adding
+text and clicking on SAVE.
+Clicking on a row will bring up its name in the EDIT text field and take you
+out of ADD mode.
+To then modify that name, edit the text and click on the SAVE button.
+To delete that row, click on the DELETE button.  This will not succeed unless
+there are no users belonging to that institution.
+</p>
+
+<form id="institutionsForm" dojoType="dijit.form.Form">
+    <input type="hidden" name="saveName" id="saveName" />
+
+        Institutions ->
+      <button dojoType="dijit.form.Button" id="institutionAddButton">
+        ADD
+        <script type="dojo/method" event="onClick">
+            oscars.Institutions.manage("add");
+        </script>
+      </button>
+      <button dojoType="dijit.form.Button" id="institutionSaveButton">
+        SAVE
+        <script type="dojo/method" event="onClick">
+            oscars.Institutions.manage("save");
+        </script>
+      </button>
+      <button dojoType="dijit.form.Button" id="institutionDeleteButton">
+        DELETE
+        <script type="dojo/method" event="onClick">
+            oscars.Institutions.manage("delete");
+        </script>
+      </button>
+  <table width="80%">
+  <tbody>
+  <tr>
+    <td width="4%">EDIT</td>
+    <td class="required" width="35%">
+        <input type="text" name="institutionEditName" id="institutionEditName"
+               dojoType="dijit.form.ValidationTextBox"
+               promptMessage="Enter an institution name" />
+    </td>
+    <td width ="7%" id="institutionOpChoice">
+    </td>
+  </tr>
+  </tbody>
+  </table>
+  <div id="institutionGrid" dojoType="dojox.grid.DataGrid"
+      structure="institutionLayout" autoWidth="true" autoHeight="true"
+      elasticView="2">
+  </div>
+</form>
+</body>
+</html>

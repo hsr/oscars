@@ -1,0 +1,88 @@
+WSNBrokerService:
+    UNITTEST:
+        templateDir:        'OSCARS_DIST/wsnbroker/config'
+        config.yaml:        'OSCARS_DIST/wsnbroker/config/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_DIST/wsnbroker/config/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_DIST/wsnbroker/config/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_DIST/wsnbroker/config/log4j.LOG.properties'
+        derby.home:         'OSCARS_DIST/wsnbroker/config'
+        serverKeystore.properties: 'OSCARS_DIST/wsnbroker/config/serverKeystore.properties'
+        clientKeystore.properties: 'OSCARS_DIST/wsnbroker/config/clientKeystore.properties'
+        wsdl:               'OSCARS_DIST/common-soap/src/main/resources/wsnbroker/wsnbroker.wsdl'
+
+    DEVELOPMENT:
+        templateDir:        'OSCARS_HOME/WSNBrokerService/conf/'
+        config.yaml:        'OSCARS_HOME/WSNBrokerService/conf/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/WSNBrokerService/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/WSNBrokerService/conf/client-cxf-ssl.xml'
+        log4j.properties:   'OSCARS_HOME/WSNBrokerService/conf/log4j.MESSAGE.properties'
+        derby.home:         'OSCARS_HOME/WSNBrokerService/data'
+        serverKeystore.properties: 'OSCARS_HOME/WSNBrokerService/conf/serverKeystore.properties'
+        clientKeystore.properties: 'OSCARS_HOME/WSNBrokerService/conf/clientKeystore.properties'
+        wsdl:               'OSCARS_HOME/wsdl/WSNBrokerService/WSNBrokerServiceOut.wsdl'
+
+    SDK:
+        templateDir:        'OSCARS_HOME/WSNBrokerService/conf/'
+        config.yaml:        'OSCARS_HOME/WSNBrokerService/conf/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/WSNBrokerService/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/WSNBrokerService/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/WSNBrokerService/conf/log4j.DEBUG.properties'
+        derby.home:         'OSCARS_HOME/WSNBrokerService/data'
+        serverKeystore.properties: 'OSCARS_HOME/WSNBrokerService/conf/serverKeystore.properties'
+        clientKeystore.properties: 'OSCARS_HOME/WSNBrokerService/conf/clientKeystore.properties'
+        wsdl:               'OSCARS_HOME/wsdl/WSNBrokerService/WSNBrokerServiceOut.wsdl'
+
+    PRODUCTION:
+        templateDir:        'OSCARS_HOME/WSNBrokerService/conf/'
+        config.yaml:        'OSCARS_HOME/WSNBrokerService/conf/config.SSL.yaml'
+        server-cxf.xml:     'OSCARS_HOME/WSNBrokerService/conf/server-cxf-ssl.xml'
+        client-cxf.xml:     'OSCARS_HOME/WSNBrokerService/conf/client-cxf-ssl.xml'
+        log4j.properties:   'OSCARS_HOME/WSNBrokerService/conf/log4j.INFO.properties'
+        derby.home:         'OSCARS_HOME/WSNBrokerService/data'
+        serverKeystore.properties: 'OSCARS_HOME/WSNBrokerService/conf/serverKeystore.properties'
+        clientKeystore.properties: 'OSCARS_HOME/WSNBrokerService/conf/clientKeystore.properties'
+        wsdl:               'OSCARS_HOME/wsdl/WSNBrokerService/WSNBrokerServiceOut.wsdl'
+Utils:
+    UNITTEST:
+        templateDir:        'OSCARS_DIST/utils/config'
+        config.yaml:        'OSCARS_DIST/utils/config/config.yaml'
+
+    DEVELOPMENT:
+        templateDir:        'OSCARS_HOME/Utils/conf/'
+        config.yaml:        'OSCARS_HOME/Utils/conf/config.yaml'
+
+    SDK:
+        templateDir:        'OSCARS_HOME/Utils/conf/'
+        config.yaml:        'OSCARS_HOME/Utils/conf/config.yaml'
+
+    PRODUCTION:
+        templateDir:        'OSCARS_HOME/Utils/conf/'
+        config.yaml:        'OSCARS_HOME/Utils/conf/config.yaml'
+
+AuthNService:
+    UNITTEST:
+        config.yaml:    'OSCARS_DIST/authN/config/authN.HTTP.yaml'
+        wsdl:           'OSCARS_DIST/common-soap/src/main/resources/authN/authN.wsdl'
+    DEVELOPMENT:
+        config.yaml:    'OSCARS_HOME/AuthNService/conf/authN.SSL.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/AuthNService/AuthNService.wsdl'
+    SDK:
+        config.yaml:    'OSCARS_HOME/AuthNService/conf/authN.HTTP.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/AuthNService/AuthNService.wsdl'
+    PRODUCTION:
+        config.yaml:    'OSCARS_HOME/AuthNService/conf/authN.SSL.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/AuthNService/AuthNService.wsdl'
+
+AuthZService:
+    UNITTEST:
+        config.yaml:    'OSCARS_DIST/authZ/config/authZ.HTTP.yaml'
+        wsdl:           'OSCARS_DIST/common-soap/src/main/resources/authZ/authZ.wsdl'
+    DEVELOPMENT:
+        config.yaml:    'OSCARS_HOME/AuthZService/conf/authZ.HTTP.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/AuthZService/AuthZService.wsdl'
+    SDK:
+        config.yaml:    'OSCARS_HOME/AuthZService/conf/authZ.HTTP.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/AuthZService/AuthZService.wsdl'
+    PRODUCTION:
+        config.yaml:    'OSCARS_HOME/AuthZService/conf/authZ.SSL.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/AuthZService/AuthZService.wsdl'

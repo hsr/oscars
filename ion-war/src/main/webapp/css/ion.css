@@ -1,0 +1,131 @@
+.endpointComboBox{
+	float: left;
+}
+.endpointBrowser{
+	float: left;
+}
+
+.endpointBrowser img{
+	border: 0;
+}
+.epbWindow {
+	position: fixed;
+	top: 0px;
+	left: 0px;
+	width: 360px;
+	height: 240px;
+	/*border: 1px #CCCCCC solid;*/
+	background: url(../images/pop-bg.png) no-repeat top left;
+	z-index: 2;
+	padding: 10px 10px 10px 10px;
+	visibility: hidden;
+	display: none;
+	font-size: 9pt;
+}
+
+.epbWindow a:link{
+	text-decoration: underline;
+	color: #0000CC;
+}
+
+.epbWindow a:visited{
+	text-decoration: underline;
+	color: #0000CC;
+}
+
+.epbWindow a:active{
+	text-decoration: underline;
+	color: #0000CC;
+}
+
+.epbWindow a:hover{
+	text-decoration: underline;
+	color: #000066;
+}
+
+.epbTitleBar{
+	text-align: right;
+	top: 0px;
+	height: 15px;
+	
+}
+#epbTitleBar a{background-color:#000000; color:#FFFFFF;border-top:2px solid #FFFFFF; border-left:2px solid #ffffff; border-right:2px solid #989898; border-bottom:2px solid #858585; display:block; width:15px; height:15px; float:right; text-align:center; text-decoration:none; margin-top:5px; position:relative; z-index:99;}
+#epbTitleBar a:link{background-color:#000000; color:#FFFFFF;border-top:2px solid #FFFFFF; border-left:2px solid #ffffff; border-right:2px solid #989898; border-bottom:2px solid #858585; display:block; width:15px; height:15px; float:right; text-align:center; text-decoration:none; margin-top:5px; position:relative; z-index:99;}
+#epbTitleBar a:visited{background-color:#000000; color:#FFFFFF;border-top:2px solid #FFFFFF; border-left:2px solid #ffffff; border-right:2px solid #989898; border-bottom:2px solid #858585; display:block; width:15px; height:15px; float:right; text-align:center; text-decoration:none; margin-top:5px; position:relative; z-index:99;}
+#epbTitleBar a:active{background-color:#000000; color:#FFFFFF;border-top:2px solid #FFFFFF; border-left:2px solid #ffffff; border-right:2px solid #989898; border-bottom:2px solid #858585; display:block; width:15px; height:15px; float:right; text-align:center; text-decoration:none; margin-top:5px; position:relative; z-index:99;}
+#epbTitleBar a:hover{background-color:#000000; color:#FFFFFF;border-top:2px solid #FFFFFF; border-left:2px solid #ffffff; border-right:2px solid #989898; border-bottom:2px solid #858585; display:block; width:15px; height:15px; float:right; text-align:center; text-decoration:none; margin-top:5px; position:relative; z-index:99;}
+
+
+.epbSearch{
+	position: relative;
+	text-align: left;
+	border-bottom: 1px #213D7E solid;
+	top: -10px;
+	height: 42px;
+	padding-left: 5px;
+}
+.epbSearchButton {
+background-color:#000000;
+color:#FFFFFF;
+border-top:2px solid #FFFFFF; border-left:2px solid #ffffff; border-right:2px solid #989898; border-bottom:2px solid #858585;
+}
+
+.epbMenu{
+	position: relative;
+	margin: 5px 2px 2px 2px;
+	padding: 10px 0px 2px 5px;
+	top: 0px;
+	left: 0px;
+	width: 90px;
+	height: 185px;
+	background:url(../images/pop-blue-bg.png) no-repeat top left;
+	color:#FFFFFF;
+}
+#content #contentDiv .circuitWizard .dijitContentPane .left-content .endpointBrowser .epbWindow .epbMenu .epbBrowseByLink a {color:#FFFFFF; text-decoration:none; margin: 5px 0px 10px; display:block; padding-left: 5px;}
+
+#content #contentDiv .circuitWizard .dijitContentPane .left-content .endpointBrowser .epbWindow .epbMenu .epbBrowseByLink a.selected {background:url(../images/pop-selected-bg.png) no-repeat left; color:#007297; padding-top:5px; padding-bottom:5px;  display:block;}
+
+.epbResults{
+	position: absolute;
+	margin: 2px 2px 2px 2px;
+	top: 60px;
+	left: 110px;
+	width: 260px;
+	height: 180px;
+}
+
+.epbResultsInfo{
+	margin: 2px 2px 2px 2px;
+	text-align: right;
+	font-weight: bold;
+	width: 260px;
+}
+
+.epbResultsPageNav{
+	position: absolute;
+	bottom: 0px;
+	text-align: center;
+	width: 260px;
+}
+
+.epbResultsCatLabel{
+	padding: 2px 2px 2px 2px;
+	font-weight: bold;
+	/*border-bottom: 1px #CCCCCC solid;*/
+}
+
+.epbResultsCatLabel a:link{
+	text-decoration: none;
+}
+
+.epbResultsCatLabel a:visited{
+	text-decoration: none;
+}
+
+.epbResultsCatLabel a:active{
+	text-decoration: none;
+}
+
+.epbResultsCatLabel a:hover{
+	text-decoration: none;
+}

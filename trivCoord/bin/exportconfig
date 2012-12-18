@@ -1,0 +1,24 @@
+#!/bin/sh
+#
+# Export configuration files from the distribution directory into the production directory.
+#
+# syntax: exportconfig <path_to_distribution> <patch_to_production>
+#
+#
+
+OSCARS_DIST=$1
+OSCARS_HOME=$2
+
+SERVICE=CoordService
+
+mkdir -p $OSCARS_HOME/CoordService/conf
+cp $OSCARS_DIST/trivCoord/config/coord.yaml $OSCARS_HOME/$SERVICE/conf/coord.yaml
+
+# SSL
+cp $OSCARS_DIST/trivCoord/config/client-cxf.xml $OSCARS_HOME/$SERVICE/conf/client-cxf.xml
+cp $OSCARS_DIST/trivCoord/config/server-cxf.xml $OSCARS_HOME/$SERVICE/conf/server-cxf.xml
+
+# log4j
+mkdir -p $OSCARS_HOME/logs
+sed "s,api\.log,$OSCARS_HOME/logs/$SERVICE.log," < $OSCARS_DIST/api/config/log4j.properties > $OSCARS_HOME/$SERVICE/conf/log4j.properties
+

@@ -1,0 +1,91 @@
+#!/bin/bash
+#
+# Init file for OSCARS Notify Command Executor
+#
+# chkconfig: 2345 60 20
+# description: OSCARS Notify Command Executor
+#
+
+PREFIX=${OSCARS_DIST}/notify-command-exec
+BINDIR=${PREFIX}/bin
+CONFDIR=${PREFIX}/config
+RUNDIR=${PREFIX}
+
+CONFFILE=${CONFDIR}/config.yaml
+LOGGERFILE=${CONFDIR}/daemon_logger.conf
+PIDFILE=oscars_notify_execd.pid
+OUTFILE=${PREFIX}/notify_execd.out
+FULL_PIDFILE=${RUNDIR}/${PIDFILE}
+JARFILE=${PREFIX}/target/notify-command-exec-0.0.1-SNAPSHOT.one-jar.jar 
+
+OSCARS="nohup java -Djava.net.preferIPv4Stack=true -jar ${JARFILE} -c=${CONFFILE} > ${OUTFILE} &"
+
+ERROR=0
+ARGV="$@"
+if [ "x$ARGV" = "x" ] ; then 
+    ARGS="help"
+fi
+
+for ARG in $@ $ARGS
+do
+    # check for pidfile
+    if [ -f $FULL_PIDFILE ] ; then
+        PID=`cat $FULL_PIDFILE`
+        if [ "x$PID" != "x" ] && kill -0 $PID 2>/dev/null ; then
+            STATUS="OSCARS Notify Command Executor (pid $PID) running"
+            RUNNING=1
+        else
+            STATUS="OSCARS Notify Command Executor (pid $PID?) not running"
+            RUNNING=0
+        fi
+    else
+        STATUS="OSCARS Notify Command Executor (no pid file) not running"
+        RUNNING=0
+    fi 
+
+    case $ARG in
+    start)
+
+	if [ $RUNNING = 0 ] ; then
+        nohup java -Djava.net.preferIPv4Stack=true -jar ${JARFILE} -c=${CONFFILE} > ${OUTFILE} &
+	    echo $! > $FULL_PIDFILE
+	    echo "$0 $ARG: OSCARS Notify Command Executor started"
+	else
+	    echo "$0 $ARG: OSCARS Notify Command Executor could not be started"
+	    ERROR=3
+	fi
+	;;
+    stop)
+	if [ $RUNNING -eq 0 ]; then
+	    echo "$0 $ARG: $STATUS"
+	    continue
+	fi
+	if kill $PID ; then
+	    echo "$0 $ARG: OSCARS Notify Command Executor stopped"
+	else
+	    echo "$0 $ARG: OSCARS Notify Command Executor could not be stopped"
+	    ERROR=4
+	fi
+	;;
+    restart)
+    	$0 stop; echo "waiting..."; sleep 10; $0 start;
+	;;
+    *)
+	echo "usage: $0 (start|stop|restart|help)"
+	cat <<EOF
+
+start      - start OSCARS Notify Command Executor
+stop       - stop OSCARS Notify Command Executor
+restart    - restart OSCARS Notify Command Executor if running by sending a SIGHUP or start if 
+             not running
+help       - this screen
+
+EOF
+	ERROR=2
+    ;;
+
+    esac
+
+done
+
+exit $ERROR

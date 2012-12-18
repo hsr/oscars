@@ -1,0 +1,99 @@
+#!/bin/sh 
+#
+# Export configuration files from the distribution directory into the production directory.
+#
+# syntax: exportconfig <path_to_distribution> <patch_to_production>
+#
+#
+
+SERVICE=PCEService
+MODULE=pce
+
+source $OSCARS_DIST/utils/bin/configLib.sh
+
+OSCARS_DIST=$1
+OSCARS_HOME=$2
+
+verifyArgs $OSCARS_DIST $OSCARS_HOME
+verifySvcName $SERVICE
+
+SRC_DIR=$OSCARS_DIST/$MODULE/config/
+DST_DIR=$OSCARS_HOME/$SERVICE/conf
+DST_LOGDIR=$OSCARS_HOME/logs
+
+mkdir -p $DST_LOGDIR
+mkdir -p $DST_DIR
+
+CONFIG_HTTP=nullagg.HTTP.yaml
+CONFIG_SSL=nullagg.SSL.yaml
+
+if [ ! -f $DST_DIR/$MANIFEST ] ; then
+    cp $SRC_DIR/$MANIFEST  $DST_DIR/$MANIFEST
+fi
+if [ ! -f $DST_DIR/$CONFIG_HTTP  ] ; then
+    cp $SRC_DIR/$CONFIG_HTTP $DST_DIR/$CONFIG_HTTP 
+fi
+if [ ! -f $DST_DIR/$CONFIG_SSL  ] ; then
+    cp $SRC_DIR/$CONFIG_SSL $DST_DIR/$CONFIG_SSL
+fi
+
+CONFIG_HTTP=nullpce.HTTP.yaml
+CONFIG_SSL=nullpce.SSL.yaml
+
+if [ ! -f $DST_DIR/$CONFIG_HTTP  ] ; then
+    cp $SRC_DIR/$CONFIG_HTTP $DST_DIR/$CONFIG_HTTP 
+fi
+if [ ! -f $DST_DIR/$CONFIG_SSL  ] ; then
+    cp $SRC_DIR/$CONFIG_SSL $DST_DIR/$CONFIG_SSL
+fi
+
+# cxf configuration file
+CXF_SERVER_HTTP_CFG=nullagg-server-cxf-http.xml
+CXF_SERVER_SSL_CFG=nullagg-server-cxf-ssl.xml
+CXF_CLIENT_HTTP_CFG=nullagg-client-cxf-http.xml 
+CXF_CLIENT_SSL_CFG=nullagg-client-cxf-ssl.xml
+
+if [ ! -f $DST_DIR/$CXF_SERVER_HTTP_CFG ] ; then
+    cp $SRC_DIR/$CXF_SERVER_HTTP_CFG  $DST_DIR/$CXF_SERVER_HTTP_CFG
+fi
+if [ ! -f $DST_DIR/$CXF_SERVER_SSL_CFG ] ; then
+    cp $SRC_DIR/$CXF_SERVER_SSL_CFG  $DST_DIR/$CXF_SERVER_SSL_CFG
+fi
+if [ ! -f $DST_DIR/$CXF_CLIENT_HTTP_CFG ] ; then
+    cp $SRC_DIR/$CXF_CLIENT_HTTP_CFG  $DST_DIR/$CXF_CLIENT_HTTP_CFG
+fi
+if [ ! -f $DST_DIR/$CXF_CLIENT_SSL_CFG ] ; then
+    cp $SRC_DIR/$CXF_CLIENT_SSL_CFG  $DST_DIR/$CXF_CLIENT_SSL_CFG
+fi
+
+# cxf configuration file
+CXF_SERVER_HTTP_CFG=nullpce-server-cxf-http.xml
+CXF_SERVER_SSL_CFG=nullpce-server-cxf-ssl.xml
+CXF_CLIENT_HTTP_CFG=nullpce-client-cxf-http.xml 
+CXF_CLIENT_SSL_CFG=nullpce-client-cxf-ssl.xml
+
+if [ ! -f $DST_DIR/$CXF_SERVER_HTTP_CFG ] ; then
+    cp $SRC_DIR/$CXF_SERVER_HTTP_CFG  $DST_DIR/$CXF_SERVER_HTTP_CFG
+fi
+if [ ! -f $DST_DIR/$CXF_SERVER_SSL_CFG ] ; then
+    cp $SRC_DIR/$CXF_SERVER_SSL_CFG  $DST_DIR/$CXF_SERVER_SSL_CFG
+fi
+if [ ! -f $DST_DIR/$CXF_CLIENT_HTTP_CFG ] ; then
+    cp $SRC_DIR/$CXF_CLIENT_HTTP_CFG  $DST_DIR/$CXF_CLIENT_HTTP_CFG
+fi
+if [ ! -f $DST_DIR/$CXF_CLIENT_SSL_CFG ] ; then
+    cp $SRC_DIR/$CXF_CLIENT_SSL_CFG  $DST_DIR/$CXF_CLIENT_SSL_CFG
+fi
+
+# log4j nullagg and nullpce use the same log files
+if [ ! -f $DST_DIR/$LOG4J_PROPS_INFO ] ; then
+    sed -e "s,$MODULE\.log,$DST_LOGDIR/$SERVICE.log," -e "s,oscars\.log,$DST_LOGDIR/oscars.log,"  < $SRC_DIR/$LOG4J_PROPS_INFO > $DST_DIR/$LOG4J_PROPS_INFO
+fi
+if [ ! -f $DST_DIR/$LOG4J_PROPS_DEBUG ] ; then
+    sed -e "s,$MODULE\.log,$DST_LOGDIR/$SERVICE.log,"  <  $SRC_DIR/$LOG4J_PROPS_DEBUG > $DST_DIR/$LOG4J_PROPS_DEBUG
+    fi
+if [ ! -f $DST_DIR/$LOG4J_PROPS_MESSAGE ] ; then
+    sed -e "s,$MODULE\.log,$DST_LOGDIR/$SERVICE.log," <  $SRC_DIR/$LOG4J_PROPS_MESSAGE > $DST_DIR/$LOG4J_PROPS_MESSAGE
+fi
+
+

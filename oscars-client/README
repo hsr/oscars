@@ -1,0 +1,12 @@
+This directory contains examples of  how to call the OSCARSService operations from Java.
+
+Before these commands will execute, OSCARS must be built and installed and all the services started.
+The env variable OSCARS_HOME must be set to the directory where OSCARS was deployed.
+
+
+Use mvn nstall to build the programs in examples.
+Use the scripts in bin to call the example programs.
+
+Most of these examples use the keytores in $OSCARS_HOME/sampleDomain/certs that were generated when OSCARS was build. They act on behalf of the user "client" which was created by the oscarsDeploy.sh script.
+
+See the GETTINGSTARTED document for more details on how to set up the OSCARS environment.

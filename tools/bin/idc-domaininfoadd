@@ -1,0 +1,147 @@
+#!/bin/sh
+#########################################################################
+# Script used to add details of a new domain
+# Usage: idc-domaininfoadd <context>
+# TDB:remove echo statements. Retaining expecting changes
+#########################################################################
+
+#check if $OSCARS_HOME is set
+REPO_PATH=""
+if [ -n "$OSCARS_HOME" ]; then
+	REPO_PATH=OSCARS_HOME
+else
+	echo "ERROR: OSCARS_HOME is not set. Re-run this script after setting OSCARS_HOME."
+	exit 1
+fi
+
+#TBD Remove
+if  [ -z $OSCARS_DIST ]; then
+    echo "Please set the environment var OSCARS_DIST to the OSCARS source directory"
+    exit -1
+fi
+
+###########################################################################
+#Subroutine to print usage details
+###########################################################################
+printUsage() {
+        echo -e "\nusage idc-domaininfoadd <context> " 
+        echo "<context> is one of: PRODUCTION|pro DEVELOPMENT|dev SDK|sdk"
+	exit 1;
+}
+
+#######################################################################
+#subroutine to get configFile
+#######################################################################
+getConfigFile () {
+        if [ $# -lt 3 ]; then
+                echo "Error: Argument list insufficient"
+                exit 1;
+        fi
+#       echo "$1, $2, $3"
+#TDB run from OSCARS_HOME?
+        Config=$(sh $OSCARS_DIST/bin/parseManifest.sh $1 $2 $3 | sed "s/'//g")
+#       echo "Config in local Method :$Config"
+        Service=$(echo $Config | awk -F/ '$1~//{print $2}')
+        Conf=$(echo $Config | awk -F/ '$1~//{print $3}')
+        Yaml=$(echo $Config | awk -F/ '$1~//{print $4}' | sed "s/'//g")
+#       echo "2. $Service, $Conf, $Yaml"
+        if [ "$Conf" == "conf" ]; then
+                configFile=$OSCARS_HOME/$Service/$Conf/$Yaml
+        elif [ "$Conf" == "config" ]; then
+                configFile=$OSCARS_DIST/$Service/$Conf/$Yaml
+        fi
+        #echo "3. Config File: $configFile"
+        echo $configFile
+}
+
+
+# execution starts here
+if [ $# -lt 1 ]; then
+	printUsage
+fi
+
+currDir=$(pwd)
+CONTEXT=$1
+case $1 in
+	d|D|dev|DEV) CONTEXT="DEVELOPMENT";;
+	p|P|pro|PRO) CONTEXT="PRODUCTION";;
+	s|S|sdk) CONTEXT="SDK";;
+esac
+
+if [ "$CONTEXT" ==  "PRODUCTION" ] || [ "$CONTEXT" == "UNITTEST" ] || [ "$CONTEXT" == "DEVELOPMENT" ] || [ "$CONTEXT" == "SDK" ]; then
+	echo "--Starting to add local domain defined for $CONTEXT ..."
+else
+	echo "CONTEXT  $CONTEXT is not recognized"
+	printUsage
+fi
+
+SOURCE="source"
+
+#prompt user for new domain
+printf "Enter the new domain you would like to add:";
+read user_domain;
+stty echo;
+#trim string
+user_domain=$(echo $user_domain | sed 's/^ *\(.*\) *$/\1/')
+
+#Search topology file and get the config file name
+#config_file=$(getConfigFile TopoBridgeService $CONTEXT topoBridge)
+config_file=$(getConfigFile TopoBridgeService TopoBridgeService $CONTEXT)
+#if file not found, return
+if [ -z $config_file ] || [ ! -f $config_file ]; then
+        echo "The configuration file is not found. Check if your $OSCARS_HOME/TopoBridgeService/conf folder has configuration files present"
+        exit 1
+fi
+
+#do not re-add the same domain
+localDmId=$(awk -F: '$1~/'\'$user_domain\''/{print "FOUND"}' $config_file) 
+echo "localdm = $localDmId, user=$user_domain"
+if [[ "$localDmId" == *FOUND* ]]; then
+	echo "--This domain is already present. Use idc-domaininfomod to modify further"
+	exit 1
+fi
+
+printf "Enter the source of the topology for this domain: file/topoServer?";
+#stty echo;
+#echo "";
+user_src=0;
+while [ $user_src == 0 ]; do
+	read user_src;
+	if [ "$user_src" != "file" ] && [ "$user_src" != "topoServer" ]; then
+		user_src=0;
+	fi
+done
+
+#moved this above to prevent delay after user input of file/topo source option
+##Search topology file and get the config file name
+#config_file=$(getConfigFile TopoBridgeService $CONTEXT topoBridge)
+
+if [ $user_src == "file" ]; then
+	USER_SRC_TYPE="file"
+	printf "Enter topology file name, inclusive of a full/relative path. If using relative path, place file under $OSCARS_HOME/TopoBridgeService/conf: ";
+	read user_location;
+	if [ ! -f $user_location ] && [ ! -f $OSCARS_HOME/TopoBridgeService/conf/$user_location ]; then
+		echo "--File specified by you does not exist. Please rerun this script after locating your topology file"
+		exit 1;
+	else
+		user_location="'$user_location'"
+	fi 
+elif [ $user_src == "topoServer" ]; then
+	USER_SRC_TYPE="servers"
+	printf "Enter topology server name: "
+	read user_location
+	user_location="['$user_location']"
+fi
+	
+#Redirect domain addition to file
+# did not see it necessary to parse the file to check for "domains", and then append
+domain_str="\n        '$user_domain':\n            $SOURCE:         '$user_src'\n            $USER_SRC_TYPE:           $user_location"
+echo -e "$domain_str" >> $config_file
+if [ $? == 0 ]; then
+	echo "--Domain $user_domain added succesfully"
+	#echo "$File : $config_file"
+else
+	echo "--There was an error while adding the new domain to $config_file. Please add a domain to this file manually"
+fi
+
+

@@ -1,0 +1,13 @@
+---
+-   id:                 "junoscript"
+    impl:               "net.es.oscars.pss.connect.JunoscriptConnector"
+    params:
+        "login":        "oscars"
+        "keystore":     "/home/oscars/pss-keystore.jks"
+        "passphrase":   "secret"
+
+
+-   id:                 "clogin"
+    impl:               "net.es.oscars.pss.connect.RancidConnector"
+    params:
+        "executable":   "/opt/rancid/clogin"

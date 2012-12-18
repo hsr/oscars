@@ -1,0 +1,5 @@
+#!/bin/bash
+CONF_DIR=$1
+echo "confdir is $CONF_DIR"
+perl -e "s/\/oscars-war\/oscars-war-OSCARS_VERSION.war/\/opt\/oscars\/servlets\/target\/servlets.war/g" -pi $(find $CONF_DIR -type f)
+perl -e "s/\/oscars-temp-dir/\/var\/lib\/oscars\/wbui\/war-tmp/g" -pi $(find $CONF_DIR -type f)

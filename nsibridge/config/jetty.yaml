@@ -1,0 +1,32 @@
+---
+
+http:
+    port:               8288
+    hostname:           jupiter.es.net
+
+auth:
+    useBasicAuth:       false
+    passwdFileName:     passwd.yaml
+
+
+
+
+# change these as needed
+ssl:
+    useSSL:             false
+    keystorePass:       SERVERKEYSTOREPASS
+    keyPass:            SERVERKEYPASS
+    keystorePath:       config/server-keystore.jks
+    truststorePass:     SERVERTRUSTSTOREPASS
+    truststorePath:     config/server-truststore.jks
+
+
+services:
+    - path:         'ConnectionService'
+      implementor:  'net.es.oscars.nsibridge.soap.impl.ConnectionProvider'
+
+#    - path:         'ConnectionRequester'
+#      implementor:  'net.es.oscars.nsibridge.soap.impl.ConnectionRequester'
+
+#    - path:         'DiscoveryProvider'
+#      implementor:  'net.es.oscars.nsibridge.soap.impl.DiscoveryProvider'

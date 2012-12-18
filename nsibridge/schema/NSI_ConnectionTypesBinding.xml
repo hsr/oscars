@@ -1,0 +1,15 @@
+<jxb:bindings version="1.0"
+    xmlns:xjc="http://java.sun.com/xml/ns/jaxb/xjc"
+    xmlns:jxb="http://java.sun.com/xml/ns/jaxb"
+    xmlns:xs="http://www.w3.org/2001/XMLSchema"
+    xmlns:com.fnf="http://www.fnf.com/xes">
+    <!-- Customize the package name that is generated for each schema.
+
+    <jxb:bindings schemaLocation="nsi-2_0/ogf_nsi_connection_types_v2_0.xsd" node="/xs:schema">
+        <jxb:schemaBindings>
+            <jxb:package name="org.ogf.nsi.schema.connectionTypes"/>
+
+        </jxb:schemaBindings>
+    </jxb:bindings>
+    -->
+</jxb:bindings>

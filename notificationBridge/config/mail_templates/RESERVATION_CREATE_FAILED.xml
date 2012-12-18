@@ -1,0 +1,10 @@
+<oscarsMail>
+
+<contentType>text/plain</contentType>
+<subject>##TAG:PRODUCTION CIRCUIT##Reservation ##gri## failed</subject>
+<messageBody>
+##errorMessage##
+##reservation##
+</messageBody>
+
+</oscarsMail>

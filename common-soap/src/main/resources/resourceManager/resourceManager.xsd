@@ -1,0 +1,139 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema 
+    targetNamespace = "http://oscars.es.net/OSCARS/resourceManager"
+    xmlns:tns = "http://oscars.es.net/OSCARS/resourceManager"
+    xmlns:xsd = "http://www.w3.org/2001/XMLSchema"
+    xmlns:com = "http://oscars.es.net/OSCARS/common"
+    xmlns:oscars = "http://oscars.es.net/OSCARS/06"
+    xmlns:ctrlp = "http://ogf.org/schema/network/topology/ctrlPlane/20080828/"
+    elementFormDefault = "qualified" >
+
+    <!-- duplicated in several modules -->
+    <xsd:import namespace="http://ogf.org/schema/network/topology/ctrlPlane/20080828/" 
+        schemaLocation="../nmtopo-ctrlp.xsd" />
+    <xsd:import namespace="http://oscars.es.net/OSCARS/common" 
+        schemaLocation="../common.xsd" />
+    <xsd:import namespace="http://oscars.es.net/OSCARS/06" 
+        schemaLocation="../api/OSCARS-0.6.xsd" />
+        
+    <xsd:element name="assignGriReq" type="tns:assignGriReqContent" />
+    <xsd:element name="assignGriResp" type="tns:assignGriRespContent" />
+
+    <xsd:element name="updateStatusReq" type="tns:updateStatusReqContent" />
+    <xsd:element name="updateStatusResp" type="tns:updateStatusRespContent" />
+
+    <xsd:element name="updateFailureStatusReq" type="tns:updateFailureStatusReqContent" />
+
+    <xsd:element name="getStatusReq" type="tns:getStatusReqContent" />
+    <xsd:element name="getStatusResp" type="tns:getStatusRespContent" />
+
+    <xsd:element name="storeReq" type="tns:storeReqContent" />
+    <xsd:element name="storeResp" type="tns:storeRespContent" />
+    
+    <xsd:element name="RMCancelResResponse" type="tns:RMCancelRespContent"/>
+
+    <xsd:element name="getAuditDataReq" type="tns:getAuditDataReqContent" />
+    <xsd:element name="getAuditDataResp" type="tns:getAuditDataRespContent" />
+
+    <xsd:complexType name="assignGriReqContent">
+        <xsd:sequence>
+            <xsd:element name="transactionId" type="xsd:string"/>
+        </xsd:sequence>
+    </xsd:complexType>
+ 
+     <xsd:complexType name="assignGriRespContent">
+        <xsd:sequence>
+            <xsd:element name="transactionId" type="xsd:string"/>
+            <xsd:element name="globalReservationId" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+ 
+    <xsd:complexType name="updateStatusReqContent">
+        <xsd:sequence>
+            <xsd:element name="transactionId" type="xsd:string"/>
+            <xsd:element name="globalReservationId" type="xsd:string" />
+            <xsd:element name="status" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="updateFailureStatusReqContent">
+        <xsd:sequence>
+            <xsd:element name="transactionId" type="xsd:string"/>
+            <xsd:element name="globalReservationId" type="xsd:string" />
+            <xsd:element name="status" type="xsd:string" />
+            <xsd:element name="errorReport" type="com:OSCARSFaultReport"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="updateStatusRespContent">
+        <xsd:sequence>
+            <xsd:element name="transactionId" type="xsd:string"/> 
+            <xsd:element name="globalReservationId" type="xsd:string" />
+            <xsd:element name="status" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+    
+       <xsd:complexType name="getStatusReqContent">
+        <xsd:sequence>
+            <xsd:element name="transactionId" type="xsd:string"/>
+            <xsd:element name="globalReservationId" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="getStatusRespContent">
+        <xsd:sequence>
+            <xsd:element name="transactionId" type="xsd:string"/> 
+            <xsd:element name="globalReservationId" type="xsd:string" />
+            <xsd:element name="status" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+     <xsd:complexType name="storeReqContent">
+        <xsd:sequence>
+            <xsd:element name="transactionId" type="xsd:string"/> 
+            <xsd:element name="reservation" type="oscars:resDetails" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="storeRespContent">
+        <xsd:sequence>
+            <xsd:element name="transactionId" type="xsd:string"/> 
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="RMCancelRespContent">
+        <xsd:sequence>
+            <xsd:element name="transactionId" type="xsd:string"/>
+            <xsd:element name="reservation" type="oscars:resDetails" />
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="getAuditDataReqContent">
+       <xsd:sequence>
+           <xsd:element name="transactionId" type="xsd:string"/> 
+           <xsd:element name="login" type="xsd:string" />
+           <xsd:element name="startTime" type="xsd:long" />
+           <xsd:element name="endTime" type="xsd:long" />
+      <xsd:element name="urns" type="ctrlp:CtrlPlaneHopContent" 
+           minOccurs="0" maxOccurs="unbounded" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="getAuditDataRespContent">
+        <xsd:sequence>
+            <xsd:element name="transactionId" type="xsd:string"/> 
+            <xsd:element name="auditDetails" type="tns:auditDetails"
+                maxOccurs="unbounded" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="auditDetails">
+        <xsd:sequence>
+            <xsd:element name="urn" type="ctrlp:CtrlPlaneHopContent" />
+            <xsd:element name="bandwidth" type="xsd:long" />
+            <xsd:element name="startTime" type="xsd:long" />
+            <xsd:element name="endTime" type="xsd:long" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+</xsd:schema>

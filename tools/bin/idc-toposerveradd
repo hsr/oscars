@@ -1,0 +1,172 @@
+
+############################################################################
+# Script used to add a new topoServer. This script is used to only add a
+# TS to a currently used domain. To add a new domain and an associated TS ,
+# use the idc-domainadd script 
+# Usage: idc-toposerveradd <context>
+# TDB:remove echo statements. Retaining expecting changes
+############################################################################
+
+#check if $OSCARS_HOME is set
+REPO_PATH=""
+if [ -n "$OSCARS_HOME" ]; then
+	REPO_PATH=OSCARS_HOME
+else
+	echo "ERROR: OSCARS_HOME is not set. Re-run this script after setting OSCARS_HOME."
+	exit 1
+fi
+
+#TBD Remove later
+if  [ -z $OSCARS_DIST ]; then
+        echo "Please set the environment var OSCARS_DIST to the OSCARS source directory"
+        exit -1
+fi
+
+
+###########################################################################
+#Subroutine to print usage details
+###########################################################################
+printUsage() {
+        echo -e "\nusage idc-topserveradd <context> " 
+        echo "<context> is one of: PRODUCTION|pro DEVELOPMENT|dev SDK|sdk"
+	exit 1;
+}
+
+#######################################################################
+#subroutine to get configFile
+#######################################################################
+getConfigFile () {
+        if [ $# -lt 3 ]; then
+                echo "Error: Argument list insufficient"
+                exit 1;
+        fi
+#       echo "$1, $2, $3"
+
+#TBD run from OSCARS_HOME?
+        Config=$(sh $OSCARS_DIST/bin/parseManifest.sh $1 $2 $3 | sed "s/'//g")
+#       echo "Config in local Method :$Config"
+        Service=$(echo $Config | awk -F/ '$1~//{print $2}')
+        Conf=$(echo $Config | awk -F/ '$1~//{print $3}')
+        Yaml=$(echo $Config | awk -F/ '$1~//{print $4}' | sed "s/'//g")
+#       echo "2. $Service, $Conf, $Yaml"
+        if [ "$Conf" == "conf" ]; then
+                configFile=$OSCARS_HOME/$Service/$Conf/$Yaml
+        elif [ "$Conf" == "config" ]; then
+                configFile=$OSCARS_DIST/$Service/$Conf/$Yaml
+        fi
+        #echo "3. Config File: $configFile"
+        echo $configFile
+}
+
+
+# execution starts here
+if [ $# -lt 1 ]; then
+	printUsage
+fi
+
+currDir=$(pwd)
+CONTEXT=$1
+case $1 in
+	d|D|dev|DEV) CONTEXT="DEVELOPMENT";;
+	p|P|pro|PRO) CONTEXT="PRODUCTION";;
+	s|S|sdk) CONTEXT="SDK";;
+esac
+
+if [ "$CONTEXT" ==  "PRODUCTION" ] || [ "$CONTEXT" == "UNITTEST" ] || [ "$CONTEXT" == "DEVELOPMENT" ] || [ "$CONTEXT" == "SDK" ]; then
+	#prompt user for new domain
+	printf "Enter the domain for which you would like to add a topoServer. Options: */specific domain name : ";
+	read user_domain;
+	stty echo;
+	user_domain=$(echo $user_domain | sed 's/^ *\(.*\) *$/\1/')
+	echo "--Locating domain $user_domain"
+else
+	echo "CONTEXT $CONTEXT is not recognized"
+	printUsage
+fi
+
+#Search topology file and get the config file name
+#config_file=$(getConfigFile TopoBridgeService $CONTEXT topoBridge)
+config_file=$(getConfigFile TopoBridgeService TopoBridgeService $CONTEXT)
+#echo "Config file= $config_file"
+#if file not found, return
+if [ -z $config_file ] || [ ! -f $config_file ]; then
+        echo "The configuration file is not found. Check if your $OSCARS_HOME/TopoBridgeService/conf folder has configuration files present"
+        exit 1
+fi
+
+
+#Find if domain is already present, else instruct user to add domain and associated TS.
+SOURCE="source"
+DMNFND=0
+ISTOPOSERVER=0
+SERVERLISTFOUND=0
+TOPOSRVR="topoServer"
+SERVERS="servers"
+STARTDELIM=[
+ENDDELIM=]
+domainLineNum=0
+
+while read i;
+do
+        Line=$(echo $i)
+        lineNum=`expr $lineNum + 1`
+	#echo "$lineNum:$Line, DNMFND:$DMNFND, ISTOP: $ISTOPOSERVER, SERVER:$SERVERLISTFOUND"
+        if [ $DMNFND -eq 0 ]; then
+		#quotes to avoid duplicate search results
+                localDmId=$(echo $Line | awk -F: '$1~/'\'$user_domain\''/{print "FOUND"}' ) # '{if ( $1~"$user_domain" ) print "FOUND"}')
+                if [ "$localDmId" == "FOUND" ]; then
+                        DMNFND=1
+			domainLineNum=$lineNum			
+			#echo "-------$localDmId $user_domain at $domainLineNum"
+                fi
+        elif [ $DMNFND -eq 1 ] && [ $ISTOPOSERVER -eq 0 ]; then
+                isTopoSrc=$(echo $Line | awk -F: '$2~/'$TOPOSRVR'/{print "FOUND"}' ) #awk -F: '{if ( $2~'$TOPOSRVR' ) print "FOUND"}')
+		if [ "$isTopoSrc" == "FOUND" ] && [ $lineNum == `expr $domainLineNum + 1` ] ; then
+			ISTOPOSERVER=1
+                fi
+	elif [ $ISTOPOSERVER -eq 1 ]; then    #&& [ $DMNFND -eq 1 ]; then 
+		#server list for relevant domain has been found
+                serverList=$(echo $Line | awk -F\[ '$1~/'$SERVERS'/{print $2}' | sed "s/\]//g")
+		#echo "Current server list :$serverList"
+		#trimming
+                #serverList="${serverList##* }"
+		serverList=$(echo $serverList | sed 's/^ *\(.*\) *$/\1/')
+		#echo "1. $serverList"
+		#if [ ! -n "$serverList" ] && [ ! -z "$serverList" ]; then #append , is non-null string
+		if [ ! -z "$serverList" ]; then
+			serverList="$serverList,"
+		fi
+		#echo "2. $serverList"
+		DMNFND=0
+		ISTOPOSERVER=0
+		SERVERLISTFOUND=1
+		break;
+        fi
+done<$config_file
+
+if [ $SERVERLISTFOUND == 1 ]; then
+	#echo "Found, and will be adding"		 
+	printf "Enter the Topology Service for this domain: ";
+	user_TS=0;
+        read user_TS;
+	stty echo
+elif [ $DMNFND == 0 ]; then
+	#Time to quit, since domain has not been found
+	echo "The domain $user_domain you provided was not found. Please add the new domain/topology Server using idc-domainadd"
+	exit 1;
+elif [ $DMNFND == 1 ] && [ $ISTOPOSERVER -eq 0 ]; then
+	echo "The domain $user_domain you entered is not associated with a Topology Server as its source. Check your settings in $config_file"
+	exit 1;
+fi
+
+#Replace in file
+domain_str="            $SERVERS:        $STARTDELIM$serverList'$user_TS'$ENDDELIM"
+sed -i -e ""$lineNum"s/.*/$domain_str/" $config_file
+if [ $? == 0 ]; then
+	echo "Topology Server $user_TS has been added succesfully"
+else
+	echo "There was an error while adding the new topology Server $user_TS to domain $user_domain"
+	echo "in $config_file. Please add this TS to this file manually"
+fi
+
+

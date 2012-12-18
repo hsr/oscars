@@ -1,0 +1,90 @@
+			Setting SLL in Jetty/CXF
+			========================
+			
+			
+1) Add the SSL configuration in the HTTP/HTTPS Jetty engine. This is done by adding the following lines into the CXF configuration file ~template/src/main/resources/cxf.xml:
+
+
+  <httpj:engine-factory>
+   <httpj:engine port="9011">
+    <httpj:tlsServerParameters>
+      <sec:keyManagers keyPassword="changeit">
+           <sec:keyStore type="JKS" password="changeit"
+                file="certs/keys.jks"/>
+      </sec:keyManagers>
+      <sec:trustManagers>
+          <sec:keyStore type="JKS" password="changeit"
+               file="certs/trust.jks"/>
+      </sec:trustManagers>
+      <sec:clientAuthentication want="true" required="true"/>
+    </httpj:tlsServerParameters>
+   </httpj:engine>
+  </httpj:engine-factory>
+
+NOTE: the port and passwords must of course be adjusted for a given service.
+
+
+If the project does not have (yet) a CXF configuration file, a minimal version is:
+
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+  ** This is the CXF runtime configuration file. It currently only includes
+  ** JETTY subsytem. Note that Spring is used only for the purpose of this 
+  ** configuration.
+ -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xmlns:sec="http://cxf.apache.org/configuration/security"
+  xmlns:http="http://cxf.apache.org/transports/http/configuration"
+  xmlns:httpj="http://cxf.apache.org/transports/http-jetty/configuration"
+  xmlns:jaxws="http://java.sun.com/xml/ns/jaxws"
+  xsi:schemaLocation="
+        http://cxf.apache.org/configuration/security
+        http://cxf.apache.org/schemas/configuration/security.xsd
+        http://cxf.apache.org/transports/http/configuration
+        http://cxf.apache.org/schemas/configuration/http-conf.xsd
+        http://cxf.apache.org/transports/http-jetty/configuration
+        http://cxf.apache.org/schemas/configuration/http-jetty.xsd
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans-2.0.xsd">
+
+  <httpj:engine-factory>
+   <httpj:engine port="9011">
+    <httpj:tlsServerParameters>
+      <sec:keyManagers keyPassword="changeit">
+           <sec:keyStore type="JKS" password="changeit"
+                file="certs/keys.jks"/>
+      </sec:keyManagers>
+      <sec:trustManagers>
+          <sec:keyStore type="JKS" password="changeit"
+               file="certs/trust.jks"/>
+      </sec:trustManagers>
+      <sec:clientAuthentication want="true" required="true"/>
+    </httpj:tlsServerParameters>
+   </httpj:engine>
+  </httpj:engine-factory>
+</beans>
+
+
+2) Publish service
+
+The file ~template/config/config.yaml contains the publishing address of the service. This address must be set to use HTTPS:
+
+---
+soap:
+    publishTo: 	'https://localhost:9011/template'
+
+
+
+3) Populate key/certificate stores
+
+Two files are used to store the certificates and keys that are used:
+
+~template/certs/keys.jks: contains accepted keys
+~template/certs/turst.jks: contains trusted certificates
+
+Jetty uses Java's key store file format (JKS). Use keytool to manipulate them.
+
+NOTE: the real certificates and keys are NOT included in the template project. The two key stores need to be populated before testing or deployment
+

@@ -1,0 +1,56 @@
+<#list vlans as vlan> 
+
+configure service vpls ${vlan} customer 1 create 
+exit all 
+
+<#list ifces as ifceName> 
+
+
+<#assign hackedIfce = ifceName> 
+<#assign hackedVlan = vlan> 
+
+<#if device = "edge-2">
+  <#if ifceName = r"6/1/1">
+    <#if vlan = "278">
+      <#assign hackedIfce = r"6/1/2"> 
+    </#if>
+    <#if vlan = "278" || vlan = "277">
+      <#assign hackedVlan = "0"> 
+    </#if>
+  </#if>
+</#if>
+
+
+configure service vpls ${vlan} sap ${hackedIfce}:${hackedVlan} create no shutdown
+configure service vpls ${vlan} sap ${hackedIfce}:${hackedVlan} ingress qos "3100"
+</#list> 
+
+
+
+
+<#if device = "edge-2">
+# configure service vpls ${vlan} service-mtu 9194
+# configure service vpls ${vlan} stp shutdown
+# configure service vpls ${vlan} igmp-snooping no shutdown
+# configure service vpls ${vlan} pim-snooping no shutdown
+# configure service vpls ${vlan} fdb-table-size 4096
+# configure service vpls ${vlan} per-service-hashing
+# configure service vpls ${vlan} no shutdown
+
+
+<#else>
+configure service vpls ${vlan} service-mtu 9194
+configure service vpls ${vlan} stp shutdown
+configure service vpls ${vlan} igmp-snooping no shutdown
+configure service vpls ${vlan} pim-snooping no shutdown
+configure service vpls ${vlan} fdb-table-size 4096
+<#if device = "edge-2">
+configure service vpls ${vlan} per-service-hashing
+</#if>
+configure service vpls ${vlan} no shutdown
+</#if>
+
+
+</#list>
+
+

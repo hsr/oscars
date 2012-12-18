@@ -1,0 +1,147 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>OSCARS</artifactId>
+    <groupId>net.es.oscars</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  
+  <groupId>net.es.oscars</groupId>
+  <artifactId>notify-command-exec</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>notify-command-exec</name>
+  <url>http://maven.apache.org</url>
+    
+  <repositories>
+    <repository>
+        <id>OSCARS</id>
+        <name>OSCARS Maven Repository</name>
+        <layout>default</layout>
+        <url>file:///${basedir}/../common-libs/repo</url>
+    </repository>
+  </repositories>
+    
+  <dependencies>
+
+    <!-- OSCARS common logging -->
+    <dependency>
+        <groupId>net.es.oscars</groupId>
+        <artifactId>oscars-client</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    
+    <!--  SOAP -->
+    <dependency>
+        <groupId>net.es.oscars</groupId>
+        <artifactId>common-soap</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+
+    <!-- command-line parsing -->
+    <dependency>
+        <groupId>net.sf.jopt-simple</groupId>
+        <artifactId>jopt-simple</artifactId>
+        <version>3.0.1</version>
+    </dependency>
+    
+    <!--  Jetty -->
+    <dependency>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>jetty</artifactId>
+        <version>6.1.16</version>
+    </dependency>
+        
+    <dependency>
+        <groupId>org.mortbay.jetty</groupId>
+        <artifactId>jetty-sslengine</artifactId>
+        <version>6.1.16</version>
+    </dependency>
+    
+    <!-- YAML -->
+    <dependency>
+        <groupId>org.jyaml</groupId>
+        <artifactId>jyaml</artifactId>
+        <version>1.3</version>
+    </dependency>
+        
+    <!-- JDOM -->
+    <dependency>
+        <groupId>org.jdom</groupId>
+        <artifactId>jdom</artifactId>
+        <version>1.1</version>
+    </dependency>
+    <dependency>
+        <groupId>org.jdom</groupId>
+        <artifactId>jaxen-jdom</artifactId>
+        <version>1.0-FCS</version>
+    </dependency>
+    <dependency>
+        <groupId>org.jdom</groupId>
+        <artifactId>jaxen-core</artifactId>
+        <version>1.0-FCS</version>
+    </dependency>
+    <dependency>
+        <groupId>org.jdom</groupId>
+        <artifactId>saxpath</artifactId>
+        <version>1.0-FCS</version>
+    </dependency>
+        
+    <!-- quartz -->
+    <dependency>
+        <groupId>org.opensymphony.quartz</groupId>
+        <artifactId>quartz</artifactId>
+        <version>1.6.1</version>
+    </dependency>
+    <dependency>
+        <groupId>commons-collections</groupId>
+        <artifactId>commons-collections</artifactId>
+        <version>3.2</version>
+        <scope>runtime</scope>
+    </dependency>
+    
+    <!-- httpclient -->
+    <dependency>
+        <groupId>commons-httpclient</groupId>
+        <artifactId>commons-httpclient</artifactId>
+        <version>3.1</version>
+    </dependency>
+
+  </dependencies>
+  
+  
+  
+  <build>
+        <plugins>
+            <!-- puts all code & libraries in one jar -->
+            <plugin>
+                <groupId>org.dstovall</groupId>
+                <artifactId>onejar-maven-plugin</artifactId>
+                <version>1.4.1</version>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <mainClass>net.es.oscars.notifycmdexec.common.Invoker</mainClass>
+                            <classifier>onejar</classifier>
+                        </configuration>
+                        <goals>
+                            <goal>one-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            
+            <!-- specifically use java 1.5 to compile -->
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+
+
+        </plugins>
+    </build>
+</project>

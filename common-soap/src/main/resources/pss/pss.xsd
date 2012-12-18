@@ -1,0 +1,60 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema
+    targetNamespace =       "http://oscars.es.net/OSCARS/pss"
+    xmlns:tns =             "http://oscars.es.net/OSCARS/pss"
+    xmlns:xsd =             "http://www.w3.org/2001/XMLSchema"
+    xmlns:ctrlp =           "http://ogf.org/schema/network/topology/ctrlPlane/20080828/"
+    xmlns:oscars =          "http://oscars.es.net/OSCARS/06"
+    xmlns:authP=            "http://oscars.es.net/OSCARS/authParams"
+    elementFormDefault =    "qualified" >
+
+    <xsd:import namespace="http://ogf.org/schema/network/topology/ctrlPlane/20080828/"
+        schemaLocation="../nmtopo-ctrlp.xsd" />
+    <xsd:import namespace="http://oscars.es.net/OSCARS/06"
+        schemaLocation="../api/OSCARS-0.6.xsd" />
+    <xsd:import 
+        namespace="http://oscars.es.net/OSCARS/authParams" 
+        schemaLocation="../authParams.xsd" />
+
+    <xsd:element name="setupReq" type="tns:setupReqContent" />
+
+    <xsd:element name="modifyReq" type="tns:modifyReqContent" />
+
+    <xsd:element name="statusReq" type="tns:statusReqContent" />
+
+    <xsd:element name="teardownReq" type="tns:teardownReqContent" />
+
+     <xsd:complexType name="setupReqContent">
+        <xsd:sequence>
+            <xsd:element name="callbackEndpoint" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="reservation" type="oscars:resDetails" />
+        </xsd:sequence>
+        <xsd:attribute use ="required" name = "transactionId" type="xsd:string" />
+    </xsd:complexType>
+
+     <xsd:complexType name="statusReqContent">
+        <xsd:sequence>
+            <xsd:element name="callbackEndpoint" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="reservation" type="oscars:resDetails" />
+        </xsd:sequence>
+        <xsd:attribute use ="required" name = "transactionId" type="xsd:string" />
+    </xsd:complexType>
+
+
+     <xsd:complexType name="modifyReqContent">
+        <xsd:sequence>
+            <xsd:element name="callbackEndpoint" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="reservation" type="oscars:resDetails" />
+        </xsd:sequence>
+        <xsd:attribute use ="required" name = "transactionId" type="xsd:string" />
+    </xsd:complexType>
+
+    <xsd:complexType name="teardownReqContent">
+        <xsd:sequence>
+            <xsd:element name="callbackEndpoint" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="reservation" type="oscars:resDetails" />
+        </xsd:sequence>
+        <xsd:attribute use ="required" name = "transactionId" type="xsd:string" />
+    </xsd:complexType>
+
+</xsd:schema>

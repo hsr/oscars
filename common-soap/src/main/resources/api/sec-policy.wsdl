@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions targetNamespace="http://oscars.es.net/OSCARS/policy"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" 
+    xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy"
+    xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+    xmlns:tns="http://oscars.es.net/OSCARS/policy">
+    
+   <!--  security policy definitions -->
+   <!-- X509BindingPolicy specifies a signed timestamp, with the X509 certificate included -->
+   <wsp:Policy  xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd" 
+             xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy"
+             xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+             wsu:Id="X509BindingPolicy">
+    <wsp:ExactlyOne>
+      <wsp:All>
+      <sp:AsymmetricBinding xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+           <wsp:Policy>
+             <sp:InitiatorToken>
+               <wsp:Policy>
+                 <sp:X509Token
+                   sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/AlwaysToRecipient">
+                   <wsp:Policy>
+                     <sp:WssX509V3Token10 />
+                     <sp:RequireThumbprintReference/> <!-- needed for V1 certs -->
+                   </wsp:Policy>
+                 </sp:X509Token>
+               </wsp:Policy>
+             </sp:InitiatorToken>
+             <sp:RecipientToken>
+               <wsp:Policy>
+                 <sp:X509Token sp:IncludeToken="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy/IncludeToken/Always">
+                   <wsp:Policy>
+                     <sp:WssX509V3Token10 />
+                     <sp:RequireThumbprintReference/>
+                   </wsp:Policy>
+                 </sp:X509Token>
+               </wsp:Policy>
+             </sp:RecipientToken>
+             <sp:AlgorithmSuite>
+               <wsp:Policy>
+                 <sp:TripleDesRsa15 />
+               </wsp:Policy>
+             </sp:AlgorithmSuite>
+             <sp:Layout>
+               <wsp:Policy>
+                 <sp:Strict />
+               </wsp:Policy>
+             </sp:Layout>
+             <sp:IncludeTimestamp />
+             <sp:OnlySignEntireHeadersAndBody /> 
+           </wsp:Policy>
+         </sp:AsymmetricBinding>
+         <sp:Wss10 xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+           <wsp:Policy>
+             <sp:MustSupportRefKeyIdentifier />
+             <sp:MustSupportRefIssuerSerial />
+           </wsp:Policy>
+         </sp:Wss10>
+         
+      </wsp:All>
+    </wsp:ExactlyOne>
+  </wsp:Policy>
+  
+   <!--  signgMsgPolicy specifies that the body of the message should be signed -->
+   <wsp:Policy
+      xmlns:wsu="http://docs.oasis-open.org/wss/2004/01/oasis-200401-wss-wssecurity-utility-1.0.xsd"
+      xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy"
+      xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+      wsu:Id="signedMsgPolicy">
+      <wsp:ExactlyOne>
+        <wsp:All>
+           <sp:SignedParts xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy">
+              <sp:Body />
+           </sp:SignedParts>
+        </wsp:All>
+      </wsp:ExactlyOne>
+   </wsp:Policy>
+</wsdl:definitions>   

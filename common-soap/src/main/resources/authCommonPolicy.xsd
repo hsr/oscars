@@ -1,0 +1,29 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://oscars.es.net/OSCARS/authCommonPolicy"
+    elementFormDefault="qualified"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:tns="http://oscars.es.net/OSCARS/authCommonPolicy">
+    
+    <xsd:complexType name="attrDetails">
+       <xsd:sequence>
+           <xsd:element name="attrId" type="xsd:string" />
+           <xsd:element name="value" type="xsd:string" />
+           <xsd:element name="description" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="modifyAttrDetails">
+       <xsd:sequence>
+           <xsd:element name="oldAttrInfo" type="tns:attrDetails" />
+           <xsd:element name="modAttrInfo" type="tns:attrDetails" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="listAttrsReply">
+        <xsd:sequence>
+            <xsd:element name="attribute" type="tns:attrDetails"
+                maxOccurs="unbounded" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+</xsd:schema>

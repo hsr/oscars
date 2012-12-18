@@ -1,0 +1,109 @@
+<junoscript version="1.0" release="7.3">
+<rpc><lock-configuration /></rpc>
+<rpc>
+<load-configuration>
+<configuration>
+
+
+<#-- the ingress physical interface -->
+    <interfaces>
+        <interface>
+            <name>${ifce_a.name}</name>
+            <unit>
+                <name>${ifce_a.vlan}</name>
+                <description>${ifce_a.description}</description>
+                <encapsulation>vlan-ccc</encapsulation>
+                <vlan-id>${ifce_a.vlan}</vlan-id>
+                <family>
+                    <ccc>
+<#-- use a filter to capture stats & police -->
+                        <filter>
+                            <input>${filter.name}</input>
+                        </filter>
+                    </ccc>
+                </family>
+            </unit>
+        </interface>
+
+
+<#-- the egress physical interface -->
+        <interface>
+            <name>${ifce_z.name}</name>
+            <unit>
+                <name>${ifce_z.vlan}</name>
+                <description>${ifce_z.description}</description>
+                <encapsulation>vlan-ccc</encapsulation>
+                <vlan-id>${ifce_z.vlan}</vlan-id>
+                <family>
+                    <ccc>
+<#-- use a filter to capture stats & police -->
+                        <filter>
+                            <input>${filter.name}</input>
+                        </filter>
+                    </ccc>
+                </family>
+            </unit>
+        </interface>
+    </interfaces>
+
+
+
+<#-- the crossconnect -->
+    <protocols>
+        <connections>
+            <interface-switch>
+                <name>${iswitch.name}</name>
+                <interface>
+                    <name>${ifce_a.name}.${ifce_a.vlan}</name>
+                </interface>
+                <interface>
+                    <name>${ifce_z.name}.${ifce_z.vlan}</name>
+                </interface>
+            </interface-switch>
+        </connections>
+    </protocols>
+
+
+
+
+<#-- the policer -->
+    <firewall>
+        <policer>
+            <name>${policer.name}</name>
+            <if-exceeding>
+                <bandwidth-limit>${policer.bandwidth_limit?string.computer}</bandwidth-limit>
+                <burst-size-limit>${policer.burst_size_limit?string.computer}</burst-size-limit>
+            </if-exceeding>
+            <then>
+                <forwarding-class>scavenger-service</forwarding-class>
+            </then>
+        </policer>
+
+
+<#-- the policing / counter filter -->
+        <family>
+            <ccc>
+                <filter>
+                    <name>${filter.name}</name>
+                    <interface-specific />
+                    <term>
+                        <name>${filter.term}</name>
+                        <then>
+                            <policer>${policer.name}</policer>
+                            <count>${filter.count}</count>
+                            <forwarding-class>expedited-forwarding</forwarding-class>
+                            <accept/>
+                        </then>
+                    </term>
+                </filter>
+            </ccc>
+        </family>
+    </firewall>
+
+
+</configuration>
+</load-configuration>
+</rpc>
+<rpc><commit-configuration /></rpc>
+<rpc><unlock-configuration /></rpc>
+</junoscript>

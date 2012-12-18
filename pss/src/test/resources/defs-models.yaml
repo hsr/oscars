@@ -1,0 +1,9 @@
+---
+- id: "juniper-mx"
+  services: 
+    - id:               eompls
+      configGenerator:  "net.es.oscars.pss.eompls.junos.MXConfigGen"
+    
+    - id:               stub
+      configGenerator: "net.es.oscars.pss.stub.StubConfigGen"
+            

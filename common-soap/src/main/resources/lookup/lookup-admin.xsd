@@ -1,0 +1,148 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema 
+    targetNamespace = "http://oscars.es.net/OSCARS/lookup/admin"
+    xmlns:tns = "http://oscars.es.net/OSCARS/lookup/admin"
+    xmlns:xsd = "http://www.w3.org/2001/XMLSchema"
+    xmlns:oslook = "http://oscars.es.net/OSCARS/lookup"
+    xmlns:authP  = "http://oscars.es.net/OSCARS/authParams"
+    elementFormDefault = "qualified" >
+    
+    <xsd:import 
+        namespace="http://oscars.es.net/OSCARS/authParams" 
+        schemaLocation="../authParams.xsd" />
+        
+    <xsd:element name="adminAddCacheEntryRequest" type="tns:addCacheEntryRequestType" />
+    
+    <xsd:element name="adminAddCacheEntryResponse" type="tns:adminSuccessResponseType" />
+    
+    <xsd:element name="adminModifyCacheEntryRequest" type="tns:modifyCacheEntryRequestType" />
+    
+    <xsd:element name="adminModifyCacheEntryResponse" type="tns:adminSuccessResponseType" />
+    
+    <xsd:element name="adminDeleteCacheEntryRequest" type="tns:deleteCacheEntryRequestType" />
+    
+    <xsd:element name="adminDeleteCacheEntryResponse" type="tns:adminSuccessResponseType" />
+    
+    <xsd:element name="adminViewCacheRequest" type="tns:adminViewRequestType" />
+    
+    <xsd:element name="adminViewCacheResponse" type="tns:viewCacheResponseType" />
+    
+    <xsd:element name="adminAddRegistrationRequest" type="tns:addRegistrationRequestType" />
+    
+    <xsd:element name="adminAddRegistrationResponse" type="tns:adminSuccessResponseType" />
+    
+    <xsd:element name="adminModifyRegistrationRequest" type="tns:modifyRegistrationRequestType" />
+    
+    <xsd:element name="adminModifyRegistrationResponse" type="tns:adminSuccessResponseType" />
+    
+    <xsd:element name="adminDeleteRegistrationRequest" type="tns:deleteRegistrationRequestType" />
+    
+    <xsd:element name="adminDeleteRegistrationResponse" type="tns:adminSuccessResponseType" />
+    
+    <xsd:element name="adminViewRegistrationsRequest" type="tns:adminViewRequestType" />
+    
+    <xsd:element name="adminViewRegistrationsResponse" type="tns:viewRegistrationsResponseType" />
+    
+    <xsd:complexType name="adminViewRequestType">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type="authP:messagePropertiesType" />
+            <xsd:element name="maxResults" type="xsd:int" minOccurs="0"/>
+            <xsd:element name="offset" type="xsd:int" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="adminSuccessResponseType">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type="authP:messagePropertiesType" />
+            <xsd:element name="success" type="xsd:boolean" />
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="addCacheEntryRequestType">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type="authP:messagePropertiesType" />
+            <xsd:element name="type" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="expires" type="xsd:boolean"/>
+            <xsd:element name="protocol" type="oslook:protocol" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="relationship" type="oslook:relationship" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="modifyCacheEntryRequestType">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type="authP:messagePropertiesType" />
+            <xsd:element name="serviceId" type="xsd:int"/>
+            <xsd:element name="type" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="expires" type="xsd:boolean" minOccurs="0" />
+            <xsd:element name="protocol" type="oslook:protocol" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="relationship" type="oslook:relationship" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="deleteCacheEntryRequestType">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type="authP:messagePropertiesType" />
+            <xsd:element name="serviceId" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="viewCacheResponseType">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type="authP:messagePropertiesType" />
+            <xsd:element name="service" type="tns:serviceType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="addRegistrationRequestType">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type="authP:messagePropertiesType" />
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="publishUrl" type="xsd:string"/>
+            <xsd:element name="key" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="modifyRegistrationRequestType">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type="authP:messagePropertiesType" />
+            <xsd:element name="registrationId" type="xsd:int"/>
+            <xsd:element name="name" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="publishUrl" type="xsd:string" minOccurs="0"/>
+            <xsd:element name="key" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="viewRegistrationsResponseType">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type="authP:messagePropertiesType" />
+            <xsd:element name="registration" type="tns:registrationType" minOccurs="0" maxOccurs="unbounded"/>
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="deleteRegistrationRequestType">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type="authP:messagePropertiesType" />
+            <xsd:element name="registrationId" type="xsd:int"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="serviceType">
+        <xsd:sequence>
+            <xsd:element name="serviceId" type="xsd:string"/>
+            <xsd:element name="type" type="xsd:string" />
+            <xsd:element name="protocol" type="oslook:protocol" minOccurs="1" maxOccurs="unbounded"/>
+            <xsd:element name="relationship" type="oslook:relationship" minOccurs="0" maxOccurs="unbounded"/>
+            <xsd:element name="expiration" type="xsd:long" />
+        </xsd:sequence>
+    </xsd:complexType>
+    
+    <xsd:complexType name="registrationType">
+        <xsd:sequence>
+            <xsd:element name="registrationId" type="xsd:int"/>
+            <xsd:element name="name" type="xsd:string"/>
+            <xsd:element name="publishUrl" type="xsd:string"/>
+            <xsd:element name="key" type="xsd:string" minOccurs="0"/>
+        </xsd:sequence>
+    </xsd:complexType>
+    
+</xsd:schema>

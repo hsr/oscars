@@ -1,0 +1,131 @@
+---
+IONUIService:
+    UNITTEST:
+        config.yaml:        'OSCARS_DIST/ionui/config/config.HTTP.yaml'
+        jetty.xml:          'OSCARS_DIST/ionui/config/jetty.HTTP.xml'
+        client-cxf.xml:     'OSCARS_DIST/ionui/config/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_DIST/ionui/config/log4j.INFO.properties'
+        ion_topology.yaml:  'OSCARS_DIST/ionui/config/ion_topology.yaml'
+
+    DEVELOPMENT:
+        config.yaml:        'OSCARS_HOME/IONUIService/conf/config.SSL.yaml'
+        jetty.xml:          'OSCARS_HOME/IONUIService/conf/jetty.SSL.xml'
+        client-cxf.xml:     'OSCARS_HOME/IONUIService/conf/client-cxf-ssl.xml'
+        log4j.properties:   'OSCARS_HOME/IONUIService/conf/log4j.MESSAGE.properties'
+        ion_topology.yaml:  'OSCARS_HOME/IONUIService/conf/ion_topology.yaml'
+
+    SDK:
+        config.yaml:        'OSCARS_HOME/IONUIService/conf/config.HTTP.yaml'
+        jetty.xml:          'OSCARS_HOME/IONUIService/conf/jetty.HTTP.xml'
+        client-cxf.xml:     'OSCARS_HOME/IONUIService/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_HOME/IONUIService/conf/log4j.DEBUG.properties'
+        ion_topology.yaml:  'OSCARS_HOME/IONUIService/conf/ion_topology.yaml'
+    
+    PRODUCTION:
+        config.yaml:        'OSCARS_HOME/IONUIService/conf/config.SSL.yaml'
+        jetty.xml:          'OSCARS_HOME/IONUIService/conf/jetty.SSL.xml'
+        client-cxf.xml:     'OSCARS_HOME/IONUIService/conf/client-cxf-ssl.xml'
+        log4j.properties:   'OSCARS_HOME/IONUIService/conf/log4j.INFO.properties'
+        ion_topology.yaml:  'OSCARS_HOME/IONUIService/conf/ion_topology.yaml'
+
+AuthNService:
+    UNITTEST:
+        config.yaml:    'OSCARS_DIST/authN/config/authN.HTTP.yaml'
+        wsdl:           'OSCARS_DIST/common-soap/src/main/resources/authN/authN.wsdl'
+    DEVELOPMENT:
+        config.yaml:    'OSCARS_HOME/AuthNService/conf/authN.SSL.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/AuthNService/AuthNService.wsdl'
+    SDK:
+        config.yaml:    'OSCARS_HOME/AuthNService/conf/authN.HTTP.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/AuthNService/AuthNService.wsdl'
+    PRODUCTION:
+        config.yaml:    'OSCARS_HOME/AuthNService/conf/authN.SSL.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/AuthNService/AuthNService.wsdl'
+
+AuthNPolicyService:
+    UNITTEST:
+        config.yaml:    'OSCARS_DIST/authN/config/authNPolicy.HTTP.yaml'
+        wsdl:           'OSCARS_DIST/common-soap/src/main/resources/authNPolicy/authNPolicy.wsdl'
+    DEVELOPMENT:
+        config.yaml:    'OSCARS_HOME/AuthNPolicyService/conf/authNPolicy.SSL.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/AuthNPolicyService/AuthNPolicyService.wsdl'
+    SDK:
+        config.yaml:    'OSCARS_HOME/AuthNPolicyService/conf/authNPolicy.HTTP.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/AuthNPolicyService/AuthNPolicyService.wsdl'
+    PRODUCTION:
+        config.yaml:    'OSCARS_HOME/AuthNPolicyService/conf/authNPolicy.SSL.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/AuthNPolicyService/AuthNPolicyService.wsdl'
+
+AuthZService:
+    UNITTEST:
+        config.yaml:    'OSCARS_DIST/authZ/config/authZ.HTTP.yaml'
+        wsdl:           'OSCARS_DIST/common-soap/src/main/resources/authZ/authZ.wsdl'
+    DEVELOPMENT:
+        config.yaml:    'OSCARS_HOME/AuthZService/conf/authZ.HTTP.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/AuthZService/AuthZService.wsdl'
+    SDK:
+        config.yaml:    'OSCARS_HOME/AuthZService/conf/authZ.HTTP.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/AuthZService/AuthZService.wsdl'
+    PRODUCTION:
+        config.yaml:    'OSCARS_HOME/AuthZService/conf/authZ.SSL.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/AuthZService/AuthZService.wsdl'
+
+AuthZPolicyService:
+    UNITTEST:
+        config.yaml:    'OSCARS_DIST/authZ/config/authZPolicy.HTTP.yaml'
+        wsdl:           'OSCARS_DIST/common-soap/src/main/resources/authZPolicy/authZPolicy.wsdl'
+    DEVELOPMENT:
+        config.yaml:    'OSCARS_HOME/AuthZPolicyService/conf/authZPolicy.HTTP.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/AuthZPolicyService/AuthZPolicyService.wsdl'
+    SDK:
+        config.yaml:    'OSCARS_HOME/AuthZPolicyService/conf/authZPolicy.HTTP.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/AuthZPolicyService/AuthZPolicyService.wsdl'
+    PRODUCTION:
+        config.yaml:    'OSCARS_HOME/AuthZPolicyService/conf/authZPolicy.SSL.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/AuthZPolicyService/AuthZPolicyService.wsdl'
+
+CoordService:
+    UNITTEST:
+        config.yaml:        'OSCARS_DIST/coordinator/config/config.HTTP.yaml'
+        wsdl:               'OSCARS_DIST/common-soap/src/main/resources/coord/coord.wsdl'
+    DEVELOPMENT:
+        config.yaml:        'OSCARS_HOME/CoordService/conf/config.HTTP.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/CoordService/CoordService.wsdl'
+    SDK:
+        config.yaml:        'OSCARS_HOME/CoordService/conf/config.HTTP.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/CoordService/CoordService.wsdl'
+    PRODUCTION:
+        config.yaml:        'OSCARS_HOME/CoordService/conf/config.SSL.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/CoordService/CoordService.wsdl'
+
+LookupService:
+    UNITTEST:
+        config.yaml:        'OSCARS_DIST/lookup/config/config.HTTP.yaml'
+        wsdl:               'OSCARS_DIST/common-soap/src/main/resources/lookup/lookup.wsdl'
+    DEVELOPMENT:
+        config.yaml:        'OSCARS_HOME/LookupService/conf/config.HTTP.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/LookupService/LookupService.wsdl'
+    SDK:
+        config.yaml:        'OSCARS_HOME/LookupService/conf/config.HTTP.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/LookupService/LookupService.wsdl'
+    PRODUCTION:
+        config.yaml:        'OSCARS_HOME/LookupService/conf/config.SSL.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/LookupService/LookupService.wsdl'
+
+Utils:
+    UNITTEST:
+        templateDir:        'OSCARS_DIST/Utils/config'
+        config.yaml:        'OSCARS_DIST/Utils/config/config.yaml'
+
+    DEVELOPMENT:
+        templateDir:        'OSCARS_HOME/Utils/conf/'
+        config.yaml:        'OSCARS_HOME/Utils/conf/config.yaml'
+
+    SDK:
+        templateDir:        'OSCARS_HOME/Utils/conf/'
+        config.yaml:        'OSCARS_HOME/Utils/conf/config.yaml'
+
+    PRODUCTION:
+        templateDir:        'OSCARS_HOME/Utils/conf/'
+        config.yaml:        'OSCARS_HOME/Utils/conf/config.yaml'
+

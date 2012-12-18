@@ -1,0 +1,69 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+
+<class name="net.es.oscars.resourceManager.beans.Path" table="paths">
+    <meta attribute="class-description" inherit="false">
+       @hibernate.class table="paths"
+    </meta>
+
+    <cache usage="read-write" />
+
+    <id name="id" column="id">
+        <meta attribute="field-description">
+           @hibernate.id generator-class="identity"
+        </meta>
+        <generator class="identity" />
+    </id>
+
+    <property name="pathSetupMode" />
+
+    <property name = "pathType"/>
+<!--  
+    <property name="pathType" not-null="true" insert="true" update="true">
+        <meta attribute="field-description">
+           @hibernate.property not-null="true"
+        </meta>
+    </property>
+ -->
+    <property name="direction" />
+
+    <property name="priority" />
+
+    <property name="grouping" />
+
+    <!-- Associations -->
+
+    <!-- <many-to-one name="nextDomain" column="nextDomainId"
+        class="net.es.oscars.resourceManager.beans.Domain" not-null="false" /> -->
+        
+    <one-to-one name="stdConstraint" 
+       class = "net.es.oscars.resourceManager.beans.StdConstraint"
+      />
+       
+    <list name="pathElems" fetch="subselect" cascade="all, delete-orphan">
+        <key column="pathId" not-null="true" />
+        <list-index column="seqNumber" />
+        <one-to-many class="net.es.oscars.resourceManager.beans.PathElem" />
+    </list>
+
+    <set name="layer2DataSet" cascade="all, delete-orphan">
+        <key column="pathId" not-null="true" />
+        <one-to-many class="net.es.oscars.resourceManager.beans.Layer2Data" />
+    </set>
+
+    <set name="layer3DataSet" cascade="all, delete-orphan">
+        <key column="pathId" not-null="true" />
+        <one-to-many class="net.es.oscars.resourceManager.beans.Layer3Data" />
+    </set>
+
+    <set name="mplsDataSet" cascade="all, delete-orphan">
+        <key column="pathId" not-null="true" />
+        <one-to-many class="net.es.oscars.resourceManager.beans.MPLSData" />
+    </set>
+
+</class>
+</hibernate-mapping>

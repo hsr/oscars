@@ -1,0 +1,10 @@
+#!/bin/sh
+##################################################################################
+# Script to help configure OpenflowPSS
+# Right now, just a placeholder
+##################################################################################
+
+echo "Configuring OpenflowPSS"
+echo "Script incomplete ..."
+
+

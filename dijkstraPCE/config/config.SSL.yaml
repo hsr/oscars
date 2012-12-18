@@ -1,0 +1,9 @@
+---
+soap:
+    publishTo:  'https://localhost:9008/dijkstraPCE'
+    
+pce-runtime:
+    url: 'https://localhost:10000/OSCARS/PCE'
+
+link-evaluators:
+    - class: 'net.es.oscars.pce.dijkstra.VlanLinkEvaluator'

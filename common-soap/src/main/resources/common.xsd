@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://oscars.es.net/OSCARS/common"
+    elementFormDefault="qualified"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:tns="http://oscars.es.net/OSCARS/common">
+    
+    <xsd:complexType name="emptyArg">
+        <xsd:sequence>
+            <xsd:element name="msg" minOccurs="0" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+   <xsd:complexType name="OSCARSFaultReport">
+       <xsd:sequence>
+           <xsd:element name="errorCode" type="xsd:string"/>
+           <xsd:element name="errorMsg" type="xsd:string"/>
+           <xsd:element name="errorType" type="xsd:string"/>
+           <xsd:element name="gri" type="xsd:string" minOccurs="0"/>
+           <xsd:element name="transId" type="xsd:string" minOccurs="0"/>
+           <xsd:element name="timestamp" type="xsd:long"/>
+           <xsd:element name="moduleName" type="xsd:string" minOccurs="0"/>
+           <xsd:element name="domainId" type="xsd:string" minOccurs="0"/>
+       </xsd:sequence>
+   </xsd:complexType>
+
+   <xsd:element name="OSCARSFault">
+        <xsd:complexType>
+            <xsd:sequence>
+                <xsd:element name="msg" type="xsd:string" />
+                <xsd:element name="details" type="xsd:string" minOccurs="0"/>
+                <xsd:element name="errorReport" type="tns:OSCARSFaultReport" minOccurs="0" />
+            </xsd:sequence>
+        </xsd:complexType>
+    </xsd:element>
+    
+</xsd:schema>

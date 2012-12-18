@@ -1,0 +1,369 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions
+    name="CoordDefinitions"
+    targetNamespace = "http://oscars.es.net/OSCARS/coord"
+    xmlns:tns = "http://oscars.es.net/OSCARS/coord"
+    xmlns:xsd = "http://www.w3.org/2001/XMLSchema"
+    xmlns:wsdl = "http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap = "http://schemas.xmlsoap.org/wsdl/soap12/"
+    xmlns:wsnt = "http://docs.oasis-open.org/wsn/b-2"
+    xmlns:oscars = "http://oscars.es.net/OSCARS/06"
+    xmlns:authP = "http://oscars.es.net/OSCARS/authParams"
+    xmlns:rm = "http://oscars.es.net/OSCARS/resourceManager"
+    xmlns:com = "http://oscars.es.net/OSCARS/common" >
+
+    <wsdl:documentation>
+        This is WSDL for the coordinator interface. The coordinator is an
+        implementation specific service that coordinates the actions of the
+        rest of the ESNet/I2 OSCARS 0.6 services. It is assumed that user authentication
+        is done before the coordinator is called, and each request message contains a
+        list of authenticated subject attributes for the user.
+    </wsdl:documentation>
+
+    <!--  defines common OSCARSFaultMessage -->
+    <wsdl:import namespace="http://oscars.es.net/OSCARS/common" location="../common.wsdl"/>
+    
+
+   <!-- Element definitions -->
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://oscars.es.net/OSCARS/coord"
+            elementFormDefault="qualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:tns="http://oscars.es.net/OSCARS/coord">
+            <xsd:include schemaLocation="coord.xsd" />
+            <xsd:import
+                namespace="http://oscars.es.net/OSCARS/06"
+                schemaLocation="../api/OSCARS-0.6.xsd"/>
+            <xsd:import
+                namespace="http://docs.oasis-open.org/wsn/b-2" 
+                schemaLocation="../api/b-2-idc-0.6.xsd"/>
+            <xsd:import 
+                namespace="http://oscars.es.net/OSCARS/authParams" 
+                schemaLocation="../authParams.xsd" />
+            <xsd:import
+                namespace="http://oscars.es.net/OSCARS/resourceManager"
+                schemaLocation="../resourceManager/resourceManager.xsd" />
+        </xsd:schema>
+    </wsdl:types>
+
+    <!--  create reservation -->
+    <wsdl:message name="createResvReq">
+        <wsdl:part name="subjectAttributes"    type="authP:subjectAttributes" />
+        <wsdl:part name="createResvReq"     element="oscars:createReservation" />
+    </wsdl:message>
+
+    <wsdl:message name="createResvResp">
+        <wsdl:part name="createResvResp"    element="oscars:createReservationResponse" />
+    </wsdl:message>
+
+    <!--  cancel reservation -->
+    <wsdl:message name="cancelResvReq">
+        <wsdl:part name="subjectAttributes"   type="authP:subjectAttributes" />
+        <wsdl:part name="cancelResvReq"     element="oscars:cancelReservation" />
+    </wsdl:message>
+
+    <wsdl:message name="cancelResvResp">
+        <wsdl:part name="cancelResvResp"    element="oscars:cancelReservationResponse" />
+    </wsdl:message>
+
+    <!--  modify reservation -->
+    <wsdl:message name="modifyResvReq">
+        <wsdl:part name="subjectAttributes"    type="authP:subjectAttributes" /> 
+        <wsdl:part name="modifyResvReq"     element="oscars:modifyReservation" />
+    </wsdl:message>
+
+    <wsdl:message name="modifyResvResp">
+        <wsdl:part name="modifyResvResp"    element="oscars:modifyReservationResponse" />
+    </wsdl:message>
+ 
+    <!--  list reservations -->
+    <wsdl:message name="listResvReq">
+        <wsdl:part name="subjectAttributes"    type="authP:subjectAttributes" />
+        <wsdl:part name="listResvReq"     element="oscars:listReservations" />
+    </wsdl:message>
+
+    <wsdl:message name="listResvResp">
+        <wsdl:part name="listResvResp"    element="oscars:listReservationsResponse" />
+    </wsdl:message>
+
+    <!--  query a reservation -->
+    <wsdl:message name="queryResvReq">
+        <wsdl:part name="subjectAttributes"    type="authP:subjectAttributes" />
+        <wsdl:part name="queryResvReq"     element="oscars:queryReservation" />
+    </wsdl:message>
+
+    <wsdl:message name="queryResvResp">
+        <wsdl:part name="queryResvResp"    element="oscars:queryReservationResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="getErrorReportReq">
+        <wsdl:part name="subjectAttributes" type="authP:subjectAttributes" />
+        <wsdl:part name="getErrorReportReq"   element="oscars:getErrorReport" />
+    </wsdl:message>
+
+    <wsdl:message name="getErrorReportResp">
+        <wsdl:part name="getErrorReportResp"  element="oscars:getErrorReportResponse" />
+    </wsdl:message>
+
+    <!-- may be called by api or Resource Scheduler -->
+    <wsdl:message name="createPathReq">
+        <wsdl:part name="subjectAttributes"    type="authP:subjectAttributes" />
+        <wsdl:part name="createPathReq"     type="oscars:createPathContent" />
+        <wsdl:part name="resDetails"        type="oscars:resDetails"/>
+    </wsdl:message>
+
+    <wsdl:message name="createPathResp">
+        <wsdl:part name="createPathResp"    element="oscars:createPathResponse" />
+    </wsdl:message>
+    
+    <!--  may be called by api or Resource Scheduler -->
+    <wsdl:message name="teardownPathReq">
+        <wsdl:part name="subjectAttributes" type="authP:subjectAttributes" />
+        <wsdl:part name="teardownPathReq"   type="oscars:teardownPathContent" />
+        <wsdl:part name="resDetails"        type="oscars:resDetails"/>
+    </wsdl:message>
+
+    <wsdl:message name="teardownPathResp">
+        <wsdl:part name="teardownPathResp"  element="oscars:teardownPathResponse" />
+    </wsdl:message>
+
+    <!--  called asynchronouly by PSS to after setup or teardown is complete -->
+    <wsdl:message name="PSSReplyReq">
+        <wsdl:part name="PSSReplyReq"    element="tns:PSSReplyReq" />
+    </wsdl:message>
+
+    <wsdl:message name="interDomainEvent">
+         <wsdl:part name="subjectAttributes"    type="authP:subjectAttributes" />
+         <wsdl:part name="interDomainEvent" element="oscars:interDomainEvent"/>
+    </wsdl:message>
+
+    <wsdl:message name="forceUpdateStatusReq">
+        <wsdl:part name="subjectAttributes"   type="authP:subjectAttributes" />
+        <wsdl:part name="updateFailureStatusReq"   element="rm:updateFailureStatusReq" />
+    </wsdl:message>
+
+    <wsdl:message name="forceUpdateStatusResp">
+        <wsdl:part name="updateStatusResp"  element="rm:updateStatusResp" />
+    </wsdl:message>
+
+    <wsdl:portType name="CoordPortType">
+        <wsdl:operation name="createReservation">
+            <wsdl:input message="tns:createResvReq" />
+            <wsdl:output message="tns:createResvResp" />
+            <wsdl:fault name=" OSCARSErrorException" message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="cancelReservation">
+            <wsdl:input message="tns:cancelResvReq" />
+            <wsdl:output message="tns:cancelResvResp" />
+            <wsdl:fault name=" OSCARSErrorException" message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="modifyReservation">
+            <wsdl:input message="tns:modifyResvReq" />
+            <wsdl:output message="tns:modifyResvResp" />
+            <wsdl:fault name=" OSCARSErrorException" message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="listReservations">
+            <wsdl:input message="tns:listResvReq" />
+            <wsdl:output message="tns:listResvResp" />
+            <wsdl:fault name=" OSCARSErrorException" message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="queryReservation">
+            <wsdl:input message="tns:queryResvReq" />
+            <wsdl:output message="tns:queryResvResp" />
+            <wsdl:fault name=" OSCARSErrorException" message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="getErrorReport">
+            <wsdl:input message="tns:getErrorReportReq" />
+            <wsdl:output message="tns:getErrorReportResp" />
+            <wsdl:fault name=" OSCARSErrorException" message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="createPath">
+            <wsdl:input message="tns:createPathReq" />
+            <wsdl:output message="tns:createPathResp" />
+            <wsdl:fault name=" OSCARSErrorException" message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+
+       <wsdl:operation name="PSSReply">
+            <wsdl:input message="tns:PSSReplyReq" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="teardownPath">
+            <wsdl:input message="tns:teardownPathReq" />
+            <wsdl:output message="tns:teardownPathResp" />
+            <wsdl:fault name=" OSCARSErrorException" message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+        
+        <wsdl:operation name="interDomainEvent">
+            <wsdl:input message="tns:interDomainEvent" />
+        </wsdl:operation>
+
+        <wsdl:operation name="forceUpdateStatus">
+            <wsdl:input message="tns:forceUpdateStatusReq" />
+            <wsdl:output message="tns:forceUpdateStatusResp" />
+            <wsdl:fault name=" OSCARSErrorException" message="com:OSCARSFaultMessage" />
+        </wsdl:operation>
+    </wsdl:portType>
+ 
+    <wsdl:binding name="CoordBinding" type="tns:CoordPortType">
+
+        <soap:binding style="document"
+            transport="http://schemas.xmlsoap.org/soap/http" />
+
+        <wsdl:operation name="createReservation">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/coord/createReservation" />
+            <wsdl:input>
+                <soap:body use="literal" parts="subjectAttributes createResvReq" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="createResvResp" />
+            </wsdl:output>
+            <wsdl:fault name=" OSCARSErrorException">
+                <soap:fault name=" OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="cancelReservation">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/coord/cancelReservation" />
+            <wsdl:input>
+                <soap:body use="literal" parts="subjectAttributes cancelResvReq" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="cancelResvResp" />
+            </wsdl:output>
+            <wsdl:fault name=" OSCARSErrorException">
+                <soap:fault name=" OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="modifyReservation">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/coord/modifyReservation" />
+            <wsdl:input>
+                <soap:body use="literal" parts="subjectAttributes modifyResvReq" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="modifyResvResp" />
+            </wsdl:output>
+            <wsdl:fault name=" OSCARSErrorException">
+                <soap:fault name=" OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="listReservations">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/coord/listReservations" />
+            <wsdl:input>
+                <soap:body use="literal" parts="subjectAttributes listResvReq" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="listResvResp" />
+            </wsdl:output>
+            <wsdl:fault name=" OSCARSErrorException">
+                <soap:fault name=" OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+ 
+        <wsdl:operation name="queryReservation">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/coord/queryReservation" />
+            <wsdl:input>
+                <soap:body use="literal" parts="subjectAttributes queryResvReq" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="queryResvResp" />
+            </wsdl:output>
+            <wsdl:fault name=" OSCARSErrorException">
+                <soap:fault name=" OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getErrorReport">
+                    <soap:operation style="document"
+                        soapAction="http://oscars.es.net/OSCARS/coord/getErrorReport" />
+                    <wsdl:input>
+                        <soap:body use="literal" parts="subjectAttributes getErrorReportReq" />
+                    </wsdl:input>
+                    <wsdl:output>
+                        <soap:body use="literal" parts="getErrorReportResp" />
+                    </wsdl:output>
+                    <wsdl:fault name=" OSCARSErrorException">
+                        <soap:fault name=" OSCARSErrorException" use="literal" />
+                    </wsdl:fault>
+                </wsdl:operation>
+
+       <!--  TODO make these one-way -->
+        <wsdl:operation name="createPath">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/coord/createPath" />
+            <wsdl:input>
+                <soap:body use="literal" parts="subjectAttributes createPathReq resDetails" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="createPathResp" />
+            </wsdl:output>
+            <wsdl:fault name=" OSCARSErrorException">
+                <soap:fault name=" OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+        
+        <wsdl:operation name="teardownPath">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/coord/teardownPath" />
+            <wsdl:input>
+                <soap:body use="literal" parts="subjectAttributes teardownPathReq resDetails" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="teardownPathResp" />
+            </wsdl:output>
+            <wsdl:fault name=" OSCARSErrorException">
+                <soap:fault name=" OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <!--  asynchrous reply from PSS setup and teardown path  -->
+        <wsdl:operation name="PSSReply">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/coord/PSSReply" />
+            <wsdl:input>
+                <soap:body use="literal" parts="PSSReplyReq" />
+            </wsdl:input>
+        </wsdl:operation>
+     
+        <wsdl:operation name="interDomainEvent">
+            <soap:operation
+                soapAction="http://oscars.es.net/OSCARS/interDomainEvent" />
+            <wsdl:input>
+                <soap:body use="literal" parts="interDomainEvent" />
+            </wsdl:input>
+        </wsdl:operation>
+
+        <wsdl:operation name="forceUpdateStatus">
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/coord/forceUpdateStatus" />
+            <wsdl:input>
+                <soap:body use="literal" parts="subjectAttributes forceUpdateStatus" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="forceUpdateStatusResp" />
+            </wsdl:output>
+            <wsdl:fault name=" OSCARSErrorException">
+                <soap:fault name=" OSCARSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+    </wsdl:binding>
+
+    <wsdl:service name="CoordService">
+        <wsdl:port name="CoordPort" binding="tns:CoordBinding">
+            <soap:address
+                location="" />
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

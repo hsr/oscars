@@ -1,0 +1,10 @@
+<oscarsMail>
+
+<contentType>text/plain</contentType>
+<subject>##TAG:PRODUCTION CIRCUIT##Expiring OSCARS reservation</subject>
+<messageBody>
+Reservation with GRI ##gri## expiring in 24 hours.
+##reservation##
+</messageBody>
+
+</oscarsMail>

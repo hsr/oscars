@@ -1,0 +1,224 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://oscars.es.net/OSCARS/PCE/20090922"
+    elementFormDefault="qualified"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:api="http://oscars.es.net/OSCARS/06"
+    xmlns:authP="http://oscars.es.net/OSCARS/authParams"
+    xmlns:ctrlp="http://ogf.org/schema/network/topology/ctrlPlane/20080828/"
+    xmlns:tns="http://oscars.es.net/OSCARS/PCE/20090922">
+
+    <xsd:import namespace="http://oscars.es.net/OSCARS/06" schemaLocation="OSCARS-0.6.xsd"/>
+    <xsd:import namespace="http://oscars.es.net/OSCARS/authParams" 
+        schemaLocation="../authParams.xsd" />
+    <xsd:import namespace="http://ogf.org/schema/network/topology/ctrlPlane/20080828/" 
+        schemaLocation="../nmtopo-ctrlp.xsd"/>
+    
+    <!-- Element definitions -->
+    <xsd:element name="PCECreate" type="tns:PCECreateContent" />
+    <xsd:element name="PCEReply" type="tns:PCEReplyContent" />
+    <xsd:element name="PCECreateCommit" type="tns:PCECreateCommitContent" />
+    <xsd:element name="PCECreateCommitReply" type="tns:PCECreateCommitReplyContent" />
+    <xsd:element name="PCEModify" type="tns:PCEModifyContent" />
+    <xsd:element name="PCEModifyReply" type="tns:PCEModifyReplyContent" />
+    <xsd:element name="PCECancel" type="tns:PCECancelContent" />
+    <xsd:element name="PCEModifyCommit" type="tns:PCEModifyCommitContent" />
+    <xsd:element name="PCEModifyCommitReply" type="tns:PCEModifyCommitReplyContent" />
+    <xsd:element name="PCECancelReply" type="tns:PCECancelReplyContent" />
+    <xsd:element name="AggregatorCreate" type="tns:AggregatorCreateContent" />
+    <xsd:element name="AggregatorModify" type="tns:AggregatorModifyContent" />
+    <xsd:element name="AggregatorCancel" type="tns:AggregatorCancelContent" />
+    <xsd:element name="AggregatorCreateCommit" type="tns:AggregatorCreateCommitContent" />
+    <xsd:element name="AggregatorModifyCommit" type="tns:AggregatorModifyCommitContent" />
+       
+   <xsd:complexType name="PCEDataContent">
+       <xsd:sequence>
+           <xsd:element name="userRequestConstraint" type="api:userRequestConstraintType" maxOccurs="1" minOccurs="1" />
+           <xsd:element name="reservedConstraint" type="api:reservedConstraintType" maxOccurs="1" minOccurs="0" />
+           <xsd:element name="optionalConstraint" type="api:optionalConstraintType" maxOccurs="unbounded" minOccurs="0"/>
+           <xsd:element name="topology" type="ctrlp:CtrlPlaneTopologyContent" maxOccurs="1" minOccurs="0" />
+           
+       </xsd:sequence>
+   </xsd:complexType>
+   
+    <xsd:complexType name="PCECreateContent">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type ="authP:messagePropertiesType"/>
+            <xsd:element name="globalReservationId" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceName" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="callBackEndpoint" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceData" type="tns:PCEDataContent" maxOccurs="1" minOccurs="1"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" use= "required" type="xsd:string"/>
+    </xsd:complexType>
+    
+    <xsd:complexType name="PCECreateCommitContent">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type ="authP:messagePropertiesType"/>
+            <xsd:element name="globalReservationId" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceName" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="callBackEndpoint" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceData" type="tns:PCEDataContent" maxOccurs="1" minOccurs="1"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" use= "required" type="xsd:string"/>
+    </xsd:complexType>
+
+    <xsd:complexType name="PCEModifyCommitContent">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type ="authP:messagePropertiesType"/>
+            <xsd:element name="globalReservationId" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceName" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="callBackEndpoint" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceData" type="tns:PCEDataContent" maxOccurs="1" minOccurs="1"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" use= "required" type="xsd:string"/>
+    </xsd:complexType>
+
+       
+   <xsd:complexType name="PCEReplyContent">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type ="authP:messagePropertiesType"/>
+            <xsd:element name="globalReservationId" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceName" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceData" type="tns:PCEDataContent" maxOccurs="1" minOccurs="0"/>
+            <xsd:element name="pceError" type="tns:PCEError" maxOccurs="1" minOccurs="0"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" use= "required" type="xsd:string"/>
+   </xsd:complexType>
+   
+   <xsd:complexType name="PCECreateCommitReplyContent">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type ="authP:messagePropertiesType"/>
+            <xsd:element name="globalReservationId" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceName" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceData" type="tns:PCEDataContent" maxOccurs="1" minOccurs="0"/>
+            <xsd:element name="pceError" type="tns:PCEError"  maxOccurs="1" minOccurs="0"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" use= "required" type="xsd:string"/>
+   </xsd:complexType>
+
+   <xsd:complexType name="PCEModifyCommitReplyContent">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type ="authP:messagePropertiesType"/>
+            <xsd:element name="globalReservationId" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceName" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceData" type="tns:PCEDataContent" maxOccurs="1" minOccurs="0"/>
+            <xsd:element name="pceError" type="tns:PCEError"  maxOccurs="1" minOccurs="0"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" use= "required" type="xsd:string"/>
+   </xsd:complexType>
+
+    <xsd:complexType name="PCEModifyContent">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type ="authP:messagePropertiesType"/>
+            <xsd:element name="globalReservationId" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceName" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="callBackEndpoint" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceData" type="tns:PCEDataContent" maxOccurs="1" minOccurs="1"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" use= "required" type="xsd:string"/>
+    </xsd:complexType>
+ 
+   <xsd:complexType name="PCEModifyReplyContent">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type ="authP:messagePropertiesType"/>
+            <xsd:element name="globalReservationId" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceName" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceData" type="tns:PCEDataContent" maxOccurs="1" minOccurs="0"/>
+            <xsd:element name="pceError" type="tns:PCEError"  maxOccurs="1" minOccurs="0"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" use= "required" type="xsd:string"/>
+   </xsd:complexType>
+
+ 
+    <xsd:complexType name="PCECancelContent">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type ="authP:messagePropertiesType"/>
+            <xsd:element name="globalReservationId" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceName" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="callBackEndpoint" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceData" type="tns:PCEDataContent" maxOccurs="1" minOccurs="1"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" use= "required" type="xsd:string"/>
+    </xsd:complexType>
+ 
+   <xsd:complexType name="PCECancelReplyContent">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type ="authP:messagePropertiesType"/>
+            <xsd:element name="globalReservationId" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceName" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceData" type="tns:PCEDataContent" maxOccurs="1" minOccurs="0"/>
+            <xsd:element name="pceError" type="tns:PCEError"  maxOccurs="1" minOccurs="0"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" use= "required" type="xsd:string"/>
+   </xsd:complexType>
+
+   <xsd:complexType name="AggregatorCreateContent">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type ="authP:messagePropertiesType"/>
+            <xsd:element name="globalReservationId" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceName" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="callBackEndpoint" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceData" type="tns:TagDataContent" maxOccurs="unbounded" minOccurs="1"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" use= "required" type="xsd:string"/>
+   </xsd:complexType>
+
+  <xsd:complexType name="AggregatorCreateCommitContent">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type ="authP:messagePropertiesType"/>
+            <xsd:element name="globalReservationId" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceName" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="callBackEndpoint" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceData" type="tns:TagDataContent" maxOccurs="unbounded" minOccurs="1"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" use= "required" type="xsd:string"/>
+   </xsd:complexType>
+
+    <xsd:complexType name="AggregatorModifyCommitContent">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type ="authP:messagePropertiesType"/>
+            <xsd:element name="globalReservationId" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceName" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="callBackEndpoint" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceData" type="tns:TagDataContent" maxOccurs="unbounded" minOccurs="1"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" use= "required" type="xsd:string"/>
+   </xsd:complexType>
+ 
+   <xsd:complexType name="AggregatorCancelContent">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type ="authP:messagePropertiesType"/>
+            <xsd:element name="globalReservationId" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceName" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="callBackEndpoint" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceData" type="tns:TagDataContent" maxOccurs="unbounded" minOccurs="1"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" use= "required" type="xsd:string"/>
+   </xsd:complexType>
+     
+   <xsd:complexType name="AggregatorModifyContent">
+        <xsd:sequence>
+            <xsd:element name="messageProperties" type ="authP:messagePropertiesType"/>
+            <xsd:element name="globalReservationId" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceName" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="callBackEndpoint" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+            <xsd:element name="pceData" type="tns:TagDataContent" maxOccurs="unbounded" minOccurs="1"/>
+        </xsd:sequence>
+        <xsd:attribute name="id" use= "required" type="xsd:string"/>
+   </xsd:complexType>
+    
+   <xsd:complexType name="TagDataContent">
+        <xsd:sequence>
+        <xsd:element name="Tag" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+        <xsd:element name="Constraints" type="tns:PCEDataContent" maxOccurs="1" minOccurs="1"/>
+        </xsd:sequence>
+   </xsd:complexType>
+   
+   <xsd:complexType name="PCEError">
+        <xsd:sequence>
+        <xsd:element name="msg" type="xsd:string" maxOccurs="1" minOccurs="1"/>
+        <xsd:element name="details" type="xsd:string" maxOccurs="1" minOccurs="0"/>
+        </xsd:sequence>
+   </xsd:complexType>
+
+</xsd:schema>

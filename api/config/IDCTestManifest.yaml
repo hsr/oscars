@@ -1,0 +1,136 @@
+---
+OSCARSService:
+    UNITTEST:
+        templateDir:        'OSCARS_DIST/api/config'
+        config.yaml:        'OSCARS_DIST/api/config/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_DIST/api/config/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_DIST/api/config/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_DIST/api/config/log4j.INFO.properties'
+        serverKeystore.properties: 'OSCARS_DIST/OSCARSService/conf/serverKeystore.properties'
+        clientKeystore.properties: 'OSCARS_DIST/OSCARSService/conf/clientKeystore.properties'
+        wsdl:    'OSCARS_DIST/common-soap/src/main/resources/api/OSCARS-0.6.wsdl'
+        wsdl-0.6:           'OSCARS_DIST/common-soap/src/main/resources/api/OSCARS-0.6.wsdl' 
+        wsdl-0.5:           'OSCARS_DIST/common-soap/src/main/resources/api/OSCARS-0.5.wsdl'
+        wsdl-notify-0.5:    'OSCARS_DIST/common-soap/src/main/resources/api/OSCARS-0.5-Notify.wsdl'
+        
+    DEVELOPMENT:
+        templateDir:        'OSCARS_HOME/OSCARSService/conf/'
+        config.yaml:        'OSCARS_HOME/OSCARSService/conf/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/OSCARSService/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/OSCARSService/conf/client-cxf-DEV.xml'
+        log4j.properties:   'OSCARS_DIST/api/config/log4j.MESSAGE.properties'
+        serverKeystore.properties: 'OSCARS_HOME/OSCARSService/conf/serverKeystore.properties'
+        clientKeystore.properties: 'OSCARS_HOME/OSCARSService/conf/clientKeystore.properties'
+        wsdl:               'OSCARS_HOME/wsdl/OSCARSService/OSCARSService-0.6.wsdl'
+        wsdl-0.6:           'OSCARS_HOME/wsdl/OSCARSService/OSCARSService-0.6.wsdl'
+        wsdl-0.5:           'OSCARS_HOME/wsdl/OSCARSService/OSCARSService-0.5.wsdl'
+        wsdl-notify-0.5:    'OSCARS_HOME/wsdl/OSCARSService/OSCARSService-0.5-Notify.wsdl'
+        
+    SDK:
+        templateDir:        'OSCARS_HOME/OSCARSService/conf/'
+        config.yaml:        'OSCARS_HOME/OSCARSService/conf/config.HTTP.yaml'
+        server-cxf.xml:     'OSCARS_HOME/OSCARSService/conf/server-cxf-http.xml'
+        client-cxf.xml:     'OSCARS_HOME/OSCARSService/conf/client-cxf-http.xml'
+        log4j.properties:   'OSCARS_DIST/api/config/log4j.DEBUG.properties'
+        serverKeystore.properties: 'OSCARS_HOME/OSCARSService/conf/serverKeystore.properties'
+        clientKeystore.properties: 'OSCARS_HOME/OSCARSService/conf/clientKeystore.properties'
+        wsdl:               'OSCARS_HOME/wsdl/OSCARSService/OSCARSService-0.6.wsdl'
+        wsdl-0.6:           'OSCARS_HOME/wsdl/OSCARSService/OSCARSService-0.6.wsdl'
+        wsdl-0.5:           'OSCARS_HOME/wsdl/OSCARSService/OSCARSService-0.5.wsdl'
+        wsdl-notify-0.5:    'OSCARS_HOME/wsdl/OSCARSService/OSCARSService-0.5-Notify.wsdl'
+        
+    PRODUCTION:
+        templateDir:        'OSCARS_HOME/OSCARSService/conf/'
+        config.yaml:        'OSCARS_HOME/OSCARSService/conf/config.SSL.yaml'
+        server-cxf.xml:     'OSCARS_HOME/OSCARSService/conf/server-cxf-ssl.xml'
+        client-cxf.xml:     'OSCARS_HOME/OSCARSService/conf/client-cxf-ssl.xml'
+        log4j.properties:   'OSCARS_DIST/api/config/log4j.INFO.properties'
+        serverKeystore.properties: 'OSCARS_HOME/OSCARSService/conf/serverKeystore.properties'
+        clientKeystore.properties: 'OSCARS_HOME/OSCARSService/conf/clientKeystore.properties'
+        wsdl:               'OSCARS_HOME/wsdl/OSCARSService/OSCARSService-0.6.wsdl'
+        wsdl-0.6:           'OSCARS_HOME/wsdl/OSCARSService/OSCARSService-0.6.wsdl'
+        wsdl-0.5:           'OSCARS_HOME/wsdl/OSCARSService/OSCARSService-0.5.wsdl'
+        wsdl-notify-0.5:    'OSCARS_HOME/wsdl/OSCARSService/OSCARSService-0.5-Notify.wsdl'
+        
+OSCARSInternalService:
+    UNITTEST:
+        config.yaml:        'OSCARS_DIST/api/config/config-internal.HTTP.yaml'
+        wsdl:               'OSCARS_DIST/common-soap/src/main/resources/api/api-internal-0.6.wsdl'
+    DEVELOPMENT:
+        config.yaml:        'OSCARS_HOME/OSCARSInternalService/conf/config-internal.HTTP.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/OSCARSInternalService/api-internal-0.6.wsdl'
+    SDK:
+        config.yaml:        'OSCARS_HOME/OSCARSInternalService/conf/config-internal.HTTP.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/OSCARSInternalService/api-internal-0.6.wsdl'
+    PRODUCTION:
+        config.yaml:        'OSCARS_HOME/OSCARSInternalService/conf/config-internal.SSL.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/OSCARSInternalService/api-internal-0.6.wsdl'
+
+CoordService:
+    UNITTEST:
+        config.yaml:        'OSCARS_DIST/coordinator/config/config.HTTP.yaml'
+        wsdl:               'OSCARS_DIST/common-soap/src/main/resources/coord/coord.wsdl'
+    DEVELOPMENT:
+        config.yaml:        'OSCARS_HOME/CoordService/conf/config.HTTP.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/CoordService/CoordService.wsdl'
+    SDK:
+        config.yaml:        'OSCARS_HOME/CoordService/conf/config.HTTP.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/CoordService/CoordService.wsdl'
+    PRODUCTION:
+        config.yaml:        'OSCARS_HOME/CoordService/conf/config.SSL.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/CoordService/CoordService.wsdl'
+
+AuthNService:
+    UNITTEST:
+        config.yaml:    'OSCARS_DIST/authN/config/authN.HTTP.yaml'
+        wsdl:           'OSCARS_DIST/common-soap/src/main/resources/authN/authN.wsdl'
+    DEVELOPMENT:
+        config.yaml:    'OSCARS_HOME/AuthNService/conf/authN.SSL.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/AuthNService/AuthNService.wsdl'
+    SDK:
+        config.yaml:    'OSCARS_HOME/AuthNService/conf/authN.HTTP.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/AuthNService/AuthNService.wsdl'
+    PRODUCTION:
+        config.yaml:    'OSCARS_HOME/AuthNService/conf/authN.SSL.yaml'
+        wsdl:           'OSCARS_HOME/wsdl/AuthNService/AuthNService.wsdl'
+
+Utils:
+    UNITTEST:
+        config.yaml:    'OSCARS_DIST/utils/config/config.yaml'
+    DEVELOPMENT:
+        config.yaml:    'OSCARS_HOME/Utils/conf/config.yaml'
+    SDK:
+        config.yaml:    'OSCARS_HOME/Utils/conf/config.yaml'
+    PRODUCTION:
+        config.yaml:    'OSCARS_HOME/Utils/conf/config.yaml'
+
+LookupService:
+    UNITTEST:
+        config.yaml:        'OSCARS_DIST/lookup/config/config.HTTP.yaml'
+        wsdl:               'OSCARS_DIST/common-soap/src/main/resources/lookup/lookup.wsdl'
+    DEVELOPMENT:
+        config.yaml:        'OSCARS_HOME/LookupService/conf/config.HTTP.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/LookupService/LookupService.wsdl'
+    SDK:
+        config.yaml:        'OSCARS_HOME/LookupService/conf/config.HTTP.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/LookupService/LookupService.wsdl'
+    PRODUCTION:
+        config.yaml:        'OSCARS_HOME/LookupService/conf/config.SSL.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/LookupService/LookupService.wsdl'
+
+WSNBrokerService:
+    UNITTEST:
+        config.yaml:        'OSCARS_DIST/wsnbroker/config/config.HTTP.yaml'
+        wsdl:               'OSCARS_DIST/common-soap/src/main/resources/wsnbroker/wsnbroker.wsdl'
+        
+    DEVELOPMENT:
+        config.yaml:        'OSCARS_HOME/WSNBrokerService/conf/config.HTTP.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/WSNBrokerService/WSNBrokerService.wsdl'
+
+    SDK:
+        config.yaml:        'OSCARS_HOME/WSNBrokerService/conf/config.HTTP.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/WSNBrokerService/WSNBrokerService.wsdl'
+
+    PRODUCTION:
+        config.yaml:        'OSCARS_HOME/WSNBrokerService/conf/config.SSL.yaml'
+        wsdl:               'OSCARS_HOME/wsdl/WSNBrokerService/WSNBrokerService.wsdl'

@@ -1,0 +1,84 @@
+<div class="left-content">
+	<table>
+		<tr>
+			<td>Duration:</td>
+			<td><span id="wizDuration"></span></td>
+		</tr>
+		<tr>
+			<td>Start Date:</td>
+			<td>
+				<div dojoType="dijit.form.DateTextBox" name="startDate" required="true" id="startDate">
+					<script type="dojo/connect" event="onChange">
+						printDuration();
+						dojo.byId("tmpStartSeconds").value = widgetToSeconds("startDate", "startTime");
+					</script>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>Start Time:</td>
+			<td>
+				 <div dojoType="dijit.form.ValidationTextBox" name="startTime" id="startTime" 
+					regExp="[0-2]?[\d]:[0-5][\d]"
+					required="true"
+					promptMessage="Enter the start time in format HH:MM"
+					invalidMessage="Invalid format:  use HH:MM">
+						<script type="dojo/connect" event="onChange">
+							printDuration();
+							dojo.byId("tmpStartSeconds").value = widgetToSeconds("startDate", "startTime");
+						</script>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>End Date:</td>
+			<td>
+				<div dojoType="dijit.form.DateTextBox" required="true" name="endDate" id="endDate" >
+					<script type="dojo/connect" event="onChange">
+						printDuration();
+						dojo.byId("tmpEndSeconds").value = widgetToSeconds("endDate", "endTime");
+					</script>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td>End Time:</td>
+			<td>
+				<div dojoType="dijit.form.ValidationTextBox" required="true" name="endTime" id="endTime" 
+					regExp="[0-2]?[\d]:[0-5][\d]"
+				    promptMessage="Enter the end time in format HH:MM"
+				    invalidMessage="Invalid format:  use HH:MM">
+						<script type="dojo/connect">
+							initTimeFields(3600, 'startDate', 'startTime', 'endDate', 'endTime');
+							secondsToWidget(dojo.byId("startSeconds").value, "startDate", "startTime");
+							secondsToWidget(dojo.byId("endSeconds").value, "endDate", "endTime");
+						</script>
+						<script type="dojo/connect" event="onChange">
+							printDuration();
+							dojo.byId("tmpEndSeconds").value = widgetToSeconds("endDate", "endTime");
+						</script>
+				</div>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="buttonRow">
+				<input type="hidden" name="tmpStartSeconds" id="tmpStartSeconds" />
+				<input type="hidden" name="tmpEndSeconds" id="tmpEndSeconds" />
+				<div dojoType="ion.Button" label="Back" id="wizBackButton"></div>
+				<div dojoType="ion.Button" label="Next" id="wizNextButton"></div>
+			</td>
+		</tr>
+	</table>
+</div>
+<div class="right-content">
+	<div class="right-top">Duration </div> 
+	<span>Duration indicates how long your circuit will exist. This field automatically updates as you change the start/end time.</span>
+	<div class="right-header">Start Date </div>
+	<span>The day your reserved circuit will begin. You may select today or a day in the future from the calendar or by typing a date in MM/DD/YYYY format.</span>
+	<div class="right-header">Start Time </div>
+	<span>The time at which you would like your circuit to begin on the specified <i>Start Date</i>. Enter a time as HH:MM using 24-hour format (i.e. 13:00 instead of 1:00). The time specified will be interpreted in the timezone of your web browser.</span>
+	<div class="right-header">End Date </div>
+	<span>The day on which you would like your reserved circuit to end. The format is the same as the <i>Start Date</i>.</span>
+	<div class="right-header">End Time </div>
+	<span>The time at which you would like your circuit to end on the specified End Date. The format is the same as the <i>Start Time</i>.</span>
+</div> <!--/rightcontent-->

@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project name="resourceManager">
+    <property environment="env"/>
+    <property name="oscars.dist" value="${env.OSCARS_DIST}"/>
+    <property name="oscars.home" value="${env.OSCARS_HOME}"/>
+    <available property="props.installed" file="${basedir}/config/config.HTTP.yaml"/>
+    <target name="copyProps" unless="props.installed" description="copy default properties file">
+        <copy file="${basedir}/config/config.HTTP.yaml.template" tofile="${basedir}/config/config.HTTP.yaml"/>
+        <copy file="${basedir}/config/config.SSL.yaml.template" tofile="${basedir}/config/config.SSL.yaml"/>
+        <copy file="${basedir}/config/config.TESTING.yaml.template" tofile="${basedir}/config/config.TESTING.yaml"/>
+    </target>
+</project>

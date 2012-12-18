@@ -1,0 +1,458 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wsdl:definitions name="OSCARS"
+    targetNamespace="http://oscars.es.net/OSCARS"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:wsdl="http://schemas.xmlsoap.org/wsdl/"
+    xmlns:soap="http://schemas.xmlsoap.org/wsdl/soap12/"
+    xmlns:wsp="http://schemas.xmlsoap.org/ws/2004/09/policy"
+    xmlns:wsnt="http://docs.oasis-open.org/wsn/b-2"
+    xmlns:sp="http://schemas.xmlsoap.org/ws/2005/07/securitypolicy"
+    xmlns:tns="http://oscars.es.net/OSCARS">
+
+    <wsdl:documentation>
+        This is WSDL for the OSCARS public reservation interface. These
+        messages must be signed using the following WS-secuirty
+        standards. The message is time stamped and includes the X.509
+        certificate of the signing entity. The timestamp, certificate
+        and message body are all signed. DRAFT V1.0 Nov 2006
+    </wsdl:documentation>
+
+    <wsdl:import namespace="http://oscars.es.net/OSCARS/policy"
+                  location="sec-policy.wsdl"/>
+    
+   <!-- Element definitons -->
+    <wsdl:types>
+        <xsd:schema targetNamespace="http://oscars.es.net/OSCARS"
+            elementFormDefault="qualified"
+            xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+            xmlns:tns="http://oscars.es.net/OSCARS">
+            <xsd:include schemaLocation="OSCARS-0.5.xsd" />
+        </xsd:schema>
+        <xsd:schema>
+            <xsd:import
+                namespace="http://docs.oasis-open.org/wsn/b-2" 
+                schemaLocation="b-2-idc-0.5.xsd"/>
+        </xsd:schema>
+        <xsd:schema>
+            <xsd:import
+                namespace="http://docs.oasis-open.org/wsrf/r-2" 
+                schemaLocation="r-2-idc.xsd"/>
+        </xsd:schema>
+    </wsdl:types>
+
+    <!--   Message definitions -->
+
+    <wsdl:message name="createReservation">
+        <wsdl:part name="createReservation"
+            element="tns:createReservation">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="createReservationResponse">
+        <wsdl:part name="createReservationResponse"
+            element="tns:createReservationResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="cancelReservation">
+        <wsdl:part name="cancelReservation"
+            element="tns:cancelReservation">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="cancelReservationResponse">
+        <wsdl:part name="cancelReservationResponse"
+            element="tns:cancelReservationResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="queryReservation">
+        <wsdl:part name="queryReservation"
+            element="tns:queryReservation" />
+    </wsdl:message>
+    <wsdl:message name="queryReservationResponse">
+        <wsdl:part name="queryReservationResponse"
+            element="tns:queryReservationResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="modifyReservation">
+        <wsdl:part name="modifyReservation"
+            element="tns:modifyReservation" />
+    </wsdl:message>
+    <wsdl:message name="modifyReservationResponse">
+        <wsdl:part name="modifyReservationResponse"
+            element="tns:modifyReservationResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="listReservations">
+        <wsdl:part name="listReservations"
+            element="tns:listReservations">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="listReservationsResponse">
+        <wsdl:part name="listReservationsResponse"
+            element="tns:listReservationsResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="getNetworkTopology">
+        <wsdl:part name="getNetworkTopology"
+            element="tns:getNetworkTopology">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="getNetworkTopologyResponse">
+        <wsdl:part name="getNetworkTopologyResponse"
+            element="tns:getNetworkTopologyResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="createPath">
+        <wsdl:part name="createPath"
+            element="tns:createPath">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="createPathResponse">
+        <wsdl:part name="createPathResponse"
+            element="tns:createPathResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="refreshPath">
+        <wsdl:part name="refreshPath"
+            element="tns:refreshPath">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="refreshPathResponse">
+        <wsdl:part name="refreshPathResponse"
+            element="tns:refreshPathResponse" />
+    </wsdl:message>
+
+    <wsdl:message name="teardownPath">
+        <wsdl:part name="teardownPath"
+            element="tns:teardownPath">
+        </wsdl:part>
+    </wsdl:message>
+    <wsdl:message name="teardownPathResponse">
+        <wsdl:part name="teardownPathResponse"
+            element="tns:teardownPathResponse" />
+    </wsdl:message>
+
+
+    <wsdl:message name="forward">
+        <wsdl:part name="forward" element="tns:forward" />
+    </wsdl:message>
+    <wsdl:message name="forwardResponse">
+        <wsdl:part name="forwardResponse"
+            element="tns:forwardResponse">
+        </wsdl:part>
+    </wsdl:message>
+    
+    <wsdl:message name="AAAFaultMessage">
+        <wsdl:part name="fault" element="tns:AAAFault" />
+    </wsdl:message>
+
+    <wsdl:message name="BSSFaultMessage">
+        <wsdl:part name="fault" element="tns:BSSFault" />
+    </wsdl:message>
+
+
+    <wsdl:portType name="OSCARS">
+        <wsdl:operation name="createReservation">
+            <wsdl:input message="tns:createReservation" />
+            <wsdl:output message="tns:createReservationResponse" />
+            <wsdl:fault name="AAAErrorException"
+                message="tns:AAAFaultMessage" />
+            <wsdl:fault name="BSSErrorException"
+                message="tns:BSSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="cancelReservation">
+            <wsdl:input message="tns:cancelReservation"></wsdl:input>
+            <wsdl:output message="tns:cancelReservationResponse" />
+            <wsdl:fault name="AAAErrorException"
+                message="tns:AAAFaultMessage" />
+            <wsdl:fault name="BSSErrorException"
+                message="tns:BSSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="queryReservation">
+            <wsdl:input message="tns:queryReservation" />
+            <wsdl:output message="tns:queryReservationResponse" />
+            <wsdl:fault name="AAAErrorException"
+                message="tns:AAAFaultMessage" />
+            <wsdl:fault name="BSSErrorException"
+                message="tns:BSSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="modifyReservation">
+            <wsdl:input message="tns:modifyReservation" />
+            <wsdl:output message="tns:modifyReservationResponse" />
+            <wsdl:fault name="AAAErrorException"
+                message="tns:AAAFaultMessage" />
+            <wsdl:fault name="BSSErrorException"
+                message="tns:BSSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="listReservations">
+            <wsdl:input message="tns:listReservations" />
+            <wsdl:output message="tns:listReservationsResponse" />
+            <wsdl:fault name="AAAErrorException"
+                message="tns:AAAFaultMessage" />
+            <wsdl:fault name="BSSErrorException"
+                message="tns:BSSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="getNetworkTopology">
+            <wsdl:input message="tns:getNetworkTopology" />
+            <wsdl:output message="tns:getNetworkTopologyResponse" />
+            <wsdl:fault name="AAAErrorException"
+                message="tns:AAAFaultMessage" />
+            <wsdl:fault name="BSSErrorException"
+                message="tns:BSSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="createPath">
+            <wsdl:input message="tns:createPath" />
+            <wsdl:output message="tns:createPathResponse" />
+            <wsdl:fault name="AAAErrorException"
+                message="tns:AAAFaultMessage" />
+            <wsdl:fault name="BSSErrorException"
+                message="tns:BSSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="refreshPath">
+            <wsdl:input message="tns:refreshPath" />
+            <wsdl:output message="tns:refreshPathResponse" />
+            <wsdl:fault name="AAAErrorException"
+                message="tns:AAAFaultMessage" />
+            <wsdl:fault name="BSSErrorException"
+                message="tns:BSSFaultMessage" />
+        </wsdl:operation>
+
+        <wsdl:operation name="teardownPath">
+            <wsdl:input message="tns:teardownPath" />
+            <wsdl:output message="tns:teardownPathResponse" />
+            <wsdl:fault name="AAAErrorException"
+                message="tns:AAAFaultMessage" />
+            <wsdl:fault name="BSSErrorException"
+                message="tns:BSSFaultMessage" />
+        </wsdl:operation>
+
+
+        <wsdl:operation name="forward">
+            <wsdl:input message="tns:forward"></wsdl:input>
+            <wsdl:output message="tns:forwardResponse"></wsdl:output>
+            <wsdl:fault name="AAAErrorException"
+                message="tns:AAAFaultMessage" />
+            <wsdl:fault name="BSSErrorException"
+                message="tns:BSSFaultMessage" />
+        </wsdl:operation>
+
+    </wsdl:portType>
+    
+ <wsdl:binding name="OSCARSSOAP" type="tns:OSCARS">
+    
+        <soap:binding style="document"
+            transport="http://schemas.xmlsoap.org/soap/http" />
+
+        <wsdl:operation name="createReservation">
+            <wsp:PolicyReference URI="#X509BindingPolicy"  /> 
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/createReservation" />
+            <wsdl:input>
+                <wsp:PolicyReference URI="#signedMsgPolicy" />
+                <soap:body use="literal" parts="createReservation" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="createReservationResponse" />
+            </wsdl:output>
+            <wsdl:fault name="AAAErrorException">
+                <soap:fault name="AAAErrorException" use="literal" />
+            </wsdl:fault>
+            <wsdl:fault name="BSSErrorException">
+                <soap:fault name="BSSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="queryReservation">
+            <wsp:PolicyReference URI="#X509BindingPolicy"  /> 
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/queryReservation" />
+            <wsdl:input>
+                <wsp:PolicyReference URI="#signedMsgPolicy"  />
+                <soap:body use="literal" parts="queryReservation" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="queryReservationResponse" />
+            </wsdl:output>
+            <wsdl:fault name="AAAErrorException">
+                <soap:fault name="AAAErrorException" use="literal" />
+            </wsdl:fault>
+            <wsdl:fault name="BSSErrorException">
+                <soap:fault name="BSSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="listReservations">
+            <wsp:PolicyReference URI="#X509BindingPolicy"  /> 
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/listReservations" />
+            <wsdl:input>
+                <wsp:PolicyReference URI="#signedMsgPolicy"  /> 
+                <soap:body use="literal" parts="listReservations" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="listReservationsResponse" />
+            </wsdl:output>
+            <wsdl:fault name="AAAErrorException">
+                <soap:fault name="AAAErrorException" use="literal" />
+            </wsdl:fault>
+            <wsdl:fault name="BSSErrorException">
+                <soap:fault name="BSSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="cancelReservation">
+            <wsp:PolicyReference URI="#X509BindingPolicy"  /> 
+            <soap:operation
+                soapAction="http://oscars.es.net/OSCARS/cancelReservation" />
+            <wsdl:input>
+                <wsp:PolicyReference URI="#signedMsgPolicy"  /> 
+                <soap:body use="literal" parts="cancelReservation" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="cancelReservationResponse" />
+            </wsdl:output>
+            <wsdl:fault name="AAAErrorException">
+                <soap:fault use="literal" name="AAAErrorException" />
+            </wsdl:fault>
+            <wsdl:fault name="BSSErrorException">
+                <soap:fault name="BSSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="modifyReservation">
+            <wsp:PolicyReference URI="#X509BindingPolicy"  /> 
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/modifyReservation" />
+            <wsdl:input>
+                <wsp:PolicyReference URI="#signedMsgPolicy"  /> 
+                <soap:body use="literal" parts="modifyReservation" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="modifyReservationResponse" />
+            </wsdl:output>
+            <wsdl:fault name="AAAErrorException">
+                <soap:fault name="AAAErrorException" use="literal" />
+            </wsdl:fault>
+            <wsdl:fault name="BSSErrorException">
+                <soap:fault name="BSSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="getNetworkTopology">
+            <wsp:PolicyReference URI="#X509BindingPolicy"  /> 
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/getNetworkTopology" />
+            <wsdl:input>
+                <wsp:PolicyReference URI="#signedMsgPolicy"  /> 
+                <soap:body use="literal" parts="getNetworkTopology" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="getNetworkTopologyResponse" />
+            </wsdl:output>
+            <wsdl:fault name="AAAErrorException">
+                <soap:fault name="AAAErrorException" use="literal" />
+            </wsdl:fault>
+            <wsdl:fault name="BSSErrorException">
+                <soap:fault name="BSSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="createPath">
+            <wsp:PolicyReference URI="#X509BindingPolicy"  /> 
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/createPath" />
+            <wsdl:input>
+                <wsp:PolicyReference URI="#signedMsgPolicy"  /> 
+                <soap:body use="literal" parts="createPath" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="createPathResponse" />
+            </wsdl:output>
+            <wsdl:fault name="AAAErrorException">
+                <soap:fault name="AAAErrorException" use="literal" />
+            </wsdl:fault>
+            <wsdl:fault name="BSSErrorException">
+                <soap:fault name="BSSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="refreshPath">
+            <wsp:PolicyReference URI="#X509BindingPolicy"  /> 
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/refreshPath" />
+            <wsdl:input>
+                <wsp:PolicyReference URI="#signedMsgPolicy"  /> 
+                <soap:body use="literal" parts="refreshPath" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="refreshPathResponse" />
+            </wsdl:output>
+            <wsdl:fault name="AAAErrorException">
+                <soap:fault name="AAAErrorException" use="literal" />
+            </wsdl:fault>
+            <wsdl:fault name="BSSErrorException">
+                <soap:fault name="BSSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+        <wsdl:operation name="teardownPath">
+            <wsp:PolicyReference URI="#X509BindingPolicy"  /> 
+            <soap:operation style="document"
+                soapAction="http://oscars.es.net/OSCARS/teardownPath" />
+            <wsdl:input>
+                <wsp:PolicyReference URI="#signedMsgPolicy"  /> 
+                <soap:body use="literal" parts="teardownPath" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal"
+                    parts="teardownPathResponse" />
+            </wsdl:output>
+            <wsdl:fault name="AAAErrorException">
+                <soap:fault name="AAAErrorException" use="literal" />
+            </wsdl:fault>
+            <wsdl:fault name="BSSErrorException">
+                <soap:fault name="BSSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+
+        <wsdl:operation name="forward">
+            <wsp:PolicyReference URI="#X509BindingPolicy"  /> 
+            <soap:operation
+                soapAction="http://oscars.es.net/OSCARS/forward" />
+            <wsdl:input>
+                <wsp:PolicyReference URI="#signedMsgPolicy"  /> 
+                <soap:body use="literal" parts="forward" />
+            </wsdl:input>
+            <wsdl:output>
+                <soap:body use="literal" parts="forwardResponse" />
+            </wsdl:output>
+            <wsdl:fault name="AAAErrorException">
+                <soap:fault use="literal" name="AAAErrorException" />
+            </wsdl:fault>
+            <wsdl:fault name="BSSErrorException">
+                <soap:fault name="BSSErrorException" use="literal" />
+            </wsdl:fault>
+        </wsdl:operation>
+
+    </wsdl:binding>
+
+
+    <wsdl:service name="OSCARSService">
+        <wsdl:port name="OSCARS" binding="tns:OSCARSSOAP">
+        </wsdl:port>
+    </wsdl:service>
+</wsdl:definitions>

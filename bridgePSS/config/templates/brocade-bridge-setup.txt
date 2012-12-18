@@ -1,0 +1,7 @@
+configure terminal
+vlan ${vlan} name vlan${vlan}
+  tagged ${portA} ${portZ}
+  no spanning-tree
+  rstp priority 8192
+exit
+exit

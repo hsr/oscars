@@ -1,0 +1,338 @@
+#!/bin/sh
+#
+# Create new keystores if none exist
+# Edit the keystore and trustsore names to add the $OSCARS_HOME/sampleDomain/certs prefix
+#
+# syntax: exportconfig <path_to_distribution> <patch_to_production>
+#
+#
+
+OSCARS_DIST=$1
+OSCARS_HOME=$2
+
+source $OSCARS_DIST/utils/bin/configLib.sh
+verifyArgs $OSCARS_DIST $OSCARS_HOME
+
+# Create configuration directory and copy config files
+# Comment out test if you always want to generate new keystores
+if test -d $OSCARS_HOME/sampleDomain/certs && test -f $OSCARS_HOME/sampleDomain/certs/oscarsidc.jks 
+then
+   echo using existing keystores. 
+   echo If the certificates were generated on a different host, you will need to regenerate them.
+   echo delete the directory $OSCARS_HOME/sampleDomain/certs and re-run this command.
+else 
+   mkdir -p $OSCARS_HOME/sampleDomain/certs
+   sh $OSCARS_DIST/sampleDomain/bin/gencerts $OSCARS_HOME/sampleDomain/certs $OSCARS_DIST
+fi
+
+################################################################################
+# Patch server and client SSL configuration so the proper keystores are used
+################################################################################
+
+#
+# OSCARSService (IDC API)
+#
+SERVICE=$SVC_API
+tmpFile=/tmp/tmpconf.$$
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-client\.jks,$OSCARS_HOME/sampleDomain/certs/client.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG
+rm -f $tmpFile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-client\.jks,$OSCARS_HOME/sampleDomain/certs/client.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_HTTP_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_HTTP_CFG
+rm -f $tmpFile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-client\.jks,$OSCARS_HOME/sampleDomain/certs/client.jks," < $OSCARS_HOME/$SERVICE/conf/client-ut-cxf-ssl.xml > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/client-ut-cxf-ssl.xml
+rm -f $tmpFile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-client\.jks,$OSCARS_HOME/sampleDomain/certs/client.jks," < $OSCARS_HOME/$SERVICE/conf/client-cxf-DEV.xml > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/client-cxf-DEV.xml
+rm -f $tmpFile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-server\.jks,$OSCARS_HOME/sampleDomain/certs/oscarsidc.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG
+rm -f $tmpFile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-server\.jks,$OSCARS_HOME/sampleDomain/certs/oscarsidc.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_HTTP_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_HTTP_CFG
+rm -f $tmpFile
+
+
+sed  "s,keystore-client\.jks,$OSCARS_HOME/sampleDomain/certs/client.jks," < $OSCARS_HOME/$SERVICE/conf/clientKeystore.properties > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/clientKeystore.properties
+rm -f $tmpFile
+sed  "s,keystore-server\.jks,$OSCARS_HOME/sampleDomain/certs/oscarsidc.jks," < $OSCARS_HOME/$SERVICE/conf/serverKeystore.properties > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/serverKeystore.properties
+rm -f $tmpFile
+
+#
+# WBUI (Web User interface)
+#
+SERVICE=$SVC_WBUI
+tmpFile=/tmp/tmpconf.$$
+sed -e "s,keystore-server\.jks,$OSCARS_HOME/sampleDomain/certs/oscarsidc.jks," < $OSCARS_HOME/$SERVICE/conf/jetty.SSL.xml > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/jetty.SSL.xml
+rm -f $tmpFile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-client\.jks,$OSCARS_HOME/sampleDomain/certs/client.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG  > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG 
+rm -f $tmpFile
+
+#
+# CoordService (Coordinator/internal API)
+#
+SERVICE=$SVC_COORD
+tmpFile=/tmp/tmpconf.$$
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-server\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG
+rm -f $tmpfile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-client\.jks,$OSCARS_HOME/sampleDomain/certs/client.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG
+rm -f $tmpfile
+
+#
+# authNStub and authN
+#
+SERVICE=$SVC_AUTHN
+tmpFile=/tmp/tmpconf.$$
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-server\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG 
+rm -f $tmpFile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-client\.jks,$OSCARS_HOME/sampleDomain/certs/client.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG  > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG 
+rm -f $tmpFile
+
+# authNPolicy
+#
+SERVICE=$SVC_AUTHN_POLICY
+tmpFile=/tmp/tmpconf.$$
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-server\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG  > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG 
+rm -f $tmpFile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-client\.jks,$OSCARS_HOME/sampleDomain/certs/client.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG  > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG 
+rm -f $tmpFile
+
+#
+# authZ
+#
+SERVICE=$SVC_AUTHZ
+tmpFile=/tmp/tmpconf.$$
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-server\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG  > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG 
+rm -f $tmpFile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-client\.jks,$OSCARS_HOME/sampleDomain/certs/client.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG  > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG 
+rm -f $tmpFile
+
+# authZPolicy
+#
+SERVICE=$SVC_AUTHZ_POLICY
+tmpFile=/tmp/tmpconf.$$
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-server\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG
+rm -f $tmpFile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-client\.jks,$OSCARS_HOME/sampleDomain/certs/client.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG
+rm -f $tmpFile
+
+#
+# Resource Manager
+#
+SERVICE=$SVC_RM
+tmpFile=/tmp/tmpconf.$$
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-server\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG
+rm -f $tmpfile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-client\.jks,$OSCARS_HOME/sampleDomain/certs/client.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG
+rm -f $tmpFile
+
+# connectivityPCE
+#
+SERVICE=$SVC_PCE_CONN
+tmpFile=/tmp/tmpconf.$$
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-ssl\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG
+rm -f $tmpfile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-ssl\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG
+rm -f $tmpFile
+
+# DijkstraPCE
+#
+SERVICE=$SVC_PCE_DIJ
+tmpFile=/tmp/tmpconf.$$
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-ssl\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG
+rm -f $tmpfile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-ssl\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG
+rm -f $tmpFile
+
+
+# BandwidthPCE
+#
+SERVICE=$SVC_PCE_BW
+tmpFile=/tmp/tmpconf.$$
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-ssl\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG
+rm -f $tmpfile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-ssl\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG
+rm -f $tmpFile
+
+# vlanPCE
+#
+SERVICE=$SVC_PCE_VLAN
+tmpFile=/tmp/tmpconf.$$
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-ssl\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG
+rm -f $tmpfile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-ssl\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG
+rm -f $tmpFile
+
+# l3mplsPCE
+#
+SERVICE=$SVC_PCE_L3MPLS
+tmpFile=/tmp/tmpconf.$$
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-ssl\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG
+rm -f $tmpfile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-ssl\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG
+rm -f $tmpFile
+
+# null Aggregator
+#
+SERVICE=$SVC_PCE
+NA_CXF_SERVER_SSL_CFG=nullagg-server-cxf-ssl.xml
+NA_CXF_CLIENT_SSL_CFG=nullagg-client-cxf-ssl.xml
+
+tmpFile=/tmp/tmpconf.$$
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-server\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/$NA_CXF_SERVER_SSL_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$NA_CXF_SERVER_SSL_CFG
+rm -f $tmpfile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-client\.jks,$OSCARS_HOME/sampleDomain/certs/client.jks," < $OSCARS_HOME/$SERVICE/conf/$NA_CXF_CLIENT_SSL_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$NA_CXF_CLIENT_SSL_CFG
+rm -f $tmpFile
+
+# null PCE
+#
+SERVICE=$SVC_PCE
+NA_CXF_SERVER_SSL_CFG=nullpce-server-cxf-ssl.xml
+NA_CXF_CLIENT_SSL_CFG=nullpce-client-cxf-ssl.xml
+
+tmpFile=/tmp/tmpconf.$$
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-server\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/$NA_CXF_SERVER_SSL_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$NA_CXF_SERVER_SSL_CFG
+rm -f $tmpfile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-client\.jks,$OSCARS_HOME/sampleDomain/certs/client.jks," < $OSCARS_HOME/$SERVICE/conf/$NA_CXF_CLIENT_SSL_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$NA_CXF_CLIENT_SSL_CFG
+rm -f $tmpFile
+
+#
+# PCERuntime Service
+tmpFile=/tmp/tmpconf.$$
+SERVICE=$SVC_PCE
+CFX_SERVER_SSL_PCERUNTIME=pce-runtime-server-cxf-ssl.xml
+CFX_CLIENT_SSL_PCERUNTIME=pce-runtime-client-cxf-ssl.xml
+tmpFile=/tmp/tmpconf.$$
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-server\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/$CFX_SERVER_SSL_PCERUNTIME > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CFX_SERVER_SSL_PCERUNTIME
+rm -f $tmpFile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-client\.jks,$OSCARS_HOME/sampleDomain/certs/client.jks," < $OSCARS_HOME/$SERVICE/conf/$CFX_CLIENT_SSL_PCERUNTIME > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CFX_CLIENT_SSL_PCERUNTIME
+rm -f $tmpFile
+
+
+# PSSService
+#
+SERVICE=$SVC_PSS
+tmpFile=/tmp/tmpconf.$$
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-ssl\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/server-cxf-ssl.xml > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/server-cxf-ssl.xml
+rm -f $tmpFile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-ssl\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/client-cxf-ssl.xml > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/client-cxf-ssl.xml
+rm -f $tmpFile
+
+# LookupService
+#
+SERVICE=$SVC_LOOKUP
+tmpFile=/tmp/tmpconf.$$
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-server\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG  > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG 
+rm -f $tmpFile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-client\.jks,$OSCARS_HOME/sampleDomain/certs/client.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG  > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG 
+rm -f $tmpFile
+
+# Topology Bridge
+#
+SERVICE=$SVC_TOPO
+
+tmpFile=/tmp/tmpconf.$$
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-server\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG  > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG 
+rm -f $tmpFile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-client\.jks,$OSCARS_HOME/sampleDomain/certs/client.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG  > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG 
+rm -f $tmpFile
+
+# WSNBroker
+#
+SERVICE=$SVC_WSNBROKER
+
+tmpFile=/tmp/tmpconf.$$
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-client\.jks,$OSCARS_HOME/sampleDomain/certs/client.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG  > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG 
+rm -f $tmpFile
+
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-server\.jks,$OSCARS_HOME/sampleDomain/certs/oscarsidc.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG
+rm -f $tmpFile
+
+sed  "s,keystore-client\.jks,$OSCARS_HOME/sampleDomain/certs/client.jks," < $OSCARS_HOME/$SERVICE/conf/clientKeystore.properties > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/clientKeystore.properties
+rm -f $tmpFile
+
+sed  "s,keystore-server\.jks,$OSCARS_HOME/sampleDomain/certs/oscarsidc.jks," < $OSCARS_HOME/$SERVICE/conf/serverKeystore.properties > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/serverKeystore.properties
+rm -f $tmpFile
+
+# NotificationBridge
+#
+SERVICE=$SVC_NOTIFY
+
+tmpFile=/tmp/tmpconf.$$
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-client\.jks,$OSCARS_HOME/sampleDomain/certs/client.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG  > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG 
+rm -f $tmpFile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-server\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG  > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_SERVER_SSL_CFG 
+rm -f $tmpFile
+sed  "s,keystore-client\.jks,$OSCARS_HOME/sampleDomain/certs/client.jks," < $OSCARS_HOME/$SERVICE/conf/clientKeystore.properties > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/clientKeystore.properties
+rm -f $tmpFile
+
+#
+# TEMPLATE SERVICE
+#
+# tmpFile=/tmp/tmpconf.$$
+# sed -e s,keystore-truststore.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks, -e s,keystore-client.jks,$OSCARS_HOME/sampleDomain/certs/client.jks, < $OSCARS_HOME/TemplateService/conf/client-cxf.xml > $tmpFile 
+# cp $tmpFile $OSCARS_HOME/TemplateService/conf/client-cxf.xml
+# rm -f $tmpFile
+# sed -e s,keystore-truststore.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks, -e s,keystore-server.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks, < $OSCARS_HOME/TemplateService/conf/server-cxf.xml > $tmpFile
+# cp $tmpFile $OSCARS_HOME/TemplateService/conf/server-cxf.xml
+# rm -f $tmpFile
+
+
+#
+# ION (ION Web User interface)
+SERVICE=$SVC_ION
+tmpFile=/tmp/tmpconf.$$
+sed -e "s,keystore-server\.jks,$OSCARS_HOME/sampleDomain/certs/localhost.jks," < $OSCARS_HOME/$SERVICE/conf/jetty.SSL.xml > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/jetty.SSL.xml
+rm -f $tmpFile
+sed -e "s,keystore-truststore\.jks,$OSCARS_HOME/sampleDomain/certs/truststore.jks," -e "s,keystore-client\.jks,$OSCARS_HOME/sampleDomain/certs/client.jks," < $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG  > $tmpFile
+cp $tmpFile $OSCARS_HOME/$SERVICE/conf/$CXF_CLIENT_SSL_CFG
+rm -f $tmpFile
+
+

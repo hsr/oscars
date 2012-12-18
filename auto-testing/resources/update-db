@@ -1,0 +1,14 @@
+#!/bin/bash
+
+OSCARS_DIST=/usr/local/oscars-0.6
+
+file="all-db_"
+date=`date +%Y-%m-%d_%H.%M.%S`
+filename="$file$date.sql"
+echo -n "mysqldump | "
+mysqldump -u root -p --all-databases > $filename
+echo -n "oscarsdb.sh -rt | "
+$OSCARS_DIST/bin/oscarsdb.sh -rt
+echo -n "oscarsdb.sh -ct | "
+$OSCARS_DIST/bin/oscarsdb.sh -ct
+

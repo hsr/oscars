@@ -1,0 +1,162 @@
+<html>
+<head>
+    <script type="text/javascript">
+        dojo.connect(dijit.byId("authDetailsPane"), "onLoad",
+                     oscars.AuthorizationDetails.init);
+    </script>
+</head>
+
+<body>
+<form id="authDetailsForm" dojoType="dijit.form.Form">
+<span id="modifyAuthorizationDisplay" style="display:none">
+<p>Any legal set of options can be added to any attribute.  Note that if you
+change the attribute associated with an existing authorization, you are
+deleting the authorization associated with the old attribute.
+An attribute can be changed at any time.
+Further information on attributes is available
+<a href="/OSCARS/docs/attributes.html" target="_blank">here</a>.
+The correct way to modify the other
+options is to start from a higher menu and
+work down.  What resource is chosen determines which permissions can be
+chosen, and so on down to constraints and their values.
+Selected valid menu options may change as you work your way down the list, or if
+you set an option higher in the list later than one lower.
+You can click on RESET TO ORIGINAL at any time to restore the original
+values.
+</p>
+  <button dojoType="dijit.form.Button" id="modifyAuthorization">
+     MODIFY
+     <script type="dojo/method" event="onClick">
+         oscars.AuthorizationDetails.postModify();
+     </script>
+  </button>
+  <button dojoType="dijit.form.Button" id="cloneAuthorization">
+     CLONE
+     <script type="dojo/method" event="onClick">
+         oscars.AuthorizationDetails.clone();
+     </script>
+  </button>
+  <button dojoType="dijit.form.Button" id="deleteAuthorization">
+      DELETE
+      <script type="dojo/method" event="onClick">
+         oscars.AuthorizationDetails.postDelete();
+      </script>
+  </button>
+  <button dojoType="dijit.form.Button" id="resetOriginalAuthorization">
+     RESET TO ORIGINAL
+     <script type="dojo/method" event="onClick">
+         oscars.AuthorizationDetails.resetFields(true);
+     </script>
+  </button>
+  </span>
+  <span id="addAuthorizationDisplay">
+<p>Any legal set of options can be added to any attribute.  An attribute can
+be chosen at any time.
+Further information on attributes is available
+<a href="/OSCARS/docs/attributes.html" target="_blank">here</a>.
+The correct way to add the other
+options is to start from a higher menu and
+work down.  What resource is chosen determines which permissions can be
+chosen, and so on down to constraints and their values.
+Since you are starting with default values,
+selected valid menu options may change as you work your way down the list, or if
+you set an option higher in the list later than one lower.
+You can click on CLEAR at any time to set the options to the default
+values.
+</p>
+  <button dojoType="dijit.form.Button" id="addAuthorization">
+     ADD
+     <script type="dojo/method" event="onClick">
+         oscars.AuthorizationDetails.postAdd();
+     </script>
+  </button>
+  <button dojoType="dijit.form.Button" id="clearAuthorization">
+     CLEAR
+     <script type="dojo/method" event="onClick">
+         oscars.AuthorizationDetails.resetFields(false);
+     </script>
+  </button>
+  </span>
+
+  <!-- used to bring over constraints data only once -->
+  <input type="hidden" name="rpc" id="rpc" />
+  <!-- used in authorization modification -->
+  <input type="hidden" name="oldAuthAttributeName" id="oldAuthAttributeName" />
+  <input type="hidden" name="oldResourceName" id="oldResourceName" />
+  <input type="hidden" name="oldPermissionName" id="oldPermissionName" />
+  <input type="hidden" name="oldConstraintName" id="oldConstraintName" />
+  <!-- used to indicate whether an attribute name was modified and need to
+       update -->
+  <input type="hidden" name="authAttrsUpdated" id="authAttrsUpdated" />
+
+<table width="50%">
+<tbody>
+  <tr>
+    <!-- setting once sets for all in column -->
+    <td width="12%">Attribute</td>
+    <td colspan="2">
+        <select name="authAttributeName" id="authAttributeName"
+            onChange="oscarsState.authorizationState.constrainChoices('authAttributeName', true);return false;">
+        </select>
+    </td>
+  </tr>
+  <tr>
+    <td>Resource</td>
+    <td colspan="2">
+        <select name="resourceName" id="resourceName"
+            onChange="oscarsState.authorizationState.constrainChoices('resourceName', true);return false;">
+        </select>
+    </td>
+  </tr>
+  <tr>
+    <td>Permission</td>
+    <td colspan="2">
+        <select name="permissionName" id="permissionName"
+            onChange="oscarsState.authorizationState.constrainChoices('permissionName', true);return false;">
+        </select>
+    </td>
+  </tr>
+  <tr>
+    <td>Constraint</td>
+    <td colspan="2">
+        <select name="constraintName" id="constraintName"
+            onChange="oscarsState.authorizationState.constrainChoices('constraintName', true);return false;">
+        </select>
+    </td>
+  </tr>
+  <tr>
+    <td>Constraint value</td>
+    <td>
+      <input type="text" name="constraintValue" id="constraintValue"
+             dojoType="dijit.form.TextBox"
+             promptMessage="Enter the constraint value" />
+    </td>
+    <td id="constraintType">
+    </td>
+  </tr>
+</tbody>
+</table>
+</form>
+<!-- tooltip section for buttons -->
+<!-- currently a bug in Dojo where tooltip stays displayed on new page
+<div dojoType = "dijit.Tooltip" connectId="addAuthorization" position="above">
+    Adds a new authorization with the current values.
+</div>
+-->
+<div dojoType = "dijit.Tooltip" connectId="clearAuthorization" position="above">
+    Clears all parameters to none.
+</div>
+<!--
+<div dojoType = "dijit.Tooltip" connectId="modifyAuthorization" position="above">
+    Modifies the authorization.
+</div>
+<div dojoType = "dijit.Tooltip" connectId="deleteAuthorization" position="above">
+    Deletes the selected authorization.
+</div>
+-->
+
+<div dojoType = "dijit.Tooltip" connectId="resetOriginalAuthorization" position="above">
+    Resets all authorization parameters to their original values.
+</div>
+</body>
+</html>

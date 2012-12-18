@@ -1,0 +1,12 @@
+---
+soap:
+    publishTo: 	'https://localhost:9006/OSCARS/resourceManager'
+
+resourceManager:
+    dbname: 'rm' 
+    username: 'oscars'
+    password: 'mypass'
+
+# time in seconds
+    scanInterval:  '600' 
+    lookAhead:  '900'

@@ -1,0 +1,10 @@
+<oscarsMail>
+
+<contentType>text/plain</contentType>
+<subject>##TAG:PRODUCTION CIRCUIT##Circuit teardown for reservation ##gri## failed</subject>
+<messageBody>
+Circuit teardown failed with ##errorMessage##
+##reservation##
+</messageBody>
+
+</oscarsMail>

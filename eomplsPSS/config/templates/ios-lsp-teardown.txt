@@ -1,0 +1,14 @@
+configure terminal
+
+no policy-map ${policy.name}
+!
+no pseudowire-class ${lsp.name}
+!
+no interface Tunnel${ifce.vlan}
+!
+no interface ${ifce.name}.${ifce.vlan}
+!
+no ip explicit-path name ${path.name} enable
+!
+
+end

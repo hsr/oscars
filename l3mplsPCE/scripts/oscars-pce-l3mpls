@@ -1,0 +1,99 @@
+#!/bin/bash
+#
+# Init file for OSCARS Layer 3 MPLS PCE
+#
+# chkconfig: 2345 65 20
+# description: OSCARS Layer 3 MPLS PCE
+#
+
+# Source function library.
+. /etc/rc.d/init.d/functions
+
+#Service specific variables
+SERVICE_NAME=L3MplsPCE
+SHORT_NAME=l3mplsPCE
+PCE_NAME=l3mpls
+LONG_NAME="OSCARS Layer 3 MPLS PCE"
+
+#OSCARS variables
+OSCARS_HOME=/etc/oscars
+export OSCARS_HOME
+OSCARS_DIST=/opt/oscars
+export OSCARS_DIST
+HOME_PREFIX=${OSCARS_HOME}/${SERVICE_NAME}
+DIST_PREFIX=${OSCARS_DIST}/${SHORT_NAME}
+BINDIR=${DIST_PREFIX}/bin
+CONFDIR=${HOME_PREFIX}/conf
+RUNDIR=/var/run/oscars
+LOCK_FILE=/var/lock/subsys/oscars-${SHORT_NAME}
+CONTEXT=PRODUCTION
+USER=oscars
+GROUP=oscars
+STOP_TIMEOUT=20
+RESTART_DELAY=10
+PIDFILE=${RUNDIR}/${SHORT_NAME}.pid
+JARFILE=${DIST_PREFIX}/target/${SHORT_NAME}.one-jar.jar
+OSCARS_CMD="${BINDIR}/startServer.sh ${CONTEXT} ${PIDFILE} ${JARFILE}  > /var/log/oscars/${SHORT_NAME}.out 2>&1 &"
+
+#functions
+start(){
+    echo -n $"Starting oscars-pce-${PCE_NAME}: "
+    daemon --pidfile=${PIDFILE} --user=${USER} $OSCARS_CMD
+    RETVAL=$?
+    echo
+    [ $RETVAL = 0 ] && touch ${LOCK_FILE}
+    return $RETVAL
+}
+
+stop(){
+    echo -n $"Stopping oscars-pce-${PCE_NAME}: "
+	killproc -p ${PIDFILE} -d ${STOP_TIMEOUT} java
+	RETVAL=$?
+	echo
+	[ $RETVAL = 0 ] && rm -f ${LOCK_FILE} ${PIDFILE}
+}
+
+#handle arguments
+ERROR=0
+ARGV="$@"
+if [ -z "$ARGV" ] ; then 
+    ARGS="help"
+fi
+
+for ARG in $@ $ARGS
+do
+    case $ARG in
+    start)
+        start
+	;;
+    stop)
+	    stop
+	;;
+    restart)
+    	stop
+    	sleep $RESTART_DELAY
+    	start
+	;;
+	status)
+	    status -p ${PIDFILE} oscars-${SHORT_NAME}
+	;;
+    *)
+	echo "usage: $0 (start|stop|restart|help)"
+	cat <<EOF
+
+start      - start ${LONG_NAME}
+stop       - stop ${LONG_NAME}
+restart    - restart ${LONG_NAME} if running by sending a SIGHUP or start if 
+             not running
+status     - status of ${LONG_NAME}
+help       - this screen
+
+EOF
+	ERROR=2
+    ;;
+
+    esac
+
+done
+
+exit $ERROR

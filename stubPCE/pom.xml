@@ -1,0 +1,80 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
+    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+  <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <artifactId>OSCARS</artifactId>
+    <groupId>net.es.oscars</groupId>
+    <version>0.0.1-SNAPSHOT</version>
+  </parent>
+  
+  <groupId>net.es.oscars</groupId>
+  <artifactId>stubPCE</artifactId>
+  <version>0.0.1-SNAPSHOT</version>
+  <name>stubPCE</name>
+  <url>http://maven.apache.org</url>
+  
+  <repositories>
+    <repository>
+        <id>OSCARS</id>
+        <name>OSCARS Maven Repository</name>
+        <layout>default</layout>
+        <url>file:///${basedir}/../common-libs/repo</url>
+    </repository>
+  </repositories>
+    
+  <dependencies>
+    
+    <!-- common SOAP interfaces (from local repository) -->
+   <dependency>
+        <groupId>net.es.oscars</groupId>
+        <artifactId>common-soap</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    
+    <dependency>
+        <groupId>net.es.oscars</groupId>
+        <artifactId>pce</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+    
+    <!-- OSCARS utilities -->
+    <dependency>
+        <groupId>net.es.oscars</groupId>
+        <artifactId>utils</artifactId>
+        <version>0.0.1-SNAPSHOT</version>
+    </dependency>
+  </dependencies>
+  
+  <build>
+        <plugins>
+            <!-- puts all code & libraries in one jar -->
+            <plugin>
+                <groupId>org.dstovall</groupId>
+                <artifactId>onejar-maven-plugin</artifactId>
+                <version>1.4.1</version>
+                <executions>
+                    <execution>
+                        <configuration>
+                            <mainClass>net.es.oscars.pce.stub.StubPCEServer</mainClass>
+                            <classifier>onejar</classifier>
+                        </configuration>
+                        <goals>
+                            <goal>one-jar</goal>
+                        </goals>
+                    </execution>
+                </executions>
+            </plugin>
+            <!-- specifically use java 1.5 to compile -->
+            <plugin>
+                <artifactId>maven-compiler-plugin</artifactId>
+                <configuration>
+                    <source>${java.version}</source>
+                    <target>${java.version}</target>
+                </configuration>
+            </plugin>
+
+
+        </plugins>
+    </build>
+</project>

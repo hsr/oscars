@@ -1,0 +1,184 @@
+/*
+ Dijit Progress Bar
+*/
+.dijitProgressBar {
+	margin:2px 0px 2px 0px;
+}
+.dijitProgressBarEmpty {	
+	background:#fff url("../lib/dojo/dijit/themes/tundra/images/progressBarEmpty.png") repeat-x center center;
+	border-color: #a2a2a2 #b8b8b8 #b8b8b8 #a2a2a2;
+}
+.dijitProgressBarTile {	
+	background:#f0f0f0 url("../lib/dojo/dijit/themes/tundra/images/progressBarFull.png") repeat-x center center;
+}
+.dijitProgressBarFull {
+	border-right:1px solid #b8b8b8;
+}
+.dijitProgressBarLabel {
+	color:#293a4b;
+}
+.dijitProgressBarIndeterminate .dijitProgressBarTile {
+	background:#cad2de url("../lib/dojo/dijit/themes/tundra/images/progressBarAnim.gif") repeat-x center center;
+}
+
+/*
+ Dijit Dialog
+*/
+.dijitDialog {
+	background: #fff;
+	border: 1px solid #7eabcd;
+	
+	padding: 0px;
+	-webkit-box-shadow: 0px 5px 10px #adadad;
+}
+.dijitDialog .dijitDialogPaneContent {
+	background: #fff;
+	border:none;
+	border-top: 1px solid #d3d3d3; 
+	padding:10px;
+}
+.dijitDialogTitleBar {
+	background: #fafafa url("../lib/dojo/dijit/themes/tundra/images/titleBar.png") repeat-x top left;
+	padding: 5px 6px 3px 6px;
+	cursor: move;
+	outline:0; 
+}
+.dijitDialogTitle {
+	font-weight: bold;
+	padding: 0px 4px;
+}
+.dijitDialogCloseIcon {
+	background: url("../lib/dojo/dijit/themes/tundra/images/tabClose.png") no-repeat right top;
+	position: absolute;
+	vertical-align: middle;
+	right: 6px;
+	top: 4px;
+	height: 15px;
+	width: 15px;
+	cursor: pointer;
+}
+.dj_ie6 .dijitDialogCloseIcon {
+	background : url("../lib/dojo/dijit/themes/tundra/images/tabClose.gif") no-repeat right top;
+}
+.dijitDialogCloseIcon-hover {
+	background: url("../lib/dojo/dijit/themes/tundra/images/tabCloseHover.png") no-repeat right top;
+}
+.dj_ie6 .dijitDialogCloseIcon-hover {
+	background : url("../lib/dojo/dijit/themes/tundra/images/tabCloseHover.gif") no-repeat right top;
+}
+
+/*
+ Dijit Calendar
+ */
+.dijitCalendarIncrementControl {
+	width:15px;
+	height:15px;
+	background-image: url("../lib/dojo/dijit/themes/tundra/images/spriteRoundedIconsSmall.png");
+	background-repeat: no-repeat
+}
+.dj_ie6 .dijitCalendarIncrementControl {
+	font-size:.1em;
+	background-image: url("../lib/dojo/dijit/themes/tundra/images/spriteRoundedIconsSmall.gif");
+}
+.dijitA11ySideArrow {
+	display: none;
+}
+.dijitCalendarDecrease {
+	background-position: top left;
+}
+.dijitCalendarIncrease {
+	background-position: -30px top;
+}
+table.dijitCalendarContainer {
+	font-size: 100%;
+	border-spacing: 0;
+	border-collapse: separate;
+	border: 1px solid #ccc;
+	margin: 0;
+}
+.dijitCalendarMonthContainer th {
+	background:#d3d3d3 url("../lib/dojo/dijit/themes/tundra/images/titleBar.png") repeat-x top;
+	padding-top:.3em;
+	padding-bottom:.2em;
+	text-align:center;
+}
+.dj_ie6 .dijitCalendarMonthContainer th {
+	padding-top:.2em;
+	padding-bottom:.1em;
+}
+.dijitCalendarDayLabelTemplate {
+	background:white url("../lib/dojo/dijit/themes/tundra/images/calendarDayLabel.png") repeat-x bottom;
+	font-weight:normal;
+	padding-top:.15em;
+	padding-bottom:0em;
+	border-top: 1px solid #eeeeee;
+	color:#293a4b;
+	text-align:center;
+}
+.dijitCalendarBodyContainer {
+	border-bottom: 1px solid #eeeeee;	
+}
+.dijitCalendarMonthLabel {
+	color:#293a4b;
+	font-weight: bold;
+}
+.dijitCalendarDateTemplate {
+	font-size: 0.9em;
+	font-weight: bold;
+	text-align: center;
+	padding: 0.3em 0.3em 0.05em 0.3em;
+	letter-spacing: 1px;
+}
+.dj_ie .dijitCalendarDateTemplate {
+	padding: 0.1em .33em 0.02em .33em;
+}
+.dijitCalendarPreviousMonth,
+.dijitCalendarNextMonth 		{
+	color:#999999;
+	background-color:#f8f8f8 !important;
+}
+.dijitCalendarPreviousMonthDisabled,
+.dijitCalendarNextMonthDisabled	{
+	background-color:#a4a5a6 !important;
+}
+.dijitCalendarCurrentMonth {
+	background-color:white !important;
+}
+.dijitCalendarCurrentMonthDisabled {
+	background-color:#bbbbbc !important;
+}
+.dijitCalendarDisabledDate {
+	cursor:default !important;
+	text-decoration:line-through !important;
+}
+.dijitCalendarCurrentDate {
+	text-decoration:underline;
+	font-weight:bold;
+}
+.dijitCalendarHoveredDate {
+	background-color: #e2ebf2 !important;
+}
+.dijitCalendarSelectedDate {
+	background-color:#bbc4d0 !important;
+	color:black !important;
+}
+.dijitCalendarYearContainer {
+	background:white url("../lib/dojo/dijit/themes/tundra/images/calendarYearLabel.png") repeat-x bottom;
+	border-top:1px solid #ccc;
+}
+.dijitCalendarYearLabel {
+	margin:0;
+	padding:0.4em 0 0.25em 0;
+	text-align:center;
+}
+.dijitCalendarSelectedYear {
+	color:black;
+	padding:0.2em;
+	padding-bottom:0.1em;
+	background-color:#bbc4d0 !important;
+}
+.dijitCalendarNextYear,
+.dijitCalendarPreviousYear {
+	color:black !important;
+	font-weight:normal;
+}

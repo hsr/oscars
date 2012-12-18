@@ -1,0 +1,251 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<topology 
+    xmlns="http://ogf.org/schema/network/topology/ctrlPlane/20080828/" 
+    id="testdomain-4-topology">
+    
+    <idcId>https://testdomain-4/axis2/services/OSCARS</idcId>
+    
+    <domain id="testdomain-4">
+        
+        <!-- TESTDOMAIN-4 SWITCH1 -->
+        <node id="urn:ogf:network:domain=testdomain-4:node=switch1">
+            <address>192.168.2.4</address> 
+            
+            <port id="urn:ogf:network:domain=testdomain-4:node=switch1:port=3">
+                <capacity>1000000000</capacity>
+                <maximumReservableCapacity>1000000000</maximumReservableCapacity>
+                <minimumReservableCapacity>1000000</minimumReservableCapacity>
+                <granularity>1000000</granularity>
+                
+                <link id="urn:ogf:network:domain=testdomain-4:node=switch1:port=3:link=11.2.1.2">
+                    <remoteLinkId>urn:ogf:network:domain=*:node=*:port=*:link=*</remoteLinkId>
+                    <trafficEngineeringMetric>100</trafficEngineeringMetric>
+                    <capacity>1000000000</capacity>
+                    <maximumReservableCapacity>1000000000</maximumReservableCapacity>
+                    <minimumReservableCapacity>1000000</minimumReservableCapacity>
+                    <granularity>1000000</granularity>
+                    <SwitchingCapabilityDescriptors>
+                        <switchingcapType>l2sc</switchingcapType>
+                        <encodingType>ethernet</encodingType>
+                        <switchingCapabilitySpecificInfo>
+                            <interfaceMTU>9000</interfaceMTU>
+                            <vlanRangeAvailability>3000-4000</vlanRangeAvailability>
+                            <vlanTranslation>0</vlanTranslation>
+                        </switchingCapabilitySpecificInfo>
+                    </SwitchingCapabilityDescriptors>
+                </link>
+            </port>
+            
+            <port id="urn:ogf:network:domain=testdomain-4:node=switch1:port=4">
+                <capacity>1000000000</capacity>
+                <maximumReservableCapacity>1000000000</maximumReservableCapacity>
+                <minimumReservableCapacity>1000000</minimumReservableCapacity>
+                <granularity>1000000</granularity>
+                
+                <link id="urn:ogf:network:domain=testdomain-4:node=switch1:port=4:link=11.2.2.1">
+                    <remoteLinkId>urn:ogf:network:domain=testdomain-4:node=switch2:port=3:link=11.2.2.2</remoteLinkId>
+                    <trafficEngineeringMetric>100</trafficEngineeringMetric>
+                    <capacity>1000000000</capacity>
+                    <maximumReservableCapacity>1000000000</maximumReservableCapacity>
+                    <minimumReservableCapacity>1000000</minimumReservableCapacity>
+                    <granularity>1000000</granularity>
+                    <SwitchingCapabilityDescriptors>
+                        <switchingcapType>l2sc</switchingcapType>
+                        <encodingType>ethernet</encodingType>
+                        <switchingCapabilitySpecificInfo>
+                            <interfaceMTU>9000</interfaceMTU>
+                            <vlanRangeAvailability>3000-4000</vlanRangeAvailability>
+                            <vlanTranslation>0</vlanTranslation>
+                        </switchingCapabilitySpecificInfo>
+                    </SwitchingCapabilityDescriptors>
+                </link>
+            </port>
+            
+            <port id="urn:ogf:network:domain=testdomain-4:node=switch1:port=5">
+                <capacity>1000000000</capacity>
+                <maximumReservableCapacity>1000000000</maximumReservableCapacity>
+                <minimumReservableCapacity>1000000</minimumReservableCapacity>
+                <granularity>1000000</granularity>
+                
+                <link id="urn:ogf:network:domain=testdomain-4:node=switch1:port=5:link=11.2.3.1">
+                    <remoteLinkId>urn:ogf:network:domain=testdomain-4:node=switch3:port=5:link=11.2.3.2</remoteLinkId>
+                    <trafficEngineeringMetric>100</trafficEngineeringMetric>
+                    <capacity>1000000000</capacity>
+                    <maximumReservableCapacity>1000000000</maximumReservableCapacity>
+                    <minimumReservableCapacity>1000000</minimumReservableCapacity>
+                    <granularity>1000000</granularity>
+                    <SwitchingCapabilityDescriptors>
+                        <switchingcapType>l2sc</switchingcapType>
+                        <encodingType>ethernet</encodingType>
+                        <switchingCapabilitySpecificInfo>
+                            <interfaceMTU>9000</interfaceMTU>
+                            <vlanRangeAvailability>3000-4000</vlanRangeAvailability>
+                            <vlanTranslation>0</vlanTranslation>
+                        </switchingCapabilitySpecificInfo>
+                    </SwitchingCapabilityDescriptors>
+                </link>
+            </port>
+        </node>
+        
+        <!-- TESTDOMAIN-4 SWITCH2 -->
+        <node id="urn:ogf:network:domain=testdomain-4:node=switch2">
+            <address>192.168.2.6</address> 
+            
+            <port id="urn:ogf:network:domain=testdomain-4:node=switch2:port=4">
+                <capacity>1000000000</capacity>
+                <maximumReservableCapacity>1000000000</maximumReservableCapacity>
+                <minimumReservableCapacity>1000000</minimumReservableCapacity>
+                <granularity>1000000</granularity>
+                
+                <link id="urn:ogf:network:domain=testdomain-4:node=switch2:port=4:link=11.2.4.1">
+                    <remoteLinkId>urn:ogf:network:domain=testdomain-4:node=switch3:port=4:link=11.2.4.2</remoteLinkId>
+                    <trafficEngineeringMetric>100</trafficEngineeringMetric>
+                    <capacity>1000000000</capacity>
+                    <maximumReservableCapacity>1000000000</maximumReservableCapacity>
+                    <minimumReservableCapacity>1000000</minimumReservableCapacity>
+                    <granularity>1000000</granularity>
+                    <SwitchingCapabilityDescriptors>
+                        <switchingcapType>l2sc</switchingcapType>
+                        <encodingType>ethernet</encodingType>
+                        <switchingCapabilitySpecificInfo>
+                            <interfaceMTU>9000</interfaceMTU>
+                            <vlanRangeAvailability>3000-4000</vlanRangeAvailability>
+                            <vlanTranslation>0</vlanTranslation>
+                        </switchingCapabilitySpecificInfo>
+                    </SwitchingCapabilityDescriptors>
+                </link>
+            </port>
+            
+            <port id="urn:ogf:network:domain=testdomain-4:node=switch2:port=4">
+                <capacity>1000000000</capacity>
+                <maximumReservableCapacity>1000000000</maximumReservableCapacity>
+                <minimumReservableCapacity>1000000</minimumReservableCapacity>
+                <granularity>1000000</granularity>
+                
+                <link id="urn:ogf:network:domain=testdomain-4:node=switch2:port=3:link=11.2.2.2">
+                    <remoteLinkId>urn:ogf:network:domain=testdomain-4:node=switch1:port=4:link=11.2.2.1</remoteLinkId>
+                    <trafficEngineeringMetric>100</trafficEngineeringMetric>
+                    <capacity>1000000000</capacity>
+                    <maximumReservableCapacity>1000000000</maximumReservableCapacity>
+                    <minimumReservableCapacity>1000000</minimumReservableCapacity>
+                    <granularity>1000000</granularity>
+                    <SwitchingCapabilityDescriptors>
+                        <switchingcapType>l2sc</switchingcapType>
+                        <encodingType>ethernet</encodingType>
+                        <switchingCapabilitySpecificInfo>
+                            <interfaceMTU>9000</interfaceMTU>
+                            <vlanRangeAvailability>3000-4000</vlanRangeAvailability>
+                            <vlanTranslation>0</vlanTranslation>
+                        </switchingCapabilitySpecificInfo>
+                    </SwitchingCapabilityDescriptors>
+                </link>
+            </port>
+        </node>
+        
+        <!-- TESTDOMAIN-4 SWITCH3 -->
+        <node id="urn:ogf:network:domain=testdomain-4:node=switch3">
+            <address>192.168.2.8</address> 
+            
+            <port id="urn:ogf:network:domain=testdomain-4:node=switch3:port=4">
+                <capacity>1000000000</capacity>
+                <maximumReservableCapacity>1000000000</maximumReservableCapacity>
+                <minimumReservableCapacity>1000000</minimumReservableCapacity>
+                <granularity>1000000</granularity>
+                
+                <link id="urn:ogf:network:domain=testdomain-4:node=switch3:port=4:link=11.2.4.2">
+                    <remoteLinkId>urn:ogf:network:domain=testdomain-4:node=switch2:port=4:link=11.2.4.1</remoteLinkId>
+                    <trafficEngineeringMetric>100</trafficEngineeringMetric>
+                    <capacity>1000000000</capacity>
+                    <maximumReservableCapacity>1000000000</maximumReservableCapacity>
+                    <minimumReservableCapacity>1000000</minimumReservableCapacity>
+                    <granularity>1000000</granularity>
+                    <SwitchingCapabilityDescriptors>
+                        <switchingcapType>l2sc</switchingcapType>
+                        <encodingType>ethernet</encodingType>
+                        <switchingCapabilitySpecificInfo>
+                            <interfaceMTU>9000</interfaceMTU>
+                            <vlanRangeAvailability>3000-4000</vlanRangeAvailability>
+                            <vlanTranslation>0</vlanTranslation>
+                        </switchingCapabilitySpecificInfo>
+                    </SwitchingCapabilityDescriptors>
+                </link>
+            </port>
+            
+            <port id="urn:ogf:network:domain=testdomain-4:node=switch3:port=5">
+                <capacity>1000000000</capacity>
+                <maximumReservableCapacity>1000000000</maximumReservableCapacity>
+                <minimumReservableCapacity>1000000</minimumReservableCapacity>
+                <granularity>1000000</granularity>
+                
+                <link id="urn:ogf:network:domain=testdomain-4:node=switch3:port=5:link=11.2.3.2">
+                    <remoteLinkId>urn:ogf:network:domain=testdomain-4:node=switch1:port=5:link=11.2.3.1</remoteLinkId>
+                    <trafficEngineeringMetric>100</trafficEngineeringMetric>
+                    <capacity>1000000000</capacity>
+                    <maximumReservableCapacity>1000000000</maximumReservableCapacity>
+                    <minimumReservableCapacity>1000000</minimumReservableCapacity>
+                    <granularity>1000000</granularity>
+                    <SwitchingCapabilityDescriptors>
+                        <switchingcapType>l2sc</switchingcapType>
+                        <encodingType>ethernet</encodingType>
+                        <switchingCapabilitySpecificInfo>
+                            <interfaceMTU>9000</interfaceMTU>
+                            <vlanRangeAvailability>3000-4000</vlanRangeAvailability>
+                            <vlanTranslation>0</vlanTranslation>
+                        </switchingCapabilitySpecificInfo>
+                    </SwitchingCapabilityDescriptors>
+                </link>
+            </port>
+            
+            <port id="urn:ogf:network:domain=testdomain-4:node=switch3:port=3">
+                <capacity>1000000000</capacity>
+                <maximumReservableCapacity>1000000000</maximumReservableCapacity>
+                <minimumReservableCapacity>1000000</minimumReservableCapacity>
+                <granularity>1000000</granularity>
+                
+                <link id="urn:ogf:network:domain=testdomain-4:node=switch3:port=3:link=11.2.5.1">
+                    <remoteLinkId>urn:ogf:network:domain=*:node=*:port=*:link=*</remoteLinkId>
+                    <trafficEngineeringMetric>100</trafficEngineeringMetric>
+                    <capacity>1000000000</capacity>
+                    <maximumReservableCapacity>1000000000</maximumReservableCapacity>
+                    <minimumReservableCapacity>1000000</minimumReservableCapacity>
+                    <granularity>1000000</granularity>
+                    <SwitchingCapabilityDescriptors>
+                        <switchingcapType>l2sc</switchingcapType>
+                        <encodingType>ethernet</encodingType>
+                        <switchingCapabilitySpecificInfo>
+                            <interfaceMTU>9000</interfaceMTU>
+                            <vlanRangeAvailability>3000-4000</vlanRangeAvailability>
+                            <vlanTranslation>0</vlanTranslation>
+                        </switchingCapabilitySpecificInfo>
+                    </SwitchingCapabilityDescriptors>
+                </link>
+            </port>
+            
+             <!-- interdomain link to test-domain3 -->
+             <port id="urn:ogf:network:domain=testdomain-4:node=switch3:port=6">
+                <capacity>1000000000</capacity>
+                <maximumReservableCapacity>1000000000</maximumReservableCapacity>
+                <minimumReservableCapacity>1000000</minimumReservableCapacity>
+                <granularity>1000000</granularity>
+                
+                <link id="urn:ogf:network:domain=testdomain-4:node=switch3:port=6:link=11.2.12.1">
+                    <remoteLinkId>urn:ogf:network:domain=testdomain-3:node=switch3:port=6:link=11.2.12.1</remoteLinkId>
+                    <trafficEngineeringMetric>100</trafficEngineeringMetric>
+                    <capacity>1000000000</capacity>
+                    <maximumReservableCapacity>1000000000</maximumReservableCapacity>
+                    <minimumReservableCapacity>1000000</minimumReservableCapacity>
+                    <granularity>1000000</granularity>
+                    <SwitchingCapabilityDescriptors>
+                        <switchingcapType>l2sc</switchingcapType>
+                        <encodingType>ethernet</encodingType>
+                        <switchingCapabilitySpecificInfo>
+                            <interfaceMTU>9000</interfaceMTU>
+                            <vlanRangeAvailability>3000-4000</vlanRangeAvailability>
+                        </switchingCapabilitySpecificInfo>
+                    </SwitchingCapabilityDescriptors>
+                </link>
+            </port>
+        </node>
+    </domain>
+    
+</topology>

@@ -1,0 +1,42 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+
+<hibernate-mapping>
+
+<class name="net.es.oscars.authZ.beans.Authorization" table="authorizations">
+    <meta attribute="class-description" inherit="false">
+       @hibernate.class table="Authorizations"
+    </meta>
+
+    <id name="id">
+        <meta attribute="field-description">
+           @hibernate.id generator-class="identity"
+        </meta>
+        <generator class="identity" />
+    </id>
+
+    <property name="context" />
+
+    <property name="updateTime" />
+
+    <!-- Associations -->
+    <many-to-one name="attribute" column="attrId"
+        unique="true" class="net.es.oscars.authZ.beans.Attribute"  />
+
+    <many-to-one name="constraint" column="constraintId"
+        unique="true" class="net.es.oscars.authZ.beans.Constraint" />
+
+    <many-to-one name="resource" column="resourceId"
+        unique="true" class="net.es.oscars.authZ.beans.Resource" />
+
+    <many-to-one name="permission" column="permissionId"
+        unique="true" class="net.es.oscars.authZ.beans.Permission"  />
+
+    <property name="constraintValue"/>
+
+    <!-- Associations -->
+
+</class>
+</hibernate-mapping>

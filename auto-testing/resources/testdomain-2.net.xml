@@ -1,0 +1,1473 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<CtrlPlane:topology 
+    xmlns:CtrlPlane="http://ogf.org/schema/network/topology/ctrlPlane/20080828/" id="testdomain-2.net">
+    <xsd:documentation xmlns:xsd="http://www.w3.org/2001/XMLSchema" lang="en">
+        testdomain-1.net.xml: This file describes a topology 
+    </xsd:documentation>
+
+    
+    <CtrlPlane:idcId>testdomain-2.net</CtrlPlane:idcId>
+    <CtrlPlane:domain id="testdomain-2.net">
+        
+        <!-- Node-1 -->
+        <CtrlPlane:node id="urn:ogf:network:domain=testdomain-2.net:node=node-1">
+            <CtrlPlane:address>10.2.2.1</CtrlPlane:address> 
+               
+            <!-- Port-1 Edge with translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-1">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-1:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=*:node=*:port=*:link=*</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-3000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-2 to Node-2 --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-2">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-2:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-2:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-3 to Node-2 no translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-3">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-3:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-3:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>0</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-4 to Node-2 vlan < 2000 --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-4">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-4:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-4:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-2000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-5 to Node-2 vlan < 2000 no translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-5">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-5:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-5:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-2000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>0</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-6 to Node-2 vlan > 3000 --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-6">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-6:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-6:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>3000-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-7 to Node-2 vlan > 3000 no translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-7">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-7:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-7:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>3000-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>0</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-8 to Node-2 limited vlan range and limited bandwitch --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-8">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-8:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-8:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-20</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-9 to Node-2 limited vlan range and limited bandwitch no translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-9">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-9:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-9:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-20</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>0</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-10 same node --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-10">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-10:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-11:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-2000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-11 same node --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-11">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-11:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-10:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-2000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-12 same node without translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-12">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-12:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-13:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-2000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>0</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-13 same node without translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-13">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-13:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-12:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-2000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>0</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+        </CtrlPlane:node>
+
+        <!-- Node-2 -->
+        <CtrlPlane:node id="urn:ogf:network:domain=testdomain-2.net:node=node-2">
+            <CtrlPlane:address>10.2.2.2</CtrlPlane:address> 
+               
+            <!-- Port-1 Edge with translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-1">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-1:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=*:node=*:port=*:link=*</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-3000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-2 to Node-1 --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-2">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-2:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-2:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-3 to Node-1 no translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-3">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-3:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-3:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>0</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-4 to Node-1 vlan < 2000 --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-4">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-4:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-4:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-2000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-5 to Node-1 vlan < 2000 no translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-5">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-5:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-5:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-2000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>0</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-6 to Node-1 vlan > 3000 --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-6">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-6:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-6:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>3000-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-7 to Node-1 vlan > 3000 no translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-7">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-7:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-7:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>3000-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>0</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-8 to Node-1 limited vlan range and limited bandwitch --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-8">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-8:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-8:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-20</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-9 to Node-1 limited vlan range and limited bandwitch no translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-9">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-9:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-1:port=port-9:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-20</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>0</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-10 to Node-3 --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-10">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-10:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-3:port=port-10:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-11 to Node-4 --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-11">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-11:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-4:port=port-11:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-12 to Node-5 --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-12">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-12:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-5:port=port-12:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+        </CtrlPlane:node>
+
+        <!-- Node-3 to testdomain-1.net -->
+        <CtrlPlane:node id="urn:ogf:network:domain=testdomain-2.net:node=node-3">
+            <CtrlPlane:address>10.2.2.3</CtrlPlane:address> 
+               
+            <!-- Port-1 Edge with translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-3:port=port-1">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-3:port=port-1:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=*:node=*:port=*:link=*</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-3000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-2 to testdomain-1.net --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-3:port=port-2">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-3:port=port-2:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-1.net:node=node-3:port=port-2:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-3 to testdomain-1 no translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-3:port=port-3">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-3:port=port-3:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-1.net:node=node-3:port=port-3:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>0</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-4 to testdomain-1 vlan < 2000 --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-3:port=port-4">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-3:port=port-4:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-1.net:node=node-3:port=port-4:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-2000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-5 to testdomain-1 vlan < 2000 no translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-3:port=port-5">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-3:port=port-5:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-1.net:node=node-3:port=port-5:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-2000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>0</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-6 to testdomain-1 vlan > 3000 --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-3:port=port-6">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-3:port=port-6:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-1.net:node=node-3:port=port-6:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>3000-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-7 to testdomain-1 vlan > 3000 no translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-3:port=port-7">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-3:port=port-7:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-1.net:node=node-3:port=port-7:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>3000-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>0</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-8 to testdomain-1 limited vlan range and limited bandwitch --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-3:port=port-8">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-3:port=port-8:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-1.net:node=node-3:port=port-8:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-20</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-9 to testdomain-1 limited vlan range and limited bandwitch no translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-3:port=port-9">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>100000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>100000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>100000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-3:port=port-9:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-1.net:node=node-3:port=port-9:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-20</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>0</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-10 to Node-2 --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-3:port=port-10">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-3:port=port-10:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-10:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+        </CtrlPlane:node>
+
+        <!-- Node-4 to testdomain-3.net -->
+        <CtrlPlane:node id="urn:ogf:network:domain=testdomain-2.net:node=node-4">
+            <CtrlPlane:address>10.2.2.4</CtrlPlane:address> 
+               
+            <!-- Port-1 Edge with translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-4:port=port-1">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-4:port=port-1:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=*:node=*:port=*:link=*</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-3000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-2 to testdomain-3.net --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-4:port=port-2">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-4:port=port-2:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-3.net:node=node-4:port=port-2:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-3 to testdomain-3 no translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-4:port=port-3">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-4:port=port-3:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-3.net:node=node-4:port=port-3:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>0</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-4 to testdomain-3 vlan < 2000 --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-4:port=port-4">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-4:port=port-4:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-3.net:node=node-4:port=port-4:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-2000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-5 to testdomain-3 vlan < 2000 no translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-4:port=port-5">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-4:port=port-5:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-3.net:node=node-4:port=port-5:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-2000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>0</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-6 to testdomain-3 vlan > 3000 --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-4:port=port-6">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-4:port=port-6:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-3.net:node=node-4:port=port-6:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>3000-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-7 to testdomain-3 vlan > 3000 no translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-4:port=port-7">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-4:port=port-7:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-3.net:node=node-4:port=port-7:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>3000-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>0</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-8 to testdomain-3 limited vlan range and limited bandwitch --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-4:port=port-8">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-4:port=port-8:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-3.net:node=node-4:port=port-8:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-20</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-9 to testdomain-3 limited vlan range and limited bandwitch no translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-4:port=port-9">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-4:port=port-9:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-3.net:node=node-4:port=port-9:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-20</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>0</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-11 to Node-2 --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-4:port=port-11">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-4:port=port-11:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-11:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+        </CtrlPlane:node>
+
+        <!-- Node-5 to testdomain-4.net -->
+        <CtrlPlane:node id="urn:ogf:network:domain=testdomain-2.net:node=node-5">
+            <CtrlPlane:address>10.2.2.5</CtrlPlane:address> 
+               
+            <!-- Port-1 Edge with translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-5:port=port-1">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-5:port=port-1:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=*:node=*:port=*:link=*</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-3000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-2 to testdomain-4.net --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-5:port=port-2">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-5:port=port-2:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-4.net:node=node-5:port=port-2:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-3 to testdomain-4 no translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-5:port=port-3">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-5:port=port-3:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-4.net:node=node-5:port=port-3:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>0</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-4 to testdomain-4 vlan < 2000 --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-5:port=port-4">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-5:port=port-4:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-4.net:node=node-5:port=port-4:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-2000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-5 to testdomain-4 vlan < 2000 no translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-5:port=port-5">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-5:port=port-5:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-4.net:node=node-5:port=port-5:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-2000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>0</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-6 to testdomain-4 vlan > 3000 --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-5:port=port-6">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-5:port=port-6:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-4.net:node=node-5:port=port-6:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>3000-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-7 to testdomain-4 vlan > 3000 no translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-5:port=port-7">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-5:port=port-7:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-4.net:node=node-5:port=port-7:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>3000-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>0</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-8 to testdomain-4 limited vlan range and limited bandwitch --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-5:port=port-8">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-5:port=port-8:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-4.net:node=node-5:port=port-8:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-20</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-9 to testdomain-4 limited vlan range and limited bandwitch no translation --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-5:port=port-9">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-5:port=port-9:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-4.net:node=node-5:port=port-9:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-20</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>0</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+            <!-- Port-12 to Node-2 --> 
+            <CtrlPlane:port id="urn:ogf:network:domain=testdomain-2.net:node=node-5:port=port-12">
+                <CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
+                <CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
+                <CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
+                <CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+               
+                <CtrlPlane:link id="urn:ogf:network:domain=testdomain-2.net:node=node-5:port=port-12:link=link-1">
+                    <CtrlPlane:remoteLinkId>urn:ogf:network:domain=testdomain-2.net:node=node-2:port=port-12:link=link-1</CtrlPlane:remoteLinkId>
+
+                    <CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
+                    <CtrlPlane:SwitchingCapabilityDescriptors>
+                        <CtrlPlane:switchingcapType>l2sc</CtrlPlane:switchingcapType>
+                        <CtrlPlane:encodingType>ethernet</CtrlPlane:encodingType>
+                        <CtrlPlane:switchingCapabilitySpecificInfo>
+							<CtrlPlane:capability />
+                            <CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
+
+                            <CtrlPlane:vlanRangeAvailability>2-4000</CtrlPlane:vlanRangeAvailability>
+                            <CtrlPlane:vlanTranslation>1</CtrlPlane:vlanTranslation>
+
+                        </CtrlPlane:switchingCapabilitySpecificInfo>
+                    </CtrlPlane:SwitchingCapabilityDescriptors>
+                </CtrlPlane:link>
+            </CtrlPlane:port>
+
+        </CtrlPlane:node>
+
+    </CtrlPlane:domain>
+</CtrlPlane:topology>

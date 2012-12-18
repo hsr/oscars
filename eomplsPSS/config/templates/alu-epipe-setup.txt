@@ -1,0 +1,84 @@
+exit all
+configure qos sap-ingress "${ingqos.id}" create
+exit all
+configure qos sap-ingress "${ingqos.id}" description "${ingqos.description}"
+configure qos sap-ingress "${ingqos.id}" queue 2 create
+exit all
+configure qos sap-ingress "${ingqos.id}" queue 2 no parent
+configure qos sap-ingress "${ingqos.id}" queue 2 adaptation-rule pir closest cir closest
+configure qos sap-ingress "${ingqos.id}" queue 2 rate max cir ${ingqos.bandwidth?string.computer}000
+configure qos sap-ingress "${ingqos.id}" queue 2 mbs default
+configure qos sap-ingress "${ingqos.id}" queue 2 cbs default
+configure qos sap-ingress "${ingqos.id}" queue 2 high-prio-only default
+configure qos sap-ingress "${ingqos.id}" queue 11 multipoint create
+exit all
+configure qos sap-ingress "${ingqos.id}" fc "ef" create
+exit all
+configure qos sap-ingress "${ingqos.id}" fc "ef" queue 2
+exit all
+configure qos sap-ingress "${ingqos.id}" default-fc ef
+configure qos sap-ingress "${ingqos.id}" default-priority high
+
+configure qos sap-egress "${egrqos.id}" create
+exit all
+configure qos sap-egress "${egrqos.id}" description "${egrqos.description}"
+configure qos sap-egress "${egrqos.id}" queue 2 expedite create
+exit all
+configure qos sap-egress "${egrqos.id}" queue 2 no parent
+configure qos sap-egress "${egrqos.id}" queue 2 adaptation-rule pir closest cir closest
+configure qos sap-egress "${egrqos.id}" queue 2 percent-rate 100 cir 100
+configure qos sap-egress "${egrqos.id}" queue 2 mbs default
+configure qos sap-egress "${egrqos.id}" queue 2 cbs default
+configure qos sap-egress "${egrqos.id}" queue 2 high-prio-only default
+configure qos sap-egress "${egrqos.id}" fc "ef" create
+exit all
+configure qos sap-egress "${egrqos.id}" fc "ef" queue 2
+exit all
+
+
+
+# mpls path
+configure router mpls path "${path.name}" shutdown
+<#list path.hops as hop>
+configure router mpls path "${path.name}" hop ${hop.order} ${hop.address} strict
+</#list>
+configure router mpls path "${path.name}" no shutdown
+
+
+# mpls LSP 
+configure router mpls lsp "${lsp.name}" shutdown
+configure router mpls lsp "${lsp.name}" from ${lsp.from} 
+configure router mpls lsp "${lsp.name}" to ${lsp.to} 
+configure router mpls lsp "${lsp.name}" primary "${path.name}" priority 4 4
+configure router mpls lsp "${lsp.name}" no shutdown
+
+# service distribution point - forwards packets to the MPLS tunnel
+configure service sdp ${sdp.id} mpls create
+exit all
+configure service sdp ${sdp.id} shutdown
+configure service sdp ${sdp.id} description "${sdp.description}"
+configure service sdp ${sdp.id} far-end ${lsp.to}
+configure service sdp ${sdp.id} lsp "${lsp.name}"
+configure service sdp ${sdp.id} keep-alive shutdown
+configure service sdp ${sdp.id} no shutdown
+
+# service access point:
+configure service vpls ${epipe.id} customer 1 create sap ${ifce.name}:${ifce.vlan} create 
+exit all
+configure service vpls ${epipe.id} sap ${ifce.name}:${ifce.vlan} shutdown
+configure service vpls ${epipe.id} service-mtu 9194
+configure service vpls ${epipe.id} description "${epipe.description}"
+configure service vpls ${epipe.id} sap ${ifce.name}:${ifce.vlan} ingress qos ${ingqos.id}
+configure service vpls ${epipe.id} sap ${ifce.name}:${ifce.vlan} egress qos ${egrqos.id}
+configure service vpls ${epipe.id} sap ${ifce.name}:${ifce.vlan} no shutdown
+configure service vpls ${epipe.id} spoke-sdp ${sdp.id}:${epipe.id} create
+exit all 
+configure service vpls ${epipe.id} spoke-sdp ${sdp.id}:${epipe.id} hash-label
+exit all 
+configure service vpls ${epipe.id} spoke-sdp ${sdp.id}:${epipe.id} no shutdown
+
+configure service vpls ${epipe.id} per-service-hashing
+configure service vpls ${epipe.id} fdb-table-size 4096
+configure service vpls ${epipe.id} no shutdown
+admin rollback save
+admin save

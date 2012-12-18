@@ -1,0 +1,8 @@
+---
+
+-   id:     "stub"
+    impl:   "net.es.oscars.pss.stub.StubCircuitService"
+
+
+-   id:     "openflow"
+    impl:   "net.es.oscars.pss.openflow.service.OpenFlowService"

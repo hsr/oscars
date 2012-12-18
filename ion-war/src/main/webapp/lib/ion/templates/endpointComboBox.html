@@ -1,0 +1,15 @@
+<div class="endpointComboBox">
+	<div dojoAttachPoint="dataStore"
+		dojoType="${storeType}" 
+		jsId="${inputId}Store" 
+		url="${url}">		
+	</div>
+	<input dojoAttachPoint="input"
+		   dojoType="dijit.form.ComboBox" 
+		   store="${inputId}Store"
+           searchAttr="${searchAttr}" 
+		   name="${inputId}" 
+		   autocomplete="true"
+		   class="endpointComboBoxInput"
+		   id="${inputId}"/>
+</div>

@@ -1,0 +1,184 @@
+<html>
+<head>
+<script type="text/javascript">
+    var resvLayout = [[
+         {name: 'GRI', field: 'gri', width: "13em"},
+         {name: 'Status', field: 'status', width: "6em"},
+         {name: 'Bandwidth', field: 'bandwidth', width: "7em"},
+         {name: 'Start Time', field: 'startTime', width: "10em"},
+         {name: 'Source', field: 'source', width: "27"},
+         {name: 'Local source', field: 'localSource', width: "27"}
+       ],
+       [
+         {name: 'User', colSpan:"2", field: 'user', width: "19em"},
+         {name: 'VLAN', field: 'vlan', width: "7em"},
+         {name: 'End Time', field: 'endTime', width: "10em"},
+         {name: 'Destination', field: 'destination', width: "27"},
+         {name: 'Local destination', field: 'localDestination', width: "27"}
+      ]];
+</script>
+<script type="text/javascript">
+    function catchSearch(event) {
+        if (event.keyCode == dojo.keys.ENTER) {
+            oscars.Reservations.postSearch();
+            dojo.stopEvent(event);
+        }
+    }
+    function initSearch() {
+        dojo.connect(dijit.byId("vlanSearch").domNode, 'onkeypress',
+                     catchSearch);
+        dojo.connect(dijit.byId("linkIds").domNode, 'onkeypress', catchSearch);
+        dojo.connect(dijit.byId("resvDescription").domNode, 'onkeypress',
+                     catchSearch);
+        dojo.connect(dijit.byId("resvLogin").domNode, 'onkeypress',
+                     catchSearch);
+    }
+    dojo.connect(dijit.byId("reservationsPane"), "onLoad", initSearch);
+</script>
+</head>
+
+<body>
+
+<p>The reservations returned by a search can be constrained by their status,
+text in their description, times that they end after or start before, and
+topology identifiers that they contain in their path.  Times given are in the
+time zone of the browser.  Click on a row to view detailed
+information about a reservation.  Click on REFRESH again to get the latest
+information on the reservations chosen.</p>
+
+<form id="reservationsForm" dojoType="dijit.form.Form"> 
+
+<input type="hidden" name="startTimeSeconds" id="startTimeSeconds" />
+<input type="hidden" name="endTimeSeconds" id="endTimeSeconds" />
+
+<table>
+<tr>
+  <td width="7%">
+  <button dojoType="dijit.form.Button" id="refreshReservationList">
+     REFRESH
+     <script type="dojo/method" event="onClick">
+         oscars.Reservations.postSearch();
+    </script>
+  </button>
+  </td>
+
+  <td width="10%">Statuses:
+  <select name="statuses" multiple="true" size="3">
+      <option value="ACTIVE" selected="selected">ACTIVE</option>
+      <option value="RESERVED" selected="selected">RESERVED</option>
+      <option value="FINISHED">FINISHED</option>
+      <option value="CANCELLED">CANCELLED</option>
+      <option value="FAILED">FAILED</option>
+      <option value="ACCEPTED">ACCEPTED</option>
+      <option value="INPATHCALCULATION">INPATHCALCULATION</option>
+      <option value="PATHCALCULATED">PATHCALCULATED</option>
+      <option value="INCOMMIT">INCOMMIT</option>
+      <option value="COMMITTED">COMMITTED</option>
+      <option value="INSETUP">INSETUP</option>
+      <option value="INTEARDOWN">INTEARDOWN</option>
+      <option value="INCANCEL">INCANCEL</option>
+      <option value="INMODIFY">INMODIFY</option>
+  </select>
+  </td>
+
+  <td width="9%">VLAN:
+    <input dojoType="dijit.form.ValidationTextBox" name="vlanSearch"
+             id="vlanSearch"
+             promptMessage="Enter space separated tag(s) and/or ranges, e.g. 3000 3500-3600">Number and/or range
+  </td>
+
+  <td width="12%">Ending after:
+    <input dojoType="dijit.form.DateTextBox" name="startDateSearch"
+               id="startDateSearch" />MM/DD/YYYY</td>
+
+  <td width="9%">Time:
+    <input dojoType="dijit.form.ValidationTextBox" name="startTimeSearch"
+             id="startTimeSearch"
+             regExp="[0-2]?[\d]:[0-5][\d]"
+             promptMessage="Enter the time portion of the date in format HH:MM"
+             invalidMessage="Invalid format:  use HH:MM" />HH:MM</td>
+
+  <td width="12%">Starting before:
+    <input dojoType="dijit.form.DateTextBox" name="endDateSearch"
+               id="endDateSearch" />MM/DD/YYYY</td>
+
+  <td width="9%">Time:
+    <input dojoType="dijit.form.ValidationTextBox" name="endTimeSearch"
+             id="endTimeSearch"
+             regExp="[0-2]?[\d]:[0-5][\d]"
+             promptMessage="Enter the time portion of the date in format HH:MM"
+             invalidMessage="Invalid format:  use HH:MM" width="10em" />HH:MM</td>
+  <td>
+    <input type="reset" value="Reset fields" />
+  </td>
+
+</tr>
+<tr>
+
+    <!-- Shows prompt message, but only gives a single line textBox
+  <td colspan="5">Link ids: space separated list of full, abbreviated or partial topology ids:
+     <textarea name="linkIds" id="linkIds"
+         dojoType="dijit.form.TextBox"
+         promptMessage="e.g urn:org:network:domain:testdomain:node=node1:port=3:link=* testdomain:node1:3 node2">
+     </textarea>
+  </td>
+  -->
+    <!--  gives an expandable text box, but no promt mesage  -->
+  <td colspan="4">Link ids space separated list of full, abbreviated or partial topology ids:
+      <textarea name="linkIds" id="linkIds" dojoType="dijit.form.Textarea">
+    </textarea>
+  </td>
+
+  <div dojoType="dijit.Dialog" id="linkDialog"
+    style="display:none;" title="LinkId formats" >
+   Example formats:<br><i>full urn</i> - urn:org:network:domain:testdomain:node=node1:port=3:link=* <br><i>abbreviated urn</i> - testdomain:node1:3<br><i>partial urn</i> - node1
+ </div>
+
+  <td><button id="linkIdHelp" dojoType="dijit.form.Button"
+        onclick="dijit.byId('linkDialog').show();"
+        style="color:#FF0000">
+        show link formats
+        </button>
+  </td>
+
+  <td>Description sub-string:
+  <input name="resvDescription" id="resvDescription"
+       dojoType="dijit.form.ValidationTextBox"
+       promptMessage="Search for description containing string" />
+  </td>
+
+  <td>Rows to return:
+  <select name="numRows" size="1">
+      <option value="25" selected="selected"><= 25</option>
+      <option value="100"><= 100</option>
+      <option value="200"><= 200</option>
+      <option value="500"><= 500</option>
+      <option value="1000"><= 1000</option>
+      <option value="all">all</option>
+  </select>
+  </td>
+
+  <td id="totalRowsReplace">Total rows:</td>
+
+</tr>
+</table>
+<table width="17%">
+  <tr id="resvLoginDisplay" style="display:none">
+  <td>User:</td>
+  <td>
+  <input name="resvLogin" id="resvLogin"
+       dojoType="dijit.form.ValidationTextBox"
+       promptMessage="Search for reservations by this user" />
+  </td>
+  </tr>
+</table>
+</form>
+
+<br/>
+
+<div id="resvGrid" dojoType="dojox.grid.DataGrid" structure="resvLayout"
+     autoWidth="true" autoHeight="true" elasticView="2">
+</div>
+
+</body>
+</html>

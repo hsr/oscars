@@ -1,0 +1,143 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<xsd:schema targetNamespace="http://oscars.es.net/OSCARS/authZPolicy"
+    elementFormDefault="qualified"
+    xmlns:xsd="http://www.w3.org/2001/XMLSchema"
+    xmlns:com="http://oscars.es.net/OSCARS/common"
+    xmlns:acp="http://oscars.es.net/OSCARS/authCommonPolicy"
+    xmlns:tns="http://oscars.es.net/OSCARS/authZPolicy">
+    
+    <xsd:import namespace="http://oscars.es.net/OSCARS/common" 
+	    schemaLocation="../common.xsd" />
+
+    <xsd:import namespace="http://oscars.es.net/OSCARS/authCommonPolicy" 
+	    schemaLocation="../authCommonPolicy.xsd" />
+
+    <!-- Element definitions -->
+    <xsd:element name="listAuthsRequest" type="tns:listAuthsParams" />
+    <xsd:element name="listAuthsResponse" type="tns:listAuthsReply" />
+
+    <xsd:element name="addAuthRequest" type="tns:authDetails" />
+    <xsd:element name="addAuthResponse" type="com:emptyArg" />
+
+    <xsd:element name="modifyAuthRequest" type="tns:modifyAuthDetails" />
+    <xsd:element name="modifyAuthResponse" type="com:emptyArg" />
+
+    <xsd:element name="removeAuthRequest" type="tns:authDetails" />
+    <xsd:element name="removeAuthResponse" type="com:emptyArg" />
+
+    <xsd:element name="listAttrsRequest" type="com:emptyArg" />
+    <xsd:element name="listAttrsResponse" type="acp:listAttrsReply" />
+
+    <xsd:element name="addAttrRequest" type="acp:attrDetails" />
+    <xsd:element name="addAttrResponse" type="com:emptyArg" />
+
+    <xsd:element name="modifyAttrRequest" type="acp:modifyAttrDetails" />
+    <xsd:element name="modifyAttrResponse" type="com:emptyArg" />
+
+    <xsd:element name="removeAttrRequest" type="xsd:string" />
+    <xsd:element name="removeAttrResponse" type="com:emptyArg" />
+
+    <xsd:element name="listResourcesRequest" type="com:emptyArg" />
+    <xsd:element name="listResourcesResponse" type="tns:listResourcesReply" />
+
+    <xsd:element name="listPermissionsRequest" type="com:emptyArg" />
+    <xsd:element name="listPermissionsResponse" type="tns:listPermissionsReply" />
+    <xsd:element name="listConstraintsRequest" type="com:emptyArg" />
+    <xsd:element name="listConstraintsResponse" type="tns:listConstraintsReply" />
+    <xsd:element name="listRpcsRequest" type="com:emptyArg" />
+    <xsd:element name="listRpcsResponse" type="tns:listRpcsReply" />
+
+    <xsd:complexType name="listAuthsParams">
+       <xsd:sequence>
+           <xsd:element name="attribute" type="xsd:string"
+                    minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="listAuthsReply">
+        <xsd:sequence>
+            <!-- up to particular client about how much to display -->
+            <xsd:element name="authDetails" type="tns:authDetails"
+                maxOccurs="unbounded" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="authDetails">
+       <xsd:sequence>
+           <xsd:element name="attributeValue" type="xsd:string" />
+           <xsd:element name="resourceName" type="xsd:string" />
+           <xsd:element name="permissionName" type="xsd:string" />
+           <xsd:element name="constraintName" type="xsd:string" />
+           <xsd:element name="constraintType" type="xsd:string" />
+	   <xsd:element name="constraintValue" type="xsd:string" 
+		   minOccurs="0" maxOccurs="1" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="modifyAuthDetails">
+       <xsd:sequence>
+           <xsd:element name="oldAuthInfo" type="tns:authDetails" />
+           <xsd:element name="modAuthInfo" type="tns:authDetails" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="resourceDetails">
+       <xsd:sequence>
+           <xsd:element name="name" type="xsd:string" />
+           <xsd:element name="description" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="permissionDetails">
+       <xsd:sequence>
+           <xsd:element name="name" type="xsd:string" />
+           <xsd:element name="description" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="constraintDetails">
+       <xsd:sequence>
+           <xsd:element name="name" type="xsd:string" />
+           <xsd:element name="type" type="xsd:string" />
+           <xsd:element name="description" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="rpcDetails">
+       <xsd:sequence>
+           <xsd:element name="resourceName" type="xsd:string" />
+           <xsd:element name="permissionName" type="xsd:string" />
+           <xsd:element name="constraintName" type="xsd:string" />
+           <xsd:element name="constraintType" type="xsd:string" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="listResourcesReply">
+        <xsd:sequence>
+            <xsd:element name="resource" type="tns:resourceDetails"
+                maxOccurs="unbounded" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="listPermissionsReply">
+        <xsd:sequence>
+            <xsd:element name="permission" type="tns:permissionDetails"
+                maxOccurs="unbounded" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="listConstraintsReply">
+        <xsd:sequence>
+            <xsd:element name="constraint" type="tns:constraintDetails"
+                maxOccurs="unbounded" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+    <xsd:complexType name="listRpcsReply">
+        <xsd:sequence>
+            <xsd:element name="rpc" type="tns:rpcDetails"
+                maxOccurs="unbounded" minOccurs="0" />
+        </xsd:sequence>
+    </xsd:complexType>
+
+</xsd:schema>

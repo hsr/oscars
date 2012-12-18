@@ -1,0 +1,74 @@
+<div class="left-content">	
+	<table>
+		<tr>
+			<td>Bandwidth:</td>
+			<td>
+				<table>
+					<tr>
+						<td>
+							<div dojoType="dijit.form.HorizontalSlider" id="wizBandwidthSlider" class="bandwidthSlider"
+								minimum="50" maximum="10000" discreteValues="200" value="50" intermediateChanges="true">
+								<script type="dojo/connect">
+									if(dojo.byId('bandwidth').value != ""){
+										dijit.byId('wizBandwidthSlider').setValue(dojo.byId('bandwidth').value);
+									}
+								</script>
+								<script type="dojo/connect" event="onChange">
+									if(dijit.byId("tmpBandwidth") == null){
+										return;
+									}
+									if(dijit.byId("tmpBandwidth").getValue() != dijit.byId("wizBandwidthSlider").getValue()){
+										dijit.byId("tmpBandwidth").setValue(dijit.byId("wizBandwidthSlider").getValue());
+									}
+								</script>
+							</div>
+						</td>
+					</tr>
+					<tr>
+						<td>
+							<div dojoType="dijit.form.TextBox" id="tmpBandwidth" required="true" value="50" class="bandwidthTextBox">
+								<script type="dojo/connect">
+									if(dojo.byId('bandwidth').value != ""){
+										dijit.byId('tmpBandwidth').setValue(dojo.byId('bandwidth').value);
+									}
+								</script>
+								
+								<script type="dojo/connect" event="onChange">
+									if(dijit.byId("wizBandwidthSlider") == null){ 
+										return; 
+									}
+									if(dijit.byId("tmpBandwidth").getValue() == dijit.byId("wizBandwidthSlider").getValue()){
+										return;
+									}
+									var newValue = dijit.byId("tmpBandwidth").getValue();
+									if((newValue % 50) != 0){
+										newValue = newValue - (newValue % 50) + 50;
+									}
+									if(newValue > 10000){
+										newValue = 10000;
+									}else if(newValue < 50){
+										newValue = 50;
+									}
+									dijit.byId("wizBandwidthSlider").setValue(newValue);
+									if(newValue != dijit.byId("tmpBandwidth").getValue()){
+										dijit.byId("tmpBandwidth").setValue(newValue);
+									}
+								</script>
+							</div>Mbps
+						</td>
+					</tr>
+				</table>
+			</td>
+		</tr>
+		<tr>
+			<td colspan="2" class="buttonRow">
+				<div dojoType="ion.Button" label="Back" id="wizBackButton"></div>
+				<div dojoType="ion.Button" label="Next" id="wizNextButton"></div>
+			</td>
+		</tr>
+	</table>
+</div>
+<div class="right-content">
+	<div class="right-top">Bandwidth </div> 
+	<span>The amount of bandwidth to allocate for your circuit. Bandwidth is available in increments of 50Mbps. Use the slider or enter a value to select your bandwidth. </span>
+</div> <!--/rightcontent-->

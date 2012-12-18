@@ -1,0 +1,134 @@
+<html>
+<head>
+<script type="text/javascript">
+    function catchEnter(event) {
+        if (event.keyCode == dojo.keys.ENTER) {
+            oscars.UserLogin.authenticateUser();
+            // necessary for Safari
+            dojo.stopEvent(event);
+        }
+    }
+    function initSession(event) {
+        dojo.connect(dijit.byId("userName").domNode, 'onkeypress', catchEnter);
+        dojo.connect(dijit.byId("initialPassword").domNode, 'onkeypress', catchEnter);
+    }
+    // dojo.addOnLoad doesn't work properly within separate ContentPanes
+   dojo.connect(dijit.byId("sessionPane"), "onLoad", initSession);
+</script>
+</head>
+<body>
+    <br />
+    <div id="loginSection">
+    <form id="AuthenticateUser" dojoType="dijit.form.Form"> 
+        <table>
+          <tr>
+            <th>User Name:</th>
+            <td class="required"><input dojoType="dijit.form.ValidationTextBox"
+                required="true" name="userName"
+                id="userName" promptMessage="Enter your login name"
+                invalidMessage="Enter your login name" size="28" />
+            </td>
+          </tr>
+          <tr>
+            <th>Password:</th>
+            <td class="required">
+                <input dojoType="dijit.form.ValidationTextBox"
+                required="true" type="password" name="initialPassword"
+                id="initialPassword"
+                promptMessage="Enter your password"
+                invalidMessage="You must enter your password"
+                size="28" />
+            </td>
+          </tr>
+        </table>
+        <button dojoType="dijit.form.Button" id="login">
+          LOGIN 
+          <script type="dojo/method" event="onClick">
+              oscars.UserLogin.authenticateUser();
+          </script>
+        </button>
+    </form>
+
+    <p>Sign in via your OSCARS login and password to access this system.
+    To find out about OSCARS and how it works, go to the
+    <a href="/OSCARS/docs/" target="_blank">documentation</a>.
+    To obtain an account or request more 
+    information, email one of the contacts below.</p>
+    </div>
+
+    <div id="loggedInSection" style="display:none">
+    <form id="UserLogout" dojoType="dijit.form.Form"> 
+        <button dojoType="dijit.form.Button" id="logout">
+          LOGOUT 
+          <script type="dojo/method" event="onClick">
+              oscars.UserLogout.postLogout();
+          </script>
+        </button>
+    </form>
+
+    <p>You are currently logged in to OSCARS. Return to this tab and click on
+    the LOGOUT button to exit.
+    </p>
+
+    <p>NOTE:  This interface is based on the
+    <a href="http://www.dojotoolkit.org/" target="_blank">Dojo</a> toolkit.  Please report any
+    problems to the administrators listed at the bottom of this page.
+    Do not use the browser's back or forward button while in this
+    application.</p>
+
+    <p>Basic OSCARS functionality is accessed by clicking on the following
+       tabs:</p>
+
+    <ul>
+    <div id="reservationsDisplay" style="display:none">
+    <li>
+    The Reservations tab displays a default list of all
+    pending and active reservations.  You can change the reservations listed
+    through the input fields at the top.  Clicking on a row brings up
+    that reservation's details in the Reservation Details tab.
+    </li>
+    </div>
+
+    <div id="createReservationDisplay" style="display:none">
+    <li>
+    The Create Reservation tab displays a form to schedule a
+    reservation with a specified bandwidth on a circuit.
+    </li>
+    </div>
+
+    <div id="userProfileDisplay" style="display:none">
+    <li>
+    The User Profile tab displays modifiable information about your
+    OSCARS account.
+    </li>
+    </div>
+
+    <div id="unAuthUsersDisplay" style="display:none">
+    <li>
+    The Users tab brings up a list of OSCARS users and
+    associated information.
+    </li>
+    </div>
+
+    <div id="authUsersDisplay" style="display:none">
+    <li>
+    The Users tab displays a list of OSCARS users and
+    associated information.  Clicking on a row brings up that user's
+    details in the User Profile tab.
+    </li>
+    </div>
+
+    <div id="addUserDisplay" style="display:none">
+    <li>
+    The Add User tab allows an administrator to add a new OSCARS account.
+    </li>
+    </ul>
+    </div>
+
+    <p>More documentation can be found by clicking on the link at the bottom
+    of this page.</p>
+    <!-- end of section displayed after successful login -->
+    </div>
+
+</body>
+</html>

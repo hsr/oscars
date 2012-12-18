@@ -1,0 +1,7 @@
+---
+soap:
+    publishTo: 	'http://localhost:10001/OSCARS/PCE/NullAgg'
+
+pce-runtime:
+    url: 'http://localhost:10000/OSCARS/PCE'
+

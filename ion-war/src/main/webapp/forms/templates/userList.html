@@ -1,0 +1,41 @@
+<div id="${id}_root">
+	<div id="${id}_resultsPerPage" class="listResultsPerPage">
+		<select id="${id}_resultsPerPage_sel">
+			<option value="10">10 Per Page</option>
+			<option value="15">15 Per Page</option>
+			<option value="25">25 Per Page</option>
+			<option value="35">35 Per Page</option>
+			<option value="50">50 Per Page</option>
+		</select>
+	</div>
+	<span id="explan">Click the column header to sort by that column </span>
+	<div id="${id}_list_div" class="userListDiv">
+		<table id ="${id}_list_table" class="userListTable">
+			<thead class="userListTableHead">
+				<tr id="${id}_list_table_head" class="userListTableHead"></tr>
+			</thead>
+			<tbody id ="${id}_list_table_body" class="userListTableBody">
+			</tbody>
+		</table>
+	</div>
+	
+	<div id="${id}_pageNav" class="userListPageNav"></div>
+	
+	<div id="${id}_loadingDialog" dojoType="ion.ModalBox">
+		<span class="userListRetrieveMsg">Retrieving users...</span>
+		<div dojoType="dijit.ProgressBar" indeterminate="true"></div>
+	</div>
+	
+	<div id="${id}_cancelVerifyDialog" dojoType="ion.ModalBox">
+		<span class="userListVerifyCancelMsg">Are you sure you want to delete this user?</span>
+		<div class="dialogButtons">
+			<div dojoType="ion.Button" id="${id}_userListYesCancel" label="Yes"></div>
+			<div dojoType="ion.Button" id="${id}_userListNoCancel" label="No"></div>
+		</div>
+	</div>
+	
+	<div id="${id}_cancellingDialog" dojoType="ion.ModalBox">
+		<span class="userListCancellingMsg">Sending deletion request...</span>
+		<div dojoType="dijit.ProgressBar" indeterminate="true"></div>
+	</div>
+</div>

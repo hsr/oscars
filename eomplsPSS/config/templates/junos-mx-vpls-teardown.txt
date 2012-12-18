@@ -1,0 +1,41 @@
+configure private
+
+# interfaces
+<#list ifces as ifce>
+delete interfaces ${ifce.name} unit ${ifce.vlan}
+</#list>
+
+
+<#if lsps??>
+# routing
+delete routing-options forwarding-table export ${policy}
+</#if>
+
+<#if lsps??>
+# lsps
+<#list lsps as lsp>
+delete protocols mpls label-switched-path ${lsp.name}
+</#list>
+</#if>
+
+<#if paths??>
+# paths
+<#list paths as path>
+delete protocols mpls path ${path.name}
+</#list>
+</#if>
+
+<#if lsps??>
+# policy
+delete policy-options policy-statement ${policy}
+delete policy-options community ${community.name}
+</#if>
+
+# firewall
+delete firewall family vpls filter ${filters.stats}
+delete firewall family any filter ${filters.policing}
+delete firewall policer ${policer.name}
+delete routing-instances ${vpls.name}
+
+
+commit and-quit

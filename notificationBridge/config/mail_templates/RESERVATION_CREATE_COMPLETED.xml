@@ -1,0 +1,10 @@
+<oscarsMail>
+
+<contentType>text/plain</contentType>
+<subject>##TAG:PRODUCTION CIRCUIT##Reservation ##gri## scheduling succeeded</subject>
+<messageBody>
+Reservation scheduling succeeded.
+##reservation##
+</messageBody>
+
+</oscarsMail>
