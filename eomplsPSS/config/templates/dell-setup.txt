@@ -1,0 +1,14 @@
+configure
+
+vlan database
+vlan ${vlan}
+
+<#list ifces as ifce>
+interface ethernet ${ifce}
+switchport general allowed vlan add ${vlan}
+</#list>
+
+exit
+exit
+exit
+

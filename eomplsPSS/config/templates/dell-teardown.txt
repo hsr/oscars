@@ -1,0 +1,12 @@
+configure
+
+<#list ifces as ifce>
+interface ethernet ${ifce}
+switchport general allowed vlan remove ${vlan}
+</#list>
+exit
+vlan database
+no vlan ${vlan}
+exit
+exit
+
