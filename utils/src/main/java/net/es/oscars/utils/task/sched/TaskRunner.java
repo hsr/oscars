@@ -17,8 +17,10 @@ public class TaskRunner implements Job {
         long now = new Date().getTime();
         try {
             Task task = wf.nextRunnable(now);
-            task.onRun();
-            wf.finishRunning(task);
+            if (task != null) {
+                task.onRun();
+                wf.finishRunning(task);
+            }
 
         } catch (TaskException ex) {
             log.error(ex);
