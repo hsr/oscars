@@ -8,6 +8,7 @@ import net.es.oscars.nsibridge.beans.config.JettyConfig;
 import net.es.oscars.nsibridge.common.ConfigManager;
 import net.es.oscars.nsibridge.soap.gen.nsi_2_0.connection.types.*;
 import net.es.oscars.nsibridge.soap.gen.nsi_2_0.framework.headers.CommonHeaderType;
+import net.es.oscars.nsibridge.soap.gen.nsi_2_0.framework.types.TypeValuePairListType;
 import net.es.oscars.nsibridge.soap.gen.nsi_2_0.framework.types.TypeValuePairType;
 
 import javax.xml.datatype.DatatypeConfigurationException;
@@ -77,10 +78,15 @@ public class NSIRequestFactory {
         TypeValuePairType srcTvp = new TypeValuePairType();
         srcTvp.setType("VLAN");
         srcTvp.getValue().add("850");
-        srcStp.getLabels().getAttribute().add(srcTvp);
+
+        TypeValuePairListType slbls = new TypeValuePairListType();
+        srcStp.setLabels(slbls);
+        slbls.getAttribute().add(srcTvp);
 
         dstStp.setOrientation(OrientationType.EGRESS);
         dstStp.setLocalId("urn:ogf:network:stp:esnet.ets:ps-80");
+        TypeValuePairListType dlbls = new TypeValuePairListType();
+        dstStp.setLabels(dlbls);
 
         TypeValuePairType dstTvp = new TypeValuePairType();
         dstTvp.setType("VLAN");
