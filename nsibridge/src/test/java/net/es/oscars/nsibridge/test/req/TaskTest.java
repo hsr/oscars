@@ -1,6 +1,7 @@
 package net.es.oscars.nsibridge.test.req;
 
 import net.es.oscars.nsibridge.beans.ProvRequest;
+import net.es.oscars.nsibridge.beans.QueryRequest;
 import net.es.oscars.nsibridge.beans.TermRequest;
 import net.es.oscars.nsibridge.common.Invoker;
 import net.es.oscars.nsibridge.common.JettyContainer;
@@ -41,6 +42,7 @@ public class TaskTest {
         ResvRequest rreq = NSIRequestFactory.getRequest();
         ProvRequest preq = NSIRequestFactory.getProvRequest(rreq);
         TermRequest treq = NSIRequestFactory.getTermRequest(preq);
+        QueryRequest qreq = NSIRequestFactory.getQueryRequest();
 
         String connId = rreq.getConnectionId();
         String gri = rreq.getGlobalReservationId();
@@ -58,6 +60,12 @@ public class TaskTest {
         Thread.sleep(5000);
 
         cp.terminate(connId, treq.getInHeader(), holder);
+
+        Thread.sleep(5000);
+
+        cp.query(qreq.getOperation(), qreq.getQueryFilter(), qreq.getInHeader(), holder);
+
+
 
         Workflow wf = Workflow.getInstance();
         System.out.println(wf.printTasks());

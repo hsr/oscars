@@ -24,6 +24,8 @@ public class NSI_OSCARS_Translation {
 
     public static ResCreateContent makeOscarsResv(ResvRequest req) throws TranslationException {
         ReservationRequestCriteriaType crit = req.getCriteria();
+        String nsiLog;
+        String oscarsLog;
 
 
         ResCreateContent rc = new ResCreateContent();
@@ -48,6 +50,7 @@ public class NSI_OSCARS_Translation {
         String srcStp = crit.getPath().getSourceSTP().getLocalId();
         String dstStp = crit.getPath().getDestSTP().getLocalId();
 
+
         StpConfig srcStpCfg = findStp(srcStp);
         StpConfig dstStpCfg = findStp(dstStp);
         String nsiSrcVlan = null;
@@ -69,6 +72,12 @@ public class NSI_OSCARS_Translation {
         if (nsiDstVlan == null) {
             throw new TranslationException("no dst vlan in NSI message!");
         }
+        nsiLog = "nsi gri: "+req.getGlobalReservationId()+"\n";
+        nsiLog += "nsi connId: "+req.getConnectionId()+"\n";
+        nsiLog += "src stp: "+srcStp+" vlan: "+nsiSrcVlan+"\n";
+        nsiLog += "dst stp: "+dstStp+" vlan: "+nsiDstVlan+"\n";
+
+
 
         pi.getLayer2Info().setSrcEndpoint(srcStpCfg.getOscarsId());
         VlanTag srcVlan = new VlanTag();
@@ -90,6 +99,11 @@ public class NSI_OSCARS_Translation {
         CtrlPlaneHopContent dstHop = new CtrlPlaneHopContent();
         dstHop.setLinkIdRef(dstStpCfg.getOscarsId());
         pathHops.add(dstHop);
+        oscarsLog = "osc src: "+pi.getLayer2Info().getSrcEndpoint();
+        oscarsLog += "osc dst: "+pi.getLayer2Info().getDestEndpoint();
+        log.debug(nsiLog);
+        log.debug(oscarsLog);
+
 
         return rc;
 

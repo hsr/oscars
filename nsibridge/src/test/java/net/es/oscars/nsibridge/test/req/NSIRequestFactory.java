@@ -1,10 +1,12 @@
 package net.es.oscars.nsibridge.test.req;
 import com.sun.org.apache.xerces.internal.jaxp.datatype.XMLGregorianCalendarImpl;
 import net.es.oscars.nsibridge.beans.ProvRequest;
+import net.es.oscars.nsibridge.beans.QueryRequest;
 import net.es.oscars.nsibridge.beans.ResvRequest;
 import net.es.oscars.nsibridge.beans.TermRequest;
 import net.es.oscars.nsibridge.soap.gen.nsi_2_0.connection.types.*;
 import net.es.oscars.nsibridge.soap.gen.nsi_2_0.framework.headers.CommonHeaderType;
+import net.es.oscars.nsibridge.soap.gen.nsi_2_0.framework.types.TypeValuePairType;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -15,6 +17,19 @@ import java.util.UUID;
 
 
 public class NSIRequestFactory {
+
+    public static QueryRequest getQueryRequest() {
+        QueryRequest req = new QueryRequest();
+        QueryOperationType op = QueryOperationType.SUMMARY;
+        QueryFilterType filter = new QueryFilterType();
+        req.setOperation(op);
+        req.setQueryFilter(filter);
+
+        CommonHeaderType inHeader = makeHeader();
+        req.setInHeader(inHeader);
+        return req;
+    }
+
     public static ProvRequest getProvRequest(ResvRequest resvReq) {
         ProvRequest pq = new ProvRequest();
         pq.setConnectionId(resvReq.getConnectionId());
@@ -57,9 +72,18 @@ public class NSIRequestFactory {
 
         srcStp.setOrientation(OrientationType.INGRESS);
         srcStp.setLocalId("urn:ogf:network:stp:esnet.ets:chi-80");
+        TypeValuePairType srcTvp = new TypeValuePairType();
+        srcTvp.setType("VLAN");
+        srcTvp.getValue().add("850");
+        srcStp.getLabels().getAttribute().add(srcTvp);
 
         dstStp.setOrientation(OrientationType.EGRESS);
         dstStp.setLocalId("urn:ogf:network:stp:esnet.ets:ps-80");
+
+        TypeValuePairType dstTvp = new TypeValuePairType();
+        dstTvp.setType("VLAN");
+        dstTvp.getValue().add("850");
+        dstStp.getLabels().getAttribute().add(dstTvp);
 
 
         pt.setDirectionality(DirectionalityType.BIDIRECTIONAL);
