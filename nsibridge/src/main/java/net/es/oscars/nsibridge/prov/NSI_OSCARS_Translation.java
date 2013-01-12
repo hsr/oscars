@@ -104,7 +104,6 @@ public class NSI_OSCARS_Translation {
         log.info("could not find STP config for: "+stpId+", generating a default one");
         StpConfig def = new StpConfig();
         def.setOscarsId(stpId);
-        def.setOscarsVlan(100);
         def.setStpId(stpId);
         return def;
     }
