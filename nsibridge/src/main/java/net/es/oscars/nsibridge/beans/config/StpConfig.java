@@ -3,7 +3,6 @@ package net.es.oscars.nsibridge.beans.config;
 public class StpConfig {
     private String stpId;
     private String oscarsId;
-    private Integer oscarsVlan;
     public StpConfig() {
 
     }
@@ -24,11 +23,4 @@ public class StpConfig {
         this.oscarsId = oscarsId;
     }
 
-    public Integer getOscarsVlan() {
-        return oscarsVlan;
-    }
-
-    public void setOscarsVlan(Integer oscarsVlan) {
-        this.oscarsVlan = oscarsVlan;
-    }
 }

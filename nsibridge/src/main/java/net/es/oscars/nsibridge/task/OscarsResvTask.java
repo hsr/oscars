@@ -52,23 +52,39 @@ public class OscarsResvTask extends Task  {
                 log.debug("found state machine for connId: "+connId);
             }
 
-
-            ResCreateContent rc = NSI_OSCARS_Translation.makeOscarsResv(req);
-
+            ResCreateContent rc = null;
             try {
-                CreateReply reply = OscarsProxy.getInstance().sendCreate(rc);
-                log.debug("connId: "+connId+"gri: "+reply.getGlobalReservationId());
-                conn.setOscarsGri(reply.getGlobalReservationId());
-                if (reply.getStatus().equals("FAILED")) {
-                    rsm.process(NSI_Resv_Event.LOCAL_RESV_FAILED);
-                } else {
-                    rsm.process(NSI_Resv_Event.LOCAL_RESV_CONFIRMED);
-                }
-            } catch (OSCARSServiceException e) {
+                rc = NSI_OSCARS_Translation.makeOscarsResv(req);
+            } catch (TranslationException ex) {
+                log.debug(ex);
+                log.debug("could not translate NSI request");
+
                 try {
                     rsm.process(NSI_Resv_Event.LOCAL_RESV_FAILED);
                 } catch (StateException e1) {
-                    e.printStackTrace();
+                    ex.printStackTrace();
+                    e1.printStackTrace();
+                }
+
+            }
+            if (rc != null) {
+                try {
+                    CreateReply reply = OscarsProxy.getInstance().sendCreate(rc);
+                    log.debug("connId: "+connId+"gri: "+reply.getGlobalReservationId());
+                    conn.setOscarsGri(reply.getGlobalReservationId());
+                    if (reply.getStatus().equals("FAILED")) {
+                        rsm.process(NSI_Resv_Event.LOCAL_RESV_FAILED);
+                    } else {
+                        rsm.process(NSI_Resv_Event.LOCAL_RESV_CONFIRMED);
+                    }
+                } catch (OSCARSServiceException e) {
+                    try {
+                        rsm.process(NSI_Resv_Event.LOCAL_RESV_FAILED);
+                    } catch (StateException e1) {
+                        e.printStackTrace();
+                        e1.printStackTrace();
+                    }
+
                 }
             }
 

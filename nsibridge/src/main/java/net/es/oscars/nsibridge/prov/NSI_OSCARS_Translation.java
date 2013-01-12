@@ -5,6 +5,7 @@ import net.es.oscars.nsibridge.beans.ResvRequest;
 import net.es.oscars.nsibridge.beans.TermRequest;
 import net.es.oscars.nsibridge.beans.config.StpConfig;
 import net.es.oscars.nsibridge.soap.gen.nsi_2_0.connection.types.ReservationRequestCriteriaType;
+import net.es.oscars.nsibridge.soap.gen.nsi_2_0.framework.types.TypeValuePairType;
 import org.apache.log4j.Logger;
 import org.ogf.schema.network.topology.ctrlplane.CtrlPlaneHopContent;
 import org.ogf.schema.network.topology.ctrlplane.CtrlPlanePathContent;
@@ -21,7 +22,7 @@ public class NSI_OSCARS_Translation {
 
     }
 
-    public static ResCreateContent makeOscarsResv(ResvRequest req) {
+    public static ResCreateContent makeOscarsResv(ResvRequest req) throws TranslationException {
         ReservationRequestCriteriaType crit = req.getCriteria();
 
 
@@ -49,17 +50,35 @@ public class NSI_OSCARS_Translation {
 
         StpConfig srcStpCfg = findStp(srcStp);
         StpConfig dstStpCfg = findStp(dstStp);
+        String nsiSrcVlan = null;
+        String nsiDstVlan = null;
+        for (TypeValuePairType tvp : crit.getPath().getSourceSTP().getLabels().getAttribute()) {
+            if (tvp.getType().toUpperCase().equals("VLAN")) {
+                nsiSrcVlan = tvp.getValue().get(0);
+            }
+        }
+        for (TypeValuePairType tvp : crit.getPath().getDestSTP().getLabels().getAttribute()) {
+            if (tvp.getType().toUpperCase().equals("VLAN")) {
+                nsiDstVlan = tvp.getValue().get(0);
+            }
+        }
+        if (nsiSrcVlan == null) {
+            throw new TranslationException("no src vlan in NSI message!");
+        }
 
+        if (nsiDstVlan == null) {
+            throw new TranslationException("no dst vlan in NSI message!");
+        }
 
         pi.getLayer2Info().setSrcEndpoint(srcStpCfg.getOscarsId());
         VlanTag srcVlan = new VlanTag();
-        srcVlan.setValue(srcStpCfg.getOscarsVlan().toString());
+        srcVlan.setValue(nsiSrcVlan);
         srcVlan.setTagged(true);
         pi.getLayer2Info().setSrcVtag(srcVlan);
 
         pi.getLayer2Info().setDestEndpoint(dstStpCfg.getOscarsId());
         VlanTag dstVlan = new VlanTag();
-        dstVlan.setValue(dstStpCfg.getOscarsVlan().toString());
+        dstVlan.setValue(nsiDstVlan);
         dstVlan.setTagged(true);
         pi.getLayer2Info().setDestVtag(dstVlan);
 
