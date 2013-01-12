@@ -4,6 +4,8 @@ import net.es.oscars.nsibridge.beans.ProvRequest;
 import net.es.oscars.nsibridge.beans.QueryRequest;
 import net.es.oscars.nsibridge.beans.ResvRequest;
 import net.es.oscars.nsibridge.beans.TermRequest;
+import net.es.oscars.nsibridge.beans.config.JettyConfig;
+import net.es.oscars.nsibridge.common.ConfigManager;
 import net.es.oscars.nsibridge.soap.gen.nsi_2_0.connection.types.*;
 import net.es.oscars.nsibridge.soap.gen.nsi_2_0.framework.headers.CommonHeaderType;
 import net.es.oscars.nsibridge.soap.gen.nsi_2_0.framework.types.TypeValuePairType;
@@ -114,7 +116,11 @@ public class NSIRequestFactory {
         inHeader.setCorrelationId("urn:" + UUID.randomUUID().toString());
         inHeader.setRequesterNSA("urn:ogf:network:nsa:starlight");
         inHeader.setProviderNSA("urn:ogf:network:nsa:esnet");
-        inHeader.setReplyTo("http://jupiter.es.net:8088/ConnectionRequester");
+
+
+
+
+        inHeader.setReplyTo("http://localhost:8088/ConnectionRequester");
         return inHeader;
     }
 

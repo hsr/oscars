@@ -1,5 +1,6 @@
 package net.es.oscars.nsibridge.prov;
 
+import net.es.oscars.nsibridge.beans.config.JettyConfig;
 import net.es.oscars.nsibridge.common.JettyContainer;
 import net.es.oscars.nsibridge.soap.gen.nsi_2_0.connection.types.*;
 import net.es.oscars.nsibridge.soap.gen.nsi_2_0.framework.headers.CommonHeaderType;
@@ -163,13 +164,20 @@ public class NSI_Util {
     }
 
     public static CommonHeaderType makeNsiOutgoingHeader(CommonHeaderType ph) {
+
+
         CommonHeaderType ht = new CommonHeaderType();
         ht.setCorrelationId(ph.getCorrelationId());
         ht.setProtocolVersion(ph.getProtocolVersion());
         ht.setProviderNSA(ph.getProviderNSA());
         ht.setRequesterNSA(ph.getRequesterNSA());
 
-        ht.setReplyTo("http://jupiter.es.net:8288/ConnectionService");
+
+        JettyConfig jc = JettyContainer.getInstance().getConfig();
+        String hostname = jc.getHttp().getHostname();
+        Integer port = jc.getHttp().getPort();
+
+        ht.setReplyTo("http://"+hostname+":"+port+"/ConnectionService");
         return ht;
 
     }
