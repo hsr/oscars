@@ -7,8 +7,7 @@ import net.es.oscars.nsibridge.beans.config.StpConfig;
 import net.es.oscars.nsibridge.soap.gen.nsi_2_0.connection.types.ReservationRequestCriteriaType;
 import net.es.oscars.nsibridge.soap.gen.nsi_2_0.framework.types.TypeValuePairType;
 import org.apache.log4j.Logger;
-import org.ogf.schema.network.topology.ctrlplane.CtrlPlaneHopContent;
-import org.ogf.schema.network.topology.ctrlplane.CtrlPlanePathContent;
+import org.ogf.schema.network.topology.ctrlplane.*;
 
 import java.util.List;
 
@@ -45,8 +44,8 @@ public class NSI_OSCARS_Translation {
         rc.setDescription(req.getDescription());
 
         urc.setBandwidth(crit.getBandwidth());
-        urc.setStartTime(crit.getSchedule().getStartTime().toGregorianCalendar().getTimeInMillis());
-        urc.setEndTime(crit.getSchedule().getEndTime().toGregorianCalendar().getTimeInMillis());
+        urc.setStartTime(crit.getSchedule().getStartTime().toGregorianCalendar().getTimeInMillis() / 1000);
+        urc.setEndTime(crit.getSchedule().getEndTime().toGregorianCalendar().getTimeInMillis() / 1000);
         String srcStp = crit.getPath().getSourceSTP().getLocalId();
         String dstStp = crit.getPath().getDestSTP().getLocalId();
 
@@ -76,6 +75,9 @@ public class NSI_OSCARS_Translation {
         nsiLog += "nsi connId: "+req.getConnectionId()+"\n";
         nsiLog += "src stp: "+srcStp+" vlan: "+nsiSrcVlan+"\n";
         nsiLog += "dst stp: "+dstStp+" vlan: "+nsiDstVlan+"\n";
+        nsiLog += "stime "+crit.getSchedule().getStartTime();
+        nsiLog += "etime "+crit.getSchedule().getEndTime();
+
 
 
 
@@ -92,13 +94,38 @@ public class NSI_OSCARS_Translation {
         pi.getLayer2Info().setDestVtag(dstVlan);
 
 
+
         CtrlPlaneHopContent srcHop = new CtrlPlaneHopContent();
         srcHop.setLinkIdRef(srcStpCfg.getOscarsId());
-        pathHops.add(srcHop);
+        CtrlPlaneLinkContent srcLink = new CtrlPlaneLinkContent();
+        CtrlPlaneSwcapContent srcSwcap = new CtrlPlaneSwcapContent();
+        CtrlPlaneSwitchingCapabilitySpecificInfo srcSwcapInfo = new CtrlPlaneSwitchingCapabilitySpecificInfo();
+        srcSwcapInfo.setVlanRangeAvailability(nsiSrcVlan);
+        srcSwcap.setSwitchingCapabilitySpecificInfo(srcSwcapInfo);
+        srcLink.setSwitchingCapabilityDescriptors(srcSwcap);
+        srcLink.setId(srcHop.getLinkIdRef());
+        srcHop.setLinkIdRef(null);
+        srcHop.setLink(srcLink);
 
         CtrlPlaneHopContent dstHop = new CtrlPlaneHopContent();
         dstHop.setLinkIdRef(dstStpCfg.getOscarsId());
+        CtrlPlaneLinkContent dstLink = new CtrlPlaneLinkContent();
+        CtrlPlaneSwcapContent dstSwcap = new CtrlPlaneSwcapContent();
+        CtrlPlaneSwitchingCapabilitySpecificInfo dstSwcapInfo = new CtrlPlaneSwitchingCapabilitySpecificInfo();
+        dstSwcapInfo.setVlanRangeAvailability(nsiDstVlan);
+        dstSwcap.setSwitchingCapabilitySpecificInfo(dstSwcapInfo);
+        dstLink.setSwitchingCapabilityDescriptors(dstSwcap);
+        dstLink.setId(dstHop.getLinkIdRef());
+        dstHop.setLinkIdRef(null);
+        dstHop.setLink(dstLink);
+
+
+        pathHops.add(srcHop);
         pathHops.add(dstHop);
+
+
+
+
         oscarsLog = "osc src: "+pi.getLayer2Info().getSrcEndpoint();
         oscarsLog += "osc dst: "+pi.getLayer2Info().getDestEndpoint();
         log.debug(nsiLog);
