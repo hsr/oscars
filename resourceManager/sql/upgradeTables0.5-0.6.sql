@@ -22,7 +22,7 @@ CREATE TABLE stdConstraints (
     PRIMARY KEY (id)
 ) type=MyISAM;
 CREATE UNIQUE INDEX consType ON stdConstraints ( constraintType(4),reservationId);
-    --
+--
 -- optional constraint table
 --
 CREATE TABLE IF NOT EXISTS optConstraints (
@@ -31,6 +31,7 @@ CREATE TABLE IF NOT EXISTS optConstraints (
     keyName             TEXT NOT NULL,
     value               TEXT NOT NULL,
     reservationId       INT NOT NULL,  -- foreign key
+	seqNumber           INT NOT NULL,
     PRIMARY KEY (id)
 ) type=MyISAM;
 
