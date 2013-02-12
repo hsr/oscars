@@ -55,10 +55,17 @@ BEGIN
     SELECT MIN(id) into siteId FROM aaa.sites;
     SELECT MAX(id) INTO maxSiteId FROM aaa.sites;
     WHILE siteId <= maxSiteId DO
+        SET topoId = "";
+        SET instId = 0;
+        SET instName = "";
         SELECT domainTopologyId,institution FROM aaa.sites WHERE id=siteID INTO topoId,instId;
-        SELECT name FROM aaa.institutions WHERE id=instId INTO instName;
-        INSERT INTO authz.sites (domainTopologyId,institutionName)
-            SELECT topoId,instName;
+        IF instId != 0 THEN
+            SELECT name FROM aaa.institutions WHERE id=instId INTO instName;
+        END IF;
+        IF topoId != "" AND instName != "" THEN
+            INSERT INTO authz.sites (domainTopologyId,institutionName)
+                SELECT topoId,instName;
+        END IF;
         SET siteId = siteId +1;
    END WHILE;
 END
