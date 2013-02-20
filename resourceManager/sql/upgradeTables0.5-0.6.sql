@@ -35,6 +35,20 @@ CREATE TABLE IF NOT EXISTS optConstraints (
     PRIMARY KEY (id)
 ) type=MyISAM;
 
+CREATE TABLE IF NOT EXISTS errorReports (
+    id                  INT NOT NULL AUTO_INCREMENT,
+    reservationId       INT NOT NULL, -- foreign key
+    seqNumber           INT NOT NULL,
+    errorCode           TEXT NOT NULL,
+    errorMsg            TEXT NOT NULL,
+    errorType           TEXT NOT NULL,
+    GRI                 TEXT,
+    transId             TEXT,
+    timestamp           BIGINT,
+    moduleName          TEXT,
+    domainId            TEXT,
+    PRIMARY KEY (id)
+) ENGINE=MyISAM;
 
 DROP TABLE IF EXISTS reservations;
 CREATE TABLE reservations LIKE bss.reservations;
