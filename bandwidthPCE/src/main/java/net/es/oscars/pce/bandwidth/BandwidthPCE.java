@@ -24,6 +24,7 @@ import net.es.oscars.logging.OSCARSNetLogger;
 import net.es.oscars.pce.PCEMessage;
 import net.es.oscars.pce.soap.gen.v06.PCEDataContent;
 import net.es.oscars.utils.clients.RMClient;
+import net.es.oscars.utils.sharedConstants.AuthZConstants;
 import net.es.oscars.utils.sharedConstants.StateEngineValues;
 import net.es.oscars.utils.soap.OSCARSServiceException;
 import net.es.oscars.utils.topology.NMWGParserUtil;
@@ -105,7 +106,7 @@ public class BandwidthPCE {
             AuthConditions authConds = new AuthConditions();
             AuthConditionType internalHopCond = new AuthConditionType();
             //TODO: Make these constants
-            internalHopCond.setName("internalHopsAllowed");
+            internalHopCond.setName(AuthZConstants.INT_HOPS_ALLOWED);
             internalHopCond.getConditionValue().add("true");
             authConds.getAuthCondition().add(internalHopCond);
             Object request[] = {authConds,listReq};
