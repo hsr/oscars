@@ -60,7 +60,6 @@ public class RancidConnector implements Connector {
      * returns any output. Credentials are stored with RANCID.
      *
      * @param command string with command to send to router
-     * @param router the router to send the command to
      * @throws PSSException
      */
 
@@ -125,7 +124,7 @@ public class RancidConnector implements Connector {
      * Sends a command using RANCID to the server, and gets back
      * output.
      *
-     * @param cmdStr array with command and arguments to exec
+     * @param cmd array with command and arguments to exec
      * @return cmdOutput BufferedReader for output from the router
      * @throws IOException
      * @throws PSSException
@@ -137,11 +136,13 @@ public class RancidConnector implements Connector {
         BufferedReader cmdOutput = new BufferedReader(new InputStreamReader(p.getInputStream()));
         BufferedReader cmdError  = new BufferedReader(new InputStreamReader(p.getErrorStream()));
         String errInfo = cmdError.readLine();
-        if (errInfo != null ) {
-            log.warn("RANCID command error: " + errInfo );
+        int exitval = p.exitValue();
+        if (exitval != 0) {
+            String error = "RANCID command error:\n" + errInfo +"\n\n"+cmdOutput;
+            log.warn(error);
             cmdOutput.close();
             cmdError.close();
-            throw new PSSException("RANCID command error: " + errInfo);
+            throw new PSSException(error);
         }
         cmdError.close();
         return cmdOutput;
