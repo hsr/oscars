@@ -144,10 +144,32 @@ oscars.UserLogin.handleReply = function (responseObject, ioArgs) {
         var reservationCreatePane = new dojox.layout.ContentPane(
             {title:'Create Reservation', id: 'reservationCreatePane'},
              dojo.doc.createElement('div'));
-        //turn on path field
+        //initialize form
         dojo.connect(reservationCreatePane, "onDownloadEnd", function(){
+            //turn on path field
             if(responseObject.specifyPath == true){
                 dojo.byId("authorizedPathDisplay").style.display = "";
+            }
+            
+            //add optional constraints
+            var resCreateTable = dojo.byId("createReservationTable");
+            for(var i=0;i<responseObject.optionalConstraints.length;i++){
+                var row = resCreateTable.insertRow(10+i);
+                var col1 = row.insertCell(0);
+                var col2 = row.insertCell(1);
+                col1.innerHTML = responseObject.optionalConstraints[i].label;
+                //col2.innerHTML = "<input type=\"text\" name=\"" + 
+                //   responseObject.optionalConstraints[i].name +
+                //    "\" id=\"" + responseObject.optionalConstraints[i].name + 
+                //    "\" dojoType=\"dijit.form.ValidationTextBox\" />";
+                col2.innerHTML = "<input type=\"text\" name=\"" + 
+                   responseObject.optionalConstraints[i].name +
+                    "\" id=\"" + responseObject.optionalConstraints[i].name + 
+                    "\"/>";
+                new dijit.form.TextBox({
+                    name: responseObject.optionalConstraints[i].name,
+                    value: "" /* no or empty value! */,
+                    }, responseObject.optionalConstraints[i].name);
             }
         });
         reservationCreatePane.setHref("forms/reservationCreate.html");

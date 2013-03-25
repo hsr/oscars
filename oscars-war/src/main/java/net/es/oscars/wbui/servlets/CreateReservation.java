@@ -30,6 +30,8 @@ import net.es.oscars.utils.clients.CoordClient;
 import net.es.oscars.utils.soap.OSCARSServiceException;
 import net.es.oscars.utils.svc.ServiceNames;
 import net.es.oscars.utils.topology.PathTools;
+import net.es.oscars.api.soap.gen.v06.OptionalConstraintType;
+import net.es.oscars.api.soap.gen.v06.OptionalConstraintValue;
 import net.es.oscars.api.soap.gen.v06.ResCreateContent;
 import net.es.oscars.api.soap.gen.v06.PathInfo;
 import net.es.oscars.api.soap.gen.v06.VlanTag;
@@ -143,7 +145,7 @@ public class CreateReservation extends HttpServlet {
 
         ResCreateContent resv = new ResCreateContent();
         UserRequestConstraintType userCon = new UserRequestConstraintType();
-
+        
         // necessary type conversions performed here; validation done in
         // ReservationManager
         strParam = request.getParameter("startSeconds");
@@ -175,6 +177,19 @@ public class CreateReservation extends HttpServlet {
         if (strParam != null && !strParam.trim().equals("")) {
             description = strParam.trim();
         }
+        
+        //optional constraints
+        for(Map<String,String> optConstraint : ServletCore.getInstance().getOptConstraints()){
+        	if(request.getParameter(optConstraint.get("name")) != null){
+        		OptionalConstraintType optCon = new OptionalConstraintType();
+        		optCon.setCategory(optConstraint.get("name"));
+        		OptionalConstraintValue optConVal = new OptionalConstraintValue();
+        		optConVal.setStringValue(request.getParameter(optConstraint.get("name")).trim());
+				optCon.setValue(optConVal);
+				resv.getOptionalConstraint().add(optCon);
+        	}
+        }
+        
 
         strParam = request.getParameter("productionType");
         // if not blank, check box indicating production circuit was checked
@@ -188,7 +203,7 @@ public class CreateReservation extends HttpServlet {
         userCon.setPathInfo( handlePath(request));
         resv.setUserRequestConstraint(userCon);
         this.log.debug("toReservation:end");
-
+        
         return resv;
     }
 

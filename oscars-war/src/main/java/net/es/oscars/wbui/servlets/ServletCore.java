@@ -2,7 +2,9 @@ package net.es.oscars.wbui.servlets;
 
 import java.net.URL;
 import java.net.MalformedURLException;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.apache.log4j.*;
@@ -43,6 +45,7 @@ public class ServletCore {
     private HashMap<String,Object> authNPolicyMap   = null;
     private HashMap<String,Object> authZMap         = null;
     private HashMap<String,Object> authZPolicyMap   = null;
+    private List<Map<String,String>> optConstraints   = null;
 
     private Map config              = null;
     private URL authNHost           = null;
@@ -148,7 +151,11 @@ public class ServletCore {
         return this.guestLogin;
     }
 
-    public String getSecureCookie() {
+    public List<Map<String, String>> getOptConstraints() {
+		return optConstraints;
+	}
+
+	public String getSecureCookie() {
         return this.secureCookie;
     }
 
@@ -243,6 +250,14 @@ public class ServletCore {
         guestLogin = (String) wbui.get("guestLogin");
         secureCookie = (String) wbui.get("secureCookie");
         assert secureCookie != null : "No secureCookie setting in configuration";
+        this.optConstraints = new ArrayList<Map<String,String>>();
+        if(wbui.containsKey("optionalConstraints") && wbui.get("optionalConstraints") != null){
+        	for(Map<String,String> optConstraint : (List<Map<String,String>>) wbui.get("optionalConstraints")){
+        		assert optConstraint.get("label") != null : "No label for optional constraint";	
+        		assert optConstraint.get("name") != null : "No name for optional constraint";	
+        		this.optConstraints.add(optConstraint);
+        	}
+        }
     }
 
     private void setAuthNHost () throws OSCARSServiceException {

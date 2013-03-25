@@ -100,6 +100,8 @@ public class AuthenticateUser extends HttpServlet {
         outputMap.put("method", methodName);
         outputMap.put("success", Boolean.TRUE);
         outputMap.put("status", userName + " signed in.  Use tabs " + "to navigate to different pages.");
+        outputMap.put("optionalConstraints", core.getOptConstraints());
+        
         JSONObject jsonObject = JSONObject.fromObject(outputMap);
         out.println("{}&& " + jsonObject);
         log.info("user " + userName + " logged in");

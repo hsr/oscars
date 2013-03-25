@@ -7,3 +7,12 @@ wbui:
     userName: 'oscars'
     sessionName: 'oscarssess'
     secureCookie: '1'
+# Below is an example of how to add optional constraint fields to WBUI
+# The label is what will appear next to the textbox on the GUI. The name
+# is what will be passed in the SOAP message as the optionConstraint "category" 
+# attribute.
+#    optionalConstraints:
+#        - label: "Minimum Latency"
+#          name: "min_latency"
+#        - label: "Maximum Latency"
+#          name: "max_latency"
