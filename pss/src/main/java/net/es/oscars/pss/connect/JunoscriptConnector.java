@@ -276,12 +276,33 @@ public class JunoscriptConnector implements Connector {
         Namespace xnmNs = Namespace.getNamespace("xnm", "http://xml.juniper.net/xnm/1.1/xnm");
         List<Element> rpcReplies = responseDoc.getRootElement().getChildren("rpc-reply");
         for (Element rpcReply : rpcReplies) {
+
+
             Element configRes = rpcReply.getChild("load-configuration-results");
             if (configRes != null) {
                 List<Element> configErrors = configRes.getChildren("error", xnmNs);
                 if (configErrors != null && !configErrors.isEmpty()) {
                     hasErrors = true;
+                    for (Element el : configErrors) {
+                        List<Element> errorPieces = el.getChildren();
+                        for (Element errorPiece : errorPieces) {
+                            log.debug("load config error name: ["+ errorPiece.getName()+"] value: ["+errorPiece.getValue()+"]");
+                        }
+                    }
+                } else {
+                    log.debug("no errors for load-configuration-results segment");
                 }
+
+
+                List<Element> successes = configRes.getChildren("load-success");
+                if (successes == null || successes.isEmpty()) {
+                    hasErrors = true;
+                    log.error("did not receive load-success in load-configuration-results segment");
+                }
+
+            } else {
+                log.error("did not receive a load-configuration-results segment");
+                hasErrors = true;
             }
             
             Element commitRes = rpcReply.getChild("commit-results");
@@ -289,7 +310,19 @@ public class JunoscriptConnector implements Connector {
                 List<Element> commitErrors = commitRes.getChildren("error", xnmNs);
                 if (commitErrors != null && !commitErrors.isEmpty()) {
                     hasErrors = true;
+                    for (Element el : commitErrors) {
+                        List<Element> errorPieces = el.getChildren();
+                        for (Element errorPiece : errorPieces) {
+                            log.debug("commit error name: ["+ errorPiece.getName()+"] value: ["+errorPiece.getValue()+"]");
+                        }
+                    }
+
+                } else {
+                    log.debug("no error elements found in commit-results segment");
                 }
+            } else {
+                log.error("did not receive a commit-results segment");
+                hasErrors = true;
             }
         }
         return hasErrors;
