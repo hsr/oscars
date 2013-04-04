@@ -391,11 +391,14 @@ public class PathRequest extends CoordRequest <PathRequestParams,PSSReplyContent
 
         String errorCode = event; // overrides default error event
         boolean isTeardownError = false;
+        boolean isSetupError = false;
 
         if (event.equals(NotifyRequestTypes.PATH_SETUP_DOWNSTREAM_FAILED)) {
             errorCode = ErrorCodes.PATH_SETUP_DOWNSTREAM_FAILED;
+            isSetupError = true;
         } else if  (event.equals(NotifyRequestTypes.PATH_SETUP_UPSTREAM_FAILED)) {
             errorCode = ErrorCodes.PATH_SETUP_UPSTREAM_FAILED;
+            isSetupError = true;
         } else if (event.equals(NotifyRequestTypes.PATH_TEARDOWN_DOWNSTREAM_FAILED)) {
             errorCode = ErrorCodes.PATH_TEARDOWN_DOWNSTREAM_FAILED;
             isTeardownError = true;
@@ -404,26 +407,27 @@ public class PathRequest extends CoordRequest <PathRequestParams,PSSReplyContent
             isTeardownError = true;
         }
 
-         if (isTeardownError && getResvStatus().equals(StateEngineValues.ACTIVE)) {
-             // try to do a local path teardown
-             try {
-                 TeardownReqContent pssReq = new TeardownReqContent();
-                 Coordinator coordinator = Coordinator.getInstance();
-                 pssReq.setTransactionId(this.getTransactionId());
-                 pssReq.setCallbackEndpoint(coordinator.getCallbackEndpoint());
-                 pssReq.setReservation(resDetails);
-                 PSSTeardownPathAction pathTeardownAction = new PSSTeardownPathAction (this.getName() + "-PSSTeardownPathAction",
-                                                                                       null,
+
+        if ((isTeardownError || isSetupError) && getResvStatus().equals(StateEngineValues.ACTIVE)) {
+            // try to do a local path teardown
+            try {
+                TeardownReqContent pssReq = new TeardownReqContent();
+                Coordinator coordinator = Coordinator.getInstance();
+                pssReq.setTransactionId(this.getTransactionId());
+                pssReq.setCallbackEndpoint(coordinator.getCallbackEndpoint());
+                pssReq.setReservation(resDetails);
+                PSSTeardownPathAction pathTeardownAction = new PSSTeardownPathAction (this.getName() + "-PSSTeardownPathAction",
+                                                                                      null,
                                                                                        pssReq);
-                 pathTeardownAction.execute();
-                 if (pathTeardownAction.getState() == CoordAction.State.FAILED) {
-                    throw pathTeardownAction.getException();
-                 }
-                 isTeardownPending = true;
-             } catch (Exception ex) {
-                 LOG.warn(netLogger.error("ProcessErrorEvent", ErrSev.MINOR, "failed to teardown an ACTIVE circuit"));
-             }
-         }
+                pathTeardownAction.execute();
+                if (pathTeardownAction.getState() == CoordAction.State.FAILED) {
+                   throw pathTeardownAction.getException();
+                }
+                isTeardownPending = true;
+            } catch (Exception ex) {
+                LOG.warn(netLogger.error("ProcessErrorEvent", ErrSev.MINOR, "failed to teardown an ACTIVE circuit"));
+            }
+        }
 
          ErrorReport errRep = new ErrorReport(errorCode,
                                               eventContent.getErrorMessage(),
