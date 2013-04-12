@@ -407,8 +407,10 @@ public class PathRequest extends CoordRequest <PathRequestParams,PSSReplyContent
             isTeardownError = true;
         }
 
+        if (isSetupError || isTeardownError) {
+            this.status = PSSConstants.FAIL;
+            this.setReservationState();
 
-        if ((isTeardownError || isSetupError) && getResvStatus().equals(StateEngineValues.ACTIVE)) {
             // try to do a local path teardown
             try {
                 TeardownReqContent pssReq = new TeardownReqContent();
