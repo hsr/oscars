@@ -2,7 +2,9 @@ package net.es.oscars.pss.validate;
 
 import java.util.HashMap;
 
+import org.apache.log4j.Logger;
 import org.ogf.schema.network.topology.ctrlplane.CtrlPlaneHopContent;
+import org.ogf.schema.network.topology.ctrlplane.CtrlPlaneLinkContent;
 import org.ogf.schema.network.topology.ctrlplane.CtrlPlanePathContent;
 
 import net.es.oscars.api.soap.gen.v06.PathInfo;
@@ -16,6 +18,7 @@ import net.es.oscars.pss.util.URNParserResult.URNType;
 import net.es.oscars.utils.topology.PathTools;
 
 public class SimpleValidator implements Validator {
+    private Logger log = Logger.getLogger(SimpleValidator.class);
     private String localDomainId;
 
     public String getLocalDomainId() {
@@ -71,19 +74,39 @@ public class SimpleValidator implements Validator {
             throw new PSSException("path must be defined, not empty, and with at least 2 hops");
         }
 
+        String error = "";
+        int i = 0;
+        boolean isError = false;
         for (CtrlPlaneHopContent hop : path.getHop()) {
-            if (hop.getLink() == null) {
-                throw new PSSException("all hops in path must contain a link");
+            String linkId = null;
+            i++;
+            if (hop.getLinkIdRef() != null) {
+                linkId = hop.getLinkIdRef();
+            } else if (hop.getLink() == null) {
+                isError = true;
+                hop.setLink(new CtrlPlaneLinkContent());
+                error += "null link AND null linkIdRef for hop "+i+"\n";
+            } else if (hop.getLink().getId() == null) {
+                isError = true;
+                error += "null link.id AND null linkIdRef for hop "+i+"\n";
+            } else {
+                linkId = hop.getLink().getId();
             }
-            if (hop.getLink().getId() == null) {
-                throw new PSSException("all hops in path must contain a link with an id");
+
+            if (linkId != null && !isError) {
+                hop.setLinkIdRef(linkId);
+                URNParserResult parseRes = URNParser.parseTopoIdent(linkId);
+                if (!parseRes.getType().equals(URNType.LINK)) {
+                    error += "could not parse link.id for hop "+i+": [" + linkId + "]\n";
+                }
             }
-            URNParserResult parseRes = URNParser.parseTopoIdent(hop.getLink().getId());
-            if (!parseRes.getType().equals(URNType.LINK)) {
-                System.out.println("link id: "+hop.getLink().getId()+" does not parse as a link identifier");
-                throw new PSSException("link id: "+hop.getLink().getId()+" does not parse as a link identifier");
-            }
-            }
+        }
+
+        if (isError) {
+            log.error(error);
+            throw new PSSException(error);
+        }
+
         return;
     }
 
