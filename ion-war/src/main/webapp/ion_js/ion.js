@@ -310,15 +310,23 @@ dojo.declare("ion.CircuitManager", null, {
 					dojo.unsubscribe(this._cloneWizSubcribe);
 					this._cloneWizSubcribe = null;
 				}
-				
+                                persistent = false;
+				if (reservation.descriptionReplace.search(" \[PERSISTENT\]")) {
+				   reservation.descriptionReplace = reservation.descriptionReplace.replace(" \[PERSISTENT\]", "");
+                                   persistent = true;
+                                }
+				else {
+				}
 				dojo.byId('tmpSource').value = reservation.sourceNameReplace;
 				dojo.byId('tmpDescription').value = reservation.descriptionReplace;
+				dojo.byId('tmpPersistent').value = persistent;
 				dojo.byId('tmpDestination').value = reservation.destinationNameReplace;
 				dijit.byId('tmpBandwidth').setValue(reservation.bandwidthReplace);
 				dijit.byId('tmpSrcVlan').setValue(reservation.srcVlanReplace);
 				dijit.byId('tmpDestVlan').setValue(reservation.destVlanReplace);
 				dojo.byId('tmpTaggedSrcVlan').selectedIndex = (reservation.srcTaggedReplace=="true"?0:1);
 				dojo.byId('tmpTaggedDestVlan').selectedIndex = (reservation.destTaggedReplace=="true"?0:1);
+				dijit.byId('wizPersistent').setChecked(persistent);
 			}));
 		navCloneCircuit();
 	},
@@ -1086,7 +1094,7 @@ dojo.declare("ion.CircuitWizard", [dijit._Widget, dijit._Templated], {
 	events: [],
 	formFields: ['source', 'destination','startSeconds', 
 		'endSeconds', 'bandwidth', 'description', 'srcVlan', 
-		'destVlan', 'taggedSrcVlan', 'taggedDestVlan'],
+		'persistentCircuit', 'destVlan', 'taggedSrcVlan', 'taggedDestVlan'],
 	postCreate: function(){
 		this._visitedSteps = [];
 		this.steps = [];
@@ -1110,10 +1118,10 @@ dojo.declare("ion.CircuitWizard", [dijit._Widget, dijit._Templated], {
 		this.steps.push(new ion.CircuitWizardStep({
 			url: this.timeFormUrl,
 			navNode: 'timeStepLink',
-			fields: ["startSeconds", "endSeconds"],
-			localFields: ["tmpStartSeconds", "tmpEndSeconds"],
+			fields: ["startSeconds", "endSeconds", "persistentCircuit"],
+			localFields: ["tmpStartSeconds", "tmpEndSeconds", "tmpPersistent"],
 			dijitFields: ["startDate", "startTime", "endDate", "endTime"],
-			dijitLabels: ["Start Date", "Start Time", "End Date", "End Time"]
+			dijitLabels: ["Start Date", "Start Time", "End Date", "End Time", "Persistent Circuit"]
 		}));
 		this.steps.push(new ion.CircuitWizardStep({
 			url: this.bandwidthFormUrl,
@@ -1256,6 +1264,9 @@ dojo.declare("ion.CircuitWizard", [dijit._Widget, dijit._Templated], {
 	},
 	createReservation: function(){
 		dijit.byId("wizReservingDialog").show();
+                if (dojo.byId("persistentCircuit").value == "true") {
+                    dojo.byId("description").value = dojo.byId("description").value + " [PERSISTENT]";
+                }
 		dojo.xhrPost({
 			url: this.serviceURL,
 			form: this.formNode,
@@ -1870,7 +1881,12 @@ function printDurationBySecs(outputField, start, end){
 		var duration = end - start;
 		var durationString = "";
 		while(duration > 0){
-			if(duration >= 86400){
+			if(duration >= 31536000){
+				var quo = Math.floor(duration/31536000);
+				durationString += (Math.floor(duration/31536000) + " year");
+				durationString += (quo > 1 ? "s " : " ");
+				duration %= 31536000;
+			}else if(duration >= 86400){
 				var quo = Math.floor(duration/86400);
 				durationString += (Math.floor(duration/86400) + " day");
 				durationString += (quo > 1 ? "s " : " ");
@@ -2037,7 +2053,7 @@ function formatDate(date){
 }
 
 function defaultErrorMsg(){
-	return "Unable to connect to server. Please contact the server administrator.";
+	return "Problem with ION. Please contact the server administrator.";
 }
 
 function wizardCleanup(){
@@ -2318,3 +2334,6 @@ function display_map(path){
 	}
 }
 
+function get_persistent_end_time(start_time) {
+	return start_time + 2*365*24*60*60; // 2 years
+}

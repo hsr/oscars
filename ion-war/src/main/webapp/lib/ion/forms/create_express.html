@@ -47,6 +47,11 @@
 					<script type="dojo/connect" event="onChange">
 						printDuration();
 						dojo.byId("tmpStartSeconds").value = widgetToSeconds("startDate", "startTime");
+						if(dijit.byId('wizPersistent') && dijit.byId('wizPersistent').checked){
+							start_time = widgetToSeconds("startDate", "startTime");
+		                                        end_time = get_persistent_end_time(start_time);
+							secondsToWidget(end_time, "endDate", "endTime");
+						}
 					</script>
 				</div>
 			</td>
@@ -62,6 +67,11 @@
 						<script type="dojo/connect" event="onChange">
 							printDuration();
 							dojo.byId("tmpStartSeconds").value = widgetToSeconds("startDate", "startTime");
+							if(dijit.byId('wizPersistent') && dijit.byId('wizPersistent').checked){
+								start_time = widgetToSeconds("startDate", "startTime");
+		                                        	end_time = get_persistent_end_time(start_time);
+								secondsToWidget(end_time, "endDate", "endTime");
+							}
 						</script>
 				</div>
 			</td>
@@ -97,6 +107,27 @@
 			</td>
 		</tr>
 		<tr>
+			<td colspan="2">
+				<div id="wizPersistent" dojoType="dijit.form.CheckBox">
+					<script type="dojo/connect" event="onChange">
+						if(dijit.byId('wizPersistent').checked){
+							start_time = widgetToSeconds("startDate", "startTime");
+							end_time = get_persistent_end_time(start_time);
+							secondsToWidget(end_time, "endDate", "endTime");
+							dijit.byId("endTime").setDisabled(true);
+							dijit.byId("endDate").setDisabled(true);
+							dojo.byId("tmpPersistent").value = true;
+						}else{
+							dijit.byId("endTime").setDisabled(false);
+							dijit.byId("endDate").setDisabled(false);
+							dojo.byId("tmpPersistent").value = false;
+						}
+					</script>
+				</div>
+				<label for="wizPersistent">Persistent Circuit</label>
+			</td>
+		</tr>
+		<tr class="oddrow">
 			<td>Bandwidth:</td>
 			<td>
 				<table>
@@ -156,7 +187,7 @@
 				</table>
 			</td>
 		</tr>
-		<tr class="oddrow">
+		<tr>
 			<td colspan="2">
 				<div id="wizSameVlan" dojoType="dijit.form.CheckBox" checked="checked">
 					<script type="dojo/connect" event="onChange">
@@ -176,7 +207,7 @@
 				<label for="wizSameVlan">Same VLAN number on source and destination</label>
 			</td>
 		</tr>
-		<tr>
+		<tr class="oddrow">
 			<td>VLAN (Source):</td>
 			<td>
 				<div id="tmpSrcVlan" dojoType="dijit.form.ValidationTextBox" value="any"  required="true" 
@@ -229,7 +260,7 @@
 				<label for="wizSuggestSrc">Auto-assign VLAN</label>
 			</td>
 		</tr>
-		<tr class="oddrow">
+		<tr>
 			<td>VLAN (Destination):</td>
 			<td>
 				<div  disabled="true" id="tmpDestVlan" dojoType="dijit.form.ValidationTextBox" value="any" required="true" 
@@ -278,7 +309,7 @@
 				<label for="wizSuggestDest">Auto-assign VLAN</label>
 			</td>
 		</tr>
-		<tr>
+		<tr class="oddrow">
 			<td>Source VLAN type:</td>
 			<td>
 				<select id="tmpTaggedSrcVlan">
@@ -287,7 +318,7 @@
 				</select>
 			</td>
 		</tr>
-		<tr class="oddrow">
+		<tr>
 			<td>Destination VLAN type:</td>
 			<td>
 				<select id="tmpTaggedDestVlan">
@@ -296,16 +327,28 @@
 				</select>
 			</td>
 		</tr>
-		<tr>
+		<tr class="oddrow">
 			<td colspan="2">
 				<input type="hidden" name="tmpStartSeconds" id="tmpStartSeconds" />
 				<input type="hidden" name="tmpEndSeconds" id="tmpEndSeconds" />
+				<input type="hidden" name="tmpPersistent" id="tmpPersistent" />
 				<div dojoType="ion.Button" label="Next" id="wizNextButton">
 					<!-- put down here because guarantees evrything else has loaded -->
 					<script type="dojo/connect">
+						console.log("in dojo/connect");
 						if(dojo.byId('srcVlan').value != "" && dojo.byId('destVlan').value != ""){
 							dijit.byId('wizSameVlan').setChecked(dojo.byId('srcVlan').value == dojo.byId('destVlan').value);
 						}
+                                                if (dojo.byId("tmpPersistent").value == "true") {
+							dijit.byId('wizPersistent').setChecked(true);
+							dijit.byId("endTime").setDisabled(true);
+							dijit.byId("endDate").setDisabled(true);
+							dojo.byId("tmpPersistent").value = true;
+							console.log("tmpPersistent is true");
+						}else{
+							console.log("tmpPersistent is false: " + dojo.byId("tmpPersistent").value);
+							dojo.byId("tmpPersistent").value = false;
+                                                }
 					</script>
 				</div>
 			</td>

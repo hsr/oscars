@@ -11,6 +11,11 @@
 					<script type="dojo/connect" event="onChange">
 						printDuration();
 						dojo.byId("tmpStartSeconds").value = widgetToSeconds("startDate", "startTime");
+						if(dijit.byId('persistent') && dijit.byId('persistent').checked){
+							start_time = widgetToSeconds("startDate", "startTime");
+		                                        end_time = get_persistent_end_time(start_time);
+							secondsToWidget(end_time, "endDate", "endTime");
+						}
 					</script>
 				</div>
 			</td>
@@ -26,6 +31,11 @@
 						<script type="dojo/connect" event="onChange">
 							printDuration();
 							dojo.byId("tmpStartSeconds").value = widgetToSeconds("startDate", "startTime");
+							if(dijit.byId('persistent') && dijit.byId('persistent').checked){
+								start_time = widgetToSeconds("startDate", "startTime");
+			                                        end_time = get_persistent_end_time(start_time);
+								secondsToWidget(end_time, "endDate", "endTime");
+							}
 						</script>
 				</div>
 			</td>
@@ -61,9 +71,43 @@
 			</td>
 		</tr>
 		<tr>
+			<td>
+				<div id="persistent" dojoType="dijit.form.CheckBox">
+					<script type="dojo/connect">
+						start_time = widgetToSeconds("startDate", "startTime");
+						end_time = widgetToSeconds("endDate", "endTime");
+                                                if (get_persistent_end_time(start_time) == end_time) {
+							dijit.byId('persistent').setChecked(true);
+							dijit.byId("endTime").setDisabled(true);
+							dijit.byId("endDate").setDisabled(true);
+							dojo.byId("tmpPersistent").value = true;
+						}else{
+							dojo.byId("tmpPersistent").value = false;
+                                                }
+					</script>
+					<script type="dojo/connect" event="onChange">
+						if(dijit.byId('persistent').checked){
+							start_time = widgetToSeconds("startDate", "startTime");
+		                                        end_time = get_persistent_end_time(start_time);
+							secondsToWidget(end_time, "endDate", "endTime");
+							dijit.byId("endTime").setDisabled(true);
+							dijit.byId("endDate").setDisabled(true);
+							dojo.byId("tmpPersistent").value = true;
+						}else{
+							dijit.byId("endTime").setDisabled(false);
+							dijit.byId("endDate").setDisabled(false);
+							dojo.byId("tmpPersistent").value = false;
+						}
+					</script>
+				</div>
+				<label for="persistent">Persistent Circuit</label>
+			</td>
+		</tr>
+		<tr>
 			<td colspan="2" class="buttonRow">
 				<input type="hidden" name="tmpStartSeconds" id="tmpStartSeconds" />
 				<input type="hidden" name="tmpEndSeconds" id="tmpEndSeconds" />
+				<input type="hidden" name="tmpPersistent" id="tmpPersistent" />
 				<div dojoType="ion.Button" label="Back" id="wizBackButton"></div>
 				<div dojoType="ion.Button" label="Next" id="wizNextButton"></div>
 			</td>
@@ -81,4 +125,6 @@
 	<span>The day on which you would like your reserved circuit to end. The format is the same as the <i>Start Date</i>.</span>
 	<div class="right-header">End Time </div>
 	<span>The time at which you would like your circuit to end on the specified End Date. The format is the same as the <i>Start Time</i>.</span>
+	<div class="right-header">Persistent </div>
+	<span>Sets the circuit to be persistent. These circuits are established for a period of 2 years. If the circuit is required for longer than two years, its <i>End Date</i> may be extended at a later date.</span>
 </div> <!--/rightcontent-->
