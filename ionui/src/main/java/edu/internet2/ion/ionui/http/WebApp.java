@@ -1,6 +1,7 @@
 package edu.internet2.ion.ionui.http;
 
 import java.util.Map;
+import java.io.File;
 import java.io.FileInputStream;
 
 import org.mortbay.jetty.Server;
@@ -24,6 +25,7 @@ public class WebApp {
             context = args[1];
         }
         String warFile = null;
+        String warTempDir = null;
         Server server = new Server();
 
         cc.setContext(context);
@@ -37,6 +39,7 @@ public class WebApp {
             Map config = ConfigHelper.getConfiguration(configFile);
             Map http = (Map) config.get("http");
             warFile = (String) http.get("warFile");
+            warTempDir = (String) http.get("warTempDir");
             String jettyConf = cc.getFilePath("jetty.xml");
             XmlConfiguration configuration = new XmlConfiguration(new FileInputStream(jettyConf));
             configuration.configure(server);
@@ -52,6 +55,9 @@ System.out.println(" from jetty conf="+ jettyConf);
         webapp.setContextPath(sTempContext);
 	//webapp.setContextPath("/ion");
         webapp.setWar(warFile);
+        if(warTempDir != null && !warTempDir.equals("")){
+        	webapp.setTempDirectory(new File(warTempDir));
+        }
         server.setHandler(webapp);
         server.start();
         server.join();

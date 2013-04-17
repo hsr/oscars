@@ -80,13 +80,13 @@ if [ ! -f $DST_DIR/$LOG4J_PROPS_MESSAGE ] ; then
     sed s,$MODULE.log,$DST_LOGDIR/$SERVICE.log, <  $SRC_DIR/$LOG4J_PROPS_MESSAGE > $DST_DIR/$LOG4J_PROPS_MESSAGE
 fi
 
-if [-z "$BUILD_ROOT"]; then
+if [ -z "$BUILD_ROOT" ]; then
 	sed -e s,/ion-war,$OSCARS_HOME/$SERVICE/, -e s/OSCARS_VERSION/$vers/ < $SRC_DIR/$CONFIG_HTTP > $DST_DIR/$CONFIG_HTTP
 	sed -e s,/ion-war,$OSCARS_HOME/$SERVICE/, -e s/OSCARS_VERSION/$vers/ < $SRC_DIR/$CONFIG_SSL > $DST_DIR/$CONFIG_SSL
 fi
 
-if [ -f $OSCARS_DIST/ion-war/target/ion-war-${vers}.war ]; then
-    cp $OSCARS_DIST/ion-war/target/ion-war-${vers}.war $OSCARS_HOME/$SERVICE/
+if [ -f $BUILD_ROOT$OSCARS_DIST/ion-war/target/ion-war-${vers}.war ]; then
+    cp $BUILD_ROOT$OSCARS_DIST/ion-war/target/ion-war-${vers}.war $OSCARS_HOME/$SERVICE/
 else 
     echo " No file $OSCARS_DIST/ion-war/target/ion-war-${vers}.war found. If you are seeing this message before building, it is normal"
 fi

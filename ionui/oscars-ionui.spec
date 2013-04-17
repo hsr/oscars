@@ -1,11 +1,12 @@
 %define package_name ionui 
 %define service_name IONUIService
-%define mvn_project_list common-libs,common-logging,common-soap,utils,%{package_name}
+%define mvn_project_list common-libs,common-logging,common-soap,utils,ion-war,%{package_name}
 %define install_base /opt/oscars/%{package_name}
 %define oscars_home /etc/oscars
 %define log_dir /var/log/oscars
 %define run_dir /var/run/oscars
-%define relnum 3 
+%define war_dir /var/lib/oscars/ion/war-tmp
+%define relnum 4 
 
 Name:           oscars-%{package_name}
 Version:        0.6
@@ -83,6 +84,10 @@ chown oscars:oscars %{run_dir}
 #Create directory for logs
 mkdir -p %{log_dir}
 chown oscars:oscars %{log_dir}
+
+#Create the directory for the WAR file to be decompressed into
+mkdir -p %{war_dir}
+chown oscars:oscars %{war_dir}
 
 #clear out old symbolic links
 if [ "$1" = "2" ]; then

@@ -1,6 +1,7 @@
 ---
 http:
     warFile:	'/ion-war/ion-war-OSCARS_VERSION.war'
+    warTempDir: '/var/lib/oscars/ion/war-tmp'
 
 ionui:
     userName: 'ion'
