@@ -50,7 +50,7 @@ import net.es.oscars.authZ.soap.gen.CheckAccessReply;
  */
 public class QueryReservation extends HttpServlet {
     private static Logger log = Logger.getLogger(QueryReservation.class);
-    private OSCARSNetLogger netLogger = null;
+    protected OSCARSNetLogger netLogger = null;
 
     /**
      * Handles QueryReservation servlet request.

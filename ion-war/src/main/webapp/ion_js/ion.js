@@ -476,7 +476,7 @@ dojo.declare("ion.CircuitList", [dijit._Widget, dijit._Templated], {
 				this.createButton(
 						buttonCol, 
 						this.viewEditButton, 
-						"View/Edit", 
+						"View", 
 						dojo.hitch(this, navQueryCircuit, resvDatum.gri)
 						);
 				this.createButton(
@@ -876,7 +876,7 @@ console.debug("started rawInterPath" + this.infoFields[i]);
 	},
 	handleQueryReservationUtilization: function (direction, response, io_args) {
 		   if (!response.success) {
-			handleQueryReservationError(direction, response, io_args);
+			//handleQueryReservationError(direction, response, io_args);
 			return;
 		   }
 
@@ -1047,20 +1047,17 @@ console.debug("started rawInterPath" + this.infoFields[i]);
 		this.gri = gri;
 		this._init();
 	},
-	//_enableStartEnd: function(status, localStatus){
-	//replacing above with below
+	//_enableStartEnd: function(status):
+	//  Supposed to enable modification of pending or active circuits.
+	//  Since we don't currently support modification, make the time stuff
+	//  read-only, and hide the save button.
 	_enableStartEnd: function(status){
-		if((status == "PENDING" || status == "ACTIVE") && ( status != "CANCELLING")){
-			dijit.byId('info_'+this.gri+'_modifyStartSeconds_date').setDisabled(false);
-			dijit.byId('info_'+this.gri+'_modifyStartSeconds_time').setDisabled(false);
-			dijit.byId('info_'+this.gri+'_modifyEndSeconds_date').setDisabled(false);
-			dijit.byId('info_'+this.gri+'_modifyEndSeconds_time').setDisabled(false);
-		}else{
-			dijit.byId('info_'+this.gri+'_modifyStartSeconds_date').setDisabled(true);
-			dijit.byId('info_'+this.gri+'_modifyStartSeconds_time').setDisabled(true);
-			dijit.byId('info_'+this.gri+'_modifyEndSeconds_date').setDisabled(true);
-			dijit.byId('info_'+this.gri+'_modifyEndSeconds_time').setDisabled(true);
-		}
+		console.log("called _enableStartEnd");
+		dijit.byId('info_'+this.gri+'_modifyStartSeconds_date').setDisabled(true);
+		dijit.byId('info_'+this.gri+'_modifyStartSeconds_time').setDisabled(true);
+		dijit.byId('info_'+this.gri+'_modifyEndSeconds_date').setDisabled(true);
+		dijit.byId('info_'+this.gri+'_modifyEndSeconds_time').setDisabled(true);
+		dijit.byId('info_'+this.gri+'_saveButton').domNode.style.display = 'none';
 	},
 	_dateOnChange: function(){
 		if(this._saveChangesEvent == null){

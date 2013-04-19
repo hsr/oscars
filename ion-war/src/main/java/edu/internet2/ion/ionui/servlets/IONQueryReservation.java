@@ -106,11 +106,10 @@ public class IONQueryReservation extends QueryReservation{
         //new addition for porting
         
         String transId  = PathTools.getLocalDomainId() + "-IONUI-" + UUID.randomUUID().toString();
-        OSCARSNetLogger netLogger = new OSCARSNetLogger();
-        netLogger.init(ServiceNames.SVC_IONUI,transId);
-        OSCARSNetLogger.setTlogger(netLogger);
-        this.log.info(netLogger.start(methodName));
-
+        this.netLogger = new OSCARSNetLogger();
+        this.netLogger.init(ServiceNames.SVC_IONUI,transId);
+        OSCARSNetLogger.setTlogger(this.netLogger);
+        this.log.info(this.netLogger.start(methodName));
 
         ServletCore core = (ServletCore)
         	getServletContext().getAttribute(ServletCore.CORE);
@@ -126,7 +125,7 @@ public class IONQueryReservation extends QueryReservation{
         String userName = sessionReply.getUserName();
         this.log.debug("userName from sessionReply="+  userName);
         if (userName == null) {
-            this.log.warn(netLogger.error(methodName,ErrSev.MINOR,"No user session: cookies invalid, user null"));
+            this.log.warn(this.netLogger.error(methodName,ErrSev.MINOR,"No user session: cookies invalid, user null"));
             return;
         }
         //end new addition
@@ -216,7 +215,7 @@ public class IONQueryReservation extends QueryReservation{
 		//get content from super class
 		this.contentSection(resDetails, faultReports, outputMap);
         } catch(Exception oscarsExcep) {
-        	this.log.debug (netLogger.error(methodName,ErrSev.MAJOR, "caught " + oscarsExcep.toString()));
+        	this.log.debug (this.netLogger.error(methodName,ErrSev.MAJOR, "caught " + oscarsExcep.toString()));
             oscarsExcep.printStackTrace();
             ServletUtils.handleFailure(out, this.log, oscarsExcep, methodName);
             return;
@@ -307,7 +306,7 @@ public class IONQueryReservation extends QueryReservation{
         outputMap.put("success", Boolean.TRUE);
         JSONObject jsonObject = JSONObject.fromObject(outputMap);
         out.println("{}&&" + jsonObject);
-        log.info(netLogger.end(methodName));
+        log.info(this.netLogger.end(methodName));
         return;
     }
 
