@@ -399,6 +399,9 @@ public class PathRequest extends CoordRequest <PathRequestParams,PSSReplyContent
         } else if  (event.equals(NotifyRequestTypes.PATH_SETUP_UPSTREAM_FAILED)) {
             errorCode = ErrorCodes.PATH_SETUP_UPSTREAM_FAILED;
             isSetupError = true;
+        } else if (event.equals(NotifyRequestTypes.RESV_CREATE_FAILED)) {
+            errorCode = ErrorCodes.RESV_CREATE_FAILED;
+            isSetupError = true;
         } else if (event.equals(NotifyRequestTypes.PATH_TEARDOWN_DOWNSTREAM_FAILED)) {
             errorCode = ErrorCodes.PATH_TEARDOWN_DOWNSTREAM_FAILED;
             isTeardownError = true;

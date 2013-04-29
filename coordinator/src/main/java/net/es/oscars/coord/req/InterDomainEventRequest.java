@@ -136,8 +136,18 @@ public class InterDomainEventRequest extends CoordRequest <InterDomainEventConte
                    // already handled
                         this.executed();
                         return;
+                    } else if (status.equals(StateEngineValues.INSETUP) ||
+                               status.equals(StateEngineValues.ACTIVE)) {
+                        PathRequest request = PathRequest.getPathRequest(PathRequest.PSS_TEARDOWN_PATH + "-" +gri,
+                                    this.getMessageProperties(),
+                                    resDetails);
+                        request.processErrorEvent(eventType, eventContent);
+
                     }
+
                 }
+
+
                 remoteErrorReport = new ErrorReport(eventType,
                                                         eventContent.getErrorMessage(),
                                                         eventContent.getErrorCode(),
