@@ -74,7 +74,7 @@ import org.ogf.schema.network.topology.ctrlplane.*;
 
 public class IONQueryCircuitStatistics extends HttpServlet{
 	private Logger log = Logger.getLogger(IONQueryCircuitStatistics.class);
-	public static final String DEFAULT_ION_TOPOLOGY_CONFIG_FILE = "ion_topology.yaml";
+	public static final String DEFAULT_ION_TOPOLOGY_CONFIG_FILE = IONUIUtils.getTopologyFile(); //"ion_topology.yaml";
 
 	public void doGet(HttpServletRequest request, HttpServletResponse response) throws IOException, ServletException {
 		String methodName = "QueryCircuitStatistics";
@@ -384,7 +384,8 @@ public class IONQueryCircuitStatistics extends HttpServlet{
 			max_bandwidth = rConstraint.getBandwidth() / 8;
 			
 		} catch (Exception e) {
-			this.log.debug("Problem looking up circuit information");
+			this.log.error("Problem looking up circuit information");
+			e.printStackTrace();
 			ServletUtils.handleFailure(out, "Problem looking up circuit information", methodName);
 			return;
 		}
