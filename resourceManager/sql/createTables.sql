@@ -89,6 +89,7 @@ CREATE TABLE IF NOT EXISTS pathElems (
     pathId              INT NOT NULL, -- foreign key
     seqNumber           INT NOT NULL,
     urn                 TEXT NOT NULL,
+    INDEX pathElemPath (pathId),
     PRIMARY KEY (id)
 ) ENGINE=MyISAM;
 
@@ -101,6 +102,7 @@ CREATE TABLE IF NOT EXISTS pathElemParams (
     swcap               TEXT NOT NULL,
     type                TEXT NOT NULL,
     value               TEXT NOT NULL,
+    INDEX pathElemParamElem ( pathElemId ),
     PRIMARY KEY (id)
 ) ENGINE=MyISAM;
 

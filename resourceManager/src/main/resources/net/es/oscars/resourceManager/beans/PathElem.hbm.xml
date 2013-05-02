@@ -29,7 +29,7 @@
 
     <!-- Associations -->
 
-    <set name="pathElemParams" fetch="subselect" cascade="all, delete-orphan">
+    <set name="pathElemParams" fetch="join" cascade="all, delete-orphan">
         <key column="pathElemId" not-null="true" />
         <one-to-many class="net.es.oscars.resourceManager.beans.PathElemParam" />
     </set>

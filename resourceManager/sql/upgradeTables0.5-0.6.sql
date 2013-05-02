@@ -71,10 +71,13 @@ INSERT INTO tokens SELECT * from bss.tokens;
 DROP TABLE IF EXISTS pathElems;
 CREATE TABLE pathElems LIKE bss.pathElems;
 INSERT INTO pathElems SELECT * from bss.pathElems;
+CREATE INDEX pathElemPath ON pathElems ( pathId );
 
 DROP TABLE IF EXISTS pathElemParams;
 CREATE TABLE pathElemParams LIKE bss.pathElemParams;
 INSERT INTO pathElemParams SELECT * from bss.pathElemParams;
+CREATE INDEX pathElemParamElem ON pathElemParams ( pathElemId );
+
 
 DROP TABLE IF EXISTS layer2Data;
 CREATE TABLE layer2Data LIKE bss.layer2Data;
