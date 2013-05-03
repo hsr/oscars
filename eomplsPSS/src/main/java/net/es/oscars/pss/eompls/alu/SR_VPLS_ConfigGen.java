@@ -459,8 +459,8 @@ public class SR_VPLS_ConfigGen implements DeviceConfigGenerator {
         String dstLinkId = egressLink.getId();
         URNParserResult dstRes = URNParser.parseTopoIdent(dstLinkId);
 
-        String srcVlan = ingressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getSuggestedVLANRange();
-        String dstVlan = egressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getSuggestedVLANRange();
+        String srcVlan = ingressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability();
+        String dstVlan = egressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability();
 
         ArrayList<String> srcVlans = VlanGroupConfig.getVlans(srcDeviceId, srcRes.getPortId(), srcVlan);
         ArrayList<String> dstVlans = VlanGroupConfig.getVlans(dstDeviceId, dstRes.getPortId(), dstVlan);

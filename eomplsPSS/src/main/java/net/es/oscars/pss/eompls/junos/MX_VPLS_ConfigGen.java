@@ -535,14 +535,14 @@ public class MX_VPLS_ConfigGen implements DeviceConfigGenerator {
         MXIfceInfo aIfceInfo = new MXIfceInfo();
         aIfceInfo.setDescription(ng.getInterfaceDescription(gri, lspBandwidth));
         aIfceInfo.setName(srcRes.getPortId());
-        aIfceInfo.setVlan(ingressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getSuggestedVLANRange());
+        aIfceInfo.setVlan(ingressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability());
         log.debug("setting "+srcDeviceId+" : "+aIfceInfo.getName());
         deviceIfceInfo.get(srcDeviceId).add(aIfceInfo);
 
         MXIfceInfo zIfceInfo = new MXIfceInfo();
         zIfceInfo.setDescription(ng.getInterfaceDescription(gri, lspBandwidth));
         zIfceInfo.setName(dstRes.getPortId());
-        zIfceInfo.setVlan(egressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getSuggestedVLANRange());
+        zIfceInfo.setVlan(egressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability());
         log.debug("setting "+dstDeviceId+" : "+zIfceInfo.getName());
         deviceIfceInfo.get(dstDeviceId).add(zIfceInfo);
         return deviceIfceInfo;

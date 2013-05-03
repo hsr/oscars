@@ -127,12 +127,12 @@ public class SRConfigGen implements DeviceConfigGenerator {
             // forward direction
             log.debug("forward");
             ifceName = srcRes.getPortId();
-            ifceVlan = ingressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getSuggestedVLANRange();
+            ifceVlan = ingressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability();
         } else {
             // reverse direction
             log.debug("reverse");
             ifceName = dstRes.getPortId();
-            ifceVlan = egressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getSuggestedVLANRange();
+            ifceVlan = egressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability();
         }
         
         ALUNameGenerator ng = ALUNameGenerator.getInstance();
@@ -261,14 +261,14 @@ public class SRConfigGen implements DeviceConfigGenerator {
             // forward direction
             log.debug("forward");
             ifceName = srcRes.getPortId();
-            ifceVlan = ingressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getSuggestedVLANRange();
+            ifceVlan = ingressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability();
             lspOriginDeviceId = srcRes.getNodeId();
             lspTargetDeviceId = dstRes.getNodeId();
         } else {
             // reverse direction
             log.debug("reverse");
             ifceName = dstRes.getPortId();
-            ifceVlan = egressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getSuggestedVLANRange();
+            ifceVlan = egressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability();
             lspOriginDeviceId = dstRes.getNodeId();
             lspTargetDeviceId = srcRes.getNodeId();
             reverse = true;
