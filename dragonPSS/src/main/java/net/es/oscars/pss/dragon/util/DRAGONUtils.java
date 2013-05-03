@@ -219,7 +219,12 @@ public class DRAGONUtils {
     public static ArrayList<String> getPathEro(CtrlPlanePathContent path, boolean isSubnet)
             throws PSSException{
         ArrayList<String> ero = new ArrayList<String>();
-        List<CtrlPlaneHopContent> hops = path.getHop();
+        List<CtrlPlaneHopContent> hops = null;
+        try {
+            hops = PathTools.getLocalHops(path, PathTools.getLocalDomainId());
+        } catch (OSCARSServiceException e1) {
+            throw new PSSException("Error extracting local path: " + e1.getMessage());
+        }
 
         int ctr = 1; // don't add first hop
         // don't care about the last edge hop

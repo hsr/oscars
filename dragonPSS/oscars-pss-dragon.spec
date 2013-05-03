@@ -6,7 +6,7 @@
 %define oscars_home /etc/oscars
 %define log_dir /var/log/oscars
 %define run_dir /var/run/oscars
-%define relnum 1
+%define relnum 2 
 
 Name:           oscars-pss-%{pss_name}
 Version:        0.6
