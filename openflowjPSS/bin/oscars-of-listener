@@ -1,0 +1,4 @@
+#/bin/bash
+
+java -Done-jar.main.class=net.es.oscars.pss.openflowj.cli.OFListenerCLI -jar $OSCARS_DIST/openflowjPSS/target/openflowjPSS-0.0.1-SNAPSHOT.one-jar.jar $*
+

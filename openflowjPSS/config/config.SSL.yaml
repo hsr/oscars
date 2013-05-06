@@ -1,0 +1,50 @@
+---
+soap:
+    publishTo:  'https://localhost:9050/OSCARS/PSSService'
+
+circuitService:
+    id:                 'openflowj'
+    stub:               false
+    logRequest:         true
+    logResponse:        true
+    params:
+        controllerPort: "6633"
+        #openFlowEchoInterval: 5
+        
+definitions:
+    models:             'defs-models.yaml'
+    services:           'defs-services.yaml'
+
+# generic impl / params config from here on
+verify:
+    impl:               'net.es.oscars.pss.stub.StubVerifier'
+    params:
+
+notify:
+    impl:               'net.es.oscars.pss.notify.CoordNotifier'
+
+connectorDirectory:
+    impl:               'net.es.oscars.pss.connect.YAMLConnectorDirectory'
+    params:
+        configFile:     'config-connector-directory.yaml'
+
+deviceConnectorMap:
+    impl:               'net.es.oscars.pss.connect.YAMLDeviceConnectorMap'
+    params:
+        configFile:     'config-device-connectors.yaml'
+
+deviceModelMap:
+    impl:               'net.es.oscars.pss.model.YAMLDeviceModelMap'
+    params:
+        configFile:     'config-device-models.yaml'
+
+deviceResolve:            
+    impl:               'net.es.oscars.pss.resolve.YAMLDeviceResolver'
+    params:
+        configFile:     'config-device-addresses.yaml'
+
+workflow:
+    impl:               'net.es.oscars.pss.workflow.FifoWF'
+
+validate:
+    impl:               'net.es.oscars.pss.stub.StubValidator'

@@ -1,0 +1,9 @@
+---
+- id: "openflow-1.0-portforward"
+  services: 
+    - id:               openflowj
+      configGenerator:  "net.es.oscars.pss.openflowj.config.OFPortForwardConfigGen"
+    
+    - id:               stub
+      configGenerator:  "net.es.oscars.pss.stub.StubConfigGen"
+            

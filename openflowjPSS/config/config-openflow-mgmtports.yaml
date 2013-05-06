@@ -1,0 +1,8 @@
+---
+#Sets the TCP port used to connect to switches and send OpenFlow messages. The 'default' 
+# value is what will be used if node is not specified elsewhere in file.
+"default": "6633"
+
+#"10.0.1.1": "6000"
+#
+#"10.0.1.2": "6000"
