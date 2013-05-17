@@ -2,14 +2,7 @@ package edu.internet2.ion.ionui.servlets;
 
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.HashMap;
-import java.util.Hashtable;
-import java.util.Map;
-import java.util.List;
-import java.util.Random;
-import java.util.Arrays;
-import java.util.Iterator;
-import java.util.UUID;
+import java.util.*;
 
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -251,7 +244,9 @@ public class IONQueryCircuitStatistics extends HttpServlet{
 				pathInfo=rConstraint.getPathInfo();
 				pathType = "reserved";
 			} else {
-				 this.log.error("no path reserved, quitting without finding more statistics ");
+				this.log.error("No path reserved, quitting without finding more statistics");
+				ServletUtils.handleFailure(out, "No path reserved, quitting without finding more statistics", methodName);
+				return;
 			}
 
 			/* TBD . How to find if layer2 ckt?
@@ -276,51 +271,62 @@ public class IONQueryCircuitStatistics extends HttpServlet{
 			}
 
 
-			//get src/dest location
-			//TBD . Is this correct?
-			List <CtrlPlaneHopContent> pathElems = null;
-			pathElems = path.getHop();
+			CtrlPlaneHopContent ingress          = null;
+			String              ingress_urn      = null;
+			CtrlPlaneHopContent egress           = null;
+			String              egress_urn       = null;
+			CtrlPlaneHopContent prevDomainHop    = null;
+			String              prevDomainHopURN = null;
+			ArrayList<CtrlPlaneHopContent> hops = (ArrayList<CtrlPlaneHopContent>) path.getHop();
+			for ( CtrlPlaneHopContent ctrlHop : hops ) {
+				String curr_urn = null;
+				CtrlPlaneLinkContent link = ctrlHop.getLink();
+				if (link != null ) {
+					curr_urn = link.getId();
+				} else {
+       					curr_urn = ctrlHop.getLinkIdRef();
+				}
+
+				this.log.debug("Current URN: "+curr_urn);
+
+                        	URNParserResult urnFields = URNParser.parseTopoIdent(curr_urn, PathTools.getLocalDomainId());
+                        	if (!urnFields.getDomainId().equals(PathTools.getLocalDomainId())) {
+                        		if (prevDomainHop != null) {
+                        			break;
+                        		}
+                        	}
+                        	else {
+                        		if (ingress == null) {
+                        			ingress     = ctrlHop;
+                        			ingress_urn =  curr_urn;
+                        		}
+                        		prevDomainHop    = ctrlHop;
+                        		prevDomainHopURN = curr_urn;
+                        	}
+			}
+
+			if (egress == null && prevDomainHop != null) {
+             			egress      = prevDomainHop;
+          			egress_urn  = prevDomainHopURN;
+			}
+
 			CtrlPlaneHopContent locationPoint = null;				
 			if ("ingress".equals(locationId)) {
 				this.log.debug("LocationPoint == ingress");
-				locationPoint = pathElems.get(0);
+				locationPoint = ingress;
+				urn           = ingress_urn;
 			} else if ("egress".equals(locationId)) {
 				this.log.debug("LocationPoint == egress");
-				locationPoint = pathElems.get(pathElems.size() - 1);
+				locationPoint = egress;
+				urn           = egress_urn;
 			} else {
 				this.log.debug("Unknown Location");
 				ServletUtils.handleFailure(out, "Unknown location", methodName);
 				return;
 			}
-			//TBD will this work
-			urn = locationPoint.getLinkIdRef();
 
-			/*// was below
-				PathElem locationPoint;
-				 if ("ingress".equals(locationId)) {
-			    		this.log.debug("LocationPoint == ingress");
-                            	locationPoint = pathElems.get(0);
-				} else if ("egress".equals(locationId)) {
-			    		this.log.debug("LocationPoint == egress");
-                        	locationPoint = pathElems.get(pathElems.size() - 1);
-                        } else {
-			    		this.log.debug("Unknown Locaiton");
-                        	ServletUtils.handleFailure(out, "Unknown location", methodName);
-					return;
-				}
-				urn = locationPoint.getUrn();
-			 */           
+			this.log.debug("New Location URN: "+urn);
 
-			this.log.debug("Location URN: "+urn);
-			/*
-                        PathElemParam pep = locationPoint.getPathElemParam(PathElemParamSwcap.L2SC, PathElemParamType.L2SC_VLAN_RANGE);
-                        String linkDescr = pep.getValue();
-                        if (linkDescr != null) {
-                            vlanTag = linkDescr;
-                        } else {
-                            vlanTag = "untagged";
-                        }
-			 */
 			CtrlPlaneLinkContent currentLink = locationPoint.getLink();
 			CtrlPlaneSwcapContent swcapCont = currentLink. getSwitchingCapabilityDescriptors();
 
@@ -390,129 +396,6 @@ public class IONQueryCircuitStatistics extends HttpServlet{
 			return;
 		}
 
-
-		/*
-                try {
-
-			
-	                 BssRmiInterface bssRmiClient = RmiUtils.getBssRmiClient("QueryReservation", log);
-                        rmiReply = bssRmiClient.queryReservation(gri, userName);
-                        Reservation resv = rmiReply.getReservation();
-		
-		long currTime  = System.currentTimeMillis() / 1000;
-
-		if (startTime == null && endTime == null) {
-			startTime = resv.getStartTime();
-			endTime = resv.getEndTime();
-
-			if (endTime > currTime) {
-				endTime = currTime;
-			}
-
-			// set a limit of the past day
-			if (endTime - startTime > 86400) {
-				startTime = endTime - 86400;
-			}
-		} else if (startTime == null) {
-			startTime = resv.getStartTime();
-		} else if (endTime == null) {
-			endTime = resv.getEndTime();
-			if (endTime > currTime) {
-				endTime = currTime;
-			}
-		}
-
-		Path path = resv.getPath(PathType.LOCAL);
-		if (path == null) {
-			this.log.debug("Path == null");
-			ServletUtils.handleFailure(out, "No local path for reservation", methodName);
-			return;
-		}
-
-		// Only handle layer 2 paths for now.
-		if (path.isLayer2() == false) {
-			this.log.debug("Path != layer2");
-			ServletUtils.handleFailure(out, "Only layer2 paths are handled for now", methodName);
-			return;
-		}
-
-		List<PathElem> pathElems = path.getPathElems();
-		if (pathElems.isEmpty()) {
-			this.log.debug("Path isEmpty()");
-			ServletUtils.handleFailure(out, "Empty path", methodName);
-			return;
-		}
-
-		PathElem locationPoint;
-		if ("ingress".equals(locationId)) {
-			this.log.debug("LocationPoint == ingress");
-			locationPoint = pathElems.get(0);
-		} else if ("egress".equals(locationId)) {
-			this.log.debug("LocationPoint == egress");
-			locationPoint = pathElems.get(pathElems.size() - 1);
-		} else {
-			this.log.debug("Unknown Locaiton");
-			ServletUtils.handleFailure(out, "Unknown location", methodName);
-			return;
-		}
-
-		urn = locationPoint.getUrn();
-		this.log.debug("Location URN: "+urn);
-
-		PathElemParam pep = locationPoint.getPathElemParam(PathElemParamSwcap.L2SC, PathElemParamType.L2SC_VLAN_RANGE);
-		String linkDescr = pep.getValue();
-		if (linkDescr != null) {
-			vlanTag = linkDescr;
-		} else {
-			vlanTag = "untagged";
-		}
-
-		Hashtable<String, String> urnFields = URNParser.parseTopoIdent(urn);
-
-		if (cfg.getString("node_"+urnFields.get("nodeId")+"/name", false) != null)  {
-			hostName = cfg.getString("node_"+urnFields.get("nodeId")+"/name", false);
-		}
-
-		if (cfg.getString("node_"+urnFields.get("nodeId")+"/port_"+urnFields.get("portId") + "/name", false) != null)  {
-			basePortName = cfg.getString("node_"+urnFields.get("nodeId")+"/port_"+urnFields.get("portId") + "/name", false);
-		}
-
-		if (hostName == null) {
-			hostName = urnFields.get("nodeId");
-		}
-
-		if (basePortName == null) {
-			basePortName = urnFields.get("portId");
-		}
-
-		String vlanPortNameFormat = null;
-
-		if (cfg.getString("node_"+urnFields.get("nodeId")+"/port_"+urnFields.get("portId") + "/vlanPortNameFormat", true) != null)  {
-			vlanPortNameFormat = cfg.getString("node_"+urnFields.get("nodeId")+"/port_"+urnFields.get("portId") + "/vlanPortNameFormat", true);
-		}
-
-		if (vlanPortNameFormat == null) {
-			vlanPortName = basePortName;
-		} else {
-			vlanPortName = vlanPortNameFormat;
-			vlanPortName = vlanPortName.replaceAll("%p", basePortName);
-			vlanPortName = vlanPortName.replaceAll("%v", vlanTag);
-		}
-
-		if (cfg.getString("node_"+urnFields.get("nodeId")+"/port_"+urnFields.get("portId") + "/measurementArchive", true) != null)  {
-			measurementArchive = cfg.getString("node_"+urnFields.get("nodeId")+"/port_"+urnFields.get("portId") + "/measurementArchive", true);
-		}
-
-		this.log.debug("vlanPortNameFormat: "+vlanPortNameFormat);
-		this.log.debug("Location VLAN: "+vlanTag);
-
-		max_bandwidth = resv.getBandwidth() / 8;
-	} catch (Exception e) {
-		this.log.debug("Problem looking up circuit information");
-		ServletUtils.handleFailure(out, "Problem looking up circuit information", method);
-		return;
-	}
-	*/
 
 	// XXX put in 'real' values
 	long resolution = 30;

@@ -39,7 +39,10 @@ import org.apache.log4j.Logger;
 
 import oasis.names.tc.saml._2_0.assertion.AttributeType;
 import org.ogf.schema.network.topology.ctrlplane.CtrlPlaneHopContent;
+import org.ogf.schema.network.topology.ctrlplane.CtrlPlaneLinkContent;
 import org.ogf.schema.network.topology.ctrlplane.CtrlPlanePathContent;
+import org.ogf.schema.network.topology.ctrlplane.CtrlPlaneSwcapContent;
+import org.ogf.schema.network.topology.ctrlplane.CtrlPlaneSwitchingCapabilitySpecificInfo;
 
 import net.es.oscars.logging.ErrSev;
 import net.es.oscars.logging.OSCARSNetLogger;
@@ -52,6 +55,7 @@ import net.es.oscars.utils.topology.PathTools;
 import net.es.oscars.api.soap.gen.v06.ResCreateContent;
 import net.es.oscars.api.soap.gen.v06.ResDetails;
 import net.es.oscars.api.soap.gen.v06.PathInfo;
+import net.es.oscars.api.soap.gen.v06.VlanTag;
 import net.es.oscars.api.soap.gen.v06.Layer2Info;
 import net.es.oscars.api.soap.gen.v06.Layer3Info;
 import net.es.oscars.api.soap.gen.v06.MplsInfo;
@@ -373,22 +377,26 @@ public class IONCreateReservation extends HttpServlet{
      * @param request HttpServletRequest
      * @return requestedPath a Path instance with layer 2 or 3 information
      */
-    /* Commented method to replace with the below version */
-    /*
-    private Path handlePath(HttpServletRequest request)
-            throws BSSException {
+    private PathInfo handlePath(HttpServletRequest request)
+            throws OSCARSServiceException {
 
+        this.log.debug("handlePath:start");
         String strParam = null;
 
-        List<PathElem> pathElems = new ArrayList<PathElem>();
-        PropHandler propHandler = new PropHandler("oscars.properties");
-        Properties props = propHandler.getPropertyGroup("wbui", true);
-        String defaultLayer = props.getProperty("defaultLayer");
-
-        Path requestedPath = new Path();
-        requestedPath.setPathType(PathType.REQUESTED);
+        //PropHandler propHandler = new PropHandler("oscars.properties");
+        //Properties props = propHandler.getPropertyGroup("wbui", true);
+        //String defaultLayer = props.getProperty("defaultLayer");
+        String defaultLayer = "layer2";  // that's all we are implementing for now
+        String layer = request.getParameter("layer");
+        if(layer == null || "".equals(layer.trim())){
+            layer = defaultLayer;
+        }
+        layer = layer.trim();
+        
+        PathInfo requestedPath = new PathInfo();
+        String[] inHops = {};
+        requestedPath.setPathType("loose");
         requestedPath.setPathSetupMode("timer-automatic");
-        requestedPath.setPathElems(pathElems);
 
         String explicitPath = "";
         String source = null;
@@ -397,46 +405,46 @@ public class IONCreateReservation extends HttpServlet{
         if ((strParam != null) && !strParam.trim().equals("")) {
             source = strParam.trim();
         } else {
-            throw new BSSException("error:  source is a required parameter");
+            throw new OSCARSServiceException("error:  source is a required parameter");
         }
         strParam = request.getParameter("destination");
         if ((strParam != null) && !strParam.trim().equals("")) {
             destination = strParam.trim();
         } else {
-            throw new BSSException("error:  destination is a required parameter");
+            throw new OSCARSServiceException("error:  destination is a required parameter");
         }
+        CtrlPlanePathContent path = new CtrlPlanePathContent ();
+        List<CtrlPlaneHopContent> pathHops = path.getHop();
         strParam = request.getParameter("explicitPath");
         if (strParam != null && !strParam.trim().equals("")) {
             explicitPath = strParam.trim();
             this.log.debug("explicit path: " + explicitPath);
 
-            String[] hops = explicitPath.split("\\s+");
-            for (int i = 0; i < hops.length; i++) {
-                hops[i] = hops[i].trim();
-                if (hops[i].equals(" ") || hops[i].equals("")) {
+            inHops = explicitPath.split("\\s+");
+            for (int i = 0; i < inHops.length; i++) {
+                inHops[i] = inHops[i].trim();
+                if (inHops[i].equals(" ") || inHops[i].equals("")) {
                     continue;
                 }
-                PathElem pathElem = new PathElem();
-                // these can currently be either topology identifiers
-                // or IP addresses
-                pathElem.setUrn(hops[i]);
-                this.log.debug("explicit path hop: " + hops[i]);
-                pathElems.add(pathElem);
+                CtrlPlaneHopContent cpHop = new CtrlPlaneHopContent();
+                cpHop.setLinkIdRef(inHops[i]);
+                pathHops.add(cpHop);
             }
+            requestedPath.setPath(path);
         }
+        
+        
         String srcVlan = "";
         strParam = request.getParameter("srcVlan");
         if (strParam != null && !strParam.trim().equals("")) {
             srcVlan = strParam.trim();
         }
-        boolean layer2 = false;
-        // TODO: support VLAN translation
 
-        if (!srcVlan.equals("") ||
-              (defaultLayer !=  null && defaultLayer.equals("2"))) {
-            layer2 = true;
-
-            Layer2Data layer2Data = new Layer2Data();
+        if (layer.equals("layer2")) {
+            this.log.debug("handlePath. in layer2 processing");
+            Layer2Info layer2Info = new Layer2Info();
+            VlanTag srcVtag = new VlanTag();
+            VlanTag destVtag = new VlanTag();
             srcVlan = (srcVlan == null||srcVlan.equals("") ? "any" : srcVlan);
             String destVlan = "";
             strParam = request.getParameter("destVlan");
@@ -456,237 +464,87 @@ public class IONCreateReservation extends HttpServlet{
             if (strParam != null && !strParam.trim().equals("")) {
                 taggedDestVlan = strParam.trim();
             }
-            boolean tagged = taggedSrcVlan.equals("Tagged");
-            if (!tagged) {
-                srcVlan = "0";
+            srcVtag.setTagged(taggedSrcVlan.equals("Tagged"));
+            srcVtag.setValue(srcVlan);
+            destVtag.setTagged(taggedDestVlan.equals("Tagged"));
+            destVtag.setValue(destVlan);
+            layer2Info.setSrcEndpoint(source);
+            layer2Info.setDestEndpoint(destination);
+            layer2Info.setSrcVtag(srcVtag);
+            layer2Info.setDestVtag(destVtag);
+            requestedPath.setLayer2Info(layer2Info);
+            //update ath with vlan info
+            if(!pathHops.isEmpty()){
+            	if(!"any".equals(srcVlan)){
+            		this.createVlanHop(srcVlan, pathHops.get(0));
+            	}
+            	if(!"any".equals(destVlan)){
+            		this.createVlanHop(destVlan, pathHops.get(pathHops.size()-1));
+            	}
             }
-            tagged = taggedDestVlan.equals("Tagged");
-            if (!tagged) {
-                destVlan = "0";
+            
+        }else if(layer.equals("layer3")) {
+            Layer3Info layer3Info = new Layer3Info();
+            
+            strParam = request.getParameter("srcIP");
+            if ((strParam != null) && !strParam.trim().equals("")) {
+                layer3Info.setSrcHost(strParam.trim());
             }
-
-            layer2Data.setSrcEndpoint(source);
-            layer2Data.setDestEndpoint(destination);
-            requestedPath.setLayer2Data(layer2Data);
-
-            // If no explicit path for layer 2, we must fill this in
-            if (pathElems.isEmpty()) {
-                PathElem srcpe = new PathElem();
-                srcpe.setUrn(source);
-                PathElem dstpe = new PathElem();
-                dstpe.setUrn(destination);
-                pathElems.add(srcpe);
-                pathElems.add(dstpe);
+            
+            strParam = request.getParameter("destIP");
+            if ((strParam != null) && !strParam.trim().equals("")) {
+                layer3Info.setDestHost(strParam.trim());
             }
-            PathElemParam srcVlanParam = new PathElemParam();
-            srcVlanParam.setSwcap(PathElemParamSwcap.L2SC);
-            srcVlanParam.setType(PathElemParamType.L2SC_VLAN_RANGE);
-            srcVlanParam.setValue(srcVlan);
-            PathElemParam destVlanParam = new PathElemParam();
-            destVlanParam.setSwcap(PathElemParamSwcap.L2SC);
-            destVlanParam.setType(PathElemParamType.L2SC_VLAN_RANGE);
-            destVlanParam.setValue(destVlan);
-
-            requestedPath.getPathElems().get(0).addPathElemParam(srcVlanParam);
-            requestedPath.getPathElems().get(requestedPath.getPathElems().size()-1).addPathElemParam(destVlanParam);
-            return requestedPath;
-        }
-        if (!layer2) {
-            Layer3Data layer3Data = new Layer3Data();
-            // VLAN id wasn't supplied with layer 2 id
-            if (source.startsWith("urn:ogf:network")) {
-                throw new BSSException("VLAN tag not supplied for layer 2 reservation");
-            }
-            layer3Data.setSrcHost(source);
-            layer3Data.setDestHost(destination);
 
             strParam = request.getParameter("srcPort");
             if ((strParam != null) && !strParam.trim().equals("")) {
-                layer3Data.setSrcIpPort(Integer.valueOf(strParam.trim()));
-            } else {
-                layer3Data.setSrcIpPort(0);
+                layer3Info.setSrcIpPort(Integer.valueOf(strParam.trim()));
             }
+            
             strParam = request.getParameter("destPort");
             if ((strParam != null) && !strParam.trim().equals("")) {
-                layer3Data.setDestIpPort(Integer.valueOf(strParam.trim()));
-            } else {
-                layer3Data.setDestIpPort(0);
+                layer3Info.setDestIpPort(Integer.valueOf(strParam.trim()));
             }
+            
             strParam = request.getParameter("protocol");
             if ((strParam != null) && !strParam.trim().equals("")) {
-                layer3Data.setProtocol(strParam.trim());
+                layer3Info.setProtocol(strParam.trim());
             }
             strParam = request.getParameter("dscp");
             if ((strParam != null) && !strParam.trim().equals("")) {
-                layer3Data.setDscp(strParam.trim());
+                layer3Info.setDscp(strParam.trim());
             }
-            requestedPath.setLayer3Data(layer3Data);
+            requestedPath.setLayer3Info(layer3Info);
+            
+            //set path
+            if (pathHops.isEmpty()) {
+                CtrlPlaneHopContent cpSourceHop = new CtrlPlaneHopContent();
+                cpSourceHop.setLinkIdRef(source);
+                pathHops.add(cpSourceHop);
+            
+                CtrlPlaneHopContent cpDestHop = new CtrlPlaneHopContent();
+                cpDestHop.setLinkIdRef(destination);
+                pathHops.add(cpDestHop);
+                requestedPath.setPath(path);
+            }
+            
+        }else {
+            throw new OSCARSServiceException("error:  Invalid layer provided " + layer);
         }
-        MPLSData mplsData = new MPLSData();
-        mplsData.setBurstLimit(10000000L);
-        requestedPath.setMplsData(mplsData);
+        this.log.debug("handlePath:end");
         return requestedPath;
     }
-    */
     
-    
-    private PathInfo handlePath(HttpServletRequest request)
-    throws OSCARSServiceException {
-
-    	this.log.debug("handlePath:start");
-    	String strParam = null;
-
-    	//List<PathElem> pathElems = new ArrayList<PathElem>();
-    	//PropHandler propHandler = new PropHandler("oscars.properties");
-    	//Properties props = propHandler.getPropertyGroup("wbui", true);
-    	//String defaultLayer = props.getProperty("defaultLayer");
-    	String defaultLayer = "2";  // that's all we are implementing for now
-
-    	PathInfo requestedPath = new PathInfo();
-    	String[] inHops = {};
-    	requestedPath.setPathType("loose");
-    	requestedPath.setPathSetupMode("timer-automatic");
-
-    	String explicitPath = "";
-    	String source = null;
-    	String destination = null;
-    	strParam = request.getParameter("source");
-    	if ((strParam != null) && !strParam.trim().equals("")) {
-    		source = strParam.trim();
-    	} else {
-    		throw new OSCARSServiceException("error:  source is a required parameter");
-    	}
-    	strParam = request.getParameter("destination");
-    	if ((strParam != null) && !strParam.trim().equals("")) {
-    		destination = strParam.trim();
-    	} else {
-    		throw new OSCARSServiceException("error:  destination is a required parameter");
-    	}
-    	CtrlPlanePathContent path = new CtrlPlanePathContent ();
-    	List<CtrlPlaneHopContent> pathHops = path.getHop();
-    	strParam = request.getParameter("explicitPath");
-    	if (strParam != null && !strParam.trim().equals("")) {
-    		explicitPath = strParam.trim();
-    		this.log.debug("explicit path: " + explicitPath);
-
-    		inHops = explicitPath.split("\\s+");
-    		for (int i = 0; i < inHops.length; i++) {
-    			inHops[i] = inHops[i].trim();
-    			if (inHops[i].equals(" ") || inHops[i].equals("")) {
-    				continue;
-    			}
-    			for (String hop : inHops) {
-    				CtrlPlaneHopContent cpHop = new CtrlPlaneHopContent();
-    				cpHop.setLinkIdRef(hop);
-    				pathHops.add(cpHop);
-    			}
-    			requestedPath.setPath(path);
-    		}
-    	}
-    	String srcVlan = "";
-    	strParam = request.getParameter("srcVlan");
-    	if (strParam != null && !strParam.trim().equals("")) {
-    		srcVlan = strParam.trim();
-    	}
-    	boolean layer2 = false;
-    	// TODO: support VLAN translation
-
-    	if (!srcVlan.equals("") ||
-    			(defaultLayer !=  null && defaultLayer.equals("2"))) {
-    		layer2 = true;
-    		this.log.debug("handlePath. in layer2 processing");
-
-    		Layer2Info layer2Info = new Layer2Info();
-    		srcVlan = (srcVlan == null||srcVlan.equals("") ? "any" : srcVlan);
-    		String destVlan = "";
-    		strParam = request.getParameter("destVlan");
-    		if (strParam != null && !strParam.trim().equals("")) {
-    			destVlan = strParam.trim();
-    		} else {
-    			destVlan = srcVlan;
-    		}
-    		// src and dest default to tagged
-    		String taggedSrcVlan = "Tagged";
-    		strParam = request.getParameter("taggedSrcVlan");
-    		if (strParam != null && !strParam.trim().equals("")) {
-    			taggedSrcVlan = strParam.trim();
-    		}
-    		String taggedDestVlan = "Tagged";
-    		strParam = request.getParameter("taggedDestVlan");
-    		if (strParam != null && !strParam.trim().equals("")) {
-    			taggedDestVlan = strParam.trim();
-    		}
-    		boolean tagged = taggedSrcVlan.equals("Tagged");
-    		if (!tagged) {
-    			srcVlan = "0";
-    		}
-    		tagged = taggedDestVlan.equals("Tagged");
-    		if (!tagged) {
-    			destVlan = "0";
-    		}
-
-    		layer2Info.setSrcEndpoint(source);
-    		layer2Info.setDestEndpoint(destination);
-    		requestedPath.setLayer2Info(layer2Info);
-
-    		// If no explicit path for layer 2, we must fill this in
-    		if (pathHops.isEmpty()) {
-    			CtrlPlaneHopContent sourceHop = new CtrlPlaneHopContent();
-    			sourceHop.setLinkIdRef(source);
-    			pathHops.add(sourceHop);
-    			CtrlPlaneHopContent destHop = new CtrlPlaneHopContent();
-    			destHop.setLinkIdRef(destination);
-    			pathHops.add(destHop);
-    		}
-    		/* Need to set a linkContent rather than a linkIdRef in order to store link params
-			    PathElemParam srcVlanParam = new PathElemParam();
-			    srcVlanParam.setSwcap(PathElemParamSwcap.L2SC);
-			    srcVlanParam.setType(PathElemParamType.L2SC_VLAN_RANGE);
-			    srcVlanParam.setValue(srcVlan);
-			    PathElemParam destVlanParam = new PathElemParam();
-			    destVlanParam.setSwcap(PathElemParamSwcap.L2SC);
-			    destVlanParam.setType(PathElemParamType.L2SC_VLAN_RANGE);
-			    destVlanParam.setValue(destVlan);
-			    requestedPath.getPathElems().get(0).addPathElemParam(srcVlanParam);
-			    requestedPath.getPathElems().get(requestedPath.getPathElems().size()-1).addPathElemParam(destVlanParam);
-    		 */
-    	}
-    	if (!layer2) {
-    		return null;
-    		/* not implemented yet
-			    Layer3Data layer3Data = new Layer3Data();
-			    // VLAN id wasn't supplied with layer 2 id
-			    if (source.startsWith("urn:ogf:network")) {
-			        throw new OSCARSServiceException("VLAN tag not supplied for layer 2 reservation");
-			    }
-			    layer3Data.setSrcHost(source);
-			    layer3Data.setDestHost(destination);
-			
-			    strParam = request.getParameter("srcPort");
-			    if ((strParam != null) && !strParam.trim().equals("")) {
-			        layer3Data.setSrcIpPort(Integer.valueOf(strParam.trim()));
-			    } else {
-			        layer3Data.setSrcIpPort(0);
-			    }
-			    strParam = request.getParameter("destPort");
-			    if ((strParam != null) && !strParam.trim().equals("")) {
-			        layer3Data.setDestIpPort(Integer.valueOf(strParam.trim()));
-			    } else {
-			        layer3Data.setDestIpPort(0);
-			    }
-			    strParam = request.getParameter("protocol");
-			    if ((strParam != null) && !strParam.trim().equals("")) {
-			        layer3Data.setProtocol(strParam.trim());
-			    }
-			    strParam = request.getParameter("dscp");
-			    if ((strParam != null) && !strParam.trim().equals("")) {
-			        layer3Data.setDscp(strParam.trim());
-			    }
-			    requestedPath.setLayer3Data(layer3Data);
-    		 */
-    	}
-    	this.log.debug("handlePath:end");
-    	return requestedPath;
+    private void createVlanHop(String vlan, CtrlPlaneHopContent hop) {
+    	CtrlPlaneLinkContent link = new CtrlPlaneLinkContent();
+		CtrlPlaneSwcapContent swcap = new CtrlPlaneSwcapContent();
+		CtrlPlaneSwitchingCapabilitySpecificInfo swcapInfo = new CtrlPlaneSwitchingCapabilitySpecificInfo();
+		swcapInfo.setVlanRangeAvailability(vlan);
+		swcap.setSwitchingCapabilitySpecificInfo(swcapInfo );
+		link.setSwitchingCapabilityDescriptors(swcap);
+		link.setId(hop.getLinkIdRef());
+		hop.setLinkIdRef(null);
+		hop.setLink(link);
     }
-
+   
 }
