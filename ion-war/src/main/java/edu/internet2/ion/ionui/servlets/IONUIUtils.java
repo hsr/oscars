@@ -171,10 +171,10 @@ public class IONUIUtils {
 		String pathId = null;
 		while(listIterator.hasNext()) {
 			CtrlPlaneHopContent tempHopObj = (CtrlPlaneHopContent)(listIterator.next());
-			CtrlPlaneLinkContent tempObjHop = (CtrlPlaneLinkContent)tempHopObj.getLink();
+			CtrlPlaneLinkContent tempLinkObj = (CtrlPlaneLinkContent)tempHopObj.getLink();
 
-			if (tempObjHop != null)
-				pathId = tempHopObj.getId();
+			if (tempLinkObj != null)
+				pathId = tempLinkObj.getId();
 			else //path was not found. could be a failed ckt	
 				log.debug("Path not found"); 
 			log.debug("PathId=" + pathId);		

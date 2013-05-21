@@ -59,24 +59,6 @@ import net.es.oscars.resourceManager.beans.Path;
 import net.es.oscars.wbui.servlets.CheckSessionReply;
 import net.es.oscars.common.soap.gen.OSCARSFaultReport;
 
-//commenting for porting
-/*import net.es.oscars.ConfigFinder;
-import net.es.oscars.aaa.AuthValue;
-import net.es.oscars.bss.BSSException;
-import net.es.oscars.bss.BssUtils;
-import net.es.oscars.bss.Reservation;
-import net.es.oscars.bss.topology.Path;
-import net.es.oscars.bss.topology.PathType;
-import net.es.oscars.rmi.RmiUtils;
-import net.es.oscars.rmi.aaa.AaaRmiInterface;
-import net.es.oscars.rmi.bss.BssRmiInterface;
-import net.es.oscars.rmi.bss.xface.RmiQueryResReply;
-import net.es.oscars.servlets.QueryReservation;
-import net.es.oscars.servlets.ServletUtils;
-import net.es.oscars.servlets.UserSession;
-import net.sf.json.JSONObject;
-*/
-
 public class IONQueryReservation extends QueryReservation{
     private Logger log = Logger.getLogger(IONQueryReservation.class);
     
@@ -93,16 +75,8 @@ public class IONQueryReservation extends QueryReservation{
 
         String methodName = "QueryReservation";
 
-        //UserSession userSession = new UserSession();
         PrintWriter out = response.getWriter();
         response.setContentType("application/json");
-        /*
-        String userName = userSession.checkSession(out, request, methodName);
-        if (userName == null) {
-            this.log.warn("No user session: cookies invalid");
-            return;
-        }
-        */
         //new addition for porting
         
         String transId  = PathTools.getLocalDomainId() + "-IONUI-" + UUID.randomUUID().toString();
@@ -130,37 +104,6 @@ public class IONQueryReservation extends QueryReservation{
         }
         //end new addition
 
-        /*
-        RmiQueryResReply rmiReply = new RmiQueryResReply();
-        Map<String, Object> outputMap = new HashMap<String, Object>();
-        String gri = request.getParameter("gri");
-        AuthValue authVal = null;
-        try {
-            BssRmiInterface bssRmiClient =
-                RmiUtils.getBssRmiClient(methodName, log);
-            rmiReply = bssRmiClient.queryReservation(gri, userName);
-            AaaRmiInterface aaaRmiClient = userSession.getAaaInterface();
-            // check to see if user is allowed to see the clone button, which
-            // requires generic reservation create authorization
-            authVal = aaaRmiClient.checkModResAccess(userName, "Reservations",
-                    "create", 0, 0, false, false);
-            if (authVal != AuthValue.DENIED) {
-                outputMap.put("resvCloneDisplay", Boolean.TRUE);
-            } else {
-                outputMap.put("resvCloneDisplay", Boolean.FALSE);
-            }
-        } catch (Exception e) {
-            ServletUtils.handleFailure(out, log, e, methodName);
-            return;
-        }
-        try {
-            this.contentSection(rmiReply, outputMap);
-        } catch (BSSException e) {
-            ServletUtils.handleFailure(out, log, e, methodName);
-            return;
-        }
-        */
-        
       //new additions for ION porting
         Map<String, Object> outputMap = new HashMap<String, Object>();
         String gri = request.getParameter("gri");
@@ -221,27 +164,6 @@ public class IONQueryReservation extends QueryReservation{
             return;
         }
         
-        /*
-        Reservation resv = rmiReply.getReservation();
-        if (resv.getStatusMessage() == null) {
-            outputMap.put("status", "Reservation details for " + gri);
-        } else {
-            outputMap.put("status", resv.getStatusMessage());
-        }
-        
-        //get local status
-        outputMap.put("localStatusReplace", rmiReply.getReservation().getLocalStatus());
-        //output paths
-         
-         try {
-            this.outputRawPath(resv, outputMap);
-        } catch (BSSException e) {
-            ServletUtils.handleFailure(out, log, e, methodName);
-            return;
-        }
-         
-        */ //commenting for PORTING. replaced with below
-        
         if (resDetails.getStatus() == null) {
             outputMap.put("status", "Reservation details for " + gri);
         } else {
@@ -251,15 +173,6 @@ public class IONQueryReservation extends QueryReservation{
         //TBD : getLocalStatus
         outputMap.put("localStatusReplace", resDetails.getStatus());
         //output paths
-        
-        /* commenting for porting
-        try {
-            this.outputRawPath(resv, outputMap);
-        } catch (BSSException e) {
-           ServletUtils.handleFailure(out, log, e, methodName);
-           return;
-        }
-        */
         
         try { 
         	this.outputRawPath(resDetails, outputMap);
@@ -314,7 +227,7 @@ public class IONQueryReservation extends QueryReservation{
             throws IOException, ServletException {
         this.doGet(request, response);
     }
-    
+
     public void outputRawPath(ResDetails resv, Map<String, Object> outputMap) 
     	throws OSCARSServiceException {
     	
@@ -346,48 +259,5 @@ public class IONQueryReservation extends QueryReservation{
           String sAllDomains = IONUIUtils.getDomainsString(path);
           sAllDomains = ( (sAllDomains == null) || (sAllDomains.length() == 0) )?"Not found":sAllDomains;
           outputMap.put("rawInterPath",sAllDomains);
-          //TBD - Find out the value or rawInterPath and how to calculate it 
-
-          //get path
-          /*
-        //path = resv.getPath(PathType.LOCAL);
-        if (path == null) {
-            path = resv.getPath(PathType.REQUESTED);
-        }
-        String pathStr = RMUtils.pathToString(path, false);
-        if (pathStr.equals("")) {
-            return;
-        }
-        outputMap.put("rawPath", pathStr.split("\n"));
-        Path interPath = resv.getPath(PathType.INTERDOMAIN);
-        String interPathStr = RmiUtils.pathToString(interPath, false);
-        if (interPathStr.equals("")) {
-            return;
-        }
-        outputMap.put("rawInterPath", interPathStr.split("\n"));
-           */
     }
-    
-    //replaced method with above version
-    /*
-    public void outputRawPath(Reservation resv, Map<String, Object> outputMap) throws BSSException{
-        //get path
-        Path path = resv.getPath(PathType.LOCAL);
-        if (path == null) {
-            path = resv.getPath(PathType.REQUESTED);
-        }
-        String pathStr = BssUtils.pathToString(path, false);
-        if (pathStr.equals("")) {
-            return;
-        }
-        outputMap.put("rawPath", pathStr.split("\n"));
-        
-        Path interPath = resv.getPath(PathType.INTERDOMAIN);
-        String interPathStr = BssUtils.pathToString(interPath, false);
-        if (interPathStr.equals("")) {
-            return;
-        }
-        outputMap.put("rawInterPath", interPathStr.split("\n"));
-    }
-    */
 }
