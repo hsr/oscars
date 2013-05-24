@@ -88,7 +88,7 @@ public class EoMPLSService implements CircuitService {
                 log.debug("destination edge device id is: "+dstDeviceId+", starting teardown..");
                 action = this.processActionForDevice(action, dstDeviceId);
             } else {
-                log.debug("only device id is: "+srcDeviceId+", starting same-device setup..");
+                log.debug("only device id is: "+srcDeviceId+", starting same-device teardown..");
                 action = this.processActionForDevice(action, dstDeviceId);
                 
             }
@@ -134,7 +134,7 @@ public class EoMPLSService implements CircuitService {
             throw new PSSException(e);
         }
         
-        DeviceConfigGenerator cg = null;
+        DeviceConfigGenerator cg;
         try {
             cg = ConnectorUtils.getDeviceConfigGenerator(deviceId, SVC_ID);
         } catch (PSSException e) {

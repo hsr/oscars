@@ -124,6 +124,7 @@ public class VPLSTest {
         HashMap ifceA = new HashMap();
         ifceA.put("name", portA);
         ifceA.put("vlan", vlanA);
+        ifceA.put("description", gri);
         params.getIfces().add(ifceA);
         /*
         HashMap ifceB = new HashMap();

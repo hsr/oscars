@@ -14,6 +14,7 @@ import net.es.oscars.pss.eompls.api.EoMPLSDeviceAddressResolver;
 import net.es.oscars.pss.eompls.api.EoMPLSIfceAddressResolver;
 import net.es.oscars.pss.eompls.beans.LSP;
 import net.es.oscars.pss.eompls.dao.GCUtils;
+import net.es.oscars.pss.eompls.junos.SDNNameGenerator;
 import net.es.oscars.pss.eompls.util.EoMPLSClassFactory;
 import net.es.oscars.pss.eompls.util.EoMPLSUtils;
 import net.es.oscars.pss.eompls.util.VPLS_DomainIdentifiers;
@@ -286,9 +287,12 @@ public class SR_VPLS_ConfigGen implements DeviceConfigGenerator {
 
 
         ALUNameGenerator ng = ALUNameGenerator.getInstance();
+        SDNNameGenerator sdng = SDNNameGenerator.getInstance();
 
         EoMPLSClassFactory ecf = EoMPLSClassFactory.getInstance();
         /* *********************** */
+
+
         /* BEGIN POPULATING VALUES */
         /* *********************** */
 
@@ -400,7 +404,10 @@ public class SR_VPLS_ConfigGen implements DeviceConfigGenerator {
 
         String vplsId = gids.getVplsId().toString();
         vpls.put("id", vplsId);
-        vpls.put("description", gri);
+
+        String vplsDesc = sdng.getVplsDescription(gri, ingQosBandwidth*1000000);
+        vpls.put("description", vplsDesc);
+
 
 
         String qosId  = ids.getQosId().toString();
@@ -415,6 +422,8 @@ public class SR_VPLS_ConfigGen implements DeviceConfigGenerator {
             Map ifce = new HashMap();
             ifce.put("name", ifceInfo.getName());
             ifce.put("vlan", ifceInfo.getVlan());
+            String sapDesc = sdng.getInterfaceDescription(gri, ingQosBandwidth*1000000);
+            ifce.put("description", sapDesc);
             ifces.add(ifce);
         }
 

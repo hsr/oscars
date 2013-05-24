@@ -55,6 +55,12 @@ public class SDNNameGenerator {
         return oscarsName(gri);
     }
 
+    public String getVplsDescription(String gri, Long bandwidth) {
+        String base = oscarsName(gri);
+        return base + ":"+bandwidth+":oscars-l2circuit:show:na";
+    }
+
+
     public String getVplsName(String gri) {
         return oscarsName(gri);
     }
