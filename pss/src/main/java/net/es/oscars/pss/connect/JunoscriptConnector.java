@@ -277,11 +277,16 @@ public class JunoscriptConnector implements Connector {
         List<Element> rpcReplies = responseDoc.getRootElement().getChildren("rpc-reply");
         for (Element rpcReply : rpcReplies) {
 
-
             Element configRes = rpcReply.getChild("load-configuration-results");
             if (configRes != null) {
                 List<Element> configErrors = configRes.getChildren("error", xnmNs);
-                if (configErrors != null && !configErrors.isEmpty()) {
+
+                if (configErrors == null) {
+                    log.debug("no errors for load-configuration-results segment (null)");
+
+                } else if (configErrors.isEmpty()) {
+                    log.debug("no errors for load-configuration-results segment (empty)");
+                } else {
                     hasErrors = true;
                     for (Element el : configErrors) {
                         List<Element> errorPieces = el.getChildren();
@@ -289,10 +294,7 @@ public class JunoscriptConnector implements Connector {
                             log.debug("load config error name: ["+ errorPiece.getName()+"] value: ["+errorPiece.getValue()+"]");
                         }
                     }
-                } else {
-                    log.debug("no errors for load-configuration-results segment");
                 }
-
 
                 List<Element> successes = configRes.getChildren("load-success");
                 if (successes == null || successes.isEmpty()) {
@@ -308,7 +310,11 @@ public class JunoscriptConnector implements Connector {
             Element commitRes = rpcReply.getChild("commit-results");
             if (commitRes != null) {
                 List<Element> commitErrors = commitRes.getChildren("error", xnmNs);
-                if (commitErrors != null && !commitErrors.isEmpty()) {
+                if (commitErrors == null) {
+                    log.debug("no error elements found in commit-results segment (null)");
+                } else if (commitErrors.isEmpty()) {
+                    log.debug("no error elements found in commit-results segment (empty)");
+                } else {
                     hasErrors = true;
                     for (Element el : commitErrors) {
                         List<Element> errorPieces = el.getChildren();
@@ -316,9 +322,6 @@ public class JunoscriptConnector implements Connector {
                             log.debug("commit error name: ["+ errorPiece.getName()+"] value: ["+errorPiece.getValue()+"]");
                         }
                     }
-
-                } else {
-                    log.debug("no error elements found in commit-results segment");
                 }
             } else {
                 log.error("did not receive a commit-results segment");
