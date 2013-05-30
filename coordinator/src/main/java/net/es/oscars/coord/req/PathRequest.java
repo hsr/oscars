@@ -620,13 +620,15 @@ public class PathRequest extends CoordRequest <PathRequestParams,PSSReplyContent
 
         synchronized (this) {
             if (this.status != null && this.status.equals(PSSConstants.FAIL)) {
-                 return; // failure has already been handled
+                LOG.debug("no further action needed: local PSS action already failed");
+                return; // failure has already been handled
             } 
             // ignore extraneous interDomain error events
             if (!isLocalOnly) {
                 String status =  getResvStatus();
                 if (status.equals(StateEngineValues.FAILED) ||
                         status.equals(StateEngineValues.UNKNOWN)) {
+                    LOG.debug("no further action needed: reservation status is already: "+status);
                     return;
                 }
             }
@@ -655,11 +657,17 @@ public class PathRequest extends CoordRequest <PathRequestParams,PSSReplyContent
             if (! this.isFirstDomain) {
                 LOG.debug(netLogger.getMsg(method,"sending PATH_TEARDOWN_DOWNSTREAM_FAILED to " + this.previousIDC));
                 this.sendDownStream(errorRep.getErrorMsg());
+            } else {
+                LOG.debug("this is first domain, no event sent upstream");
             }
             if (! this.isLastDomain) {
                  LOG.debug(netLogger.getMsg(method,"sending PATH_TEARDOWN_UPSTREAM_FAILED to " + this.nextIDC));
                 this.sendUpStream(errorRep.getErrorMsg());
+            } else {
+                LOG.debug("this is last domain, no event sent downstream");
             }
+        } else {
+            LOG.debug("reservation is single domain, no events sent");
         }
         this.notifyError (exception.getMessage(), this.resDetails);
         if (!isTeardownPending){
