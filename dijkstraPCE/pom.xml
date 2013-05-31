@@ -46,12 +46,6 @@
         <version>${oscars.version}</version>
     </dependency>
     
-    <dependency>
-        <groupId>net.es.oscars</groupId>
-        <artifactId>connectivityPCE</artifactId>
-        <version>${oscars.version}</version>
-    </dependency>
-    
     <!-- OSCARS utilities -->
     <dependency>
         <groupId>net.es.oscars</groupId>

@@ -1,7 +1,7 @@
 %define package_name dijkstraPCE 
 %define service_name DijkstraPCE
 %define pce_name dijkstra
-%define mvn_project_list common-libs,common-logging,common-soap,utils,%{package_name}
+%define mvn_project_list common-libs,common-logging,common-soap,utils,pce,%{package_name}
 %define install_base /opt/oscars/%{package_name}
 %define oscars_home /etc/oscars
 %define log_dir /var/log/oscars
