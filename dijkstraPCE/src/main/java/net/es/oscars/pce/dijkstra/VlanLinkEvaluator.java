@@ -208,6 +208,24 @@ public class VlanLinkEvaluator extends LinkEvaluator {
             currSegment.add(linkMap.get(currLinkId));
             String vlans = linkMap.get(currLinkId).getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability();
             
+            //combine vlans with remoteLink vlans
+            String remoteLinkId = null;
+            if(linkMap.get(currLinkId).getRemoteLinkId() != null){
+                remoteLinkId = NMWGParserUtil.normalizeURN(linkMap.get(currLinkId).getRemoteLinkId());
+            }
+            if(remoteLinkId != null && linkMap.containsKey(remoteLinkId) &&
+                    this.hasVlanInfo(linkMap.get(remoteLinkId).getSwitchingCapabilityDescriptors())){
+                String remoteVlanRange = linkMap.get(remoteLinkId).getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability();
+                VlanRange combinedRange = VlanRange.and(new VlanRange(vlans), new VlanRange(remoteVlanRange));
+                if(combinedRange.isEmpty()){
+                    throw new OSCARSServiceException("No overlapping VLANs on link " + 
+                            currLinkId + "(" + vlans + ") and its remote link " + 
+                            remoteLinkId + "(" + remoteVlanRange  + ")", ErrorReport.USER);
+                }
+                vlans = combinedRange.toString();
+                linkMap.get(remoteLinkId).getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().setVlanRangeAvailability(vlans);
+            }
+            
             //add to translation stack if can do translation
             if(swcapInfo.isVlanTranslation() != null && swcapInfo.isVlanTranslation()){
                 translationStack.add(currSegment.size() - 1);
@@ -218,7 +236,7 @@ public class VlanLinkEvaluator extends LinkEvaluator {
                 currSegmentRange = VlanRange.and(new VlanRange(vlans), prevDomainVlanAvail);
                 //throw error if previous domain egress and current domain ingress don't overlap
                 if(currSegmentRange.isEmpty()){
-                    throw new OSCARSServiceException(" No overlapping VLANs between previous " +
+                    throw new OSCARSServiceException("No overlapping VLANs between previous " +
                             "domain egress (" + prevDomainVlanAvail + ") and current domain " +
                             "ingress (" + vlans + ")",  ErrorReport.USER);
                 }
