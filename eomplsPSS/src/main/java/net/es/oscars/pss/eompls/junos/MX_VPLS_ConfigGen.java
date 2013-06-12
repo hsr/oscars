@@ -202,11 +202,24 @@ public class MX_VPLS_ConfigGen implements DeviceConfigGenerator {
         Integer bw = rc.getBandwidth();
         PathInfo pi = rc.getPathInfo();
 
-        // bandwidth in Mbps 
+        // bandwidth is in Mbps
         lspBandwidth = 1000000L*bw;
         
         policerBandwidthLimit = lspBandwidth;
         policerBurstSizeLimit = lspBandwidth / 10;
+        if (policerBandwidthLimit < 8000L) {
+            policerBandwidthLimit = 8000L;
+        }
+        if (policerBandwidthLimit > 50000000000L) {
+            policerBandwidthLimit = 50000000000L;
+        }
+
+        if (policerBurstSizeLimit < 1500L) {
+            policerBurstSizeLimit = 1500L;
+        }
+        if (policerBurstSizeLimit > 100000000000L) {
+            policerBurstSizeLimit = 100000000000L;
+        }
 
 
         EoMPLSClassFactory ecf = EoMPLSClassFactory.getInstance();

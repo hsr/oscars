@@ -175,7 +175,19 @@ public class MXConfigGen implements DeviceConfigGenerator {
         
         policerBandwidthLimit = lspBandwidth;
         policerBurstSizeLimit = lspBandwidth / 10;
+        if (policerBandwidthLimit < 8000L) {
+            policerBandwidthLimit = 8000L;
+        }
+        if (policerBandwidthLimit > 50000000000L) {
+            policerBandwidthLimit = 50000000000L;
+        }
 
+        if (policerBurstSizeLimit < 1500L) {
+            policerBurstSizeLimit = 1500L;
+        }
+        if (policerBurstSizeLimit > 100000000000L) {
+            policerBurstSizeLimit = 100000000000L;
+        }
         String lspTargetDeviceId;
         boolean reverse = false;
         log.debug("source edge device id is: "+srcDeviceId+", config to generate is for "+deviceId);
