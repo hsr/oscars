@@ -441,6 +441,11 @@ public class InterDomainEventRequest extends CoordRequest <InterDomainEventConte
         
         merged.setLogin(local.getLogin());  // replaces code in CreateResvCompletedAction
         merged.getReservedConstraint().getPathInfo().setPath(mergedPath);
+        //fixes issue if remote side doesn't set bandwidth. 
+        if(local.getReservedConstraint().getBandwidth() != 0){
+            merged.getReservedConstraint().setBandwidth(local.getReservedConstraint().getBandwidth());
+        }
+        
         return merged;
     }
 
