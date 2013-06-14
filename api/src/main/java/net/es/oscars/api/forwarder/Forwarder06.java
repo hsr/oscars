@@ -2,6 +2,7 @@ package net.es.oscars.api.forwarder;
 
 import java.net.MalformedURLException;
 import java.net.URL;
+import java.util.HashMap;
 
 import net.es.oscars.api.soap.gen.v06.CancelResContent;
 import net.es.oscars.api.soap.gen.v06.CreatePathResponseContent;
@@ -29,8 +30,12 @@ import net.es.oscars.utils.clients.IDCClient06;
 import net.es.oscars.utils.config.ContextConfig;
 import net.es.oscars.utils.soap.OSCARSServiceException;
 import net.es.oscars.utils.svc.ServiceNames;
+import net.es.oscars.utils.topology.NMWGParserUtil;
+import net.es.oscars.utils.topology.PathTools;
 
 import org.apache.log4j.Logger;
+import org.ogf.schema.network.topology.ctrlplane.CtrlPlaneHopContent;
+import org.ogf.schema.network.topology.ctrlplane.CtrlPlanePathContent;
 
 /**
  * This abstract class is to be extended by the IDC message forwarders, implementing when necessary, protocol adaptation.
@@ -129,6 +134,7 @@ public class Forwarder06 extends Forwarder {
      */
     public CreateReply createReservation(ResCreateContent createReservation) throws OSCARSServiceException    { 
         
+        this.formatPath(createReservation);
         Object[] req = {createReservation};
         Object[] res = this.client.invoke("createReservation",req);
  
@@ -181,5 +187,70 @@ public class Forwarder06 extends Forwarder {
 
     public URL getDestURL () {
         return this.url;
+    }
+    
+    /**
+     * This method strips interdomain hops after the current domain 
+     * unless they are in the user request constraints. This gives 
+     * other domains freedom to select hops
+     * @param createReservation
+     * @throws OSCARSServiceException 
+     */
+    private void formatPath(ResCreateContent createReservation) throws OSCARSServiceException {
+        CtrlPlanePathContent userPath = createReservation.getUserRequestConstraint().getPathInfo().getPath();
+        CtrlPlanePathContent resPath = createReservation.getReservedConstraint().getPathInfo().getPath();
+        CtrlPlanePathContent formattedPath = new CtrlPlanePathContent();
+        formattedPath.setId(resPath.getId());
+        
+        //build map of user constraint hops
+        HashMap<String, Boolean> userPathMap = new HashMap<String, Boolean>();
+        if(userPath != null){
+            for(CtrlPlaneHopContent userHop : userPath.getHop()){
+                userPathMap.put(NMWGParserUtil.normalizeURN(NMWGParserUtil.getURN(userHop)), true);
+            }
+        }
+        
+        //iterate through path
+        String localDomain = PathTools.getLocalDomainId();
+        boolean ingressFound = false;
+        boolean egressFound = false;
+        int i = 1;
+        for(CtrlPlaneHopContent resHop : resPath.getHop()){
+            String urn = NMWGParserUtil.normalizeURN(NMWGParserUtil.getURN(resHop));
+            String hopDomain = NMWGParserUtil.normalizeURN( NMWGParserUtil.getURN(urn, NMWGParserUtil.DOMAIN_TYPE));
+            System.out.println("Local Domain: " + localDomain + ", Hop Domain: " + hopDomain);
+            if(localDomain.equals(hopDomain)){
+                //always add local hops
+                ingressFound = true;
+                formattedPath.getHop().add(resHop);
+                System.out.println("Local Hop: " + urn);
+            }else if(!ingressFound){
+                System.out.println("Pre Hop: " + urn);
+                //always add if hop is before local domain
+                formattedPath.getHop().add(resHop);
+            }else if(!egressFound){
+                /* we have found ingress and are in different domain 
+                   so previous hop must be egress. add this hop to path
+                   as well
+                */
+                egressFound = true;
+                formattedPath.getHop().add(resHop);
+                System.out.println("Next Domain Hop: " + urn);
+            }else if(userPathMap.containsKey(urn)){
+                ///add any hops in user requested path
+                formattedPath.getHop().add(resHop);
+                System.out.println("User Hop: " + urn);
+            }else if(resPath.getHop().size() == i){
+                //always add the destination
+                formattedPath.getHop().add(resHop);
+                System.out.println("Last Hop: " + urn);
+            }else{
+                System.out.println("Excluded: " + urn);
+            }
+            i++;
+        }
+        
+        //finally, set the path
+        createReservation.getReservedConstraint().getPathInfo().setPath(formattedPath);
     }
 }
