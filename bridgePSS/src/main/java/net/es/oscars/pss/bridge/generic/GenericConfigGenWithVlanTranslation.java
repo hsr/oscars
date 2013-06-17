@@ -2,7 +2,6 @@ package net.es.oscars.pss.bridge.generic;
 
 
 import net.es.oscars.api.soap.gen.v06.ResDetails;
-import net.es.oscars.pss.api.DeviceConfigGenerator;
 import net.es.oscars.pss.api.TemplateDeviceConfigGenerator;
 import net.es.oscars.pss.beans.PSSAction;
 import net.es.oscars.pss.beans.PSSException;
@@ -18,8 +17,8 @@ import org.apache.log4j.Logger;
 import java.util.HashMap;
 import java.util.Map;
 
-public class GenericConfigGen implements TemplateDeviceConfigGenerator {
-    private Logger log = Logger.getLogger(GenericConfigGen.class);
+public class GenericConfigGenWithVlanTranslation implements TemplateDeviceConfigGenerator {
+    private Logger log = Logger.getLogger(GenericConfigGenWithVlanTranslation.class);
     private TemplateConfig templateConfig;
 
     public TemplateConfig getTemplateConfig() {
@@ -70,7 +69,8 @@ public class GenericConfigGen implements TemplateDeviceConfigGenerator {
 
         String portA;
         String portZ;
-        String ifceVlan;
+        String vlanA;
+        String vlanZ;
         String gri = res.getGlobalReservationId();
         String description = res.getDescription();
         int bandwidth = res.getReservedConstraint().getBandwidth();
@@ -80,20 +80,20 @@ public class GenericConfigGen implements TemplateDeviceConfigGenerator {
         DeviceBridge db = BridgeUtils.getDeviceBridge(deviceId, res);
         portA = db.getPortA();
         portZ = db.getPortZ();
-        ifceVlan = db.getVlanA();
-        if (!ifceVlan.equals(db.getVlanZ())) {
-            throw new PSSException("different VLANs not supported");
-        }
-       
+        vlanA = db.getVlanA();
+        vlanZ = db.getVlanZ();
+
 
         Map root = new HashMap();
 
-        root.put("vlan", ifceVlan);
+        root.put("vlanA", vlanA);
+        root.put("vlanZ", vlanZ);
         root.put("portA", portA);
         root.put("portZ", portZ);
         root.put("description", description);
         root.put("gri", gri);
         root.put("bandwidth", bandwidth);
+
 
         String config       = TemplateUtils.generateConfig(root, templateFile);
         log.debug("getTeardown done");
@@ -118,9 +118,11 @@ public class GenericConfigGen implements TemplateDeviceConfigGenerator {
 
 
 
+
         String portA;
         String portZ;
-        String ifceVlan;
+        String vlanA;
+        String vlanZ;
         String gri = res.getGlobalReservationId();
         String description = res.getDescription();
         int bandwidth = res.getReservedConstraint().getBandwidth();
@@ -130,20 +132,20 @@ public class GenericConfigGen implements TemplateDeviceConfigGenerator {
         DeviceBridge db = BridgeUtils.getDeviceBridge(deviceId, res);
         portA = db.getPortA();
         portZ = db.getPortZ();
-        ifceVlan = db.getVlanA();
-        if (!ifceVlan.equals(db.getVlanZ())) {
-            throw new PSSException("different VLANs not supported");
-        }
-       
+        vlanA = db.getVlanA();
+        vlanZ = db.getVlanZ();
+
 
         Map root = new HashMap();
 
-        root.put("vlan", ifceVlan);
+        root.put("vlanA", vlanA);
+        root.put("vlanZ", vlanZ);
         root.put("portA", portA);
         root.put("portZ", portZ);
         root.put("description", description);
         root.put("gri", gri);
         root.put("bandwidth", bandwidth);
+
 
         String config       = TemplateUtils.generateConfig(root, templateFile);
         log.debug("getSetup done");
