@@ -15,3 +15,13 @@
       configGenerator:  "net.es.oscars.pss.bridge.alu.SC11_SRConfigGen"
     
 
+- id: "dell"
+  services:
+    - id:               bridge
+      configGenerator:  "net.es.oscars.pss.bridge.generic.GenericConfigGen"
+      templateConfig:
+        templates:
+          "SETUP":          "dell-setup.txt"
+          "TEARDOWN":       "dell-teardown.txt"
+          "MODIFY":         ""
+          "STATUS":         ""

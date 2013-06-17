@@ -1,0 +1,8 @@
+vlan database
+no vlan ${vlan}
+
+interface ethernet ${portA}
+switchport general allowed vlan remove ${vlan} tagged
+
+interface ethernet ${portZ}
+switchport general allowed vlan remove ${vlan} tagged

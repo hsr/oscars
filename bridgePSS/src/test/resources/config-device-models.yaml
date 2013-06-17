@@ -1,6 +1,6 @@
 ---
     "edge-1":    "juniper-t1600"
-    "edge-2":    "alu-sr"
+    "edge-2":    "dell"
     "core-1":    "brocade-mlx"
     "core-2":    "alu-sr"
         

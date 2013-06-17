@@ -1,0 +1,8 @@
+vlan database
+vlan ${vlan}
+
+interface ethernet ${portA}
+switchport general allowed vlan add ${vlan} tagged
+
+interface ethernet ${portZ}
+switchport general allowed vlan add ${vlan} tagged

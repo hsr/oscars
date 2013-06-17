@@ -105,6 +105,8 @@ public class BridgeService implements CircuitService {
             res = ActionUtils.getReservation(action);
         } catch (PSSException e) {
             log.error(e);
+            e.printStackTrace();
+
             errorMessage = "Could not locate ResDetails for device "+deviceId+"\n"+e.getMessage();
             action.setStatus(ActionStatus.FAIL);
             faultReport.setErrorMsg(errorMessage);
@@ -120,6 +122,7 @@ public class BridgeService implements CircuitService {
             cg = ConnectorUtils.getDeviceConfigGenerator(deviceId, SVC_ID);
         } catch (PSSException e) {
             log.error(e);
+            e.printStackTrace();
             errorMessage = "Could not locate config generator for device "+deviceId+"\n"+e.getMessage();
             action.setStatus(ActionStatus.FAIL);
             faultReport.setErrorMsg(errorMessage);
@@ -130,9 +133,10 @@ public class BridgeService implements CircuitService {
             ClassFactory.getInstance().getWorkflow().update(action);
             throw new PSSException(e);
         }
-        
+
         String deviceCommand = cg.getConfig(action, deviceId);
         String deviceAddress = ConnectorUtils.getDeviceAddress(deviceId);
+
         
         Connector conn = ClassFactory.getInstance().getDeviceConnectorMap().getDeviceConnector(deviceId);
         log.debug("connector for "+deviceId+" is: "+conn.getClass());
@@ -148,6 +152,7 @@ public class BridgeService implements CircuitService {
             conn.sendCommand(comm);
         } catch (PSSException e) {
             log.error(e.getMessage());
+            e.printStackTrace();
             action.setStatus(ActionStatus.FAIL);
             faultReport.setErrorMsg(errorMessage);
             faultReport.setGri(res.getGlobalReservationId());
