@@ -20,7 +20,7 @@ public class ConnectorUtils {
     public static DeviceConfigGenerator getDeviceConfigGenerator(String deviceId, String serviceId) throws PSSException {
         String modelId = ClassFactory.getInstance().getDeviceModelMap().getDeviceModel(deviceId);
         if (modelId == null) {
-            throw new PSSException("no model defined for devic "+deviceId);
+            throw new PSSException("no model defined for device "+deviceId);
 
         }
         DeviceModelDefinition dmd = ConfigHolder.getInstance().getDeviceModelDefinition(modelId);
@@ -38,15 +38,18 @@ public class ConnectorUtils {
             DeviceConfigGenerator cg;
             TemplateConfig tcfg = dms.getTemplateConfig();
             if (tcfg != null) {
-                if (aClass.isInstance(TemplateDeviceConfigGenerator.class)) {
+                if (TemplateDeviceConfigGenerator.class.isInstance(aClass.newInstance())) {
+                    System.err.println("found template config generator: "+configGenCN);
                     TemplateDeviceConfigGenerator tcg = (TemplateDeviceConfigGenerator) aClass.newInstance();
                     tcg.setTemplateConfig(tcfg);
                     cg = tcg;
 
                 } else {
+                    System.err.println("found template config but it does not apply: "+configGenCN);
                     cg = (DeviceConfigGenerator) aClass.newInstance();
                 }
             } else {
+                System.err.println("no template config found for: "+configGenCN);
                 cg = (DeviceConfigGenerator) aClass.newInstance();
 
             }
