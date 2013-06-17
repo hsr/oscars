@@ -1,5 +1,7 @@
 package net.es.oscars.pss.util;
 
+import net.es.oscars.pss.api.TemplateDeviceConfigGenerator;
+import net.es.oscars.pss.beans.config.TemplateConfig;
 import org.apache.log4j.Logger;
 
 import net.es.oscars.pss.api.Connector;
@@ -33,7 +35,22 @@ public class ConnectorUtils {
         ClassLoader cl = Thread.currentThread().getContextClassLoader();
         try {
             Class<?> aClass = cl.loadClass(configGenCN);
-            DeviceConfigGenerator cg = (DeviceConfigGenerator) aClass.newInstance();
+            DeviceConfigGenerator cg;
+            TemplateConfig tcfg = dms.getTemplateConfig();
+            if (tcfg != null) {
+                if (aClass.isInstance(TemplateDeviceConfigGenerator.class)) {
+                    TemplateDeviceConfigGenerator tcg = (TemplateDeviceConfigGenerator) aClass.newInstance();
+                    tcg.setTemplateConfig(tcfg);
+                    cg = tcg;
+
+                } else {
+                    cg = (DeviceConfigGenerator) aClass.newInstance();
+                }
+            } else {
+                cg = (DeviceConfigGenerator) aClass.newInstance();
+
+            }
+
             return cg;
         } catch (Exception e) {
             throw new PSSException(e);

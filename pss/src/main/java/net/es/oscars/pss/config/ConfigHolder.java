@@ -7,6 +7,8 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.util.HashMap;
 
+import net.es.oscars.pss.beans.definitions.DeviceModelService;
+import net.es.oscars.pss.enums.ActionType;
 import org.apache.log4j.Logger;
 import org.ho.yaml.Yaml;
 
@@ -115,7 +117,7 @@ public class ConfigHolder implements DefinitionStore, ConfigurationStore {
                 mds = (DeviceModelDefinition[]) Yaml.loadType(propFile, DeviceModelDefinition[].class);
  
             } catch (FileNotFoundException e) {
-                System.out.println("ConfigHelper: configuration file: "+ modelsDefFullPath + " not found");
+                System.err.println("ConfigHelper: configuration file: "+ modelsDefFullPath + " not found");
                 e.printStackTrace();
                 System.exit(1);
             }
@@ -132,8 +134,21 @@ public class ConfigHolder implements DefinitionStore, ConfigurationStore {
         
         HashMap<String, DeviceModelDefinition> mdhm = new HashMap<String, DeviceModelDefinition>();
         for (DeviceModelDefinition md : mds) {
-            System.out.println("loaded model definition: "+md.getId()+" "+md);
+            System.err.println("loaded model definition: "+md.getId()+" "+md);
             mdhm.put(md.getId(), md);
+            for (DeviceModelService dms : md.getServices()) {
+                System.err.println("loaded model service: "+dms.getId()+" "+dms.getConfigGenerator());
+                if (dms.getTemplateConfig() == null || dms.getTemplateConfig().getTemplates().isEmpty()) {
+                    System.err.println("  no template config");
+                } else {
+                    HashMap<String, String> tpts = dms.getTemplateConfig().getTemplates();
+                    for (String at : tpts.keySet()) {
+                        System.err.println("   "+at+": "+tpts.get(at));
+                    }
+
+                }
+
+            }
         }
         holder.setDeviceModelDefs(mdhm);
         

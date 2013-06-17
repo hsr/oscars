@@ -1,5 +1,7 @@
 package net.es.oscars.pss.beans;
 
+
+
 public class PSSException extends Exception {
 
 	private static final long serialVersionUID = 1L;

@@ -48,7 +48,7 @@ public interface Workflow {
 
 
     /**
-     * get all completed actions
+     * get all finishRunning actions
      */
     public List<PSSAction> getCompleted();
 

@@ -17,7 +17,7 @@ import net.es.oscars.utils.svc.ServiceNames;
 import net.es.oscars.utils.topology.PathTools;
 
 /**
- * Called when a pss action fails or is completed
+ * Called when a pss action fails or is finishRunning
  * Calls Coordinator with a PSSReply message
  * @author Evangelos Chaniotakis, Mary Thompson
  *
@@ -29,7 +29,7 @@ public class CoordNotifier implements Notifier {
      * Checks the status of the PSSAction and sends
      * a PSSReply message to the Coordinator with the results of the action
      * 
-     * @param PSSAction the action that has completed or failed
+     * @param PSSAction the action that has finishRunning or failed
      */
     public PSSAction process(PSSAction action) throws PSSException {
         log.info("CoordNotifier:start");
