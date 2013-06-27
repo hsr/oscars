@@ -451,16 +451,16 @@ public class DijkstraPCE {
             String currNode, List<CtrlPlaneLinkContent> path, 
             HashMap<String, CtrlPlaneNodeContent> nodeMap) throws OSCARSServiceException{
         if(destType == NMWGParserUtil.DOMAIN_TYPE || destType == NMWGParserUtil.NODE_TYPE){
-            if(currNode.startsWith(dest)){
+            if(this.compareUrns(currNode, dest, destType)){
                 path.add(currLink);
                 return DEST_FOUND;
             }
         }else if(destType == NMWGParserUtil.PORT_TYPE){
             String remoteLinkId = NMWGParserUtil.normalizeURN(currLink.getRemoteLinkId());
-            if(remoteLinkId.startsWith(dest)){
+            if(this.compareUrns(remoteLinkId, dest, destType)){
                 path.add(currLink);
                 return DEST_FOUND;
-            }else if(dest.startsWith(currNode)){
+            }else if(this.compareUrns(dest, currNode, NMWGParserUtil.NODE_TYPE)){
                 CtrlPlanePortContent port = this.getPort(dest, nodeMap);
                 if(port.getLink().size() == 1){
                     /* when we first ran link evaluators we did not have 
@@ -489,7 +489,7 @@ public class DijkstraPCE {
             if(remoteLinkId.equals(dest)){
                 path.add(currLink);
                 return DEST_FOUND;
-            }else if(dest.startsWith(currNode)){
+            }else if(this.compareUrns(dest, currNode, NMWGParserUtil.NODE_TYPE)){
                 CtrlPlaneLinkContent destLink = this.getLink(dest, nodeMap);
                 /* when we first ran link evaluators we did not have 
                  * the destination link. We need to make sure that the 
@@ -570,5 +570,25 @@ public class DijkstraPCE {
         } catch (OSCARSServiceException e) {
             return false;
         }
+    }
+    
+    /**
+     * Compares two urns by converting them to a given type(domain, node,port, or link), 
+     * normalizing them and doing a simple string compare. Always use this and never use
+     * .startsWith when comparing urns of different types.
+     *  
+     * @param urn1 the first urn to compare
+     * @param urn2 the second urn to compare
+     * @param urnType maps to one of the NMWGParserUtil type constants. the level to compare at.
+     * @return true if match, false otehrwise
+     * @throws OSCARSServiceException
+     */
+    private boolean compareUrns(String urn1, String urn2, int urnType) throws OSCARSServiceException{
+        
+        //normalize urns
+        String normalUrn1 = NMWGParserUtil.normalizeURN(NMWGParserUtil.getURN(urn1, urnType));
+        String normalUrn2 = NMWGParserUtil.normalizeURN(NMWGParserUtil.getURN(urn2, urnType));
+        
+        return normalUrn1.equals(normalUrn2);
     }
 }

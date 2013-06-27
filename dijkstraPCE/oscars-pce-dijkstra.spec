@@ -6,7 +6,7 @@
 %define oscars_home /etc/oscars
 %define log_dir /var/log/oscars
 %define run_dir /var/run/oscars
-%define relnum 2 
+%define relnum  3 
 
 Name:           oscars-pce-%{pce_name}
 Version:        0.6
