@@ -467,9 +467,17 @@ public class MXConfigGen implements DeviceConfigGenerator {
         ReservedConstraintType rc = res.getReservedConstraint();
         Integer bw = rc.getBandwidth();
         PathInfo pi = rc.getPathInfo();
-        CtrlPlaneLinkContent ingressLink = pi.getPath().getHop().get(0).getLink();
-        CtrlPlaneLinkContent egressLink = pi.getPath().getHop().get(pi.getPath().getHop().size()-1).getLink();
-        
+
+        List<CtrlPlaneHopContent> localHops;
+        try {
+            localHops = PathTools.getLocalHops(pi.getPath(), PathTools.getLocalDomainId());
+        } catch (OSCARSServiceException e) {
+            throw new PSSException(e);
+        }
+        CtrlPlaneLinkContent ingressLink = localHops.get(0).getLink();
+        CtrlPlaneLinkContent egressLink = localHops.get(localHops.size()-1).getLink();
+
+
         String srcLinkId = ingressLink.getId();
         URNParserResult srcRes = URNParser.parseTopoIdent(srcLinkId);
         String dstLinkId = egressLink.getId();
@@ -559,9 +567,15 @@ public class MXConfigGen implements DeviceConfigGenerator {
         
         ReservedConstraintType rc = res.getReservedConstraint();
         PathInfo pi = rc.getPathInfo();
-        
-        CtrlPlaneLinkContent ingressLink = pi.getPath().getHop().get(0).getLink();
-        CtrlPlaneLinkContent egressLink = pi.getPath().getHop().get(pi.getPath().getHop().size()-1).getLink();
+
+        List<CtrlPlaneHopContent> localHops;
+        try {
+            localHops = PathTools.getLocalHops(pi.getPath(), PathTools.getLocalDomainId());
+        } catch (OSCARSServiceException e) {
+            throw new PSSException(e);
+        }
+        CtrlPlaneLinkContent ingressLink = localHops.get(0).getLink();
+        CtrlPlaneLinkContent egressLink = localHops.get(localHops.size()-1).getLink();
         
         String srcLinkId = ingressLink.getId();
         URNParserResult srcRes = URNParser.parseTopoIdent(srcLinkId);
