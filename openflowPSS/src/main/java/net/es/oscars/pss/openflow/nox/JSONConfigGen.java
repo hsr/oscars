@@ -57,7 +57,14 @@ public class JSONConfigGen implements DeviceConfigGenerator {
                 + "\"gri\":\"" + gri +"\", \"bandwidth\":\"" + Integer.toString(bw) +"Mbps\", \n"
                 + "\"path\":[\n";
         PathInfo pathInfo = res.getReservedConstraint().getPathInfo();
-        List<CtrlPlaneHopContent> hops = pathInfo.getPath().getHop();
+
+        List<CtrlPlaneHopContent> hops;
+        try {
+            hops = PathTools.getLocalHops(pathInfo.getPath(), PathTools.getLocalDomainId());
+        } catch (OSCARSServiceException e) {
+            throw new PSSException(e);
+        }
+
         for (int i = 0; i < hops.size(); i++) {
             CtrlPlaneHopContent hop1 = hops.get(i);
             try {
@@ -125,7 +132,14 @@ public class JSONConfigGen implements DeviceConfigGenerator {
                 + "\"gri\":\"" + gri +"\", \"bandwidth\":\"" + Integer.toString(bw) +"Mbps\", \n"
                 + "\"path\":[\n";
         PathInfo pathInfo = res.getReservedConstraint().getPathInfo();
-        List<CtrlPlaneHopContent> hops = pathInfo.getPath().getHop();
+
+        List<CtrlPlaneHopContent> hops;
+        try {
+            hops = PathTools.getLocalHops(pathInfo.getPath(), PathTools.getLocalDomainId());
+        } catch (OSCARSServiceException e) {
+            throw new PSSException(e);
+        }
+
         for (int i = 0; i < hops.size(); i++) {
             CtrlPlaneHopContent hop1 = hops.get(i);
             try {
@@ -192,7 +206,14 @@ public class JSONConfigGen implements DeviceConfigGenerator {
                 + "\"gri\":\"" + gri +"\", \"bandwidth\":\"" + Integer.toString(bw) +"Mbps\", \n"
                 + "\"path\":[\n";
         PathInfo pathInfo = res.getReservedConstraint().getPathInfo();
-        List<CtrlPlaneHopContent> hops = pathInfo.getPath().getHop();
+
+        List<CtrlPlaneHopContent> hops;
+        try {
+            hops = PathTools.getLocalHops(pathInfo.getPath(), PathTools.getLocalDomainId());
+        } catch (OSCARSServiceException e) {
+            throw new PSSException(e);
+        }
+
         for (int i = 0; i < hops.size(); i++) {
             CtrlPlaneHopContent hop1 = hops.get(i);
             try {
