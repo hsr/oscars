@@ -8,9 +8,9 @@ package net.es.oscars.pss.eompls.junos;
  */
 public class SDNNameGenerator {
 
-    public String getFilterName(String gri, String type) {
+    public String getFilterName(String gri, String type, String description) {
 
-        String base = oscarsName(gri);
+        String base = oscarsName(gri, description);
         if (type.equals("stats")) {
             return base+"_stats";
         } else if (type.equals("policing")) {
@@ -20,53 +20,59 @@ public class SDNNameGenerator {
         }
     }
 
-    public String getIswitchTerm(String gri) {
-        String base = oscarsName(gri);
+    public String getIswitchTerm(String gri, String description) {
+        String base = oscarsName(gri, description);
         return base;
     }
     
 
-    public String getInterfaceDescription(String gri, Long bandwidth) {
-        String base = oscarsName(gri);
-        return base + ":"+bandwidth+":oscars-l2circuit:show:circuit-intercloud";
+    public String getInterfaceDescription(String gri, Long bandwidth, String description) {
+        String base = oscarsName(gri, description);
+        if (description.contains("TESTING")) {
+
+            return base + ":"+bandwidth+":oscars-l2circuit:show:circuit-testing";
+        } else {
+
+            return base + ":"+bandwidth+":oscars-l2circuit:show:circuit-intercloud";
+        }
     }
 
-    public String getL2CircuitDescription(String gri) {
-        return oscarsName(gri);
+    public String getL2CircuitDescription(String gri, String description) {
+        return oscarsName(gri, description);
     }
 
-    public String getLSPName(String gri) {
-        return oscarsName(gri);
+    public String getLSPName(String gri, String description) {
+        return oscarsName(gri, description);
     }
 
-    public String getPathName(String gri) {
-        return oscarsName(gri);
+    public String getPathName(String gri, String description) {
+        return oscarsName(gri, description);
     }
 
-    public String getPolicerName(String gri) {
-        return oscarsName(gri);
+    public String getPolicerName(String gri, String description) {
+        return oscarsName(gri, description);
     }
 
-    public String getPolicyName(String gri) {
-        return oscarsName(gri);
+    public String getPolicyName(String gri, String description) {
+        return oscarsName(gri, description);
     }
 
-    public String getCommunityName(String gri) {
-        return oscarsName(gri);
+    public String getCommunityName(String gri, String description) {
+        return oscarsName(gri, description);
     }
 
-    public String getVplsDescription(String gri, Long bandwidth) {
-        String base = oscarsName(gri);
+    public String getVplsDescription(String gri, Long bandwidth, String description) {
+        String base = oscarsName(gri, description);
         return base + ":"+bandwidth+":oscars-l2circuit:show:na";
     }
 
 
-    public String getVplsName(String gri) {
-        return oscarsName(gri);
+    public String getVplsName(String gri, String description) {
+        return oscarsName(gri, description);
     }
 
 
-    public static String oscarsName(String gri) {
+    public static String oscarsName(String gri, String description) {
         String header = "oscars_";
 
         String circuitStr = gri;
@@ -102,6 +108,10 @@ public class SDNNameGenerator {
         circuitStr = circuitStr.replaceAll("\\.", "_");
         // don't allow junk characters - safety 
         circuitStr = circuitStr.replaceAll("[^a-zA-Z0-9\\-\\_]+", "");
+
+        if (description.contains("PRODUCTION")) {
+            circuitStr = circuitStr.toUpperCase();
+        }
         
         return circuitStr;
     }

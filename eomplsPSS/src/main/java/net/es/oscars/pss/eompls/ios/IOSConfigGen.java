@@ -100,11 +100,12 @@ public class IOSConfigGen implements DeviceConfigGenerator {
         
         SDNNameGenerator ng = SDNNameGenerator.getInstance();
         String gri = res.getGlobalReservationId();
-        
+        String description = res.getDescription();
 
-        policyName              = ng.getPolicyName(gri);
-        pathName                = ng.getPathName(gri);
-        lspName                 = ng.getLSPName(gri);
+
+        policyName              = ng.getPolicyName(gri, description);
+        pathName                = ng.getPathName(gri, description);
+        lspName                 = ng.getLSPName(gri, description);
         
         
         ReservedConstraintType rc = res.getReservedConstraint();
@@ -255,14 +256,15 @@ public class IOSConfigGen implements DeviceConfigGenerator {
         }
         
         LSP lspBean = new LSP(deviceId, pi, dar, iar, reverse);
+        String description = res.getDescription();
 
-    
-        ifceDescription = ng.getInterfaceDescription(gri, lspBandwidth);
 
-        policyName              = ng.getPolicyName(gri);
-        pathName                = ng.getPathName(gri);
-        lspName                 = ng.getLSPName(gri);
-        l2circuitDescription    = ng.getL2CircuitDescription(gri);
+        ifceDescription = ng.getInterfaceDescription(gri, lspBandwidth, description);
+
+        policyName              = ng.getPolicyName(gri, description);
+        pathName                = ng.getPathName(gri, description);
+        lspName                 = ng.getLSPName(gri, description);
+        l2circuitDescription    = ng.getL2CircuitDescription(gri, description);
         l2circuitEgress         = dar.getDeviceAddress(lspTargetDeviceId);
         l2circuitVCID           = EoMPLSUtils.genIOSVCId(ifceName, ifceVlan);
 

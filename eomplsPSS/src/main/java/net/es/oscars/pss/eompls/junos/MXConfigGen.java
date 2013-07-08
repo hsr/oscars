@@ -167,9 +167,10 @@ public class MXConfigGen implements DeviceConfigGenerator {
         
         SDNNameGenerator ng = SDNNameGenerator.getInstance();
         String gri = res.getGlobalReservationId();
-        
 
-        
+        String description = res.getDescription();
+
+
         // bandwidth in Mbps 
         lspBandwidth = 1000000L*bw;
         
@@ -214,21 +215,21 @@ public class MXConfigGen implements DeviceConfigGenerator {
         LSP lspBean = new LSP(deviceId, pi, dar, iar, reverse);
 
     
-        ifceDescription = ng.getInterfaceDescription(gri, lspBandwidth);
+        ifceDescription = ng.getInterfaceDescription(gri, lspBandwidth ,description);
 
-        policingFilterName      = ng.getFilterName(gri, "policing");
+        policingFilterName      = ng.getFilterName(gri, "policing", description);
         policingFilterTerm      = policingFilterName;
         policingFilterCount     = policingFilterName;
-        statsFilterName         = ng.getFilterName(gri, "stats");
+        statsFilterName         = ng.getFilterName(gri, "stats", description);
         statsFilterTerm         = statsFilterName;
         statsFilterCount        = statsFilterName;
-        communityName           = ng.getCommunityName(gri);
-        policyName              = ng.getPolicyName(gri);
+        communityName           = ng.getCommunityName(gri, description);
+        policyName              = ng.getPolicyName(gri, description);
         policyTerm              = policyName;
-        policerName             = ng.getPolicerName(gri);
-        pathName                = ng.getPathName(gri);
-        lspName                 = ng.getLSPName(gri);
-        l2circuitDescription    = ng.getL2CircuitDescription(gri);
+        policerName             = ng.getPolicerName(gri, description);
+        pathName                = ng.getPathName(gri, description);
+        lspName                 = ng.getLSPName(gri, description);
+        l2circuitDescription    = ng.getL2CircuitDescription(gri, description);
         l2circuitEgress         = dar.getDeviceAddress(lspTargetDeviceId);
         l2circuitVCID           = EoMPLSUtils.genJunosVCId(srcIfceName, srcIfceVlan);
 
@@ -342,6 +343,7 @@ public class MXConfigGen implements DeviceConfigGenerator {
         
         ReservedConstraintType rc = res.getReservedConstraint();
         PathInfo pi = rc.getPathInfo();
+        String description = res.getDescription();
         
         List<CtrlPlaneHopContent> localHops;
         try {
@@ -383,13 +385,13 @@ public class MXConfigGen implements DeviceConfigGenerator {
             ifceVlan = egressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability();
             lspTargetDeviceId = srcRes.getNodeId();
         }
-        policingFilterName      = ng.getFilterName(gri, "policing");
-        statsFilterName         = ng.getFilterName(gri, "stats");
-        communityName           = ng.getCommunityName(gri);
-        policyName              = ng.getPolicyName(gri);
-        policerName             = ng.getPolicerName(gri);
-        pathName                = ng.getPathName(gri);
-        lspName                 = ng.getLSPName(gri);
+        policingFilterName      = ng.getFilterName(gri, "policing", description);
+        statsFilterName         = ng.getFilterName(gri, "stats", description);
+        communityName           = ng.getCommunityName(gri, description);
+        policyName              = ng.getPolicyName(gri, description);
+        policerName             = ng.getPolicerName(gri, description);
+        pathName                = ng.getPathName(gri, description);
+        lspName                 = ng.getLSPName(gri, description);
         l2circuitEgress         = dar.getDeviceAddress(lspTargetDeviceId);
 
 
@@ -487,10 +489,11 @@ public class MXConfigGen implements DeviceConfigGenerator {
         
         SDNNameGenerator ng = SDNNameGenerator.getInstance();
         String gri = res.getGlobalReservationId();
-        
+        String description = res.getDescription();
 
-        
-        
+
+
+
         Long bandwidth = 1000000L*bw;
         
         policerBandwidthLimit = bandwidth;
@@ -501,12 +504,12 @@ public class MXConfigGen implements DeviceConfigGenerator {
         ifceAVlan       = ingressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability();
         ifceZVlan       = egressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability();
         
-        policerName     = ng.getPolicerName(gri);
-        ifceADesc       = ng.getInterfaceDescription(gri, bandwidth);
-        ifceZDesc       = ng.getInterfaceDescription(gri, bandwidth);
-        iswitchName     = ng.getIswitchTerm(gri);
+        policerName     = ng.getPolicerName(gri, description);
+        ifceADesc       = ng.getInterfaceDescription(gri, bandwidth, description);
+        ifceZDesc       = ng.getInterfaceDescription(gri, bandwidth, description);
+        iswitchName     = ng.getIswitchTerm(gri, description);
         
-        filterName      = ng.getFilterName(gri, "policing");
+        filterName      = ng.getFilterName(gri, "policing", description);
         filterTerm      = filterName;
         filterCount     = filterName;
 
@@ -584,15 +587,16 @@ public class MXConfigGen implements DeviceConfigGenerator {
         
         SDNNameGenerator ng = SDNNameGenerator.getInstance();
         String gri = res.getGlobalReservationId();
-        
+        String description = res.getDescription();
+
         ifceAName       = srcRes.getPortId();
         ifceZName       = dstRes.getPortId();
         ifceAVlan       = ingressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability();
         ifceZVlan       = egressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability();
-        policerName     = ng.getPolicerName(gri);
-        iswitchName     = ng.getIswitchTerm(gri);
+        policerName     = ng.getPolicerName(gri, description);
+        iswitchName     = ng.getIswitchTerm(gri, description);
         
-        filterName      = ng.getFilterName(gri, "policing");
+        filterName      = ng.getFilterName(gri, "policing", description);
 
 
         // create and populate the model

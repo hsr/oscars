@@ -153,6 +153,7 @@ public class MX_VPLS_ConfigGen implements DeviceConfigGenerator {
 
 
     private MX_VPLS_TemplateParams getSetupTemplateParams(ResDetails res, String deviceId, VPLS_DomainIdentifiers ids) throws PSSException  {
+        String description = res.getDescription();
 
         String srcDeviceId = EoMPLSUtils.getDeviceId(res, false);
         String dstDeviceId = EoMPLSUtils.getDeviceId(res, true);
@@ -230,14 +231,14 @@ public class MX_VPLS_ConfigGen implements DeviceConfigGenerator {
 
     
 
-        policingFilterName      = ng.getFilterName(gri, "policing");
-        statsFilterName         = ng.getFilterName(gri, "stats");
-        communityName           = ng.getCommunityName(gri);
-        policyName              = ng.getPolicyName(gri);
-        policerName             = ng.getPolicerName(gri);
-        pathName                = ng.getPathName(gri);
-        lspName                 = ng.getLSPName(gri);
-        vplsName                = ng.getVplsName(gri);
+        policingFilterName      = ng.getFilterName(gri, "policing", description);
+        statsFilterName         = ng.getFilterName(gri, "stats", description);
+        communityName           = ng.getCommunityName(gri, description);
+        policyName              = ng.getPolicyName(gri, description);
+        policerName             = ng.getPolicerName(gri, description);
+        pathName                = ng.getPathName(gri, description);
+        lspName                 = ng.getLSPName(gri, description);
+        vplsName                = ng.getVplsName(gri, description);
 
         String vplsId = ids.getVplsId().toString();
 
@@ -429,6 +430,8 @@ public class MX_VPLS_ConfigGen implements DeviceConfigGenerator {
         /* BEGIN POPULATING VALUES */
         /* *********************** */
 
+        String description = res.getDescription();
+
 
 
         String lspTargetDeviceId;
@@ -450,14 +453,14 @@ public class MX_VPLS_ConfigGen implements DeviceConfigGenerator {
         log.debug("ifceVlan: "+ifceVlan);
 
 
-        policingFilterName      = ng.getFilterName(gri, "policing");
-        statsFilterName         = ng.getFilterName(gri, "stats");
-        communityName           = ng.getCommunityName(gri);
-        policyName              = ng.getPolicyName(gri);
-        policerName             = ng.getPolicerName(gri);
-        pathName                = ng.getPathName(gri);
-        lspName                 = ng.getLSPName(gri);
-        vplsName                = ng.getVplsName(gri);
+        policingFilterName      = ng.getFilterName(gri, "policing", description);
+        statsFilterName         = ng.getFilterName(gri, "stats", description);
+        communityName           = ng.getCommunityName(gri, description);
+        policyName              = ng.getPolicyName(gri, description);
+        policerName             = ng.getPolicerName(gri, description);
+        pathName                = ng.getPathName(gri, description);
+        lspName                 = ng.getLSPName(gri, description);
+        vplsName                = ng.getVplsName(gri, description);
 
         /*
         teardown:
@@ -523,6 +526,10 @@ public class MX_VPLS_ConfigGen implements DeviceConfigGenerator {
         String dstDeviceId = EoMPLSUtils.getDeviceId(res, true);
 
         ReservedConstraintType rc = res.getReservedConstraint();
+        String description = res.getDescription();
+
+
+
 
         PathInfo pi = rc.getPathInfo();
 
@@ -546,14 +553,14 @@ public class MX_VPLS_ConfigGen implements DeviceConfigGenerator {
         deviceIfceInfo.put(srcDeviceId, new ArrayList<MXIfceInfo>());
         deviceIfceInfo.put(dstDeviceId, new ArrayList<MXIfceInfo>());
         MXIfceInfo aIfceInfo = new MXIfceInfo();
-        aIfceInfo.setDescription(ng.getInterfaceDescription(gri, lspBandwidth));
+        aIfceInfo.setDescription(ng.getInterfaceDescription(gri, lspBandwidth, description));
         aIfceInfo.setName(srcRes.getPortId());
         aIfceInfo.setVlan(ingressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability());
         log.debug("setting "+srcDeviceId+" : "+aIfceInfo.getName());
         deviceIfceInfo.get(srcDeviceId).add(aIfceInfo);
 
         MXIfceInfo zIfceInfo = new MXIfceInfo();
-        zIfceInfo.setDescription(ng.getInterfaceDescription(gri, lspBandwidth));
+        zIfceInfo.setDescription(ng.getInterfaceDescription(gri, lspBandwidth, description));
         zIfceInfo.setName(dstRes.getPortId());
         zIfceInfo.setVlan(egressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability());
         log.debug("setting "+dstDeviceId+" : "+zIfceInfo.getName());

@@ -300,6 +300,7 @@ public class SR_VPLS_ConfigGen implements DeviceConfigGenerator {
         ReservedConstraintType rc = res.getReservedConstraint();
         Integer bw = rc.getBandwidth();
         PathInfo pi = rc.getPathInfo();
+        String description = res.getDescription();
 
         List<CtrlPlaneHopContent> localHops;
         try {
@@ -405,7 +406,7 @@ public class SR_VPLS_ConfigGen implements DeviceConfigGenerator {
         String vplsId = gids.getVplsId().toString();
         vpls.put("id", vplsId);
 
-        String vplsDesc = sdng.getVplsDescription(gri, ingQosBandwidth*1000000);
+        String vplsDesc = sdng.getVplsDescription(gri, ingQosBandwidth*1000000, description);
         vpls.put("description", vplsDesc);
 
 
@@ -422,7 +423,7 @@ public class SR_VPLS_ConfigGen implements DeviceConfigGenerator {
             Map ifce = new HashMap();
             ifce.put("name", ifceInfo.getName());
             ifce.put("vlan", ifceInfo.getVlan());
-            String sapDesc = sdng.getInterfaceDescription(gri, ingQosBandwidth*1000000);
+            String sapDesc = sdng.getInterfaceDescription(gri, ingQosBandwidth*1000000, description);
             ifce.put("description", sapDesc);
             ifces.add(ifce);
         }

@@ -8,7 +8,9 @@
 
   <artifactId>eomplsPSS</artifactId>
   <name>Ethernet over MPLS PSS</name>
-
+    <properties>
+        <spring.version>3.2.3.RELEASE</spring.version>
+    </properties>
     <!-- puts all code & libraries in one jar -->
     <pluginRepositories>
         <pluginRepository>
@@ -76,6 +78,12 @@
             <version>1.2.14</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.slf4j</groupId>
+            <artifactId>slf4j-log4j12</artifactId>
+            <version>1.5.6</version>
+        </dependency>
+
         <!-- database for unit tests -->
         <dependency>
             <groupId>org.hsqldb</groupId>
@@ -116,7 +124,17 @@
             <version>3.2</version>
             <scope>runtime</scope>
         </dependency>
-
+        <!-- spring -->
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-beans</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
         <!-- CXF -->
         <dependency>
             <groupId>org.apache.cxf</groupId>
