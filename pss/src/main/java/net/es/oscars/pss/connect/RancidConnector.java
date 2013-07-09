@@ -136,7 +136,15 @@ public class RancidConnector implements Connector {
         BufferedReader cmdOutput = new BufferedReader(new InputStreamReader(p.getInputStream()));
         BufferedReader cmdError  = new BufferedReader(new InputStreamReader(p.getErrorStream()));
         String errInfo = cmdError.readLine();
-        int exitval = p.exitValue();
+        int exitval;
+        try {
+            exitval = p.waitFor();
+        } catch (InterruptedException ex) {
+            log.warn(ex);
+            cmdOutput.close();
+            cmdError.close();
+            throw new PSSException(ex);
+        }
         if (exitval != 0) {
             String error = "RANCID command error:\n" + errInfo +"\n\n"+cmdOutput;
             log.warn(error);
