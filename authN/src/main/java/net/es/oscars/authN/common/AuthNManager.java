@@ -52,6 +52,7 @@ public class AuthNManager {
             this.log.debug(netLogger.getMsg(event, "checkUser reverse DN: " + reverseDN));
             user = userDAO.fromDN(reverseDN);
             if (user == null){
+                this.log.error(netLogger.getMsg(event, "No user found for DN: " + subjectDN));
                 return attributes;
             }
         }
@@ -59,6 +60,7 @@ public class AuthNManager {
             String reverseDN = reverseElements(issuerDN);
             this.log.debug(netLogger.getMsg(event, "checkUser issuer reverse DN: " + reverseDN));
             if (!user.getCertIssuer().equals(reverseDN)) {
+                this.log.error(netLogger.getMsg(event, "User found for DN, '" + subjectDN + "', but issuer does not match issuer DN: " + issuerDN ));
                 return attributes;
             }
         }
