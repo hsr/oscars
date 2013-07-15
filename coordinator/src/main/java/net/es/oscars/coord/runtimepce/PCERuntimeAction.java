@@ -719,6 +719,11 @@ public class PCERuntimeAction extends CoordAction <PCEData, PCEData> implements 
         }
         resDetails.setReservedConstraint(reservedConstraint);
         
+        //set optional constraints
+        if(data.getOptionalConstraint() != null && !data.getOptionalConstraint().isEmpty()){
+        	resDetails.getOptionalConstraint().addAll(data.getOptionalConstraint());
+        }
+        
         if (proxyAction.getRequestType().equals(PCERequestTypes.PCE_CREATE)) {
             resDetails.setStatus(StateEngineValues.PATHCALCULATED);
         } else if (proxyAction.getRequestType().equals(PCERequestTypes.PCE_MODIFY)) {
