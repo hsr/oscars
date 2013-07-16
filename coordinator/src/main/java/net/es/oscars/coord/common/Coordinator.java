@@ -41,7 +41,11 @@ public class Coordinator {
     private HashMap<String,Object> pssMap = null;
     private HashMap<String,Object> notifyBridgeMap = null;
     private HashMap<String,Object> internalApiMap = null;
+    private boolean allowActiveModify = false;
 
+    public boolean isAllowActiveModify() {
+        return this.allowActiveModify;
+    }
     /**
      * singleton instance
      */
@@ -104,6 +108,14 @@ public class Coordinator {
             soap = (HashMap<String,Object>) this.coordMap.get("soap");
             this.callbackEndpoint = (String)soap.get("publishTo");
             LOG.debug(netLogger.getMsg(event,"callbackEndpoint for PSSReply " + this.callbackEndpoint));
+            
+            //set whether we allow modification of active reservations
+            if(this.coordMap.containsKey("allowActiveModify") && this.coordMap.get("allowActiveModify") != null){
+                String propAllowActiveModify = this.coordMap.get("allowActiveModify") + "";
+                if("1".equals(propAllowActiveModify) || "true".equals(propAllowActiveModify)){
+                    this.allowActiveModify = true;
+                }
+            }
             
             // Retrieve AuthZ host 
             soap = (HashMap<String,Object>) this.authzMap.get("soap");

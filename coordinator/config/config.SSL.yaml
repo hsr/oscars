@@ -1,3 +1,6 @@
 ---
 soap:
     publishTo: 	'https://localhost:9003/OSCARS/Coord'
+
+# Set option below if you run a PSS that allows ACTIVE reservations to be modified
+# allowActiveModify: 1

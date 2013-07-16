@@ -71,7 +71,10 @@ public class PSSReplyRequest extends CoordRequest <PSSReplyContent,Object >{
             if (pssReply.getReplyType().equals(PSSConstants.PSS_SETUP)) {
                 request = CoordRequest.getCoordRequestByAlias(PathRequest.PSS_CREATE_PATH + "-"
                         + gri);
-            } else if (pssReply.getReplyType().equals(PSSConstants.PSS_TEARDOWN)) {
+            } else if (pssReply.getReplyType().equals(PSSConstants.PSS_MODIFY)) {
+                request = CoordRequest.getCoordRequestByAlias(PathRequest.PSS_MODIFY_PATH + "-"
+                        + gri);
+            }else if (pssReply.getReplyType().equals(PSSConstants.PSS_TEARDOWN)) {
                 // Look for CancelRequest first since it has a unique key
                 //LOG.debug("PSSReplyRequest.execute looking for " + "cancelReservation-" + gri + "-" + this.getTransactionId());
                 cancelRequest = (CancelRequest) CoordRequest.getCoordRequestByAlias("cancelReservation-" + gri);

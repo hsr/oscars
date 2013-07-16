@@ -129,6 +129,10 @@ public class StubPSSSoapHandler implements PSSPortType {
         String gri = modifyReq.getReservation().getGlobalReservationId();
         netLogger.setGRI(gri);
         log.info(netLogger.start(event));
+        boolean simulateFailure = false;
+        if (modifyReq.getTransactionId().equals("error")) {
+            simulateFailure = true;
+        }
         
         PSSAction act = new PSSAction();
         CoordNotifier coordNotify = new CoordNotifier();
@@ -136,18 +140,22 @@ public class StubPSSSoapHandler implements PSSPortType {
             PSSRequest req = new PSSRequest();
             req.setModifyReq(modifyReq);
             req.setRequestType(PSSRequest.PSSRequestTypes.MODIFY);
-
             act.setRequest(req);
             act.setActionType(net.es.oscars.pss.enums.ActionType.MODIFY);
-            OSCARSFaultReport faultReport = new OSCARSFaultReport ();
-            faultReport.setErrorMsg("Modify not supported");
-            faultReport.setErrorType(ErrorReport.SYSTEM);
-            faultReport.setErrorCode(ErrorCodes.NOT_IMPLEMENTED);
-            act.setFaultReport(faultReport);
-            act.setStatus(ActionStatus.FAIL);
+            if (!simulateFailure) {
+                act.setStatus(ActionStatus.SUCCESS);
+            }else{
+                OSCARSFaultReport faultReport = new OSCARSFaultReport ();
+                faultReport.setErrorMsg("Modify not supported");
+                faultReport.setErrorType(ErrorReport.SYSTEM);
+                faultReport.setErrorCode(ErrorCodes.NOT_IMPLEMENTED);
+                act.setFaultReport(faultReport);
+                act.setStatus(ActionStatus.FAIL);
+            }
             coordNotify.process(act);
         } catch (PSSException e) {
             log.error(netLogger.error(event,ErrSev.MAJOR,"caught PSSException " + e.getMessage()));
+            e.printStackTrace();
         }
         log.info(netLogger.end(event));
     }

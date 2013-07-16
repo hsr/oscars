@@ -495,7 +495,8 @@ public class CoordImpl implements net.es.oscars.coord.soap.gen.CoordPortType {
             Long curtime = System.currentTimeMillis()/1000L;
             if ( (inputUC.getBandwidth() != 0 )&&
                     (inputUC.getBandwidth() != modUC.getBandwidth())) {
-                if ( !resState.equals(StateEngineValues.RESERVED)) {
+                if ( !Coordinator.getInstance().isAllowActiveModify() && 
+                        !resState.equals(StateEngineValues.RESERVED)) {
                     throw new OSCARSServiceException(ErrorCodes.INVALID_PARAM,
                                                     "Cannot change bandwidth of " +
                                                      resState + " reservation",

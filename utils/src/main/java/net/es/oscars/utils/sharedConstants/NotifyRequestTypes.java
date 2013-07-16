@@ -10,7 +10,9 @@ public class NotifyRequestTypes {
     public static String RESV_MODIFY_FAILED     = "RESERVATION_MODIFY_FAILED";
     public static String PATH_SETUP_COMPLETED = "PATH_SETUP_COMPLETED";
     public static String PATH_SETUP_FAILED = "PATH_SETUP_FAILED";
+    public static String PATH_MODIFY_FAILED = "PATH_MODIFY_FAILED";
     public static String PATH_TEARDOWN_COMPLETED = "PATH_TEARDOWN_COMPLETED";
+    public static String PATH_MODIFY_COMPLETED = "PATH_MODIFY_COMPLETED";
     public static String PATH_TEARDOWN_FAILED = "PATH_TEARDOWN_FAILED";
     public static String PATH_REFRESH_COMPLETED = "PATH_REFRESH_COMPLETED";
     public static String PATH_REFRESH_FAILED = "PATH_REFRESH_FAILED";

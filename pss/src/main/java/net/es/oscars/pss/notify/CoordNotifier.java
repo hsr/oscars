@@ -39,7 +39,9 @@ public class CoordNotifier implements Notifier {
             String coord = null;
             if (action.getActionType() == ActionType.SETUP ) {
                 coord = action.getRequest().getSetupReq().getCallbackEndpoint();
-            } else {
+            }else if (action.getActionType() == ActionType.MODIFY) {
+                coord = action.getRequest().getModifyReq().getCallbackEndpoint();
+            }else {
                 coord = action.getRequest().getTeardownReq().getCallbackEndpoint();
             }
             
@@ -80,12 +82,17 @@ public class CoordNotifier implements Notifier {
                             action.getRequest().getSetupReq().getReservation().getGlobalReservationId());
                 reply.setReplyType(PSSConstants.PSS_SETUP);
                 reply.setTransactionId(action.getRequest().getSetupReq().getTransactionId());  //GlobalTransactionId
+            } else if (action.getActionType().equals(ActionType.MODIFY)) {
+                reply.setGlobalReservationId(
+                        action.getRequest().getModifyReq().getReservation().getGlobalReservationId());
+                reply.setReplyType(PSSConstants.PSS_MODIFY);
+                reply.setTransactionId(action.getRequest().getModifyReq().getTransactionId()); //GlobalTransactionId
             } else if (action.getActionType().equals(ActionType.TEARDOWN)) {
                 reply.setGlobalReservationId(
                         action.getRequest().getTeardownReq().getReservation().getGlobalReservationId());
                 reply.setReplyType(PSSConstants.PSS_TEARDOWN);
                 reply.setTransactionId(action.getRequest().getTeardownReq().getTransactionId()); //GlobalTransactionId
-            } else {
+            }else {
                 log.info("CoordNotifier unknown action: "+action.getActionType()+" status:"+action.getStatus()+", not sending to coordinator");
                 return action;
             }
@@ -93,6 +100,7 @@ public class CoordNotifier implements Notifier {
             Object[] req = new Object[]{reply};
             cl.invoke("PSSReply", req);
         } catch (Exception e) {
+            e.printStackTrace();
             throw new PSSException(e.getMessage());
         }
         return action;

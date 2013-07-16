@@ -17,6 +17,7 @@ import net.es.oscars.coord.workers.NotifyWorker;
 import net.es.oscars.coord.common.Coordinator;
 import net.es.oscars.logging.ErrSev;
 import net.es.oscars.logging.OSCARSNetLogger;
+import net.es.oscars.pss.soap.gen.ModifyReqContent;
 import net.es.oscars.pss.soap.gen.SetupReqContent;
 import net.es.oscars.pss.soap.gen.TeardownReqContent;
 import net.es.oscars.utils.soap.OSCARSServiceException;
@@ -59,8 +60,9 @@ public class PathRequest extends CoordRequest <PathRequestParams,PSSReplyContent
     private String completedEvent = null;
 
     public static final String PSS_CREATE_PATH = "CreatePath";
+    public static final String PSS_MODIFY_PATH = "ModifyPath";
     public static final String PSS_TEARDOWN_PATH = "TeardownPath";
-
+    
     /**
      *
      * @param name should be of the form CreatePath-gri, or TeardownPath-gri
@@ -86,7 +88,12 @@ public class PathRequest extends CoordRequest <PathRequestParams,PSSReplyContent
             content.setMessageProperties(msgProps);
             content.setGlobalReservationId(resDetails.getGlobalReservationId());
             pathReq = new PathRequest(name,content,resDetails);
-        } else if (name.startsWith(PSS_TEARDOWN_PATH)){
+        }else if (name.startsWith(PSS_MODIFY_PATH)){
+            ModifyReqContent content = new ModifyReqContent();
+            content.setTransactionId(msgProps.getGlobalTransactionId());
+            content.setReservation(resDetails);
+            pathReq = new PathRequest(name,content,resDetails);
+        }else if (name.startsWith(PSS_TEARDOWN_PATH)){
             TeardownPathContent content = new TeardownPathContent();
             content.setMessageProperties(msgProps);
             content.setGlobalReservationId(resDetails.getGlobalReservationId());
@@ -115,6 +122,24 @@ public class PathRequest extends CoordRequest <PathRequestParams,PSSReplyContent
         this.failedEvent = NotifyRequestTypes.PATH_SETUP_FAILED;
         this.errorCode = ErrorCodes.PATH_SETUP_FAILED;
         this.completedEvent = NotifyRequestTypes.PATH_SETUP_COMPLETED;
+        this.setContext();
+    }
+    
+    private PathRequest(String name,
+            ModifyReqContent modifyPathContent,
+            ResDetails resDetails) throws OSCARSServiceException {
+        super (name,
+                modifyPathContent.getTransactionId(),
+                resDetails.getGlobalReservationId());
+
+        this.setRequestData(new PathRequestParams(modifyPathContent));
+        MessagePropertiesType msgProps = new MessagePropertiesType();
+        msgProps.setGlobalTransactionId(modifyPathContent.getTransactionId());
+        this.setMessageProperties(msgProps);
+        this.resDetails = resDetails;
+        this.failedEvent = NotifyRequestTypes.PATH_MODIFY_FAILED;
+        this.errorCode = ErrorCodes.PATH_MODIFY_FAILED;
+        this.completedEvent = NotifyRequestTypes.PATH_MODIFY_COMPLETED;
         this.setContext();
     }
     
@@ -178,7 +203,17 @@ public class PathRequest extends CoordRequest <PathRequestParams,PSSReplyContent
         String reqType = this.getRequestData().getType();
         String method = "PathRequest(" + reqType + ")" + ".execute";
         LOG.debug(netLogger.start(method));
-
+        
+        //Modify is not done interdomain and can only be triggered coordinator, 
+        // so never should be in this method in that case
+        if(reqType.equals(PathRequestParams.MODIFYPATHCONTENT)){
+            LOG.debug(netLogger.error(method, ErrSev.CRITICAL, "Programmer error. " +
+                    "Modify should not be in this method."));
+            ErrorReport errorRep = this.getCoordRequest().getErrorReport(method, this.failedEvent, 
+                    new RuntimeException("Programmer error. Modify should not be in this method."));
+            this.fail(new OSCARSServiceException(errorRep));
+        }
+        
         try {
 
             RMUpdateStatusAction rmAction = new RMUpdateStatusAction(this.getName() + "-RMUpdateAction",
@@ -283,6 +318,8 @@ public class PathRequest extends CoordRequest <PathRequestParams,PSSReplyContent
             } else {
                 if (this.errorCode.equals(ErrorCodes.PATH_TEARDOWN_FAILED)) {
                     errorMsg = "Path Teardown failed with error from PSSTeardown";
+                } else if (this.errorCode.equals(ErrorCodes.PATH_MODIFY_FAILED)) {
+                    errorMsg = "Path modify failed with error from PSS";
                 } else {
                     errorMsg = "Path Setup failed with error from PSSSetup";
                 }
@@ -296,8 +333,10 @@ public class PathRequest extends CoordRequest <PathRequestParams,PSSReplyContent
                                               PathTools.getLocalDomainId());
             }
             this.fail (new OSCARSServiceException(errorReport));
-
-        } else {    // SUCCESS from PSSReply
+        } else if(pssReply.getReplyType().equals(PSSConstants.PSS_MODIFY)){
+            this.unRegisterAlias(this.getName());
+            NotifyWorker.getInstance().sendInfo(this, this.completedEvent, this.resDetails);
+        } else { // SUCCESS from PSSReply
             if (this.status != null && this.status.equals(PSSConstants.FAIL)) {
                 // request has already been failed from another domain,
                 // we just did a local teardown

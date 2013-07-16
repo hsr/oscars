@@ -1,5 +1,6 @@
 package net.es.oscars.coord.actions;
 
+import net.es.oscars.coord.common.Coordinator;
 import net.es.oscars.coord.runtimepce.PCERuntimeAction;
 import net.es.oscars.coord.workers.NotifyWorker;
 import net.es.oscars.utils.sharedConstants.NotifyRequestTypes;
@@ -11,6 +12,7 @@ import net.es.oscars.coord.req.CoordRequest;
 import net.es.oscars.logging.ErrSev;
 import net.es.oscars.logging.ModuleName;
 import net.es.oscars.logging.OSCARSNetLogger;
+import net.es.oscars.pss.soap.gen.ModifyReqContent;
 import net.es.oscars.api.soap.gen.v06.ResDetails;
 import net.es.oscars.utils.sharedConstants.StateEngineValues;
 import net.es.oscars.utils.soap.OSCARSServiceException;
@@ -47,7 +49,9 @@ public class ModifyResvCompletedAction extends CoordAction <ResDetails,Object> {
         boolean lastDomain = true;
         ResDetails resDetails = this.getRequestData();
         CtrlPlanePathContent reservedPath = resDetails.getReservedConstraint().getPathInfo().getPath();
+        Coordinator coordinator = null;
         try {
+            coordinator = Coordinator.getInstance();
             if (reservedPath != null) {
                 localRes = PathTools.isPathLocalOnly(reservedPath);
                 String domain = PathTools.getLastDomain(reservedPath);
@@ -59,6 +63,32 @@ public class ModifyResvCompletedAction extends CoordAction <ResDetails,Object> {
             this.fail(e);
             return;
         }
+        
+        //if reservation is ACTIVE, then contact PSS
+        if(coordinator.isAllowActiveModify() && resDetails.getStatus().equals(StateEngineValues.ACTIVE)){
+            ModifyReqContent pssModifyRequest = new ModifyReqContent();
+            pssModifyRequest.setTransactionId(this.getCoordRequest().getMessageProperties().getGlobalTransactionId());
+            pssModifyRequest.setReservation(resDetails);
+            try {
+                pssModifyRequest.setCallbackEndpoint(coordinator.getCallbackEndpoint());
+                PSSModifyPathAction pssModifyAction = new PSSModifyPathAction(
+                        this.getName() + "-PSSModifyAction",
+                        this.getCoordRequest(),
+                        pssModifyRequest
+                        );
+                pssModifyAction.execute();
+                if (pssModifyAction.getState() == CoordAction.State.FAILED) {
+                    LOG.error(netLogger.error(method,ErrSev.MINOR, "pssModifyAction failed."));
+                    this.fail(pssModifyAction.getException());
+                    return;
+                }
+            } catch (OSCARSServiceException e) {
+                LOG.error (netLogger.error(method, ErrSev.CRITICAL,"Error trying to send modify to PSS" + e));
+                this.fail(e);
+                return;
+            }
+        }
+        
         // store reservation, previous domain vlans may have changed
         RMStoreAction rmStoreAction = new RMStoreAction(this.getName() + "-RMStoreAction",
                                                         this.getCoordRequest(),

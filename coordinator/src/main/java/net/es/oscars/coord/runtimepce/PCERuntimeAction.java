@@ -42,6 +42,7 @@ import net.es.oscars.utils.svc.ServiceNames;
 import net.es.oscars.utils.topology.PathTools;
 import net.es.oscars.utils.soap.OSCARSServiceException;
 import net.es.oscars.coord.actions.CoordAction;
+import net.es.oscars.coord.actions.PSSModifyPathAction;
 import net.es.oscars.coord.actions.ReservationCompletedForwarder;
 import net.es.oscars.coord.actions.RMUpdateStatusAction;
 import net.es.oscars.coord.actions.RMStoreAction;
@@ -52,6 +53,7 @@ import net.es.oscars.coord.workers.NotifyWorker;
 import net.es.oscars.logging.ErrSev;
 import net.es.oscars.logging.OSCARSNetLogger;
 import net.es.oscars.logging.ModuleName;
+import net.es.oscars.pss.soap.gen.ModifyReqContent;
 
 
 /**
@@ -531,6 +533,32 @@ public class PCERuntimeAction extends CoordAction <PCEData, PCEData> implements 
             // Store reservation
             this. RMStore(resDetails,method);
             if (localRes || firstDomain) {
+                
+                //if reservation is ACTIVE, then contact PSS
+                if(requestType.equals(PCERequestTypes.PCE_MODIFY_COMMIT) && resDetails.getStatus().equals(StateEngineValues.ACTIVE)){
+                    ModifyReqContent pssModifyRequest = new ModifyReqContent();
+                    pssModifyRequest.setTransactionId(this.getCoordRequest().getMessageProperties().getGlobalTransactionId());
+                    pssModifyRequest.setReservation(resDetails);
+                    try {
+                        pssModifyRequest.setCallbackEndpoint(Coordinator.getInstance().getCallbackEndpoint());
+                        PSSModifyPathAction pssModifyAction = new PSSModifyPathAction(
+                                this.getName() + "-PSSModifyAction",
+                                this.getCoordRequest(),
+                                pssModifyRequest
+                                );
+                        pssModifyAction.execute();
+                        if (pssModifyAction.getState() == CoordAction.State.FAILED) {
+                            LOG.error(netLogger.error(method,ErrSev.MINOR, "pssModifyAction failed."));
+                            this.fail(pssModifyAction.getException());
+                            return;
+                        }
+                    } catch (OSCARSServiceException e) {
+                        LOG.error (netLogger.error(method, ErrSev.CRITICAL,"Error trying to send modify to PSS" + e));
+                        this.fail(e);
+                        return;
+                    }
+                }
+                
                 // notify that request is completed
                 NotifyWorker.getInstance().sendInfo (this.getCoordRequest(),
                                                      requestType.equals(PCERequestTypes.PCE_CREATE_COMMIT) ?
