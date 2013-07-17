@@ -82,10 +82,10 @@ public class BridgeUtils {
             if (res.getNodeId() != null && res.getNodeId().equals(deviceId)) {
                 if (portA == null) {
                     portA = res.getPortId();
-                    vlanA = link.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getSuggestedVLANRange();
+                    vlanA = link.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability();
                 } else if (portZ == null) {
                     portZ = res.getPortId();
-                    vlanZ = link.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getSuggestedVLANRange();
+                    vlanZ = link.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability();
                 } else {
                     throw new PSSException("more than two hops on device "+deviceId+" for path "+fullPath);
                 }
