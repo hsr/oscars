@@ -180,8 +180,8 @@ public class PowerConnect_ConfigGen implements DeviceConfigGenerator {
         String dstLinkId = egressLink.getId();
         URNParserResult dstRes = URNParser.parseTopoIdent(dstLinkId);
 
-        String srcVlan = ingressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getSuggestedVLANRange();
-        String dstVlan = egressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getSuggestedVLANRange();
+        String srcVlan = ingressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability();
+        String dstVlan = egressLink.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability();
 
         HashMap<String, ArrayList<SRIfceInfo>> deviceIfceInfo = new HashMap<String, ArrayList<SRIfceInfo>>();
         deviceIfceInfo.put(srcDeviceId, new ArrayList<SRIfceInfo>());
