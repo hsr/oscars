@@ -95,8 +95,8 @@ public class JSONConfigGen implements DeviceConfigGenerator {
             String nodeIp2 = ConnectorUtils.getDeviceAddress(urnParser2.getNodeId());
             String portId1 = urnParser1.getPortId();
             String portId2 = urnParser2.getPortId();
-            String vlan1 = link1.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getSuggestedVLANRange();
-            String vlan2 = link2.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getSuggestedVLANRange();
+            String vlan1 = link1.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability();
+            String vlan2 = link2.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability();
             if (!nodeIp.equals(nodeIp2))
                 throw new PSSException("Malformed path object: hops not paird up on back-to-back order");
             cmd = cmd + "{\"switch\":\"" + nodeIp +"\", \"add-flows\": "
@@ -170,8 +170,8 @@ public class JSONConfigGen implements DeviceConfigGenerator {
             String nodeIp2 = ConnectorUtils.getDeviceAddress(urnParser2.getNodeId());
             String portId1 = urnParser1.getPortId();
             String portId2 = urnParser2.getPortId();
-            String vlan1 = link1.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getSuggestedVLANRange();
-            String vlan2 = link2.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getSuggestedVLANRange();
+            String vlan1 = link1.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability();
+            String vlan2 = link2.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability();
             if (!nodeIp.equals(nodeIp2))
                 throw new PSSException("Malformed path object: hops not paird up");
             cmd = cmd + "{\"switch\":\"" + nodeIp +"\", \"del-flows\": "
@@ -244,8 +244,8 @@ public class JSONConfigGen implements DeviceConfigGenerator {
             String nodeIp2 = ConnectorUtils.getDeviceAddress(urnParser2.getNodeId());
             String portId1 = urnParser1.getPortId();
             String portId2 = urnParser2.getPortId();
-            String vlan1 = link1.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getSuggestedVLANRange();
-            String vlan2 = link2.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getSuggestedVLANRange();
+            String vlan1 = link1.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability();
+            String vlan2 = link2.getSwitchingCapabilityDescriptors().getSwitchingCapabilitySpecificInfo().getVlanRangeAvailability();
             if (!nodeIp.equals(nodeIp2))
                 throw new PSSException("Malformed path object: hops not paird up");
             cmd = cmd + "{\"switch\":\"" + nodeIp +"\", \"has-flows\": "
