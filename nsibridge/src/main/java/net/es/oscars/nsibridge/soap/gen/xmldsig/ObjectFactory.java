@@ -27,38 +27,38 @@ public class ObjectFactory {
 
     private final static QName _PGPData_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "PGPData");
     private final static QName _SPKIData_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "SPKIData");
-    private final static QName _RetrievalMethod_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "RetrievalMethod");
     private final static QName _CanonicalizationMethod_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "CanonicalizationMethod");
-    private final static QName _SignatureProperty_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "SignatureProperty");
-    private final static QName _Transforms_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "Transforms");
     private final static QName _Manifest_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "Manifest");
+    private final static QName _Transforms_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "Transforms");
     private final static QName _SignatureMethod_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "SignatureMethod");
     private final static QName _KeyInfo_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "KeyInfo");
     private final static QName _DigestMethod_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "DigestMethod");
     private final static QName _MgmtData_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "MgmtData");
+    private final static QName _SignedInfo_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "SignedInfo");
+    private final static QName _Object_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "Object");
+    private final static QName _X509Data_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "X509Data");
+    private final static QName _SignatureProperties_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "SignatureProperties");
+    private final static QName _KeyName_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "KeyName");
+    private final static QName _RetrievalMethod_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "RetrievalMethod");
+    private final static QName _SignatureProperty_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "SignatureProperty");
     private final static QName _Reference_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "Reference");
     private final static QName _RSAKeyValue_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "RSAKeyValue");
     private final static QName _Signature_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "Signature");
     private final static QName _DSAKeyValue_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "DSAKeyValue");
-    private final static QName _SignedInfo_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "SignedInfo");
-    private final static QName _Object_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "Object");
     private final static QName _SignatureValue_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "SignatureValue");
     private final static QName _Transform_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "Transform");
-    private final static QName _X509Data_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "X509Data");
     private final static QName _DigestValue_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "DigestValue");
-    private final static QName _SignatureProperties_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "SignatureProperties");
-    private final static QName _KeyName_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "KeyName");
     private final static QName _KeyValue_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "KeyValue");
-    private final static QName _TransformTypeXPath_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "XPath");
-    private final static QName _SignatureMethodTypeHMACOutputLength_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "HMACOutputLength");
-    private final static QName _PGPDataTypePGPKeyID_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "PGPKeyID");
-    private final static QName _PGPDataTypePGPKeyPacket_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "PGPKeyPacket");
-    private final static QName _SPKIDataTypeSPKISexp_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "SPKISexp");
     private final static QName _X509DataTypeX509IssuerSerial_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "X509IssuerSerial");
     private final static QName _X509DataTypeX509Certificate_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "X509Certificate");
     private final static QName _X509DataTypeX509SKI_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "X509SKI");
     private final static QName _X509DataTypeX509SubjectName_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "X509SubjectName");
     private final static QName _X509DataTypeX509CRL_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "X509CRL");
+    private final static QName _TransformTypeXPath_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "XPath");
+    private final static QName _SPKIDataTypeSPKISexp_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "SPKISexp");
+    private final static QName _SignatureMethodTypeHMACOutputLength_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "HMACOutputLength");
+    private final static QName _PGPDataTypePGPKeyID_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "PGPKeyID");
+    private final static QName _PGPDataTypePGPKeyPacket_QNAME = new QName("http://www.w3.org/2000/09/xmldsig#", "PGPKeyPacket");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: net.es.oscars.nsibridge.soap.gen.xmldsig
@@ -68,59 +68,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ManifestType }
+     * Create an instance of {@link SignaturePropertyType }
      * 
      */
-    public ManifestType createManifestType() {
-        return new ManifestType();
-    }
-
-    /**
-     * Create an instance of {@link TransformType }
-     * 
-     */
-    public TransformType createTransformType() {
-        return new TransformType();
-    }
-
-    /**
-     * Create an instance of {@link KeyInfoType }
-     * 
-     */
-    public KeyInfoType createKeyInfoType() {
-        return new KeyInfoType();
-    }
-
-    /**
-     * Create an instance of {@link SignaturePropertiesType }
-     * 
-     */
-    public SignaturePropertiesType createSignaturePropertiesType() {
-        return new SignaturePropertiesType();
-    }
-
-    /**
-     * Create an instance of {@link DSAKeyValueType }
-     * 
-     */
-    public DSAKeyValueType createDSAKeyValueType() {
-        return new DSAKeyValueType();
-    }
-
-    /**
-     * Create an instance of {@link DigestMethodType }
-     * 
-     */
-    public DigestMethodType createDigestMethodType() {
-        return new DigestMethodType();
-    }
-
-    /**
-     * Create an instance of {@link KeyValueType }
-     * 
-     */
-    public KeyValueType createKeyValueType() {
-        return new KeyValueType();
+    public SignaturePropertyType createSignaturePropertyType() {
+        return new SignaturePropertyType();
     }
 
     /**
@@ -132,11 +84,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link SignatureMethodType }
+     * Create an instance of {@link RSAKeyValueType }
      * 
      */
-    public SignatureMethodType createSignatureMethodType() {
-        return new SignatureMethodType();
+    public RSAKeyValueType createRSAKeyValueType() {
+        return new RSAKeyValueType();
     }
 
     /**
@@ -156,11 +108,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link SignaturePropertyType }
+     * Create an instance of {@link SignaturePropertiesType }
      * 
      */
-    public SignaturePropertyType createSignaturePropertyType() {
-        return new SignaturePropertyType();
+    public SignaturePropertiesType createSignaturePropertiesType() {
+        return new SignaturePropertiesType();
     }
 
     /**
@@ -172,14 +124,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ObjectType }
-     * 
-     */
-    public ObjectType createObjectType() {
-        return new ObjectType();
-    }
-
-    /**
      * Create an instance of {@link SignatureValueType }
      * 
      */
@@ -188,11 +132,27 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link ReferenceType }
+     * Create an instance of {@link CanonicalizationMethodType }
      * 
      */
-    public ReferenceType createReferenceType() {
-        return new ReferenceType();
+    public CanonicalizationMethodType createCanonicalizationMethodType() {
+        return new CanonicalizationMethodType();
+    }
+
+    /**
+     * Create an instance of {@link SignatureMethodType }
+     * 
+     */
+    public SignatureMethodType createSignatureMethodType() {
+        return new SignatureMethodType();
+    }
+
+    /**
+     * Create an instance of {@link ObjectType }
+     * 
+     */
+    public ObjectType createObjectType() {
+        return new ObjectType();
     }
 
     /**
@@ -204,6 +164,22 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link DigestMethodType }
+     * 
+     */
+    public DigestMethodType createDigestMethodType() {
+        return new DigestMethodType();
+    }
+
+    /**
+     * Create an instance of {@link ReferenceType }
+     * 
+     */
+    public ReferenceType createReferenceType() {
+        return new ReferenceType();
+    }
+
+    /**
      * Create an instance of {@link X509DataType }
      * 
      */
@@ -212,11 +188,27 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link TransformsType }
+     * Create an instance of {@link DSAKeyValueType }
      * 
      */
-    public TransformsType createTransformsType() {
-        return new TransformsType();
+    public DSAKeyValueType createDSAKeyValueType() {
+        return new DSAKeyValueType();
+    }
+
+    /**
+     * Create an instance of {@link TransformType }
+     * 
+     */
+    public TransformType createTransformType() {
+        return new TransformType();
+    }
+
+    /**
+     * Create an instance of {@link KeyValueType }
+     * 
+     */
+    public KeyValueType createKeyValueType() {
+        return new KeyValueType();
     }
 
     /**
@@ -228,19 +220,27 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link RSAKeyValueType }
+     * Create an instance of {@link TransformsType }
      * 
      */
-    public RSAKeyValueType createRSAKeyValueType() {
-        return new RSAKeyValueType();
+    public TransformsType createTransformsType() {
+        return new TransformsType();
     }
 
     /**
-     * Create an instance of {@link CanonicalizationMethodType }
+     * Create an instance of {@link KeyInfoType }
      * 
      */
-    public CanonicalizationMethodType createCanonicalizationMethodType() {
-        return new CanonicalizationMethodType();
+    public KeyInfoType createKeyInfoType() {
+        return new KeyInfoType();
+    }
+
+    /**
+     * Create an instance of {@link ManifestType }
+     * 
+     */
+    public ManifestType createManifestType() {
+        return new ManifestType();
     }
 
     /**
@@ -262,15 +262,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link RetrievalMethodType }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "RetrievalMethod")
-    public JAXBElement<RetrievalMethodType> createRetrievalMethod(RetrievalMethodType value) {
-        return new JAXBElement<RetrievalMethodType>(_RetrievalMethod_QNAME, RetrievalMethodType.class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link CanonicalizationMethodType }{@code >}}
      * 
      */
@@ -280,12 +271,12 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link SignaturePropertyType }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link ManifestType }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "SignatureProperty")
-    public JAXBElement<SignaturePropertyType> createSignatureProperty(SignaturePropertyType value) {
-        return new JAXBElement<SignaturePropertyType>(_SignatureProperty_QNAME, SignaturePropertyType.class, null, value);
+    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "Manifest")
+    public JAXBElement<ManifestType> createManifest(ManifestType value) {
+        return new JAXBElement<ManifestType>(_Manifest_QNAME, ManifestType.class, null, value);
     }
 
     /**
@@ -295,15 +286,6 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "Transforms")
     public JAXBElement<TransformsType> createTransforms(TransformsType value) {
         return new JAXBElement<TransformsType>(_Transforms_QNAME, TransformsType.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ManifestType }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "Manifest")
-    public JAXBElement<ManifestType> createManifest(ManifestType value) {
-        return new JAXBElement<ManifestType>(_Manifest_QNAME, ManifestType.class, null, value);
     }
 
     /**
@@ -343,6 +325,69 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link SignedInfoType }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "SignedInfo")
+    public JAXBElement<SignedInfoType> createSignedInfo(SignedInfoType value) {
+        return new JAXBElement<SignedInfoType>(_SignedInfo_QNAME, SignedInfoType.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link ObjectType }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "Object")
+    public JAXBElement<ObjectType> createObject(ObjectType value) {
+        return new JAXBElement<ObjectType>(_Object_QNAME, ObjectType.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link X509DataType }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "X509Data")
+    public JAXBElement<X509DataType> createX509Data(X509DataType value) {
+        return new JAXBElement<X509DataType>(_X509Data_QNAME, X509DataType.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link SignaturePropertiesType }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "SignatureProperties")
+    public JAXBElement<SignaturePropertiesType> createSignatureProperties(SignaturePropertiesType value) {
+        return new JAXBElement<SignaturePropertiesType>(_SignatureProperties_QNAME, SignaturePropertiesType.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "KeyName")
+    public JAXBElement<String> createKeyName(String value) {
+        return new JAXBElement<String>(_KeyName_QNAME, String.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link RetrievalMethodType }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "RetrievalMethod")
+    public JAXBElement<RetrievalMethodType> createRetrievalMethod(RetrievalMethodType value) {
+        return new JAXBElement<RetrievalMethodType>(_RetrievalMethod_QNAME, RetrievalMethodType.class, null, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link SignaturePropertyType }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "SignatureProperty")
+    public JAXBElement<SignaturePropertyType> createSignatureProperty(SignaturePropertyType value) {
+        return new JAXBElement<SignaturePropertyType>(_SignatureProperty_QNAME, SignaturePropertyType.class, null, value);
+    }
+
+    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link ReferenceType }{@code >}}
      * 
      */
@@ -379,24 +424,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link SignedInfoType }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "SignedInfo")
-    public JAXBElement<SignedInfoType> createSignedInfo(SignedInfoType value) {
-        return new JAXBElement<SignedInfoType>(_SignedInfo_QNAME, SignedInfoType.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link ObjectType }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "Object")
-    public JAXBElement<ObjectType> createObject(ObjectType value) {
-        return new JAXBElement<ObjectType>(_Object_QNAME, ObjectType.class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link SignatureValueType }{@code >}}
      * 
      */
@@ -415,15 +442,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link X509DataType }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "X509Data")
-    public JAXBElement<X509DataType> createX509Data(X509DataType value) {
-        return new JAXBElement<X509DataType>(_X509Data_QNAME, X509DataType.class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
      * 
      */
@@ -433,75 +451,12 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link SignaturePropertiesType }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "SignatureProperties")
-    public JAXBElement<SignaturePropertiesType> createSignatureProperties(SignaturePropertiesType value) {
-        return new JAXBElement<SignaturePropertiesType>(_SignatureProperties_QNAME, SignaturePropertiesType.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "KeyName")
-    public JAXBElement<String> createKeyName(String value) {
-        return new JAXBElement<String>(_KeyName_QNAME, String.class, null, value);
-    }
-
-    /**
      * Create an instance of {@link JAXBElement }{@code <}{@link KeyValueType }{@code >}}
      * 
      */
     @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "KeyValue")
     public JAXBElement<KeyValueType> createKeyValue(KeyValueType value) {
         return new JAXBElement<KeyValueType>(_KeyValue_QNAME, KeyValueType.class, null, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "XPath", scope = TransformType.class)
-    public JAXBElement<String> createTransformTypeXPath(String value) {
-        return new JAXBElement<String>(_TransformTypeXPath_QNAME, String.class, TransformType.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link BigInteger }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "HMACOutputLength", scope = SignatureMethodType.class)
-    public JAXBElement<BigInteger> createSignatureMethodTypeHMACOutputLength(BigInteger value) {
-        return new JAXBElement<BigInteger>(_SignatureMethodTypeHMACOutputLength_QNAME, BigInteger.class, SignatureMethodType.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "PGPKeyID", scope = PGPDataType.class)
-    public JAXBElement<byte[]> createPGPDataTypePGPKeyID(byte[] value) {
-        return new JAXBElement<byte[]>(_PGPDataTypePGPKeyID_QNAME, byte[].class, PGPDataType.class, ((byte[]) value));
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "PGPKeyPacket", scope = PGPDataType.class)
-    public JAXBElement<byte[]> createPGPDataTypePGPKeyPacket(byte[] value) {
-        return new JAXBElement<byte[]>(_PGPDataTypePGPKeyPacket_QNAME, byte[].class, PGPDataType.class, ((byte[]) value));
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "SPKISexp", scope = SPKIDataType.class)
-    public JAXBElement<byte[]> createSPKIDataTypeSPKISexp(byte[] value) {
-        return new JAXBElement<byte[]>(_SPKIDataTypeSPKISexp_QNAME, byte[].class, SPKIDataType.class, ((byte[]) value));
     }
 
     /**
@@ -547,6 +502,51 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "X509CRL", scope = X509DataType.class)
     public JAXBElement<byte[]> createX509DataTypeX509CRL(byte[] value) {
         return new JAXBElement<byte[]>(_X509DataTypeX509CRL_QNAME, byte[].class, X509DataType.class, ((byte[]) value));
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link String }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "XPath", scope = TransformType.class)
+    public JAXBElement<String> createTransformTypeXPath(String value) {
+        return new JAXBElement<String>(_TransformTypeXPath_QNAME, String.class, TransformType.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "SPKISexp", scope = SPKIDataType.class)
+    public JAXBElement<byte[]> createSPKIDataTypeSPKISexp(byte[] value) {
+        return new JAXBElement<byte[]>(_SPKIDataTypeSPKISexp_QNAME, byte[].class, SPKIDataType.class, ((byte[]) value));
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link BigInteger }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "HMACOutputLength", scope = SignatureMethodType.class)
+    public JAXBElement<BigInteger> createSignatureMethodTypeHMACOutputLength(BigInteger value) {
+        return new JAXBElement<BigInteger>(_SignatureMethodTypeHMACOutputLength_QNAME, BigInteger.class, SignatureMethodType.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "PGPKeyID", scope = PGPDataType.class)
+    public JAXBElement<byte[]> createPGPDataTypePGPKeyID(byte[] value) {
+        return new JAXBElement<byte[]>(_PGPDataTypePGPKeyID_QNAME, byte[].class, PGPDataType.class, ((byte[]) value));
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.w3.org/2000/09/xmldsig#", name = "PGPKeyPacket", scope = PGPDataType.class)
+    public JAXBElement<byte[]> createPGPDataTypePGPKeyPacket(byte[] value) {
+        return new JAXBElement<byte[]>(_PGPDataTypePGPKeyPacket_QNAME, byte[].class, PGPDataType.class, ((byte[]) value));
     }
 
 }
