@@ -45,8 +45,8 @@ import javax.xml.bind.annotation.XmlType;
 public class EncryptionMethodType {
 
     @XmlElementRefs({
-        @XmlElementRef(name = "KeySize", namespace = "http://www.w3.org/2001/04/xmlenc#", type = JAXBElement.class),
-        @XmlElementRef(name = "OAEPparams", namespace = "http://www.w3.org/2001/04/xmlenc#", type = JAXBElement.class)
+        @XmlElementRef(name = "OAEPparams", namespace = "http://www.w3.org/2001/04/xmlenc#", type = JAXBElement.class, required = false),
+        @XmlElementRef(name = "KeySize", namespace = "http://www.w3.org/2001/04/xmlenc#", type = JAXBElement.class, required = false)
     })
     @XmlMixed
     @XmlAnyElement(lax = true)
@@ -73,10 +73,10 @@ public class EncryptionMethodType {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link Object }
-     * {@link JAXBElement }{@code <}{@link byte[]}{@code >}
      * {@link JAXBElement }{@code <}{@link BigInteger }{@code >}
+     * {@link JAXBElement }{@code <}{@link byte[]}{@code >}
      * {@link String }
+     * {@link Object }
      * 
      * 
      */

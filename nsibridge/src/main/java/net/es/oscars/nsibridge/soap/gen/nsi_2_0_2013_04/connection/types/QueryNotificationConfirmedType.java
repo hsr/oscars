@@ -57,9 +57,9 @@ public class QueryNotificationConfirmedType {
 
     @XmlElements({
         @XmlElement(name = "errorEvent", namespace = "http://schemas.ogf.org/nsi/2013/04/connection/types", type = ErrorEventType.class),
-        @XmlElement(name = "messageDeliveryTimeout", namespace = "http://schemas.ogf.org/nsi/2013/04/connection/types", type = MessageDeliveryTimeoutRequestType.class),
         @XmlElement(name = "reserveTimeout", namespace = "http://schemas.ogf.org/nsi/2013/04/connection/types", type = ReserveTimeoutRequestType.class),
-        @XmlElement(name = "dataPlaneStateChange", namespace = "http://schemas.ogf.org/nsi/2013/04/connection/types", type = DataPlaneStateChangeRequestType.class)
+        @XmlElement(name = "dataPlaneStateChange", namespace = "http://schemas.ogf.org/nsi/2013/04/connection/types", type = DataPlaneStateChangeRequestType.class),
+        @XmlElement(name = "messageDeliveryTimeout", namespace = "http://schemas.ogf.org/nsi/2013/04/connection/types", type = MessageDeliveryTimeoutRequestType.class)
     })
     protected List<NotificationBaseType> errorEventOrReserveTimeoutOrDataPlaneStateChange;
 
@@ -82,9 +82,9 @@ public class QueryNotificationConfirmedType {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link ErrorEventType }
-     * {@link MessageDeliveryTimeoutRequestType }
      * {@link ReserveTimeoutRequestType }
      * {@link DataPlaneStateChangeRequestType }
+     * {@link MessageDeliveryTimeoutRequestType }
      * 
      * 
      */

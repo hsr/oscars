@@ -71,10 +71,10 @@ public class AssertionType {
     @XmlElement(name = "Advice")
     protected AdviceType advice;
     @XmlElements({
-        @XmlElement(name = "AuthnStatement", type = AuthnStatementType.class),
         @XmlElement(name = "Statement"),
-        @XmlElement(name = "AttributeStatement", type = AttributeStatementType.class),
-        @XmlElement(name = "AuthzDecisionStatement", type = AuthzDecisionStatementType.class)
+        @XmlElement(name = "AuthnStatement", type = AuthnStatementType.class),
+        @XmlElement(name = "AuthzDecisionStatement", type = AuthzDecisionStatementType.class),
+        @XmlElement(name = "AttributeStatement", type = AttributeStatementType.class)
     })
     protected List<StatementAbstractType> statementOrAuthnStatementOrAuthzDecisionStatement;
     @XmlAttribute(name = "Version", required = true)
@@ -226,10 +226,10 @@ public class AssertionType {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link AuthnStatementType }
      * {@link StatementAbstractType }
-     * {@link AttributeStatementType }
+     * {@link AuthnStatementType }
      * {@link AuthzDecisionStatementType }
+     * {@link AttributeStatementType }
      * 
      * 
      */

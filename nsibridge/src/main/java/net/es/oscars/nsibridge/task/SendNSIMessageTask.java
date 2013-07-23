@@ -4,11 +4,9 @@ package net.es.oscars.nsibridge.task;
 import net.es.oscars.nsibridge.beans.*;
 import net.es.oscars.nsibridge.ifces.NSIMessage;
 import net.es.oscars.nsibridge.prov.*;
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.connection.requester.ConnectionRequesterPort;
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.connection.requester.ConnectionServiceRequester;
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.connection.types.*;
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.framework.headers.CommonHeaderType;
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.framework.types.ServiceExceptionType;
+import net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.connection.types.*;
+import net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.framework.headers.CommonHeaderType;
+import net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.framework.types.ServiceExceptionType;
 import net.es.oscars.utils.task.Task;
 import net.es.oscars.utils.task.TaskException;
 import org.apache.log4j.Logger;
@@ -128,6 +126,8 @@ public class SendNSIMessageTask extends Task  {
                 return;
             }
 
+
+            /*
             ConnectionServiceRequester client = new ConnectionServiceRequester();
             ConnectionRequesterPort port = client.getConnectionServiceRequesterPort();
             BindingProvider bp = (BindingProvider) port;
@@ -181,6 +181,7 @@ public class SendNSIMessageTask extends Task  {
                     port.terminateFailed(   gri, connId, cst, st, hd, outHolder);
                     break;
             }
+            */
         } catch (Exception ex) {
             ex.printStackTrace();
             log.error(ex);

@@ -1,34 +1,8 @@
 ---
-    - stpId:    "urn:ogf:network:stp:esnet.ets:chi-80"
+    - stpId:    "urn:ogf:network:es.net:2012:bi-es-startap"
       oscarsId: "urn:ogf:network:es.net:star-cr5:xe-3/1/1:*"
       oscarsVlan: 1780
 
-    - stpId:    "urn:ogf:network:stp:esnet.ets:chi-81"
-      oscarsId: "urn:ogf:network:es.net:star-cr5:xe-3/1/1:*"
-      oscarsVlan: 1781
-
-    - stpId:    "urn:ogf:network:stp:esnet.ets:chi-82"
-      oscarsId: "urn:ogf:network:es.net:star-cr5:xe-3/1/1:*"
-      oscarsVlan: 1782
-
-
-    - stpId:    "urn:ogf:network:stp:esnet.ets:chi-83"
-      oscarsId: "urn:ogf:network:es.net:star-cr5:xe-3/1/1:*"
-      oscarsVlan: 1783
-
-    - stpId: "urn:ogf:network:stp:esnet.ets:ps-80"
+    - stpId: "urn:ogf:network:es.net:2012:bi-ps"
       oscarsId: "urn:ogf:network:es.net:star-cr5:xe-6/1/1:*"
       oscarsVlan: 1780
-
-    - stpId:    "urn:ogf:network:stp:esnet.ets:ps-81"
-      oscarsId: "urn:ogf:network:es.net:star-cr5:xe-6/1/1:*"
-      oscarsVlan: 1781
-
-    - stpId:    "urn:ogf:network:stp:esnet.ets:ps-82"
-      oscarsId: "urn:ogf:network:es.net:star-cr5:xe-6/1/1:*"
-      oscarsVlan: 1782
-
-    - stpId:    "urn:ogf:network:stp:esnet.ets:ps-83"
-      oscarsId: "urn:ogf:network:es.net:star-cr5:xe-6/1/1:*"
-      oscarsVlan: 1783
-

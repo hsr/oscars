@@ -101,7 +101,7 @@ public class PathType {
      *     {@link Boolean }
      *     
      */
-    public Boolean getSymmetricPath() {
+    public Boolean isSymmetricPath() {
         return symmetricPath;
     }
 

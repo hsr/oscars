@@ -87,7 +87,7 @@ public class ReservationRequestCriteriaType {
     protected Integer bandwidth;
     protected ServiceAttributesType serviceAttributes;
     protected PathType path;
-    @XmlAttribute
+    @XmlAttribute(name = "version")
     protected Integer version;
 
     /**

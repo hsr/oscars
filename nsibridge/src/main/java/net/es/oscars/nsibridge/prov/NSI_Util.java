@@ -2,9 +2,9 @@ package net.es.oscars.nsibridge.prov;
 
 import net.es.oscars.nsibridge.beans.config.JettyConfig;
 import net.es.oscars.nsibridge.common.JettyContainer;
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.connection.types.*;
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.framework.headers.CommonHeaderType;
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.framework.types.ServiceExceptionType;
+import net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.connection.types.*;
+import net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.framework.headers.CommonHeaderType;
+import net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.framework.types.ServiceExceptionType;
 import net.es.oscars.nsibridge.state.act.NSI_Act_SM;
 import net.es.oscars.nsibridge.state.act.NSI_Act_State;
 import net.es.oscars.nsibridge.state.prov.NSI_Prov_SM;
@@ -40,16 +40,18 @@ public class NSI_Util {
 
         ConnectionStatesType cst = new ConnectionStatesType();
 
-        ActivationStateType at = new ActivationStateType();
-        at.setVersion(1);
-        cst.setActivationState(at);
+        LifecycleStateEnumType lt = null;
+        cst.setLifecycleState(lt);
 
-        ReservationStateType rt = new ReservationStateType();
-        rt.setVersion(1);
+        ReservationStateEnumType rt = null;
         cst.setReservationState(rt);
 
-        ProvisionStateType pt = new ProvisionStateType();
-        pt.setVersion(1);
+        DataPlaneStatusType dt = new DataPlaneStatusType();
+        dt.setVersion(1);
+        dt.setActive(false);
+        cst.setDataPlaneStatus(dt);
+
+        ProvisionStateEnumType pt = null;
         cst.setProvisionState(pt);
 
         NSI_Act_State as = (NSI_Act_State)   asm.getState();
@@ -59,95 +61,74 @@ public class NSI_Util {
 
         switch (as) {
             case INACTIVE:
-                at.setState(ActivationStateEnumType.INACTIVE);
+                dt.setActive(false);
                 break;
             case ACTIVE:
-                at.setState(ActivationStateEnumType.ACTIVE);
+                dt.setActive(true);
                 break;
             case ACTIVATING:
-                at.setState(ActivationStateEnumType.ACTIVATING);
+                dt.setActive(false);
                 break;
             case DEACTIVATING:
-                at.setState(ActivationStateEnumType.DEACTIVATING);
+                dt.setActive(true);
                 break;
             default:
-                at.setState(ActivationStateEnumType.UNKNOWN);
+                dt.setActive(false);
         }
 
         switch (ps) {
             case INITIAL:
-                pt.setState(ProvisionStateEnumType.INITIAL);
+                pt = null;
                 break;
             case SCHEDULED:
-                pt.setState(ProvisionStateEnumType.SCHEDULED);
+                pt = ProvisionStateEnumType.PROVISIONING;
                 break;
             case PROVISIONED:
-                pt.setState(ProvisionStateEnumType.PROVISIONED);
+                pt = ProvisionStateEnumType.PROVISIONED;
                 break;
             case PROVISIONING:
-                pt.setState(ProvisionStateEnumType.PROVISIONING);
+                pt = ProvisionStateEnumType.PROVISIONING;
                 break;
             case PROVISION_FAILED:
-                pt.setState(ProvisionStateEnumType.PROVISION_FAILED);
+                pt = null;
                 break;
             case RELEASING:
-                pt.setState(ProvisionStateEnumType.RELEASING);
+                pt = ProvisionStateEnumType.RELEASING;
                 break;
             case RELEASE_FAILED:
-                pt.setState(ProvisionStateEnumType.RELEASE_FAILED);
+                pt = null;
                 break;
             default:
-                pt.setState(ProvisionStateEnumType.UNKNOWN);
+                pt = null;
         }
 
         switch (rs) {
             case INITIAL:
-                rt.setState(ReservationStateEnumType.INITIAL);
+                rt = null;
                 break;
             case RESERVING:
-                rt.setState(ReservationStateEnumType.RESERVING);
+                rt = ReservationStateEnumType.RESERVE_START;
                 break;
             case RESERVED:
-                rt.setState(ReservationStateEnumType.RESERVED);
+                rt = ReservationStateEnumType.RESERVE_HELD;
                 break;
             case RESERVE_FAILED:
-                rt.setState(ReservationStateEnumType.RESERVE_FAILED);
-                break;
-            case MODIFYING:
-                rt.setState(ReservationStateEnumType.MODIFYING);
-                break;
-            case MODIFY_FAILED:
-                rt.setState(ReservationStateEnumType.MODIFY_FAILED);
-                break;
-            case MODIFY_CHECKING:
-                rt.setState(ReservationStateEnumType.MODIFY_CHECKING);
-                break;
-            case MODIFY_CHECKED:
-                rt.setState(ReservationStateEnumType.MODIFY_CHECKED);
-                break;
-            case MODIFY_CANCELING:
-                rt.setState(ReservationStateEnumType.MODIFY_CANCELING);
-                break;
-            case MODIFY_CANCEL_FAILED:
-                rt.setState(ReservationStateEnumType.MODIFY_CANCEL_FAILED);
+                rt = ReservationStateEnumType.RESERVE_FAILED;
                 break;
             default:
-                rt.setState(ReservationStateEnumType.UNKNOWN);
+                rt = null;
         }
         switch (ts) {
             case INITIAL:
                 break;
             case TERMINATING:
-                rt.setState(ReservationStateEnumType.TERMINATING);
-                pt.setState(ProvisionStateEnumType.TERMINATING);
+                lt = LifecycleStateEnumType.TERMINATING;
                 break;
             case TERMINATED:
-                rt.setState(ReservationStateEnumType.TERMINATED_REQUEST);
-                pt.setState(ProvisionStateEnumType.TERMINATED_REQUEST);
+                lt = LifecycleStateEnumType.TERMINATED;
                 break;
             case TERMINATE_FAILED:
-                rt.setState(ReservationStateEnumType.TERMINATE_FAILED);
-                pt.setState(ProvisionStateEnumType.TERMINATE_FAILED);
+                lt = LifecycleStateEnumType.FAILED;
                 break;
             default:
         }

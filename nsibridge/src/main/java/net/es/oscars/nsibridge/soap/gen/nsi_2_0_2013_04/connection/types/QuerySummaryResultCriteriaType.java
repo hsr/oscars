@@ -86,7 +86,7 @@ public class QuerySummaryResultCriteriaType {
     @XmlElement(required = true)
     protected PathType path;
     protected ChildSummaryListType children;
-    @XmlAttribute(required = true)
+    @XmlAttribute(name = "version", required = true)
     protected int version;
 
     /**

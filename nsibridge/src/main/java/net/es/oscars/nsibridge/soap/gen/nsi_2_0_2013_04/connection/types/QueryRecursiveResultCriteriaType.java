@@ -88,7 +88,7 @@ public class QueryRecursiveResultCriteriaType {
     @XmlElement(required = true)
     protected PathType path;
     protected ChildRecursiveListType children;
-    @XmlAttribute(required = true)
+    @XmlAttribute(name = "version", required = true)
     protected int version;
 
     /**

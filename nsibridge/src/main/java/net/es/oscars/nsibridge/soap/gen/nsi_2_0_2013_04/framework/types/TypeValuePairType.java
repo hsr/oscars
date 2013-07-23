@@ -80,9 +80,9 @@ public class TypeValuePairType {
     protected List<String> value;
     @XmlAnyElement(lax = true)
     protected List<Object> any;
-    @XmlAttribute
+    @XmlAttribute(name = "type")
     protected String type;
-    @XmlAttribute
+    @XmlAttribute(name = "targetNamespace")
     @XmlSchemaType(name = "anyURI")
     protected String targetNamespace;
     @XmlAnyAttribute

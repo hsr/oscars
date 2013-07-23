@@ -1,7 +1,7 @@
 package net.es.oscars.nsibridge.prov;
 
 
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.connection.ifce.ServiceException;
+import net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.connection.ifce.ServiceException;
 import net.es.oscars.nsibridge.state.act.NSI_Act_SM;
 import net.es.oscars.nsibridge.state.act.NSI_Act_State;
 import net.es.oscars.nsibridge.state.act.NSI_Act_TH;

@@ -1,26 +1,16 @@
 package net.es.oscars.nsibridge.beans;
 
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.connection.types.QueryFilterType;
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.connection.types.QueryOperationType;
+import net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.connection.types.QueryType;
 
 public class QueryRequest extends GenericRequest {
 
-    private QueryOperationType operation;
-    private QueryFilterType queryFilter;
+    private QueryType query;
 
-    public QueryOperationType getOperation() {
-        return operation;
+    public QueryType getQuery() {
+        return query;
     }
 
-    public void setOperation(QueryOperationType operation) {
-        this.operation = operation;
-    }
-
-    public QueryFilterType getQueryFilter() {
-        return queryFilter;
-    }
-
-    public void setQueryFilter(QueryFilterType queryFilter) {
-        this.queryFilter = queryFilter;
+    public void setQuery(QueryType query) {
+        this.query = query;
     }
 }

@@ -4,10 +4,8 @@ package net.es.oscars.nsibridge.task;
 
 import net.es.oscars.nsibridge.beans.QueryRequest;
 import net.es.oscars.nsibridge.prov.NSI_Util;
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.connection.requester.ConnectionRequesterPort;
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.connection.requester.ConnectionServiceRequester;
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.connection.types.QueryConfirmedType;
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.framework.headers.CommonHeaderType;
+import net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.connection.types.QuerySummaryConfirmedType;
+import net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.framework.headers.CommonHeaderType;
 import net.es.oscars.utils.task.Task;
 import net.es.oscars.utils.task.TaskException;
 import org.apache.log4j.Logger;
@@ -30,12 +28,10 @@ public class QueryTask extends Task  {
     public void onRun() throws TaskException {
         super.onRun();
         try {
-            String operation = request.getOperation().value();
-            List<String> connIds = request.getQueryFilter().getConnectionId();
-            List<String> gris = request.getQueryFilter().getGlobalReservationId();
+            List<String> connIds = request.getQuery().getConnectionId();
+            List<String> gris = request.getQuery().getGlobalReservationId();
 
 
-            log.debug("operation: "+operation);
             for (String connId : connIds) {
                 log.debug("connId "+connId);
             }
@@ -58,7 +54,7 @@ public class QueryTask extends Task  {
                 e.printStackTrace();
                 return;
             }
-
+        /*0
             ConnectionServiceRequester client = new ConnectionServiceRequester();
             ConnectionRequesterPort port = client.getConnectionServiceRequesterPort();
             BindingProvider bp = (BindingProvider) port;
@@ -68,7 +64,7 @@ public class QueryTask extends Task  {
             outHolder.value = hd;
             QueryConfirmedType qct = new QueryConfirmedType();
             port.queryConfirmed(qct, outHolder);
-
+*/
 
         } catch (Exception ex) {
             ex.printStackTrace();

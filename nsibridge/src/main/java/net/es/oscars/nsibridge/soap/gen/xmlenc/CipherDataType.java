@@ -58,7 +58,7 @@ public class CipherDataType {
      *     byte[]
      */
     public void setCipherValue(byte[] value) {
-        this.cipherValue = ((byte[]) value);
+        this.cipherValue = value;
     }
 
     /**

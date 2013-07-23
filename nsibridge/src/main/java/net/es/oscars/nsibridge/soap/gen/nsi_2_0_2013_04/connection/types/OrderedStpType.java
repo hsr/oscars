@@ -50,7 +50,7 @@ public class OrderedStpType {
 
     @XmlElement(required = true)
     protected StpType stp;
-    @XmlAttribute(required = true)
+    @XmlAttribute(name = "order", required = true)
     protected int order;
 
     /**

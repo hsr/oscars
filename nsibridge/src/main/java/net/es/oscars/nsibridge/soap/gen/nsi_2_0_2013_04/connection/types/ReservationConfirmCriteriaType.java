@@ -78,7 +78,7 @@ public class ReservationConfirmCriteriaType {
     protected ServiceAttributesType serviceAttributes;
     @XmlElement(required = true)
     protected PathType path;
-    @XmlAttribute(required = true)
+    @XmlAttribute(name = "version", required = true)
     protected int version;
 
     /**

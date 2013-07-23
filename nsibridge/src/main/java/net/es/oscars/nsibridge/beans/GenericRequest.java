@@ -1,7 +1,7 @@
 package net.es.oscars.nsibridge.beans;
 
 
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.framework.headers.CommonHeaderType;
+import net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.framework.headers.CommonHeaderType;
 
 public class GenericRequest {
     protected CommonHeaderType inHeader;

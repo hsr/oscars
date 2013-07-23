@@ -42,7 +42,7 @@ import org.w3c.dom.Element;
 })
 public class TransformType {
 
-    @XmlElementRef(name = "XPath", namespace = "http://www.w3.org/2000/09/xmldsig#", type = JAXBElement.class)
+    @XmlElementRef(name = "XPath", namespace = "http://www.w3.org/2000/09/xmldsig#", type = JAXBElement.class, required = false)
     @XmlMixed
     @XmlAnyElement(lax = true)
     protected List<Object> content;
@@ -69,9 +69,9 @@ public class TransformType {
      * <p>
      * Objects of the following type(s) are allowed in the list
      * {@link Object }
-     * {@link JAXBElement }{@code <}{@link String }{@code >}
      * {@link Element }
      * {@link String }
+     * {@link JAXBElement }{@code <}{@link String }{@code >}
      * 
      * 
      */

@@ -64,7 +64,7 @@ public class SummaryPathType {
     @XmlElement(required = true)
     protected String providerNSA;
     protected PathType path;
-    @XmlAttribute(required = true)
+    @XmlAttribute(name = "order", required = true)
     protected int order;
 
     /**

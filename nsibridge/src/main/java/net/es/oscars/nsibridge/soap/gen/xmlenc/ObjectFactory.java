@@ -26,9 +26,6 @@ import net.es.oscars.nsibridge.soap.gen.xmldsig.KeyInfoType;
 @XmlRegistry
 public class ObjectFactory {
 
-    private final static QName _AgreementMethodTypeOriginatorKeyInfo_QNAME = new QName("http://www.w3.org/2001/04/xmlenc#", "OriginatorKeyInfo");
-    private final static QName _AgreementMethodTypeRecipientKeyInfo_QNAME = new QName("http://www.w3.org/2001/04/xmlenc#", "RecipientKeyInfo");
-    private final static QName _AgreementMethodTypeKANonce_QNAME = new QName("http://www.w3.org/2001/04/xmlenc#", "KA-Nonce");
     private final static QName _EncryptionProperty_QNAME = new QName("http://www.w3.org/2001/04/xmlenc#", "EncryptionProperty");
     private final static QName _EncryptedKey_QNAME = new QName("http://www.w3.org/2001/04/xmlenc#", "EncryptedKey");
     private final static QName _CipherData_QNAME = new QName("http://www.w3.org/2001/04/xmlenc#", "CipherData");
@@ -36,24 +33,19 @@ public class ObjectFactory {
     private final static QName _EncryptedData_QNAME = new QName("http://www.w3.org/2001/04/xmlenc#", "EncryptedData");
     private final static QName _EncryptionProperties_QNAME = new QName("http://www.w3.org/2001/04/xmlenc#", "EncryptionProperties");
     private final static QName _AgreementMethod_QNAME = new QName("http://www.w3.org/2001/04/xmlenc#", "AgreementMethod");
-    private final static QName _EncryptionMethodTypeKeySize_QNAME = new QName("http://www.w3.org/2001/04/xmlenc#", "KeySize");
-    private final static QName _EncryptionMethodTypeOAEPparams_QNAME = new QName("http://www.w3.org/2001/04/xmlenc#", "OAEPparams");
+    private final static QName _AgreementMethodTypeOriginatorKeyInfo_QNAME = new QName("http://www.w3.org/2001/04/xmlenc#", "OriginatorKeyInfo");
+    private final static QName _AgreementMethodTypeRecipientKeyInfo_QNAME = new QName("http://www.w3.org/2001/04/xmlenc#", "RecipientKeyInfo");
+    private final static QName _AgreementMethodTypeKANonce_QNAME = new QName("http://www.w3.org/2001/04/xmlenc#", "KA-Nonce");
     private final static QName _ReferenceListDataReference_QNAME = new QName("http://www.w3.org/2001/04/xmlenc#", "DataReference");
     private final static QName _ReferenceListKeyReference_QNAME = new QName("http://www.w3.org/2001/04/xmlenc#", "KeyReference");
+    private final static QName _EncryptionMethodTypeKeySize_QNAME = new QName("http://www.w3.org/2001/04/xmlenc#", "KeySize");
+    private final static QName _EncryptionMethodTypeOAEPparams_QNAME = new QName("http://www.w3.org/2001/04/xmlenc#", "OAEPparams");
 
     /**
      * Create a new ObjectFactory that can be used to create new instances of schema derived classes for package: net.es.oscars.nsibridge.soap.gen.xmlenc
      * 
      */
     public ObjectFactory() {
-    }
-
-    /**
-     * Create an instance of {@link TransformsType }
-     * 
-     */
-    public TransformsType createTransformsType() {
-        return new TransformsType();
     }
 
     /**
@@ -65,35 +57,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link EncryptedKeyType }
-     * 
-     */
-    public EncryptedKeyType createEncryptedKeyType() {
-        return new EncryptedKeyType();
-    }
-
-    /**
      * Create an instance of {@link ReferenceType }
      * 
      */
     public ReferenceType createReferenceType() {
         return new ReferenceType();
-    }
-
-    /**
-     * Create an instance of {@link CipherReferenceType }
-     * 
-     */
-    public CipherReferenceType createCipherReferenceType() {
-        return new CipherReferenceType();
-    }
-
-    /**
-     * Create an instance of {@link EncryptionPropertyType }
-     * 
-     */
-    public EncryptionPropertyType createEncryptionPropertyType() {
-        return new EncryptionPropertyType();
     }
 
     /**
@@ -105,11 +73,35 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link CipherReferenceType }
+     * 
+     */
+    public CipherReferenceType createCipherReferenceType() {
+        return new CipherReferenceType();
+    }
+
+    /**
+     * Create an instance of {@link EncryptedKeyType }
+     * 
+     */
+    public EncryptedKeyType createEncryptedKeyType() {
+        return new EncryptedKeyType();
+    }
+
+    /**
      * Create an instance of {@link CipherDataType }
      * 
      */
     public CipherDataType createCipherDataType() {
         return new CipherDataType();
+    }
+
+    /**
+     * Create an instance of {@link EncryptionPropertyType }
+     * 
+     */
+    public EncryptionPropertyType createEncryptionPropertyType() {
+        return new EncryptionPropertyType();
     }
 
     /**
@@ -137,30 +129,11 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link KeyInfoType }{@code >}}
+     * Create an instance of {@link TransformsType }
      * 
      */
-    @XmlElementDecl(namespace = "http://www.w3.org/2001/04/xmlenc#", name = "OriginatorKeyInfo", scope = AgreementMethodType.class)
-    public JAXBElement<KeyInfoType> createAgreementMethodTypeOriginatorKeyInfo(KeyInfoType value) {
-        return new JAXBElement<KeyInfoType>(_AgreementMethodTypeOriginatorKeyInfo_QNAME, KeyInfoType.class, AgreementMethodType.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link KeyInfoType }{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://www.w3.org/2001/04/xmlenc#", name = "RecipientKeyInfo", scope = AgreementMethodType.class)
-    public JAXBElement<KeyInfoType> createAgreementMethodTypeRecipientKeyInfo(KeyInfoType value) {
-        return new JAXBElement<KeyInfoType>(_AgreementMethodTypeRecipientKeyInfo_QNAME, KeyInfoType.class, AgreementMethodType.class, value);
-    }
-
-    /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
-     * 
-     */
-    @XmlElementDecl(namespace = "http://www.w3.org/2001/04/xmlenc#", name = "KA-Nonce", scope = AgreementMethodType.class)
-    public JAXBElement<byte[]> createAgreementMethodTypeKANonce(byte[] value) {
-        return new JAXBElement<byte[]>(_AgreementMethodTypeKANonce_QNAME, byte[].class, AgreementMethodType.class, ((byte[]) value));
+    public TransformsType createTransformsType() {
+        return new TransformsType();
     }
 
     /**
@@ -227,21 +200,30 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link JAXBElement }{@code <}{@link BigInteger }{@code >}}
+     * Create an instance of {@link JAXBElement }{@code <}{@link KeyInfoType }{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://www.w3.org/2001/04/xmlenc#", name = "KeySize", scope = EncryptionMethodType.class)
-    public JAXBElement<BigInteger> createEncryptionMethodTypeKeySize(BigInteger value) {
-        return new JAXBElement<BigInteger>(_EncryptionMethodTypeKeySize_QNAME, BigInteger.class, EncryptionMethodType.class, value);
+    @XmlElementDecl(namespace = "http://www.w3.org/2001/04/xmlenc#", name = "OriginatorKeyInfo", scope = AgreementMethodType.class)
+    public JAXBElement<KeyInfoType> createAgreementMethodTypeOriginatorKeyInfo(KeyInfoType value) {
+        return new JAXBElement<KeyInfoType>(_AgreementMethodTypeOriginatorKeyInfo_QNAME, KeyInfoType.class, AgreementMethodType.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link KeyInfoType }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.w3.org/2001/04/xmlenc#", name = "RecipientKeyInfo", scope = AgreementMethodType.class)
+    public JAXBElement<KeyInfoType> createAgreementMethodTypeRecipientKeyInfo(KeyInfoType value) {
+        return new JAXBElement<KeyInfoType>(_AgreementMethodTypeRecipientKeyInfo_QNAME, KeyInfoType.class, AgreementMethodType.class, value);
     }
 
     /**
      * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
      * 
      */
-    @XmlElementDecl(namespace = "http://www.w3.org/2001/04/xmlenc#", name = "OAEPparams", scope = EncryptionMethodType.class)
-    public JAXBElement<byte[]> createEncryptionMethodTypeOAEPparams(byte[] value) {
-        return new JAXBElement<byte[]>(_EncryptionMethodTypeOAEPparams_QNAME, byte[].class, EncryptionMethodType.class, ((byte[]) value));
+    @XmlElementDecl(namespace = "http://www.w3.org/2001/04/xmlenc#", name = "KA-Nonce", scope = AgreementMethodType.class)
+    public JAXBElement<byte[]> createAgreementMethodTypeKANonce(byte[] value) {
+        return new JAXBElement<byte[]>(_AgreementMethodTypeKANonce_QNAME, byte[].class, AgreementMethodType.class, ((byte[]) value));
     }
 
     /**
@@ -260,6 +242,24 @@ public class ObjectFactory {
     @XmlElementDecl(namespace = "http://www.w3.org/2001/04/xmlenc#", name = "KeyReference", scope = ReferenceList.class)
     public JAXBElement<ReferenceType> createReferenceListKeyReference(ReferenceType value) {
         return new JAXBElement<ReferenceType>(_ReferenceListKeyReference_QNAME, ReferenceType.class, ReferenceList.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link BigInteger }{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.w3.org/2001/04/xmlenc#", name = "KeySize", scope = EncryptionMethodType.class)
+    public JAXBElement<BigInteger> createEncryptionMethodTypeKeySize(BigInteger value) {
+        return new JAXBElement<BigInteger>(_EncryptionMethodTypeKeySize_QNAME, BigInteger.class, EncryptionMethodType.class, value);
+    }
+
+    /**
+     * Create an instance of {@link JAXBElement }{@code <}{@link byte[]}{@code >}}
+     * 
+     */
+    @XmlElementDecl(namespace = "http://www.w3.org/2001/04/xmlenc#", name = "OAEPparams", scope = EncryptionMethodType.class)
+    public JAXBElement<byte[]> createEncryptionMethodTypeOAEPparams(byte[] value) {
+        return new JAXBElement<byte[]>(_EncryptionMethodTypeOAEPparams_QNAME, byte[].class, EncryptionMethodType.class, ((byte[]) value));
     }
 
 }

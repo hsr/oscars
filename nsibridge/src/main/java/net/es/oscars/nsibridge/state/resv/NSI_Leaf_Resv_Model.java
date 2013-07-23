@@ -3,7 +3,6 @@ package net.es.oscars.nsibridge.state.resv;
 
 import net.es.oscars.nsibridge.ifces.NSIMessage;
 import net.es.oscars.nsibridge.ifces.NsiResvModel;
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.connection.provider.ConnectionServiceProvider;
 import net.es.oscars.nsibridge.task.OscarsResvTask;
 import net.es.oscars.nsibridge.task.SendNSIMessageTask;
 import net.es.oscars.utils.task.Task;

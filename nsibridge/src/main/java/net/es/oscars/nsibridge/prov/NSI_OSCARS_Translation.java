@@ -4,8 +4,8 @@ import net.es.oscars.api.soap.gen.v06.*;
 import net.es.oscars.nsibridge.beans.ResvRequest;
 import net.es.oscars.nsibridge.beans.TermRequest;
 import net.es.oscars.nsibridge.beans.config.StpConfig;
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.connection.types.ReservationRequestCriteriaType;
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.framework.types.TypeValuePairType;
+import net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.connection.types.ReservationRequestCriteriaType;
+import net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.framework.types.TypeValuePairType;
 import org.apache.log4j.Logger;
 import org.ogf.schema.network.topology.ctrlplane.*;
 

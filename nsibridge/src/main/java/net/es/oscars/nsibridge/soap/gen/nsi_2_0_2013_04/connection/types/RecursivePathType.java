@@ -75,7 +75,7 @@ public class RecursivePathType {
     protected ConnectionStatesType connectionStates;
     @XmlElement(required = true)
     protected List<QueryRecursiveResultCriteriaType> criteria;
-    @XmlAttribute(required = true)
+    @XmlAttribute(name = "order", required = true)
     protected int order;
 
     /**

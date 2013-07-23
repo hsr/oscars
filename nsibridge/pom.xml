@@ -10,7 +10,7 @@
     <properties>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
-        <cxf.version>2.2.7</cxf.version>
+        <cxf.version>2.7.6</cxf.version>
         <java.version>1.6</java.version>
         <build.rootdir>/Users/haniotak/ij/0_6_trunk/nsibridge</build.rootdir>
         <oscars.version>0.0.1-SNAPSHOT</oscars.version>
@@ -126,148 +126,88 @@
 
 
     </dependencies>
+
+    <profiles>
+        <profile>
+            <id>rebuild-soap</id>
+            <activation>
+                <property><name>rebuildSoap</name></property>
+            </activation>
+            <build>
+                <plugins>
+                    <plugin>
+                        <artifactId>maven-clean-plugin</artifactId>
+                        <version>2.5</version>
+                        <configuration>
+                            <filesets>
+                                <fileset>
+                                    <directory>src/main/java/net/es/oscars/nsibridge/soap/gen</directory>
+                                    <includes>
+                                        <include>**/*.java</include>
+                                    </includes>
+                                    <followSymlinks>false</followSymlinks>
+                                </fileset>
+                            </filesets>
+                        </configuration>
+                    </plugin>
+
+                    <plugin>
+                        <groupId>org.apache.cxf</groupId>
+                        <artifactId>cxf-codegen-plugin</artifactId>
+                        <version>${cxf.version}</version>
+                        <executions>
+                            <execution>
+                                <id>generate-provider-sources</id>
+                                <phase>generate-sources</phase>
+                                <configuration>
+                                    <sourceRoot>${basedir}/src/main/java</sourceRoot>
+                                    <wsdlOptions>
+                                        <wsdlOption>
+                                            <extraargs>
+                                                <extraarg>-exsh</extraarg>
+                                                <extraarg>true</extraarg>
+                                                <extraarg>-impl</extraarg>
+                                                <extraarg>-client</extraarg>
+                                                <extraarg>-autoNameResolution</extraarg>
+                                                <extraarg>-p</extraarg>
+                                                <extraarg>http://schemas.ogf.org/nsi/2013/04/framework/types=net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.framework.types</extraarg>
+                                                <extraarg>-p</extraarg>
+                                                <extraarg>http://schemas.ogf.org/nsi/2013/04/framework/headers=net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.framework.headers</extraarg>
+                                                <extraarg>-p</extraarg>
+                                                <extraarg>http://schemas.ogf.org/nsi/2013/04/connection/interface=net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.connection.ifce</extraarg>
+                                                <extraarg>-p</extraarg>
+                                                <extraarg>http://schemas.ogf.org/nsi/2013/04/connection/types=net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.connection.types</extraarg>
+                                                <extraarg>-p</extraarg>
+                                                <extraarg>http://schemas.ogf.org/nsi/2013/04/connection/provider=net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.connection.provider</extraarg>
+                                                <extraarg>-p</extraarg>
+                                                <extraarg>urn:oasis:names:tc:SAML:2.0:assertion=net.es.oscars.nsibridge.soap.gen.saml.assertion</extraarg>
+                                                <extraarg>-p</extraarg>
+                                                <extraarg>http://www.w3.org/2000/09/xmldsig#=net.es.oscars.nsibridge.soap.gen.xmldsig</extraarg>
+                                                <extraarg>-p</extraarg>
+                                                <extraarg>http://www.w3.org/2001/04/xmlenc#=net.es.oscars.nsibridge.soap.gen.xmlenc</extraarg>
+
+                                            </extraargs>
+
+                                            <wsdl>${basedir}/schema/2013_04/ConnectionService/ogf_nsi_connection_provider_v2_0.wsdl</wsdl>
+                                            <bindingFiles>
+                                                <bindingFile>${basedir}/schema/NSI_ConnectionTypesBinding.xml</bindingFile>
+                                            </bindingFiles>
+                                        </wsdlOption>
+                                    </wsdlOptions>
+                                </configuration>
+                                <goals>
+                                    <goal>wsdl2java</goal>
+                                </goals>
+                            </execution>
+                        </executions>
+                    </plugin>
+                </plugins>
+            </build>
+        </profile>
+
+    </profiles>
     <build>
         <plugins>
-            <!-- uncomment to regenerate SOAP generated file -->
-            <plugin>
-                <groupId>org.apache.cxf</groupId>
-                <artifactId>cxf-codegen-plugin</artifactId>
-                <version>${cxf.version}</version>
-                <executions>
-                    <execution>
-                        <id>generate-provider-sources</id>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <sourceRoot>${basedir}/src/main/java</sourceRoot>
-                            <wsdlOptions>
-                                <wsdlOption>
-                                    <extraargs>
-                                        <extraarg>-exsh</extraarg>
-                                        <extraarg>true</extraarg>
-                                        <extraarg>-impl</extraarg>
-                                        <extraarg>-autoNameResolution</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://schemas.ogf.org/nsi/2013/04/framework/types=net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.framework.types</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://schemas.ogf.org/nsi/2013/04/framework/headers=net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.framework.headers</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://schemas.ogf.org/nsi/2013/04/connection/interface=net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.connection.ifce</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://schemas.ogf.org/nsi/2013/04/connection/types=net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.connection.types</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://schemas.ogf.org/nsi/2013/04/connection/provider=net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.connection.provider</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>urn:oasis:names:tc:SAML:2.0:assertion=net.es.oscars.nsibridge.soap.gen.saml.assertion</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://www.w3.org/2000/09/xmldsig#=net.es.oscars.nsibridge.soap.gen.xmldsig</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://www.w3.org/2001/04/xmlenc#=net.es.oscars.nsibridge.soap.gen.xmlenc</extraarg>
-
-                                    </extraargs>
-
-                                    <wsdl>${basedir}/schema/2013_04/ConnectionService/ogf_nsi_connection_provider_v2_0.wsdl</wsdl>
-                                    <bindingFiles>
-                                        <bindingFile>${basedir}/schema/NSI_ConnectionTypesBinding.xml</bindingFile>
-                                    </bindingFiles>
-                                </wsdlOption>
-                            </wsdlOptions>
-                        </configuration>
-                        <goals>
-                            <goal>wsdl2java</goal>
-                        </goals>
-                    </execution>
-                    <!--
-                    <execution>
-                        <id>generate-requester-sources</id>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <sourceRoot>${basedir}/src/main/java</sourceRoot>
-                            <wsdlOptions>
-                                <wsdlOption>
-                                    <extraargs>
-                                        <extraarg>-exsh</extraarg>
-                                        <extraarg>true</extraarg>
-                                        <extraarg>-impl</extraarg>
-                                        <extraarg>-autoNameResolution</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://schemas.ogf.org/nsi/2013/04/framework/types=net.es.oscars.nsibridge.soap.gen.nsi_2_0.2013_04.framework.types</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://schemas.ogf.org/nsi/2013/04/framework/headers=net.es.oscars.nsibridge.soap.gen.nsi_2_0.2013_04.framework.headers</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://schemas.ogf.org/nsi/2013/04/connection/interface=net.es.oscars.nsibridge.soap.gen.nsi_2_0.2013_04.connection.ifce</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://schemas.ogf.org/nsi/2013/04/connection/types=net.es.oscars.nsibridge.soap.gen.nsi_2_0.2013_04.connection.types</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://schemas.ogf.org/nsi/2013/04/connection/requester=net.es.oscars.nsibridge.soap.gen.nsi_2_0.2013_04.connection.requester</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>urn:oasis:names:tc:SAML:2.0:assertion=net.es.oscars.nsibridge.soap.gen.saml.assertion</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://www.w3.org/2000/09/xmldsig#=net.es.oscars.nsibridge.soap.gen.xmldsig</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://www.w3.org/2001/04/xmlenc#=net.es.oscars.nsibridge.soap.gen.xmlenc</extraarg>
-
-                                    </extraargs>
-
-                                    <wsdl>${basedir}/schema/ConnectionService/ogf_nsi_connection_requester_v2_0.wsdl</wsdl>
-                                    <bindingFiles>
-                                        <bindingFile>${basedir}/schema/NSI_ConnectionTypesBinding.xml</bindingFile>
-                                    </bindingFiles>
-                                </wsdlOption>
-                            </wsdlOptions>
-                        </configuration>
-                        <goals>
-                            <goal>wsdl2java</goal>
-                        </goals>
-                    </execution>
-                    <execution>
-                        <id>generate-discovery-sources</id>
-                        <phase>generate-sources</phase>
-                        <configuration>
-                            <sourceRoot>${basedir}/src/main/java</sourceRoot>
-                            <wsdlOptions>
-                                <wsdlOption>
-                                    <extraargs>
-                                        <extraarg>-exsh</extraarg>
-                                        <extraarg>true</extraarg>
-                                        <extraarg>-impl</extraarg>
-                                        <extraarg>-autoNameResolution</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://schemas.ogf.org/nsi/2013/04/framework/types=net.es.oscars.nsibridge.soap.gen.nsi_2_0.2013_04.framework.types</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://schemas.ogf.org/nsi/2013/04/framework/headers=net.es.oscars.nsibridge.soap.gen.nsi_2_0.2013_04.framework.headers</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://schemas.ogf.org/nsi/2013/04/connection/interface=net.es.oscars.nsibridge.soap.gen.nsi_2_0.2013_04.connection.ifce</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://schemas.ogf.org/nsi/2013/04/connection/types=net.es.oscars.nsibridge.soap.gen.nsi_2_0.2013_04.connection.types</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://schemas.ogf.org/nsi/2013/04/discovery/provider=net.es.oscars.nsibridge.soap.gen.nsi_2_0.discovery.provider</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://schemas.ogf.org/nsi/2013/04/discovery/interface=net.es.oscars.nsibridge.soap.gen.nsi_2_0.discovery.ifce</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://schemas.ogf.org/nsi/2013/04/discovery/types=net.es.oscars.nsibridge.soap.gen.nsi_2_0.discovery.types</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>urn:oasis:names:tc:SAML:2.0:assertion=net.es.oscars.nsibridge.soap.gen.saml.assertion</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://www.w3.org/2000/09/xmldsig#=net.es.oscars.nsibridge.soap.gen.xmldsig</extraarg>
-                                        <extraarg>-p</extraarg>
-                                        <extraarg>http://www.w3.org/2001/04/xmlenc#=net.es.oscars.nsibridge.soap.gen.xmlenc</extraarg>
-
-                                    </extraargs>
-
-                                    <wsdl>${basedir}/schema/ConnectionService/ogf_nsi_discovery_provider_v2_0.wsdl</wsdl>
-                                    <bindingFiles>
-                                        <bindingFile>${basedir}/schema/NSI_ConnectionTypesBinding.xml</bindingFile>
-                                    </bindingFiles>
-                                </wsdlOption>
-                            </wsdlOptions>
-                        </configuration>
-                        <goals>
-                            <goal>wsdl2java</goal>
-                        </goals>
-                    </execution>
-                    -->
-                </executions>
-            </plugin>
             <!-- end SOAP gen section -->
             <!-- puts all code & libraries in one jar -->
             <plugin>
@@ -294,7 +234,6 @@
                     <encoding>UTF-8</encoding>
                 </configuration>
             </plugin>
-            <!-- specifically use java 1.5 to compile -->
             <plugin>
                 <groupId>org.apache.maven.plugins</groupId>
                 <artifactId>maven-compiler-plugin</artifactId>

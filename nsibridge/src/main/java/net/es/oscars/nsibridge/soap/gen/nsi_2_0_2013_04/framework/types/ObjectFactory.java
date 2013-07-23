@@ -30,22 +30,6 @@ public class ObjectFactory {
     }
 
     /**
-     * Create an instance of {@link VariablesType }
-     * 
-     */
-    public VariablesType createVariablesType() {
-        return new VariablesType();
-    }
-
-    /**
-     * Create an instance of {@link TypeValuePairListType }
-     * 
-     */
-    public TypeValuePairListType createTypeValuePairListType() {
-        return new TypeValuePairListType();
-    }
-
-    /**
      * Create an instance of {@link ServiceExceptionType }
      * 
      */
@@ -54,11 +38,27 @@ public class ObjectFactory {
     }
 
     /**
+     * Create an instance of {@link VariablesType }
+     * 
+     */
+    public VariablesType createVariablesType() {
+        return new VariablesType();
+    }
+
+    /**
      * Create an instance of {@link TypeValuePairType }
      * 
      */
     public TypeValuePairType createTypeValuePairType() {
         return new TypeValuePairType();
+    }
+
+    /**
+     * Create an instance of {@link TypeValuePairListType }
+     * 
+     */
+    public TypeValuePairListType createTypeValuePairListType() {
+        return new TypeValuePairListType();
     }
 
 }

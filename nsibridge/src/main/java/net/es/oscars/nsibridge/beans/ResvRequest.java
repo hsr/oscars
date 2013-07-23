@@ -1,6 +1,6 @@
 package net.es.oscars.nsibridge.beans;
 
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.connection.types.ReservationRequestCriteriaType;
+import net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.connection.types.ReservationRequestCriteriaType;
 
 public class ResvRequest extends GenericRequest {
     protected ReservationRequestCriteriaType criteria;

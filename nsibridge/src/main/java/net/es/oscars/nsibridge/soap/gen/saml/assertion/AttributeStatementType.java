@@ -39,8 +39,8 @@ public class AttributeStatementType
 {
 
     @XmlElements({
-        @XmlElement(name = "EncryptedAttribute", type = EncryptedElementType.class),
-        @XmlElement(name = "Attribute", type = AttributeType.class)
+        @XmlElement(name = "Attribute", type = AttributeType.class),
+        @XmlElement(name = "EncryptedAttribute", type = EncryptedElementType.class)
     })
     protected List<Object> attributeOrEncryptedAttribute;
 
@@ -62,8 +62,8 @@ public class AttributeStatementType
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link EncryptedElementType }
      * {@link AttributeType }
+     * {@link EncryptedElementType }
      * 
      * 
      */

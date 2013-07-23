@@ -3,8 +3,8 @@ package net.es.oscars.nsibridge.prov;
 
 import net.es.oscars.nsibridge.beans.*;
 import net.es.oscars.nsibridge.ifces.StateException;
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.connection.ifce.ServiceException;
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.framework.headers.CommonHeaderType;
+import net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.connection.ifce.ServiceException;
+import net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.framework.headers.CommonHeaderType;
 import net.es.oscars.nsibridge.state.prov.NSI_Prov_Event;
 import net.es.oscars.nsibridge.state.prov.NSI_Prov_SM;
 import net.es.oscars.nsibridge.state.resv.NSI_Resv_Event;
