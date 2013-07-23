@@ -5,7 +5,7 @@ import net.es.oscars.nsibridge.beans.QueryRequest;
 import net.es.oscars.nsibridge.beans.TermRequest;
 import net.es.oscars.nsibridge.common.Invoker;
 import net.es.oscars.nsibridge.common.JettyContainer;
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.framework.headers.CommonHeaderType;
+import net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.framework.headers.CommonHeaderType;
 import net.es.oscars.nsibridge.soap.impl.ConnectionProvider;
 import net.es.oscars.utils.config.ConfigDefaults;
 import net.es.oscars.utils.task.sched.Workflow;
@@ -51,7 +51,7 @@ public class TaskTest {
         Holder<CommonHeaderType> holder = new Holder<CommonHeaderType>();
         holder.value = rreq.getOutHeader();
 
-        cp.reserve(gri, desc, connId, rreq.getCriteria(), rreq.getInHeader(), holder);
+//        cp.reserve(gri, desc, connId, rreq.getCriteria(), rreq.getInHeader(), holder);
 
         Thread.sleep(5000);
 
@@ -63,7 +63,7 @@ public class TaskTest {
 
         Thread.sleep(5000);
 
-        cp.query(qreq.getOperation(), qreq.getQueryFilter(), qreq.getInHeader(), holder);
+//        cp.queryNotificationSync(qreq.getOperation(), qreq.getQueryFilter(), qreq.getInHeader(), holder);
 
 
 

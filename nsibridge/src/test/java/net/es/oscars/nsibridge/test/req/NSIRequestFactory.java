@@ -6,10 +6,10 @@ import net.es.oscars.nsibridge.beans.ResvRequest;
 import net.es.oscars.nsibridge.beans.TermRequest;
 import net.es.oscars.nsibridge.beans.config.JettyConfig;
 import net.es.oscars.nsibridge.common.ConfigManager;
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.connection.types.*;
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.framework.headers.CommonHeaderType;
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.framework.types.TypeValuePairListType;
-import net.es.oscars.nsibridge.soap.gen.nsi_2_0.framework.types.TypeValuePairType;
+import net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.connection.types.*;
+import net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.framework.headers.CommonHeaderType;
+import net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.framework.types.TypeValuePairListType;
+import net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.framework.types.TypeValuePairType;
 
 import javax.xml.datatype.DatatypeConfigurationException;
 import javax.xml.datatype.DatatypeFactory;
@@ -23,10 +23,8 @@ public class NSIRequestFactory {
 
     public static QueryRequest getQueryRequest() {
         QueryRequest req = new QueryRequest();
-        QueryOperationType op = QueryOperationType.SUMMARY;
-        QueryFilterType filter = new QueryFilterType();
-        req.setOperation(op);
-        req.setQueryFilter(filter);
+        QueryType q = new QueryType();
+        req.setQuery(q);
 
         CommonHeaderType inHeader = makeHeader();
         req.setInHeader(inHeader);
@@ -73,7 +71,6 @@ public class NSIRequestFactory {
         sch.setStartTime(sTime);
         sch.setEndTime(eTime);
 
-        srcStp.setOrientation(OrientationType.INGRESS);
         srcStp.setLocalId("urn:ogf:network:stp:esnet.ets:chi-80");
         TypeValuePairType srcTvp = new TypeValuePairType();
         srcTvp.setType("VLAN");
@@ -83,7 +80,6 @@ public class NSIRequestFactory {
         srcStp.setLabels(slbls);
         slbls.getAttribute().add(srcTvp);
 
-        dstStp.setOrientation(OrientationType.EGRESS);
         dstStp.setLocalId("urn:ogf:network:stp:esnet.ets:ps-80");
         TypeValuePairListType dlbls = new TypeValuePairListType();
         dstStp.setLabels(dlbls);
@@ -97,7 +93,7 @@ public class NSIRequestFactory {
         pt.setDirectionality(DirectionalityType.BIDIRECTIONAL);
         pt.setSourceSTP(srcStp);
         pt.setDestSTP(dstStp);
-        pt.setSymmetric(true);
+        pt.setDirectionality(DirectionalityType.BIDIRECTIONAL);
 
         crit.setBandwidth(100);
         crit.setPath(pt);

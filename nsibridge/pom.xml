@@ -11,6 +11,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <project.reporting.outputEncoding>UTF-8</project.reporting.outputEncoding>
         <cxf.version>2.7.6</cxf.version>
+        <spring.version>3.2.3.RELEASE</spring.version>
         <java.version>1.6</java.version>
         <build.rootdir>/Users/haniotak/ij/0_6_trunk/nsibridge</build.rootdir>
         <oscars.version>0.0.1-SNAPSHOT</oscars.version>
@@ -101,15 +102,33 @@
             <version>${cxf.version}</version>
         </dependency>
 
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-ws-policy</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
 
-        <!-- spring
+        <dependency>
+            <groupId>org.apache.cxf</groupId>
+            <artifactId>cxf-rt-ws-security</artifactId>
+            <version>${cxf.version}</version>
+        </dependency>
+
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-beans</artifactId>
             <version>${spring.version}</version>
         </dependency>
--->
+
+        <dependency>
+            <groupId>org.springframework</groupId>
+            <artifactId>spring-context</artifactId>
+            <version>${spring.version}</version>
+        </dependency>
+
+
+
         <!-- configuration -->
         <dependency>
             <groupId>org.jyaml</groupId>
