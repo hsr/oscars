@@ -45,9 +45,9 @@ import javax.xml.bind.annotation.XmlType;
 public class SubjectType {
 
     @XmlElementRefs({
-        @XmlElementRef(name = "BaseID", namespace = "urn:oasis:names:tc:SAML:2.0:assertion", type = JAXBElement.class, required = false),
-        @XmlElementRef(name = "NameID", namespace = "urn:oasis:names:tc:SAML:2.0:assertion", type = JAXBElement.class, required = false),
         @XmlElementRef(name = "EncryptedID", namespace = "urn:oasis:names:tc:SAML:2.0:assertion", type = JAXBElement.class, required = false),
+        @XmlElementRef(name = "NameID", namespace = "urn:oasis:names:tc:SAML:2.0:assertion", type = JAXBElement.class, required = false),
+        @XmlElementRef(name = "BaseID", namespace = "urn:oasis:names:tc:SAML:2.0:assertion", type = JAXBElement.class, required = false),
         @XmlElementRef(name = "SubjectConfirmation", namespace = "urn:oasis:names:tc:SAML:2.0:assertion", type = JAXBElement.class, required = false)
     })
     protected List<JAXBElement<?>> content;
@@ -80,9 +80,9 @@ public class SubjectType {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link JAXBElement }{@code <}{@link BaseIDAbstractType }{@code >}
-     * {@link JAXBElement }{@code <}{@link EncryptedElementType }{@code >}
      * {@link JAXBElement }{@code <}{@link NameIDType }{@code >}
+     * {@link JAXBElement }{@code <}{@link EncryptedElementType }{@code >}
+     * {@link JAXBElement }{@code <}{@link BaseIDAbstractType }{@code >}
      * {@link JAXBElement }{@code <}{@link SubjectConfirmationType }{@code >}
      * 
      * 

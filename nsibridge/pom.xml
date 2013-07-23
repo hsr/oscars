@@ -199,6 +199,49 @@
                                     <goal>wsdl2java</goal>
                                 </goals>
                             </execution>
+                            <execution>
+                                <id>generate-requester-sources</id>
+                                <phase>generate-sources</phase>
+                                <configuration>
+                                    <sourceRoot>${basedir}/src/main/java</sourceRoot>
+                                    <wsdlOptions>
+                                        <wsdlOption>
+                                            <extraargs>
+                                                <extraarg>-exsh</extraarg>
+                                                <extraarg>true</extraarg>
+                                                <extraarg>-impl</extraarg>
+                                                <extraarg>-client</extraarg>
+                                                <extraarg>-autoNameResolution</extraarg>
+                                                <extraarg>-p</extraarg>
+                                                <extraarg>http://schemas.ogf.org/nsi/2013/04/framework/types=net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.framework.types</extraarg>
+                                                <extraarg>-p</extraarg>
+                                                <extraarg>http://schemas.ogf.org/nsi/2013/04/framework/headers=net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.framework.headers</extraarg>
+                                                <extraarg>-p</extraarg>
+                                                <extraarg>http://schemas.ogf.org/nsi/2013/04/connection/interface=net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.connection.ifce</extraarg>
+                                                <extraarg>-p</extraarg>
+                                                <extraarg>http://schemas.ogf.org/nsi/2013/04/connection/types=net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.connection.types</extraarg>
+                                                <extraarg>-p</extraarg>
+                                                <extraarg>http://schemas.ogf.org/nsi/2013/04/connection/requester=net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.connection.requester</extraarg>
+                                                <extraarg>-p</extraarg>
+                                                <extraarg>urn:oasis:names:tc:SAML:2.0:assertion=net.es.oscars.nsibridge.soap.gen.saml.assertion</extraarg>
+                                                <extraarg>-p</extraarg>
+                                                <extraarg>http://www.w3.org/2000/09/xmldsig#=net.es.oscars.nsibridge.soap.gen.xmldsig</extraarg>
+                                                <extraarg>-p</extraarg>
+                                                <extraarg>http://www.w3.org/2001/04/xmlenc#=net.es.oscars.nsibridge.soap.gen.xmlenc</extraarg>
+
+                                            </extraargs>
+
+                                            <wsdl>${basedir}/schema/2013_04/ConnectionService/ogf_nsi_connection_requester_v2_0.wsdl</wsdl>
+                                            <bindingFiles>
+                                                <bindingFile>${basedir}/schema/NSI_ConnectionTypesBinding.xml</bindingFile>
+                                            </bindingFiles>
+                                        </wsdlOption>
+                                    </wsdlOptions>
+                                </configuration>
+                                <goals>
+                                    <goal>wsdl2java</goal>
+                                </goals>
+                            </execution>
                         </executions>
                     </plugin>
                 </plugins>

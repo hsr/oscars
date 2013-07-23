@@ -77,8 +77,32 @@ public class ConnectionProvider implements ConnectionProviderPort {
     }
 
     @Override
-    public void reserve(@WebParam(mode = WebParam.Mode.INOUT, name = "connectionId", targetNamespace = "") Holder<String> connectionId, @WebParam(name = "globalReservationId", targetNamespace = "") String globalReservationId, @WebParam(name = "description", targetNamespace = "") String description, @WebParam(name = "criteria", targetNamespace = "") ReservationRequestCriteriaType criteria, @WebParam(name = "nsiHeader", targetNamespace = "http://schemas.ogf.org/nsi/2013/04/framework/headers", header = true) CommonHeaderType header, @WebParam(mode = WebParam.Mode.OUT, name = "nsiHeader", targetNamespace = "http://schemas.ogf.org/nsi/2013/04/framework/headers", header = true) Holder<CommonHeaderType> header1) throws ServiceException {
-        //To change body of implemented methods use File | Settings | File Templates.
+    public void reserve(@WebParam(mode = WebParam.Mode.INOUT, name = "connectionId", targetNamespace = "") Holder<String> connectionId,
+                        @WebParam(name = "globalReservationId", targetNamespace = "") String globalReservationId,
+                        @WebParam(name = "description", targetNamespace = "") String description,
+                        @WebParam(name = "criteria", targetNamespace = "") ReservationRequestCriteriaType criteria,
+                        @WebParam(name = "nsiHeader", targetNamespace = "http://schemas.ogf.org/nsi/2013/04/framework/headers", header = true) CommonHeaderType inHeader,
+                        @WebParam(mode = WebParam.Mode.OUT, name = "nsiHeader", targetNamespace = "http://schemas.ogf.org/nsi/2013/04/framework/headers", header = true) Holder<CommonHeaderType> outHeader)
+                            throws ServiceException {
+        log.info("Executing operation reserve");
+
+        ResvRequest req = new ResvRequest();
+        req.setConnectionId(connectionId.value);
+        req.setCriteria(criteria);
+        req.setDescription(description);
+        req.setGlobalReservationId(globalReservationId);
+        req.setInHeader(inHeader);
+        log.debug("connId: "+connectionId);
+
+
+        try {
+            RequestProcessor.getInstance().startReserve(req);
+            CommonHeaderType outHeaderValue = req.getOutHeader();
+            outHeader.value = outHeaderValue;
+        } catch (Exception ex) {
+            ex.printStackTrace();
+            throw new RuntimeException(ex);
+        }
     }
 
 

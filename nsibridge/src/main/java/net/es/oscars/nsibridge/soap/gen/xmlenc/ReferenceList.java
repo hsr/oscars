@@ -40,8 +40,8 @@ import javax.xml.bind.annotation.XmlType;
 public class ReferenceList {
 
     @XmlElementRefs({
-        @XmlElementRef(name = "DataReference", namespace = "http://www.w3.org/2001/04/xmlenc#", type = JAXBElement.class, required = false),
-        @XmlElementRef(name = "KeyReference", namespace = "http://www.w3.org/2001/04/xmlenc#", type = JAXBElement.class, required = false)
+        @XmlElementRef(name = "KeyReference", namespace = "http://www.w3.org/2001/04/xmlenc#", type = JAXBElement.class, required = false),
+        @XmlElementRef(name = "DataReference", namespace = "http://www.w3.org/2001/04/xmlenc#", type = JAXBElement.class, required = false)
     })
     protected List<JAXBElement<ReferenceType>> dataReferenceOrKeyReference;
 

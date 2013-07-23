@@ -40,9 +40,9 @@ import javax.xml.bind.annotation.XmlType;
 public class EvidenceType {
 
     @XmlElementRefs({
+        @XmlElementRef(name = "AssertionURIRef", namespace = "urn:oasis:names:tc:SAML:2.0:assertion", type = JAXBElement.class, required = false),
         @XmlElementRef(name = "EncryptedAssertion", namespace = "urn:oasis:names:tc:SAML:2.0:assertion", type = JAXBElement.class, required = false),
         @XmlElementRef(name = "Assertion", namespace = "urn:oasis:names:tc:SAML:2.0:assertion", type = JAXBElement.class, required = false),
-        @XmlElementRef(name = "AssertionURIRef", namespace = "urn:oasis:names:tc:SAML:2.0:assertion", type = JAXBElement.class, required = false),
         @XmlElementRef(name = "AssertionIDRef", namespace = "urn:oasis:names:tc:SAML:2.0:assertion", type = JAXBElement.class, required = false)
     })
     protected List<JAXBElement<?>> assertionIDRefOrAssertionURIRefOrAssertion;
@@ -65,8 +65,8 @@ public class EvidenceType {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link JAXBElement }{@code <}{@link AssertionType }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
+     * {@link JAXBElement }{@code <}{@link AssertionType }{@code >}
      * {@link JAXBElement }{@code <}{@link EncryptedElementType }{@code >}
      * {@link JAXBElement }{@code <}{@link String }{@code >}
      * 
