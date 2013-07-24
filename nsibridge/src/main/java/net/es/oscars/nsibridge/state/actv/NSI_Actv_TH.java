@@ -1,34 +1,34 @@
-package net.es.oscars.nsibridge.state.act;
+package net.es.oscars.nsibridge.state.actv;
 
 import net.es.oscars.nsibridge.ifces.*;
 import org.apache.log4j.Logger;
 
 
-public class NSI_Act_TH implements TransitionHandler {
+public class NSI_Actv_TH implements TransitionHandler {
 
-    private static final Logger LOG = Logger.getLogger(NSI_Act_TH.class);
+    private static final Logger LOG = Logger.getLogger(NSI_Actv_TH.class);
 
 
-    private NsiActModel mdl;
+    private NsiActvMdl mdl;
 
     @Override
     public void process(SM_State gfrom, SM_State gto, SM_Event gev, StateMachine gsm) throws StateException {
-        NSI_Act_State from = (NSI_Act_State) gfrom;
-        NSI_Act_State to = (NSI_Act_State) gto;
-        NSI_Act_Event ev = (NSI_Act_Event) gev;
+        NSI_Actv_State from = (NSI_Actv_State) gfrom;
+        NSI_Actv_State to = (NSI_Actv_State) gto;
+        NSI_Actv_Event ev = (NSI_Actv_Event) gev;
         switch (from) {
             case INACTIVE:
 
                 break;
             case ACTIVATING:
-                if (to.equals(NSI_Act_State.ACTIVATING)) {
+                if (to.equals(NSI_Actv_State.ACTIVATING)) {
                     mdl.doLocalAct();
                 }
             case ACTIVE:
 
                 break;
             case DEACTIVATING:
-                if (to.equals(NSI_Act_State.INACTIVE)) {
+                if (to.equals(NSI_Actv_State.INACTIVE)) {
                     mdl.doLocalDeact();
                 }
                 break;
@@ -37,11 +37,11 @@ public class NSI_Act_TH implements TransitionHandler {
     }
 
 
-    public NsiActModel getMdl() {
+    public NsiActvMdl getMdl() {
         return mdl;
     }
 
-    public void setMdl(NsiActModel mdl) {
+    public void setMdl(NsiActvMdl mdl) {
         this.mdl = mdl;
     }
 

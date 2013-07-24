@@ -1,7 +1,6 @@
 package net.es.oscars.nsibridge.state.prov;
 
 import net.es.oscars.nsibridge.ifces.*;
-import net.es.oscars.nsibridge.state.resv.NSI_Resv_State;
 import org.apache.log4j.Logger;
 
 public class NSI_Prov_TH implements TransitionHandler {
@@ -9,7 +8,7 @@ public class NSI_Prov_TH implements TransitionHandler {
     private static final Logger LOG = Logger.getLogger(NSI_Prov_TH.class);
 
 
-    private NsiProvModel mdl;
+    private NsiProvMdl mdl;
 
     @Override
     public void process(SM_State gfrom, SM_State gto, SM_Event gev, StateMachine gsm) throws StateException {
@@ -53,11 +52,11 @@ public class NSI_Prov_TH implements TransitionHandler {
     }
 
 
-    public NsiProvModel getMdl() {
+    public NsiProvMdl getMdl() {
         return mdl;
     }
 
-    public void setMdl(NsiProvModel mdl) {
+    public void setMdl(NsiProvMdl mdl) {
         this.mdl = mdl;
     }
 

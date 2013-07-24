@@ -1,8 +1,8 @@
 package net.es.oscars.nsibridge.state.prov;
 
 
-import net.es.oscars.nsibridge.ifces.NSIMessage;
-import net.es.oscars.nsibridge.ifces.NsiProvModel;
+import net.es.oscars.nsibridge.ifces.Nsi_Message;
+import net.es.oscars.nsibridge.ifces.NsiProvMdl;
 import net.es.oscars.nsibridge.task.LocalProvTask;
 import net.es.oscars.nsibridge.task.SendNSIMessageTask;
 import net.es.oscars.utils.task.Task;
@@ -12,7 +12,7 @@ import net.es.oscars.utils.task.sched.Workflow;
 import java.util.Date;
 
 
-public class NSI_Leaf_Prov_Model implements NsiProvModel {
+public class NSI_Leaf_Prov_Model implements NsiProvMdl {
     String connectionId = "";
     public NSI_Leaf_Prov_Model(String connId) {
         connectionId = connId;
@@ -41,7 +41,7 @@ public class NSI_Leaf_Prov_Model implements NsiProvModel {
         long now = new Date().getTime();
 
         Workflow wf = Workflow.getInstance();
-        Task sendNsiMsg = new SendNSIMessageTask(connectionId, NSIMessage.PROV_CF);
+        Task sendNsiMsg = new SendNSIMessageTask(connectionId, Nsi_Message.PROV_CF);
 
         try {
             wf.schedule(sendNsiMsg, now + 1000);
@@ -55,7 +55,7 @@ public class NSI_Leaf_Prov_Model implements NsiProvModel {
         long now = new Date().getTime();
 
         Workflow wf = Workflow.getInstance();
-        Task sendNsiMsg = new SendNSIMessageTask(connectionId, NSIMessage.PROV_FL);
+        Task sendNsiMsg = new SendNSIMessageTask(connectionId, Nsi_Message.PROV_FL);
 
         try {
             wf.schedule(sendNsiMsg, now + 1000);
@@ -83,7 +83,7 @@ public class NSI_Leaf_Prov_Model implements NsiProvModel {
         long now = new Date().getTime();
 
         Workflow wf = Workflow.getInstance();
-        Task sendNsiMsg = new SendNSIMessageTask(connectionId, NSIMessage.REL_CF);
+        Task sendNsiMsg = new SendNSIMessageTask(connectionId, Nsi_Message.REL_CF);
 
         try {
             wf.schedule(sendNsiMsg, now + 1000);
@@ -97,7 +97,7 @@ public class NSI_Leaf_Prov_Model implements NsiProvModel {
         long now = new Date().getTime();
 
         Workflow wf = Workflow.getInstance();
-        Task sendNsiMsg = new SendNSIMessageTask(connectionId, NSIMessage.REL_FL);
+        Task sendNsiMsg = new SendNSIMessageTask(connectionId, Nsi_Message.REL_FL);
 
         try {
             wf.schedule(sendNsiMsg, now + 1000);

@@ -1,19 +1,19 @@
-package net.es.oscars.nsibridge.state.act;
+package net.es.oscars.nsibridge.state.actv;
 
 import net.es.oscars.nsibridge.ifces.*;
 import org.apache.log4j.Logger;
 
-public class NSI_Act_SM implements StateMachine {
+public class NSI_Actv_SM implements StateMachine {
 
-    private static final Logger LOG = Logger.getLogger(NSI_Act_SM.class);
+    private static final Logger LOG = Logger.getLogger(NSI_Actv_SM.class);
 
     private TransitionHandler transitionHandler;
     private SM_State state;
     private String id;
 
 
-    public NSI_Act_SM(String id) {
-        this.state = NSI_Act_State.INACTIVE;
+    public NSI_Actv_SM(String id) {
+        this.state = NSI_Actv_State.INACTIVE;
         this.id = id;
     }
 
@@ -24,22 +24,22 @@ public class NSI_Act_SM implements StateMachine {
             throw new NullPointerException("PSM: ["+this.id+"]: Null transition handler.");
         }
 
-        NSI_Act_State prevState = (NSI_Act_State) this.getState();
-        NSI_Act_State nextState = null;
+        NSI_Actv_State prevState = (NSI_Actv_State) this.getState();
+        NSI_Actv_State nextState = null;
         String pre = "PRE: PSM ["+this.getId()+"] at state ["+state+"] got event ["+event+"]";
         LOG.debug(pre);
         String error = pre;
 
         switch (prevState) {
             case INACTIVE:
-                if (event.equals(NSI_Act_Event.START_TIME)) {
-                    nextState = NSI_Act_State.ACTIVATING;
+                if (event.equals(NSI_Actv_Event.START_TIME)) {
+                    nextState = NSI_Actv_State.ACTIVATING;
                     this.setState(nextState);
-                } else if (event.equals(NSI_Act_Event.CLEANUP)) {
+                } else if (event.equals(NSI_Actv_Event.CLEANUP)) {
 
-                } else if (event.equals(NSI_Act_Event.END_TIME)) {
+                } else if (event.equals(NSI_Actv_Event.END_TIME)) {
 
-                } else if (event.equals(NSI_Act_Event.RECEIVED_NSI_TERM_RQ)) {
+                } else if (event.equals(NSI_Actv_Event.RECEIVED_NSI_TERM_RQ)) {
 
                 } else {
                     error = pre + " : error : event ["+event+"] not allowed";
@@ -48,11 +48,11 @@ public class NSI_Act_SM implements StateMachine {
                 }
                 break;
             case ACTIVATING:
-                if (event.equals(NSI_Act_Event.LOCAL_ACT_CONFIRMED)) {
-                    nextState = NSI_Act_State.ACTIVE;
+                if (event.equals(NSI_Actv_Event.LOCAL_ACT_CONFIRMED)) {
+                    nextState = NSI_Actv_State.ACTIVE;
                     this.setState(nextState);
-                } else if (event.equals(NSI_Act_Event.LOCAL_ACT_FAILED)) {
-                    nextState = NSI_Act_State.INACTIVE;
+                } else if (event.equals(NSI_Actv_Event.LOCAL_ACT_FAILED)) {
+                    nextState = NSI_Actv_State.INACTIVE;
                     this.setState(nextState);
                 } else {
                     error = pre + " : error : event ["+event+"] not allowed";
@@ -62,17 +62,17 @@ public class NSI_Act_SM implements StateMachine {
                 break;
 
             case ACTIVE:
-                if (event.equals(NSI_Act_Event.END_TIME)) {
-                    nextState = NSI_Act_State.DEACTIVATING;
+                if (event.equals(NSI_Actv_Event.END_TIME)) {
+                    nextState = NSI_Actv_State.DEACTIVATING;
                     this.setState(nextState);
-                } else if (event.equals(NSI_Act_Event.CLEANUP)) {
-                    nextState = NSI_Act_State.DEACTIVATING;
+                } else if (event.equals(NSI_Actv_Event.CLEANUP)) {
+                    nextState = NSI_Actv_State.DEACTIVATING;
                     this.setState(nextState);
-                } else if (event.equals(NSI_Act_Event.END_TIME)) {
-                    nextState = NSI_Act_State.DEACTIVATING;
+                } else if (event.equals(NSI_Actv_Event.END_TIME)) {
+                    nextState = NSI_Actv_State.DEACTIVATING;
                     this.setState(nextState);
-                } else if (event.equals(NSI_Act_Event.RECEIVED_NSI_TERM_RQ)) {
-                    nextState = NSI_Act_State.DEACTIVATING;
+                } else if (event.equals(NSI_Actv_Event.RECEIVED_NSI_TERM_RQ)) {
+                    nextState = NSI_Actv_State.DEACTIVATING;
                     this.setState(nextState);
                 } else {
                     error = pre + " : error : event ["+event+"] not allowed";
@@ -81,11 +81,11 @@ public class NSI_Act_SM implements StateMachine {
                 }
                 break;
             case DEACTIVATING:
-                if (event.equals(NSI_Act_Event.LOCAL_DEACT_CONFIRMED)) {
-                    nextState = NSI_Act_State.INACTIVE;
+                if (event.equals(NSI_Actv_Event.LOCAL_DEACT_CONFIRMED)) {
+                    nextState = NSI_Actv_State.INACTIVE;
                     this.setState(nextState);
-                } else if (event.equals(NSI_Act_Event.LOCAL_DEACT_FAILED)) {
-                    nextState = NSI_Act_State.ACTIVE;
+                } else if (event.equals(NSI_Actv_Event.LOCAL_DEACT_FAILED)) {
+                    nextState = NSI_Actv_State.ACTIVE;
                     this.setState(nextState);
                 } else {
                     error = pre + " : error : event ["+event+"] not allowed";

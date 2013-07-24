@@ -9,7 +9,7 @@ import net.es.oscars.authN.soap.gen.VerifyDNReqType;
 import net.es.oscars.authN.soap.gen.VerifyReply;
 import net.es.oscars.common.soap.gen.MessagePropertiesType;
 import net.es.oscars.common.soap.gen.SubjectAttributes;
-import net.es.oscars.nsibridge.beans.config.OscarsConfig;
+import net.es.oscars.nsibridge.config.oscars.OscarsConfig;
 import net.es.oscars.utils.clients.AuthNClient;
 import net.es.oscars.utils.clients.CoordClient;
 import net.es.oscars.utils.config.ConfigDefaults;

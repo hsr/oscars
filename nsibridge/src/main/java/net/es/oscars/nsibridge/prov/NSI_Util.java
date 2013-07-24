@@ -5,14 +5,14 @@ import net.es.oscars.nsibridge.common.JettyContainer;
 import net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.connection.types.*;
 import net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.framework.headers.CommonHeaderType;
 import net.es.oscars.nsibridge.soap.gen.nsi_2_0_2013_04.framework.types.ServiceExceptionType;
-import net.es.oscars.nsibridge.state.act.NSI_Act_SM;
-import net.es.oscars.nsibridge.state.act.NSI_Act_State;
+import net.es.oscars.nsibridge.state.actv.NSI_Actv_SM;
+import net.es.oscars.nsibridge.state.actv.NSI_Actv_State;
 import net.es.oscars.nsibridge.state.prov.NSI_Prov_SM;
 import net.es.oscars.nsibridge.state.prov.NSI_Prov_State;
 import net.es.oscars.nsibridge.state.resv.NSI_Resv_SM;
 import net.es.oscars.nsibridge.state.resv.NSI_Resv_State;
-import net.es.oscars.nsibridge.state.term.NSI_Term_SM;
-import net.es.oscars.nsibridge.state.term.NSI_Term_State;
+import net.es.oscars.nsibridge.state.life.NSI_Term_SM;
+import net.es.oscars.nsibridge.state.life.NSI_Term_State;
 
 import javax.xml.ws.Holder;
 
@@ -21,7 +21,7 @@ public class NSI_Util {
 
         NSI_SM_Holder smh = NSI_SM_Holder.getInstance();
         NSI_Resv_SM rsm = smh.getResvStateMachines().get(connId);
-        NSI_Act_SM asm = smh.getActStateMachines().get(connId);
+        NSI_Actv_SM asm = smh.getActStateMachines().get(connId);
         NSI_Prov_SM psm = smh.getProvStateMachines().get(connId);
         NSI_Term_SM tsm = smh.getTermStateMachines().get(connId);
         if (rsm == null) {
@@ -54,7 +54,7 @@ public class NSI_Util {
         ProvisionStateEnumType pt = null;
         cst.setProvisionState(pt);
 
-        NSI_Act_State as = (NSI_Act_State)   asm.getState();
+        NSI_Actv_State as = (NSI_Actv_State)   asm.getState();
         NSI_Prov_State ps = (NSI_Prov_State) psm.getState();
         NSI_Resv_State rs = (NSI_Resv_State) rsm.getState();
         NSI_Term_State ts = (NSI_Term_State) tsm.getState();

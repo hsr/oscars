@@ -1,6 +1,6 @@
 package net.es.oscars.nsibridge.ifces;
 
-public enum NSIMessage {
+public enum Nsi_Message {
     RESV_CF,
     RESV_FL,
     PROV_CF,

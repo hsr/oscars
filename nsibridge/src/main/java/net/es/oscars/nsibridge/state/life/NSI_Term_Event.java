@@ -1,4 +1,4 @@
-package net.es.oscars.nsibridge.state.term;
+package net.es.oscars.nsibridge.state.life;
 
 import net.es.oscars.nsibridge.ifces.SM_Event;
 

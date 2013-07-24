@@ -1,4 +1,4 @@
-package net.es.oscars.nsibridge.beans.config;
+package net.es.oscars.nsibridge.config.oscars;
 
 
 public class OscarsConfig {

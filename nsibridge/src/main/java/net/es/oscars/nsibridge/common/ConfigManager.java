@@ -3,7 +3,7 @@ package net.es.oscars.nsibridge.common;
 
 
 
-import net.es.oscars.nsibridge.beans.config.OscarsConfig;
+import net.es.oscars.nsibridge.config.oscars.OscarsConfig;
 import net.es.oscars.nsibridge.beans.config.JettyConfig;
 import net.es.oscars.nsibridge.beans.config.ProviderNSAConfig;
 import net.es.oscars.nsibridge.beans.config.StpConfig;

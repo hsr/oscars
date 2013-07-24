@@ -1,4 +1,4 @@
-package net.es.oscars.nsibridge.state.term;
+package net.es.oscars.nsibridge.state.life;
 
 import net.es.oscars.nsibridge.ifces.*;
 import org.apache.log4j.Logger;
@@ -8,7 +8,7 @@ public class NSI_Term_TH implements TransitionHandler {
     private static final Logger LOG = Logger.getLogger(NSI_Term_TH.class);
 
 
-    private NsiTermModel mdl;
+    private NsiLifeMdl mdl;
 
     @Override
     public void process(SM_State gfrom, SM_State gto, SM_Event gev, StateMachine gsm) throws StateException {
@@ -38,11 +38,11 @@ public class NSI_Term_TH implements TransitionHandler {
     }
 
 
-    public NsiTermModel getMdl() {
+    public NsiLifeMdl getMdl() {
         return mdl;
     }
 
-    public void setMdl(NsiTermModel mdl) {
+    public void setMdl(NsiLifeMdl mdl) {
         this.mdl = mdl;
     }
 
