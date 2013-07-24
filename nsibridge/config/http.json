@@ -1,0 +1,7 @@
+{
+    "provider": {
+        "url": "http://localhost:8500/",
+        "bus": "config/jetty.xml"
+    }
+
+}
