@@ -47,8 +47,8 @@ public class SubjectType {
     @XmlElementRefs({
         @XmlElementRef(name = "EncryptedID", namespace = "urn:oasis:names:tc:SAML:2.0:assertion", type = JAXBElement.class, required = false),
         @XmlElementRef(name = "NameID", namespace = "urn:oasis:names:tc:SAML:2.0:assertion", type = JAXBElement.class, required = false),
-        @XmlElementRef(name = "BaseID", namespace = "urn:oasis:names:tc:SAML:2.0:assertion", type = JAXBElement.class, required = false),
-        @XmlElementRef(name = "SubjectConfirmation", namespace = "urn:oasis:names:tc:SAML:2.0:assertion", type = JAXBElement.class, required = false)
+        @XmlElementRef(name = "SubjectConfirmation", namespace = "urn:oasis:names:tc:SAML:2.0:assertion", type = JAXBElement.class, required = false),
+        @XmlElementRef(name = "BaseID", namespace = "urn:oasis:names:tc:SAML:2.0:assertion", type = JAXBElement.class, required = false)
     })
     protected List<JAXBElement<?>> content;
 
@@ -58,8 +58,8 @@ public class SubjectType {
      * <p>
      * You are getting this "catch-all" property because of the following reason: 
      * The field name "SubjectConfirmation" is used by two different parts of a schema. See: 
-     * line 87 of file:/Users/haniotak/ij/0_6_trunk/nsibridge/schema/2013_04/ConnectionService/saml-schema-assertion-2.0.xsd
-     * line 85 of file:/Users/haniotak/ij/0_6_trunk/nsibridge/schema/2013_04/ConnectionService/saml-schema-assertion-2.0.xsd
+     * line 87 of file:/Users/haniotak/ij12/0_6_trunk/nsibridge/schema/2013_07/ConnectionService/saml-schema-assertion-2.0.xsd
+     * line 85 of file:/Users/haniotak/ij12/0_6_trunk/nsibridge/schema/2013_07/ConnectionService/saml-schema-assertion-2.0.xsd
      * <p>
      * To get rid of this property, apply a property customization to one 
      * of both of the following declarations to change their names: 
@@ -80,10 +80,10 @@ public class SubjectType {
      * 
      * <p>
      * Objects of the following type(s) are allowed in the list
-     * {@link JAXBElement }{@code <}{@link NameIDType }{@code >}
-     * {@link JAXBElement }{@code <}{@link EncryptedElementType }{@code >}
      * {@link JAXBElement }{@code <}{@link BaseIDAbstractType }{@code >}
      * {@link JAXBElement }{@code <}{@link SubjectConfirmationType }{@code >}
+     * {@link JAXBElement }{@code <}{@link EncryptedElementType }{@code >}
+     * {@link JAXBElement }{@code <}{@link NameIDType }{@code >}
      * 
      * 
      */
