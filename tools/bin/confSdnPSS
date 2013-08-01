@@ -1,0 +1,137 @@
+#!/bin/sh
+#######################################################################
+# Script to configure Sdn PSS
+#######################################################################
+
+
+#######################################################################
+# Subroutine to print usage
+# While developers can still run the unittest mode, not enabling this
+#    production purposes
+#######################################################################
+printUsage() {
+        echo -e "\nusage confSdnPSS <context>"
+        echo "<context> is one of: PRODUCTION|pro DEVELOPMENT|dev SDK|sdk"
+        exit 1;
+}
+
+#######################################################################
+#subroutine to get configFile
+#######################################################################
+getConfigFile () {
+        if [ $# -lt 3 ]; then
+                echo "Error: Argument list insufficient"
+                exit 1;
+        fi
+#       echo "$1, $2, $3"
+#TDB run from OSCARS_HOME?
+        Config=$(sh $OSCARS_DIST/bin/parseManifest.sh $1 $2 $3 $4| sed "s/'//g")
+#       echo "Config in local Method :$Config"
+        Service=$(echo $Config | awk -F/ '$1~//{print $2}')
+        Conf=$(echo $Config | awk -F/ '$1~//{print $3}')
+        Yaml=$(echo $Config | awk -F/ '$1~//{print $4}' | sed "s/'//g")
+#       echo "2. $Service, $Conf, $Yaml"
+        if [ "$Conf" == "conf" ]; then
+                configFile=$OSCARS_HOME/$Service/$Conf/$Yaml
+        elif [ "$Conf" == "config" ]; then
+                configFile=$OSCARS_DIST/$Service/$Conf/$Yaml
+        fi
+        #echo "3. Config File: $configFile"
+        echo $configFile
+}
+
+#************************************************************************
+#sub to find if files exist
+#************************************************************************
+file_exists ()
+{
+    for f in "$@"
+    do
+        [ -f "$f" ] && return;
+    done;
+    return 1
+}
+#Execution starts here
+#Set some variables
+REPO_PATH=""
+# If OSCARS_HOME is not set, exit. Right now, we only modify the deploy path
+if [ -n "$OSCARS_HOME" ]; then
+        REPO_PATH=OSCARS_HOME
+else
+        echo "ERROR: OSCARS_HOME is not set. Re-run this script after setting OSCARS_HOME."
+        exit 1
+fi
+
+#TBD remove later
+if  [ -z $OSCARS_DIST ]; then
+    echo "Please set the environment var OSCARS_DIST to the OSCARS source directory"
+    exit -1
+fi
+
+#if no context provided, quit
+if [ $# -lt 1 ]; then
+        printUsage
+fi
+
+#Assign context
+case $1 in
+    d|D|dev|DEV|DEVELOPMENT|developement) CONTEXT="DEVELOPMENT";;
+    p|P|pro|PRO|PRODUCTION|production) CONTEXT="PRODUCTION";;
+    t|T|test|TEST) CONTEXT="UNITTEST";;
+    s|S|sdk|SDK) CONTEXT="SDK";;
+	*) echo "Invalid choice of context $1. Try again"; exit 1;;
+esac
+
+#PSS deployment path
+PSS_DEPL_CONF="$OSCARS_HOME/PSSService/conf/"
+echo "Configuring Sdn PSS : $CONTEXT"
+
+#Give user option to delete older config files . If he chooses "y"
+## then older files are removed and exportconfig is then run. If "N"
+### then nothing is deleted - exportconfig is not run either. This has the
+#### advantage that just "some subset of files" alone are not replaced.
+##### for ex, both stubPSS and dragonPSS may have "config.http.yaml", but contents are different?
+#file_exists $OSCARS_HOME/PSSService/conf/*
+file_exists $PSS_DEPL_CONF/*
+if [ $? -eq 0 ]; then
+        echo "PSS configuration files already present for PSS. This step will erase them and reconfigure PSS. Is that acceptable? Y|N :"
+        ans=0;
+        while [ $ans == 0 ]; do
+                read ans;
+                if [ "$ans" != "y" ] && [ "$ans" != "Y" ] && [ "$ans" != "n" ] && [ "$ans" != "N" ]; then
+                        ans=0;
+                fi
+        done
+        #if user thinks its ok to blow away, do so
+        if [ "$ans" == "y" ] || [ "$ans" == "Y" ]; then
+		#Remove all other conf files since exportconfig will not
+		## copy config files if already present
+                rm -rf $OSCARS_HOME/PSSService/conf/*
+                #copy DragonPSS files into $OSCARS_HOME/PSSService
+                #TBD Check path
+                (sh $OSCARS_DIST/sdnPSS/bin/exportconfig $OSCARS_DIST $OSCARS_HOME)
+	else                #no files copied. continue with the same set of files
+                nocopy_ans=0;
+                echo "You have chosen to NOT copy necessary template files.";
+                echo "This means you are choosing to work with the old set of configuration files." 
+                echo "It may also result in errors if relevant/necessary files are not found."
+                echo "Would you want to continue? Y|N"
+                read nocopy_ans;
+                while [ $nocopy_ans == 0 ]; do
+                        read nocopy_ans;
+                        if [ "$nocopy_ans" != "y" ] && [ "$nocopy_ans" != "Y" ] && [ "$nocopy_ans" != "n" ] && [ "$nocopy_ans" != "N" ]; then
+                                nocopy_ans=0;
+                        fi
+                done
+                if [ "$nocopy_ans" == "N" ] || [ "$nocopy_ans" == "n" ]; then
+                        echo "Execution terminated."
+                        echo "Please move/copy your current PSS configuration files from $OSCARS_HOME/PSSService/conf and re-run
+ script"
+                        exit 1;
+                fi
+        fi
+else
+      #run exportconfig to copy SdnPSS files into $OSCARS_HOME/PSSService
+	#TBD Check path
+	(sh $OSCARS_DIST/sdnPSS/bin/exportconfig $OSCARS_DIST $OSCARS_HOME)
+fi

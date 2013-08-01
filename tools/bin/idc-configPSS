@@ -54,6 +54,7 @@ configPSS() {
 	DRAGONPSS="DRAGON"
 	EOMPLSPSS="EOMPLS"
 	OPENFLOWPSS="OPENFLOW"
+	SDNPSS="SDN"
 	STUBPSS="STUB"
 	#call subroutine based on selection
 	whichPSS=$1
@@ -69,6 +70,8 @@ configPSS() {
 		sh $OSCARS_DIST/tools/bin/confOpenflowPSS	
 	elif [ "$whichPSS" == "$STUBPSS" ]; then
 		(sh $OSCARS_DIST/tools/bin/confStubPSS $CONTEXT)
+	elif [ "${whichPSS}" == "${SDNPSS}" ]; then
+		(sh $OSCARS_DIST/tools/bin/confSdnPSS $CONTEXT)
 	fi
 	#echo "Ran : $outConf"
 }
@@ -123,15 +126,15 @@ fi
 #prompt user for new domain
 # Deleting prompt for EoMPLS; adding prompt for OPENFLOW
 # printf "Enter the PSS (Path setup subsystem) you would like to use: Stub/Dragon/EoMPLS? ";
-printf "Enter the PSS (Path setup subsystem) you would like to use: Stub/Dragon/OpenFlow? ";
 user_choice=0;
 while [ $user_choice == 0 ]; do
+	printf "Enter the PSS (Path setup subsystem) you would like to use: Stub/Dragon/OpenFlow/Sdn? ";
         read user_choice;
 	user_choice=$(toUpper "$user_choice")
 	#echo "User input =$user_choice"
 	# Deleting check for EoMPLS 
         #if [ "$user_choice" != "STUB" ] && [ "$user_choice" != "DRAGON" ] && [ "$user_choice" != "EOMPLS" ] &&  [ "$user_choice" != "OPENFLOW" ]; then
-        if [ "$user_choice" != "STUB" ] && [ "$user_choice" != "DRAGON" ] &&  [ "$user_choice" != "OPENFLOW" ]; then
+        if [ "$user_choice" != "STUB" ] && [ "$user_choice" != "DRAGON" ] &&  [ "$user_choice" != "OPENFLOW" ] && [ "$user_choice" != "SDN" ];  then
                 user_choice=0;
         fi
 done
