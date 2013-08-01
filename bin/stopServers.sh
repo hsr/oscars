@@ -110,6 +110,13 @@ stopstubPSS () {
     stopService
 }
 
+stopsdnPSS () {
+    Service="SdnPSS"
+    ShortName="sdnPSS"
+    stopService
+}
+
+
 
 ##############################################################################
 # Subroutine to stop PSS. Checks for arguments and stops the respective PSS
@@ -119,7 +126,7 @@ stopstubPSS () {
 ###############################################################################
 stopPSS () {
 	#echo "PSS Type:$1"
-	PSSOptions=( stub dragon eompls openflow )
+	PSSOptions=( stub dragon eompls openflow sdn )
 	if [ ! -z $1 ] ; then
 		PSSType="$1PSS"
 	else
@@ -245,6 +252,8 @@ while [ ! -z $1 ]
 #PSS option stops which ever PSS is running
   PSS)	stopPSS;;
   stubPSS)  stopPSS "stub";;
+  sdnPSS)  stopPSS "sdn";;
+  sdnPSS)  stopPSS "sdn";;
   dragonPSS) stopPSS "dragon";;
   eomplsPSS) stopPSS "eompls";;
   openflowPSS) stopPSS "openflow";;

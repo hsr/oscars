@@ -51,6 +51,7 @@ $SH $OSCARS_DIST/resourceManager/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
 # path setup
 DRAGONPSS="DRAGON"
 EOMPLSPSS="EOMPLS"
+SDNPSS="SDN"
 CONTEXT="DEVELOPMENT"
 #Get PSS choice, but keep stubPSS the default
 whichPSS="STUB"
@@ -70,6 +71,8 @@ if [ "$whichPSS" == "$DRAGONPSS" ]; then
     $SH $OSCARS_DIST/dragonPSS/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
 elif [ "$whichPSS" == "$EOMPLSPSS" ]; then
     $SH $OSCARS_DIST/eomplsPSS/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
+elif [ "${whichPSS}" == "${SDNPSS}" ]; then
+    $SH $OSCARS_DIST/sdnPSS/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
 else
     $SH $OSCARS_DIST/stubPSS/bin/exportconfig $OSCARS_DIST $OSCARS_HOME
 fi

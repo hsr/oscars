@@ -140,6 +140,7 @@ startnullAgg() {
 
 ##########Subroutine to decide which PSS to start
 startPSS() {
+    # Why variables if these strings are used just once?
     DRAGONPSS="DRAGON"
     EOMPLSPSS="EOMPLS"
     OPENFLOWPSS="OPENFLOW"
@@ -149,6 +150,8 @@ startPSS() {
     Service=$(echo $Config | awk -F/ '$1~//{print $2}')
     Conf=$(echo $Config | awk -F/ '$1~//{print $3}')
     Yaml=$(echo $Config | awk -F/ '$1~//{print $4}' | sed "s/'//g")
+    # this is so cryptic. Why is it reading config from dist? 
+    # Shouldn't all configs be at ${OSCARS_HOME}?
     if [ "$Conf" == "conf" ]; then
         whichPSS=$(awk -F: '$1~/PSSChoice/{print $2}' $OSCARS_HOME/$Service/$Conf/$Yaml)
     elif [ "$Conf" == "config" ]; then
@@ -165,6 +168,8 @@ startPSS() {
         startEomplsPSS
     elif [ "$whichPSS" == "$OPENFLOWPSS" ]; then
         startOpenflowPSS
+    elif [ "${whichPSS}" == "SDN" ]; then
+        startSdnPSS
     else
         startStubPSS
     fi
@@ -172,6 +177,10 @@ startPSS() {
 
 startStubPSS(){
     startService "PSSService" "PSSService" "stubPSS" "stubPSS"
+}
+
+startSdnPSS(){
+    startService "PSSService" "PSSService" "sdnPSS" "sdnPSS"
 }
 
 startDragonPSS(){
@@ -300,6 +309,7 @@ while [ ! -z $1 ]
     nullAgg)  startnullAgg;;
     PSS)      startPSS;;
     stubPSS) startPSS;; #TBD- remove generic used for testing startStubPSS;;
+    sdnPSS)   startPSS;; #TBD- remove generic used for testing startStubPSS;;
     dragonPSS)startDragonPSS;;
     eomplsPSS)startEomplsPSS;;
     openflowPSS)startOpenflowPSS;;
