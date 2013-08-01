@@ -120,4 +120,45 @@ public class NMWGParserUtil {
         urn = NMWGParserUtil.normalizeURN(urn);
         return urn.split(TOPO_ID_SEPARATOR).length;
     }
+    
+    /**
+     * Given an URN, return its parts
+     * 
+     * @param urn the URN
+     * @return a String [] with URN's parts or null if URN is not well formed (or don't have parts)
+     */
+    private static String[] getURNParts(String urn) {
+    	urn = normalizeURN(urn);
+        
+        //break urn into parts
+    	if (urn.length() > 0)
+    		return urn.split(TOPO_ID_SEPARATOR);
+    	return null;
+    }
+    
+    /**
+     * Given an URN, retrieve one of its parts
+     * 
+     * @param urn the URN with the type to extract
+     * @param type one of: DOMAIN_TYPE, NODE_TYPE, PORT_TYPE, LINK_TYPE 
+     * @return a String with the extracted part. null case URN doesn't have the specified part
+     */
+    public static String getURNPart(String urn, int type){
+    	String [] urnParts = getURNParts(urn);
+    	if (urnParts.length >= type)
+    		return urnParts[type-1];
+    	return null;
+    }
+    
+    /**
+     * Given two URNs, compare one of their parts
+     * 
+     * @param urn1 the first URN
+     * @param urn2 the second URN
+     * @param type the part of the URN to compare. One of: DOMAIN_TYPE, NODE_TYPE, PORT_TYPE, LINK_TYPE 
+     * @return a boolean
+     */
+    public static boolean compareURNPart(String urn1, String urn2, int type){
+       	return getURNPart(urn1,type).equals(getURNPart(urn2,type));
+    }
 }
