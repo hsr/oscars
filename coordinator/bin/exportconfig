@@ -77,9 +77,9 @@ if [ ! -f $DST_DIR/$LOG4J_PROPS_DEBUG ] ; then
 if [ ! -f $DST_DIR/$LOG4J_PROPS_MESSAGE ] ; then
     sed s,$MODULE.log,$DST_LOGDIR/$SERVICE.log, <  $SRC_DIR/$LOG4J_PROPS_MESSAGE > $DST_DIR/$LOG4J_PROPS_MESSAGE
 fi
-# Copy the PCERuntime configuration files
-cp $SRC_DIR/pce-configuration-http.xml $DST_DIR_PCE/pce-configuration-http.xml
-cp $SRC_DIR/pce-configuration-ssl.xml $DST_DIR_PCE/pce-configuration-ssl.xml
+# Copy the PCERuntime configuration files (from template)
+cp $SRC_DIR/pce-configuration-http-template.xml $DST_DIR_PCE/pce-configuration-http.xml
+cp $SRC_DIR/pce-configuration-ssl-template.xml $DST_DIR_PCE/pce-configuration-ssl.xml
 
 cp $SRC_DIR/pce-runtime.HTTP.yaml $DST_DIR_PCE/pce-runtime.HTTP.yaml
 cp $SRC_DIR/pce-runtime.SSL.yaml $DST_DIR_PCE/pce-runtime.SSL.yaml
