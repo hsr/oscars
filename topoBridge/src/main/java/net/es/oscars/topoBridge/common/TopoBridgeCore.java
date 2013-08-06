@@ -4,6 +4,8 @@ import java.util.Map;
 
 import net.es.oscars.logging.ErrSev;
 import net.es.oscars.logging.OSCARSNetLogger;
+import net.es.oscars.topoBridge.sdn.BaseSDNTopologyService;
+import net.es.oscars.topoBridge.sdn.ISDNTopologyService;
 import net.es.oscars.utils.config.ConfigDefaults;
 import net.es.oscars.utils.config.ConfigException;
 import net.es.oscars.utils.config.ConfigHelper;
@@ -79,6 +81,10 @@ public class TopoBridgeCore {
     public Document getLocalTopology() throws OSCARSServiceException {
         OSCARSNetLogger netLogger = OSCARSNetLogger.getTlogger();
         log.debug(netLogger.start("getLocalTopology"));
+
+		if (localDomainId.matches("^sdn\\:")) {
+			return getSDNTopology();
+		}
         
         try {
             TopologyCache tc = TopologyCache.getInstance();
@@ -102,7 +108,30 @@ public class TopoBridgeCore {
             throw new OSCARSServiceException(e.getMessage());
         }
     }
+    
+	/**
+	 * This method tries to get the network topology from an SDN controller
+	 * specified by in the localDomainId string
+	 * 
+	 * @return Document domain
+	 * @throws OSCARSServiceException 
+	 */
+	private Document getSDNTopology() throws OSCARSServiceException {
+		OSCARSNetLogger netLogger = OSCARSNetLogger.getTlogger();
+		log.debug(netLogger.start("getSDNTopology"));
+		
+		try {
+			ISDNTopologyService ts = BaseSDNTopologyService.getInstance(localDomainId);
 
+			log.debug(netLogger.end("getSDNTopology"));
+			return ts.getTopology();
+		} catch (Exception e) {
+			log.debug(netLogger.error("getSDNTopology", ErrSev.MAJOR,
+					e.getMessage()));
+			e.printStackTrace();
+			throw new OSCARSServiceException(e.getMessage());
+		}
+	}
     public void shutdown() {
         OSCARSNetLogger netLogger = OSCARSNetLogger.getTlogger();
         log.info(netLogger.end("shutdown","not implemented"));
