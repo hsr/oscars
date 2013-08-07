@@ -8,13 +8,9 @@ import java.util.List;
 
 import javax.ws.rs.client.Client;
 import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.Invocation;
 import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 
 import net.es.oscars.pss.sdn.common.SDNLink;
-
 import org.jdom.Document;
 
 /**
@@ -29,8 +25,9 @@ public class FloodlightSDNTopologyService extends BaseSDNTopologyService
 		implements ISDNTopologyService {
 	private String controllerURL;
 
-	public FloodlightSDNTopologyService(String controllerURL) {
-		this.controllerURL = controllerURL;
+	public FloodlightSDNTopologyService(String tsIdentifier) {
+		super(tsIdentifier);
+		this.controllerURL = tsIdentifier.substring("sdn:floodlight:".length());
 	};
 
 	/*
@@ -40,14 +37,20 @@ public class FloodlightSDNTopologyService extends BaseSDNTopologyService
 	 */
 	@Override
 	public Document getTopology() {
+		System.out.println("Controller URL: " + this.controllerURL + ", tsIdentifier:" + this.getId());
 		List<SDNLink> links = null;
 		try {
 			links = requestFloodlightTopology();
 		} catch (Exception e) {
-			System.out.println("Topology get failed");
+			System.out.println("Topology get failed" + e.getMessage());
 		}
 
-		return createNMWGDocument(links);
+		try {
+			return createNMWGDocument(links);
+		}
+		catch (Exception e) {
+			return null;
+		}
 	}
 
 	/**
@@ -58,20 +61,20 @@ public class FloodlightSDNTopologyService extends BaseSDNTopologyService
 	 * @throws IOException
 	 */
 	public List<SDNLink> requestFloodlightTopology() throws IOException {
+		//Logger log = Logger.getLogger(TopoBridgeCore.class);
+		
 		Client client = ClientBuilder.newClient();
 		WebTarget target = client.target(controllerURL).path(
 				"/wm/topology/links/json");
 
-		Invocation.Builder invocationBuilder = target
-				.request(MediaType.APPLICATION_JSON);
-		Response r = invocationBuilder.get();
-
-		return SDNLink.extractSDNLinksFromJson(r.readEntity(String.class));
-	}
-
-	public Document createNMWGDocument(List<SDNLink> links) {
-		// TODO
-		return null;
+		System.out.println("Trying:" + target.getUri().getPath());
+		
+		String response = target.request().get(String.class);
+		
+		System.out.println("Got this topo:" + response);
+		
+		return SDNLink.extractSDNLinksFromJson(response);
+		//return null;
 	}
 
 }

@@ -49,6 +49,8 @@ topologyLinks = json.loads(result)
 
 topologyNodes = {}
 
+# Build a graph (python dictionary) indexed by
+# node id (= Floodlight dpid)
 for l in topologyLinks:
     srcNode = l['src-switch'].replace(':','.')
     dstNode = l['dst-switch'].replace(':','.')
@@ -79,6 +81,7 @@ for l in topologyLinks:
         'dstPort': srcPort,
     }]
 
+# Create NMWG XML file from graph (topologyNodes)
 nodes=''
 for nodeID,n in topologyNodes.items():
     nodePorts = ''

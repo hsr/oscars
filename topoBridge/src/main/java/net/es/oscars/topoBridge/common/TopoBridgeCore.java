@@ -82,7 +82,7 @@ public class TopoBridgeCore {
         OSCARSNetLogger netLogger = OSCARSNetLogger.getTlogger();
         log.debug(netLogger.start("getLocalTopology"));
 
-		if (localDomainId.matches("^sdn\\:")) {
+		if (localDomainId.matches("^sdn\\:.*")) {
 			return getSDNTopology();
 		}
         
