@@ -1,7 +1,7 @@
 ---
 
 localDomain:
-    id: 'testdomain-1'
+    id: 'sdn:floodlight:testdomain:http://student6.es.net:8080'
     mpls: 1
 
 notifyNamespaces:
@@ -10,4 +10,4 @@ notifyNamespaces:
     wsa:        'http://www.w3.org/2005/08/addressing'
 
 # Chose one of STUB, EOMPLS, DRAGON; default is STUB
-PSSChoice:   STUB
+PSSChoice:   SDN

@@ -33,7 +33,7 @@
         <module>l3mplsPCE</module>
         <module>vlanPCE</module>
         <module>pss</module>
-        <module>stubPSS</module>
+        <module>sdnPSS</module>
         <module>dragonPSS</module>
         <module>openflowPSS</module>
         <module>eomplsPSS</module>
