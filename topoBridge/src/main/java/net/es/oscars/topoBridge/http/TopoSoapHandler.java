@@ -1,5 +1,6 @@
 package net.es.oscars.topoBridge.http;
 
+import java.io.File;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -14,6 +15,7 @@ import net.es.oscars.logging.ErrSev;
 import net.es.oscars.logging.ModuleName;
 import net.es.oscars.logging.OSCARSNetLogger;
 import net.es.oscars.logging.OSCARSNetLoggerize;
+import net.es.oscars.topoBridge.common.TopoBridgeCore;
 import net.es.oscars.topoBridge.common.TopologyCache;
 import net.es.oscars.topoBridge.ps.PSTopoConverter;
 import net.es.oscars.topoBridge.soap.gen.GetTopologyRequestType;
@@ -46,6 +48,7 @@ public class TopoSoapHandler implements TopoBridgePortType {
         List<String> domainIds = getTopologyRequest.getDomainId();
         List<String> errMessages = new ArrayList<String>();
         netLogProps.put("domains", OSCARSNetLogger.serializeList(domainIds));
+        
         try {
             GetTopologyResponseType response = null;
             response = new GetTopologyResponseType();
@@ -55,10 +58,18 @@ public class TopoSoapHandler implements TopoBridgePortType {
             for (String domainId : domainIds) {
                 //catch exception so no single domain fails the entire request
                 try{
-                    Document doc = tc.getDomain(domainId, netLogger);
-                    CtrlPlaneDomainContent domainContent = PSTopoConverter.convert(doc, tc.getNsUri());
-                    CtrlPlaneTopologyContent topoContent = new CtrlPlaneTopologyContent();
-                    topoContent.getDomain().add(domainContent);
+                	Document doc = null;
+
+                	if (domainId.matches("^sdn\\..*")) {
+            			doc = TopoBridgeCore.getSDNDomain(domainId);
+            		}
+                	else {
+                		doc = tc.getDomain(domainId, netLogger);
+                	}
+
+                	CtrlPlaneDomainContent domainContent = PSTopoConverter.convert(doc, tc.getNsUri());
+                	CtrlPlaneTopologyContent topoContent = new CtrlPlaneTopologyContent();
+                	topoContent.getDomain().add(domainContent);
                     response.getTopology().add(topoContent);
                 }catch(Exception e){
                     e.printStackTrace();
