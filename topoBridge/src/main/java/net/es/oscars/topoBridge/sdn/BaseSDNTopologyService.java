@@ -1,31 +1,48 @@
 package net.es.oscars.topoBridge.sdn;
 
 import java.io.IOException;
+import java.io.StringReader;
 import java.lang.NullPointerException;
+import java.util.HashMap;
 import java.util.List;
 
-import net.es.oscars.pss.sdn.common.SDNLink;
-import net.es.oscars.pss.sdn.common.SDNNode;
+import net.es.oscars.utils.config.ConfigException;
+import net.es.oscars.utils.topology.PathTools;
 
 import org.apache.commons.lang.NotImplementedException;
-
+import org.apache.log4j.Logger;
 import org.jdom.Document;
-import org.jdom.Element;
-import org.jdom.Attribute;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
 
 /**
  * Base SDNTopology class that holds the singleton implementation of interface 
- * ISDNTopologyService.	  
+ * ISDNTopologyService. Sub-classes (e.g. FloodlightSDNTopologyService) implement
+ * SDN Controller specific logic to fetch topology and transform it to OSCARS's 
+ * NMWG format.
  * 
  * @author Henrique Rodrigues <hsr@cs.ucsd.edu>
  *
  */
 public abstract class BaseSDNTopologyService implements ISDNTopologyService {
 
+	protected Logger log = Logger.getLogger(ISDNTopologyService.class);
 	private static ISDNTopologyService instance = null;
+	
+   	/* tsIdentifier (SDNTopologyIdentifier): is a String following the 
+   	 * format sdn.<topologyservice>.<domain>, with each part being interpreted
+   	 * as follows:
+   	 *        - sdn static string indicating topo should be retrieved from a sdn contoller
+   	 *        - <topologyservice> is the type of topology service (ex: floodlight)
+   	 *        - <param> is a service specific param (floodlight topo service for 
+	 *                  example expects the domain name and full controller url 
+	 *                  separated by a semicolon. For example:
+	 *                  sdn.floodlight.mydomain.http://myserver.es.net:8080).
+	 *
+	 * The SDNTopologyIdentifier will also be used by OSCARS as the domain name.
+   	 */
 	private String tsIdentifier = null;
+	protected String domainName = null;
 	
 	public BaseSDNTopologyService(String tsIdentifier) {
 		this.tsIdentifier = tsIdentifier;
@@ -35,6 +52,10 @@ public abstract class BaseSDNTopologyService implements ISDNTopologyService {
 		return this.tsIdentifier;
 	}
 	
+	public String getDomainName() {
+		return this.domainName;
+	}
+	
 	public Document getTopology() {
 		throw new NotImplementedException();
 	}
@@ -42,21 +63,22 @@ public abstract class BaseSDNTopologyService implements ISDNTopologyService {
 	/**
 	 * 
 	 * @param SDNTopologyIdentifier
-	 *        String following the format sdn:<topologyservice>:<param> where
+	 *        String following the format sdn.<topologyservice>.<param> where
 	 *        - sdn is a static string indicating that the topology
 	 *        - <topologyservice> is the type of topology service (ex: floodlight)
 	 *        - <param> is a service specific param (floodlight topo service for 
-	 *                  example expects the controller url).
+	 *                  example expects the domain name and full controller url 
+	 *                  separated by a semicolon. For example:
+	 *                  sdn.floodlight.mydomain.http://myserver.es.net:8080).
 	 *                  
 	 * @return instance a singleton that implements ISDNTopologyService
 	 */
 	public static ISDNTopologyService getInstance (String tsIdentifier) {
 		if (instance == null) {
-			if (tsIdentifier.matches("^sdn\\:floodlight\\:.*")) {
+			if (tsIdentifier.matches("^sdn\\.floodlight\\..*")) {
 				instance = new FloodlightSDNTopologyService(tsIdentifier);
 			}
-			
-			//else if (tsIdentifier.matches("^sdn\\:ryu\\:.*"))
+			//else if (tsIdentifier.matches("^sdn\\.ryu\\..*"))
 			//	instance = new RyuSDNTopologyService(tsIdentifier);
 			else
 				throw new NotImplementedException(
@@ -75,14 +97,9 @@ public abstract class BaseSDNTopologyService implements ISDNTopologyService {
 		return instance;
 	}
 	
-	public static ISDNTopologyService getType(String SDNTopologyIdentifier) {
-		return FloodlightSDNTopologyService.getInstance(SDNTopologyIdentifier);
-	}
-
-	
 	private String createNMWGNode(SDNNode node) throws JDOMException, IOException {
-		String xmlNodeOpen= ""
-				+ "<CtrlPlane:node id=\"urn:ogf:network:domain=%s:node=%s\""
+		String xmlNodeOpen = ""
+				+ "<CtrlPlane:node id=\"urn:ogf:network:domain=%s:node=%s\">"
 				+ "	<CtrlPlane:address>%s</CtrlPlane:address>";
 		String xmlPortOpen = ""
 				+ "<CtrlPlane:port id=\"urn:ogf:network:domain=%s:node=%s:port=%s\">"
@@ -93,7 +110,7 @@ public abstract class BaseSDNTopologyService implements ISDNTopologyService {
 		
 		String xmlLink = ""
 				+ "<CtrlPlane:link id=\"urn:ogf:network:domain=%s:node=%s:port=%s:link=link*\">"
-				+ "	<CtrlPlane:remoteLinkId>urn:ogf:network:domain=%s:node=%s:port=%s:link*</CtrlPlane:remoteLinkId>"
+				+ "	<CtrlPlane:remoteLinkId>urn:ogf:network:domain=%s:node=%s:port=%s:link=link*</CtrlPlane:remoteLinkId>"
 				+ "	<CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>"
 				+ "	<CtrlPlane:SwitchingCapabilityDescriptors>"
 				+ "		<CtrlPlane:switchingcapType/>"
@@ -126,12 +143,20 @@ public abstract class BaseSDNTopologyService implements ISDNTopologyService {
 		}
 		xml += xmlNodeClose;
 		
-		return xml; //new SAXBuilder().build(xml).getRootElement();
+		return xml;
 	}
 	
 	protected Document createNMWGDocument(List<SDNLink> links) throws Exception {
-		List<SDNNode> nodes = SDNLink.getSDNNodeMapFromSDNLinks(links);
+		List<SDNNode> nodes = null;
 		String xml = null;
+		
+		try {
+			nodes = SDNLink.getSDNNodeMapFromSDNLinks(links);
+		}
+		catch (Exception e) {
+			log.warn("Couldn't get node map: " + e.getMessage());
+			return null;
+		}
 		
 		String xmlDomainOpen = ""
 				+ "<CtrlPlane:topology xmlns:CtrlPlane=\"http://ogf.org/schema/network/topology/ctrlPlane/20080828/\" id=\"%s\">"
@@ -149,9 +174,39 @@ public abstract class BaseSDNTopologyService implements ISDNTopologyService {
 		}
 		xml += xmlDomainClode;
 
-		return new SAXBuilder().build(xml);
+		//System.out.println(xml);
+		
+		Document nmwgTopo = null;
+		try {
+			nmwgTopo = new SAXBuilder().build(new StringReader(xml));
+			if (nmwgTopo == null) {
+				log.warn("Couldn't convert generated topology to NMWG. "
+						+ "Please check SDN Controller output.");
+			}
+		}
+		catch (Exception e) {
+			log.warn("Error parsing generated NMWG xml.");
+
+		}
+
+		return nmwgTopo;
 
 	}
 	
+    /**
+     * Retrieves the contents of parameter "sdn" from config.yaml
+     * 
+     * @return the contents of sdn parameter 
+     * @throws ConfigException 
+     */
+	protected static String getSDNParam() {
+        HashMap<String,Object> localDomainMap = PathTools.getLocalDomainSettings();
+        if (localDomainMap == null || !localDomainMap.containsKey("sdn")){
+            return null;
+        }
+        String sdnParam = localDomainMap.get("sdn") + "";
+        return sdnParam;
+
+	}
 	
 }

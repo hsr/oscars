@@ -6,17 +6,15 @@ package net.es.oscars.topoBridge.sdn;
 import java.io.IOException;
 import java.util.List;
 
-import javax.ws.rs.client.Client;
-import javax.ws.rs.client.ClientBuilder;
-import javax.ws.rs.client.WebTarget;
-
-import net.es.oscars.pss.sdn.common.SDNLink;
 import org.jdom.Document;
+import org.restlet.resource.ClientResource;
 
 /**
  * 
  * Implements the Floodlight ISDNTopologyService interface, responsible for
- * retrieving the network topology form Floodlight running state.
+ * retrieving the network topology form Floodlight. Base singleton class is
+ * BaseSDNTopologyService and the interface implemented by this class is
+ * ISDNTopologyService.
  * 
  * @author Henrique Rodrigues <hsr@cs.ucsd.edu>
  * 
@@ -27,7 +25,10 @@ public class FloodlightSDNTopologyService extends BaseSDNTopologyService
 
 	public FloodlightSDNTopologyService(String tsIdentifier) {
 		super(tsIdentifier);
-		this.controllerURL = tsIdentifier.substring("sdn:floodlight:".length());
+		
+		// Extract the controller URL and domain name
+		this.domainName    = tsIdentifier;
+		this.controllerURL = getFloodlightURL();
 	};
 
 	/*
@@ -37,18 +38,24 @@ public class FloodlightSDNTopologyService extends BaseSDNTopologyService
 	 */
 	@Override
 	public Document getTopology() {
-		System.out.println("Controller URL: " + this.controllerURL + ", tsIdentifier:" + this.getId());
+		log.debug(String.format("FloodlightSDNTopologyService\nDomain: %s\n"
+				+ "Controller: %s\ntsIdentifier:%s", 
+				this.domainName, this.controllerURL, this.getId()));
 		List<SDNLink> links = null;
+		
 		try {
 			links = requestFloodlightTopology();
+			log.debug("Fetched "+ links.size() + " links from Floodlight.\n");
 		} catch (Exception e) {
-			System.out.println("Topology get failed" + e.getMessage());
+			log.error("Topology get failed: " + e.getMessage() + ".\n"
+					+ "Are you sure your controller is running at " + this.controllerURL);
 		}
 
 		try {
 			return createNMWGDocument(links);
 		}
 		catch (Exception e) {
+			log.error("Error creating NMWG Document: " + e.getMessage());
 			return null;
 		}
 	}
@@ -61,20 +68,16 @@ public class FloodlightSDNTopologyService extends BaseSDNTopologyService
 	 * @throws IOException
 	 */
 	public List<SDNLink> requestFloodlightTopology() throws IOException {
-		//Logger log = Logger.getLogger(TopoBridgeCore.class);
-		
-		Client client = ClientBuilder.newClient();
-		WebTarget target = client.target(controllerURL).path(
-				"/wm/topology/links/json");
-
-		System.out.println("Trying:" + target.getUri().getPath());
-		
-		String response = target.request().get(String.class);
-		
-		System.out.println("Got this topo:" + response);
+		ClientResource cr = new ClientResource(controllerURL + "/wm/topology/links/json");
+        // Retrieve a representation
+        String response = cr.get(String.class);
 		
 		return SDNLink.extractSDNLinksFromJson(response);
-		//return null;
 	}
+	
+    private static String getFloodlightURL() {
+    	return getSDNParam();
+    }
+
 
 }
