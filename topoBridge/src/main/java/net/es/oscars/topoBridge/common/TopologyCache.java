@@ -254,7 +254,16 @@ public class TopologyCache {
     }
 
 
-
+    /**
+     * This method fetches a Domain (CtrlPlaneDomain type) from a file with a Topology (CtrlPlaneTopology type). 
+     * It does a linear search to find the given domain id in the Topology representation read from the input
+     * file.
+     * 
+     * @param domainId The id of the CtrlPlaneDomain that will be returned (if found)  
+     * @param netLogger Logger object
+     * @return Document (A CtrlPlaneDomain type representation of the given domain id (if found)
+     * @throws OSCARSFaultMessage
+     */
     private Document fetchDomainFromFile(String domainId, OSCARSNetLogger netLogger) throws OSCARSFaultMessage {
         String filename = domainFiles.get(domainId);
         if(filename == null){
@@ -315,7 +324,7 @@ public class TopologyCache {
             Element domain = topo.getChild("domain", Namespace.getNamespace(nsUri));
             domain.detach();
             result = new Document(domain);
-        } catch (Exception e){
+        } catch (Exception e) {
             log.debug(netLogger.error("fetchDomain", ErrSev.MINOR, 
                  e.getMessage(), OSCARSNetLogger.serializeArray(topoServers),
                  netLogProps));
