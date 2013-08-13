@@ -1,0 +1,17 @@
+---
+
+localDomain:
+    id: 'sdn.floodlight.testdomain'
+    sdn: 'http://student6.es.net:8080'
+    mpls: 1
+    
+    
+    
+
+notifyNamespaces:
+    idc:        'http://oscars.es.net/OSCARS/06'
+    nmwg-ctrlp: 'http://ogf.org/schema/network/topology/ctrlPlane/20080828/'
+    wsa:        'http://www.w3.org/2005/08/addressing'
+
+# Chose one of STUB, EOMPLS, DRAGON; default is STUB
+PSSChoice:   SDN
