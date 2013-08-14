@@ -15,7 +15,7 @@ import com.fasterxml.jackson.databind.MappingJsonFactory;
 
 import net.es.oscars.utils.topology.NMWGParserUtil;
 
-public class SDNLink {
+public class SDNLink implements Comparable<SDNLink> {
 	private SDNNode node = null;
 	private String srcNode = null;
 	private String dstNode = null;
@@ -44,9 +44,9 @@ public class SDNLink {
 	}
 
 	/**
-	 * Fill (src & dst)Link attributes if they are still set to null. This is useful when
-	 * the application using this class don't consider link attributes on links
-	 * as OSCARS do
+	 * Fill (src & dst)Link attributes if they are still set to null. This is
+	 * useful when the application using this class don't consider link
+	 * attributes on links as OSCARS do
 	 */
 	private void fillLinkAttributes() {
 		if (this.srcLink == null)
@@ -60,17 +60,18 @@ public class SDNLink {
 	 */
 	public SDNLink() {
 	}
-	
+
 	public SDNLink(SDNLink link) {
 		this.srcNode = link.getSrcNode();
 		this.dstNode = link.getDstNode();
 		this.srcPort = link.getSrcPort();
 		this.dstPort = link.getDstPort();
 		this.srcLink = link.getSrcLink();
+		this.dstLink = link.getDstLink();
 		this.node = link.getNode();
 	}
-	
-	private void reverse() {
+
+	public SDNLink reverse() {
 		SDNLink link = new SDNLink(this);
 		this.srcNode = link.getDstNode();
 		this.dstNode = link.getSrcNode();
@@ -78,22 +79,14 @@ public class SDNLink {
 		this.dstPort = link.getSrcPort();
 		this.srcLink = link.getDstLink();
 		this.dstLink = link.getSrcLink();
-		this.node    = new SDNNode(link.getDstNode());
+		this.node = new SDNNode(link.getDstNode());
+		return this;
 	}
 
 	public SDNLink getReverse() {
-		SDNLink link = new SDNLink();
-		link.setDstNode(this.srcNode);
-		link.setSrcNode(this.dstNode);
-		link.setDstPort(this.srcPort);
-		link.setSrcPort(this.dstPort);
-		link.setDstLink(this.srcLink);
-		link.setSrcLink(this.dstLink);
-		link.setNode(new SDNNode(this.dstNode));
-		return link;
+		return new SDNLink(this).reverse();
 	}
 
-	
 	// @formatter:off
 	/**
 	 * Construct link from two URNs
@@ -154,70 +147,71 @@ public class SDNLink {
 	 * Extract links from a serialized JSON array object and returns them as a
 	 * list of SDNLinks
 	 * 
-	 * @param fmJson an serialized JSON array object with link descriptions
+	 * @param fmJson
+	 *            an serialized JSON array object with link descriptions
 	 * @return list of SDNLinks
 	 * @throws IOException
 	 */
 	public static List<SDNLink> extractSDNLinksFromJson(String fmJson)
 			throws IOException {
-    	List<SDNLink> links = new ArrayList<SDNLink>();
-        SDNLink link = null;
+		List<SDNLink> links = new ArrayList<SDNLink>();
+		SDNLink link = null;
 
-        MappingJsonFactory f = new MappingJsonFactory();
-        JsonParser jp;
+		MappingJsonFactory f = new MappingJsonFactory();
+		JsonParser jp;
 
-        try {
-            jp = f.createParser(fmJson);
-        } catch (JsonParseException e) {
-            throw new IOException(e);
-        }
-        
-        jp.nextToken();
-        if (jp.getCurrentToken() != JsonToken.START_ARRAY) {
-            throw new IOException("Expected START_ARRAY");
-        }
-        
-        while (jp.nextToken() != JsonToken.END_ARRAY) {
-        	if (jp.getCurrentToken() == JsonToken.START_OBJECT) {
-        		link = new SDNLink();
-        		continue;
-        	}
+		try {
+			jp = f.createParser(fmJson);
+		} catch (JsonParseException e) {
+			throw new IOException(e);
+		}
 
-        	if (jp.getCurrentToken() == JsonToken.END_OBJECT) {
-        		if (link != null) {
-        			link.fillLinkAttributes();
-        			if (link.isComplete()) {
-        				links.add(link);
-        				
-        				/* Adding bi-directional links by hand */
-        				links.add(link.getReverse());
-        			}
-        			else {
-        				throw new IOException("Link is incomplete");
-        			}
-        		}
-        		continue;
-        	}
-        	
-            if (jp.getCurrentToken() != JsonToken.FIELD_NAME) {
-                throw new IOException("Expected FIELD_NAME");
-            }
-            
-            String n = jp.getCurrentName();
-            jp.nextToken();
+		jp.nextToken();
+		if (jp.getCurrentToken() != JsonToken.START_ARRAY) {
+			throw new IOException("Expected START_ARRAY");
+		}
 
-            if (n == "src-switch")
-            	link.setSrcNode(jp.getText());
-            else if (n == "dst-switch")
-            	link.setDstNode(jp.getText());
-            else if (n == "src-port")
-            	link.setSrcPort(jp.getText());
-            else if (n == "dst-port")
-            	link.setDstPort(jp.getText());
-            else if (n == "direction" || n == "type") //ignore direction and type for now
-            	jp.getText(); // do we have to call this to advance the head?
-        }
-        
+		while (jp.nextToken() != JsonToken.END_ARRAY) {
+			if (jp.getCurrentToken() == JsonToken.START_OBJECT) {
+				link = new SDNLink();
+				continue;
+			}
+
+			if (jp.getCurrentToken() == JsonToken.END_OBJECT) {
+				if (link != null) {
+					link.fillLinkAttributes();
+					if (link.isComplete()) {
+						links.add(link);
+
+						/* Adding bi-directional links by hand */
+						links.add(link.getReverse());
+					} else {
+						throw new IOException("Link is incomplete");
+					}
+				}
+				continue;
+			}
+
+			if (jp.getCurrentToken() != JsonToken.FIELD_NAME) {
+				throw new IOException("Expected FIELD_NAME");
+			}
+
+			String n = jp.getCurrentName();
+			jp.nextToken();
+
+			if (n == "src-switch")
+				link.setSrcNode(jp.getText());
+			else if (n == "dst-switch")
+				link.setDstNode(jp.getText());
+			else if (n == "src-port")
+				link.setSrcPort(jp.getText());
+			else if (n == "dst-port")
+				link.setDstPort(jp.getText());
+			else if (n == "direction" || n == "type") // ignore direction and
+														// type for now
+				jp.getText(); // do we have to call this to advance the head?
+		}
+
 		return links;
 	}
 
@@ -231,15 +225,15 @@ public class SDNLink {
 	 * @throws Exception
 	 * @throws IOException
 	 */
-	public static List<SDNNode> getSDNNodeMapFromSDNLinks(List<SDNLink> links) throws Exception {
-		Map<String, SDNNode> nodes = new HashMap<String,SDNNode> ();
+	public static List<SDNNode> getSDNNodeMapFromSDNLinks(List<SDNLink> links)
+			throws Exception {
+		Map<String, SDNNode> nodes = new HashMap<String, SDNNode>();
 		SDNNode node;
-		
+
 		for (SDNLink link : links) {
 			if (nodes.containsKey(link.getSrcNode())) {
 				node = nodes.get(link.getSrcNode());
-			}
-			else {
+			} else {
 				node = new SDNNode(link.getSrcNode());
 				nodes.put(node.getId(), node);
 			}
@@ -266,5 +260,37 @@ public class SDNLink {
 	public String getDstPort() { return dstPort; }
 	public String getSrcLink() { return srcLink; }
 	public String getDstLink() { return dstLink; }
+
+	@Override
+	public int compareTo(SDNLink link) {
+		if (this.equals(link))
+			return 0;
+		return -1;
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (!o.getClass().equals(SDNLink.class))
+				return false;
+		
+		SDNLink link = (SDNLink) o;
+		if ((this.srcNode.equals(link.getSrcNode())) &&
+			(this.dstNode.equals(link.getDstNode())) &&
+			(this.srcPort.equals(link.getSrcPort())) &&
+			(this.dstPort.equals(link.getDstPort())) &&
+			(this.srcLink.equals(link.getSrcLink())))
+			return true;
+		return false;
+	}
+	
+	@Override
+	public int  hashCode() {
+		return this.srcNode.hashCode() +
+			   this.dstNode.hashCode() +
+			   this.srcPort.hashCode() +
+			   this.dstPort.hashCode() +
+			   this.srcLink.hashCode() +
+			   this.dstLink.hashCode();
+	}
 
 }
