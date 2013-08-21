@@ -3,10 +3,13 @@ package net.es.oscars.topoBridge.sdn;
 import java.io.IOException;
 import java.io.StringReader;
 import java.lang.NullPointerException;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import net.es.oscars.utils.config.ConfigException;
+import net.es.oscars.utils.topology.NMWGParserUtil;
 import net.es.oscars.utils.topology.PathTools;
 
 import org.apache.commons.lang.NotImplementedException;
@@ -14,6 +17,12 @@ import org.apache.log4j.Logger;
 import org.jdom.Document;
 import org.jdom.JDOMException;
 import org.jdom.input.SAXBuilder;
+import org.ogf.schema.network.topology.ctrlplane.CtrlPlaneHopContent;
+
+import com.fasterxml.jackson.core.JsonParseException;
+import com.fasterxml.jackson.core.JsonParser;
+import com.fasterxml.jackson.core.JsonToken;
+import com.fasterxml.jackson.databind.MappingJsonFactory;
 
 /**
  * Base SDNTopology class that holds the singleton implementation of interface 
@@ -151,7 +160,7 @@ public abstract class BaseSDNTopologyService implements ISDNTopologyService {
 		String xml = null;
 		
 		try {
-			nodes = SDNLink.getSDNNodeMapFromSDNLinks(links);
+			nodes = BaseSDNTopologyService.getSDNNodeMapFromSDNLinks(links);
 		}
 		catch (Exception e) {
 			log.warn("Couldn't get node map: " + e.getMessage());
@@ -194,6 +203,145 @@ public abstract class BaseSDNTopologyService implements ISDNTopologyService {
 	}
 	
     /**
+	 * Build a list with SDNNode objects from a list of SDNLink objects. Nodes
+	 * created in this method contain an updated list of links connecting them.
+	 * 
+	 * @param fmJson
+	 *            an serialized JSON array object with link descriptions
+	 * @return list of SDNLinks
+	 * @throws Exception
+	 * @throws IOException
+	 */
+	public static List<SDNNode> getSDNNodeMapFromSDNLinks(List<SDNLink> links)
+			throws Exception {
+		Map<String, SDNNode> nodes = new HashMap<String, SDNNode>();
+		SDNNode node;
+	
+		for (SDNLink link : links) {
+			if (nodes.containsKey(link.getSrcNode())) {
+				node = nodes.get(link.getSrcNode());
+			} else {
+				node = new SDNNode(link.getSrcNode());
+				nodes.put(node.getId(), node);
+			}
+			link.setNode(node);
+			node.addLink(link);
+		}
+		return new ArrayList<SDNNode>(nodes.values());
+	}
+
+	/**
+	 * Extract links from a serialized JSON array object and returns them as a
+	 * list of SDNLinks
+	 * 
+	 * @param fmJson
+	 *            an serialized JSON array object with link descriptions
+	 * @return list of SDNLinks
+	 * @throws IOException
+	 */
+	public static List<SDNLink> extractSDNLinksFromJson(String fmJson)
+			throws IOException {
+		List<SDNLink> links = new ArrayList<SDNLink>();
+		SDNLink link = null;
+	
+		MappingJsonFactory f = new MappingJsonFactory();
+		JsonParser jp;
+	
+		try {
+			jp = f.createParser(fmJson);
+		} catch (JsonParseException e) {
+			throw new IOException(e);
+		}
+	
+		jp.nextToken();
+		if (jp.getCurrentToken() != JsonToken.START_ARRAY) {
+			throw new IOException("Expected START_ARRAY");
+		}
+	
+		while (jp.nextToken() != JsonToken.END_ARRAY) {
+			if (jp.getCurrentToken() == JsonToken.START_OBJECT) {
+				link = new SDNLink();
+				continue;
+			}
+	
+			if (jp.getCurrentToken() == JsonToken.END_OBJECT) {
+				if (link != null) {
+					link.fillLinkAttributes();
+					if (link.isComplete()) {
+						links.add(link);
+	
+						/* Adding bi-directional links by hand */
+						links.add(link.getReverse());
+					} else {
+						throw new IOException("Link is incomplete");
+					}
+				}
+				continue;
+			}
+	
+			if (jp.getCurrentToken() != JsonToken.FIELD_NAME) {
+				throw new IOException("Expected FIELD_NAME");
+			}
+	
+			String n = jp.getCurrentName();
+			jp.nextToken();
+	
+			if (n == "src-switch")
+				link.setSrcNode(jp.getText());
+			else if (n == "dst-switch")
+				link.setDstNode(jp.getText());
+			else if (n == "src-port")
+				link.setSrcPort(jp.getText());
+			else if (n == "dst-port")
+				link.setDstPort(jp.getText());
+			else if (n == "direction" || n == "type") // ignore direction and
+														// type for now
+				jp.getText(); // do we have to call this to advance the head?
+		}
+	
+		return links;
+	}
+
+	/**
+	 * Extract links from a CtrlPlaneHopContent object and returns them as a
+	 * list of SDNLinks
+	 * 
+	 * @param hops
+	 * @return list of SDNLinks
+	 */
+	public static List<SDNLink> extractSDNLinks(List<CtrlPlaneHopContent> hops) {
+		List<SDNLink> links = new ArrayList<SDNLink>();
+		String src = null;
+	
+		try {
+			for (CtrlPlaneHopContent hop : hops) {
+				String dst = hop.getLink().getId();
+	
+				if (src == null) {
+					src = dst;
+					continue;
+				}
+	
+				if (NMWGParserUtil.compareURNPart(src, dst,
+						NMWGParserUtil.NODE_TYPE)) {
+					SDNLink l = new SDNLink(src, dst);
+	
+					// TODO: check for capabilities
+					// TODO: change the design to avoid having multiple objects
+					// representing the same node
+					l.setNode(new SDNNode(l.getSrcNode().replaceAll("\\.", ":")));
+					links.add(l);
+				}
+				src = dst;
+			}
+		} catch (Exception e) {
+			return null;
+		}
+	
+		return links;
+	}
+
+	/**
      * Retrieves the contents of parameter "sdn" from config.yaml
      * 
      * @return the contents of sdn parameter 

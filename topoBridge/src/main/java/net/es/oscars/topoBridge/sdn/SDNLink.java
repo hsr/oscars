@@ -1,18 +1,5 @@
 package net.es.oscars.topoBridge.sdn;
 
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.ogf.schema.network.topology.ctrlplane.CtrlPlaneHopContent;
-
-import com.fasterxml.jackson.core.JsonParseException;
-import com.fasterxml.jackson.core.JsonParser;
-import com.fasterxml.jackson.core.JsonToken;
-import com.fasterxml.jackson.databind.MappingJsonFactory;
-
 import net.es.oscars.utils.topology.NMWGParserUtil;
 
 public class SDNLink implements Comparable<SDNLink> {
@@ -48,7 +35,7 @@ public class SDNLink implements Comparable<SDNLink> {
 	 * useful when the application using this class don't consider link
 	 * attributes on links as OSCARS do
 	 */
-	private void fillLinkAttributes() {
+	public void fillLinkAttributes() {
 		if (this.srcLink == null)
 			this.srcLink = "1";
 		if (this.dstLink == null)
@@ -102,148 +89,7 @@ public class SDNLink implements Comparable<SDNLink> {
 		this.srcLink = NMWGParserUtil.getURNPart(srcURN, NMWGParserUtil.LINK_TYPE);
 		this.dstLink = NMWGParserUtil.getURNPart(dstURN, NMWGParserUtil.LINK_TYPE);
 	}
-	// @formatter:on
 
-	/**
-	 * Extract links from a CtrlPlaneHopContent object and returns them as a
-	 * list of SDNLinks
-	 * 
-	 * @param hops
-	 * @return list of SDNLinks
-	 */
-	public static List<SDNLink> extractSDNLinks(List<CtrlPlaneHopContent> hops) {
-		List<SDNLink> links = new ArrayList<SDNLink>();
-		String src = null;
-
-		try {
-			for (CtrlPlaneHopContent hop : hops) {
-				String dst = hop.getLink().getId();
-
-				if (src == null) {
-					src = dst;
-					continue;
-				}
-
-				if (NMWGParserUtil.compareURNPart(src, dst,
-						NMWGParserUtil.NODE_TYPE)) {
-					SDNLink l = new SDNLink(src, dst);
-
-					// TODO: check for capabilities
-					// TODO: change the design to avoid having multiple objects
-					// representing the same node
-					l.setNode(new SDNNode(l.srcNode.replaceAll("\\.", ":")));
-					links.add(l);
-				}
-				src = dst;
-			}
-		} catch (Exception e) {
-			return null;
-		}
-
-		return links;
-	}
-
-	/**
-	 * Extract links from a serialized JSON array object and returns them as a
-	 * list of SDNLinks
-	 * 
-	 * @param fmJson
-	 *            an serialized JSON array object with link descriptions
-	 * @return list of SDNLinks
-	 * @throws IOException
-	 */
-	public static List<SDNLink> extractSDNLinksFromJson(String fmJson)
-			throws IOException {
-		List<SDNLink> links = new ArrayList<SDNLink>();
-		SDNLink link = null;
-
-		MappingJsonFactory f = new MappingJsonFactory();
-		JsonParser jp;
-
-		try {
-			jp = f.createParser(fmJson);
-		} catch (JsonParseException e) {
-			throw new IOException(e);
-		}
-
-		jp.nextToken();
-		if (jp.getCurrentToken() != JsonToken.START_ARRAY) {
-			throw new IOException("Expected START_ARRAY");
-		}
-
-		while (jp.nextToken() != JsonToken.END_ARRAY) {
-			if (jp.getCurrentToken() == JsonToken.START_OBJECT) {
-				link = new SDNLink();
-				continue;
-			}
-
-			if (jp.getCurrentToken() == JsonToken.END_OBJECT) {
-				if (link != null) {
-					link.fillLinkAttributes();
-					if (link.isComplete()) {
-						links.add(link);
-
-						/* Adding bi-directional links by hand */
-						links.add(link.getReverse());
-					} else {
-						throw new IOException("Link is incomplete");
-					}
-				}
-				continue;
-			}
-
-			if (jp.getCurrentToken() != JsonToken.FIELD_NAME) {
-				throw new IOException("Expected FIELD_NAME");
-			}
-
-			String n = jp.getCurrentName();
-			jp.nextToken();
-
-			if (n == "src-switch")
-				link.setSrcNode(jp.getText());
-			else if (n == "dst-switch")
-				link.setDstNode(jp.getText());
-			else if (n == "src-port")
-				link.setSrcPort(jp.getText());
-			else if (n == "dst-port")
-				link.setDstPort(jp.getText());
-			else if (n == "direction" || n == "type") // ignore direction and
-														// type for now
-				jp.getText(); // do we have to call this to advance the head?
-		}
-
-		return links;
-	}
-
-	/**
-	 * Build a list with SDNNode objects from a list of SDNLink objects. Nodes
-	 * created in this method contain an updated list of links connecting them.
-	 * 
-	 * @param fmJson
-	 *            an serialized JSON array object with link descriptions
-	 * @return list of SDNLinks
-	 * @throws Exception
-	 * @throws IOException
-	 */
-	public static List<SDNNode> getSDNNodeMapFromSDNLinks(List<SDNLink> links)
-			throws Exception {
-		Map<String, SDNNode> nodes = new HashMap<String, SDNNode>();
-		SDNNode node;
-
-		for (SDNLink link : links) {
-			if (nodes.containsKey(link.getSrcNode())) {
-				node = nodes.get(link.getSrcNode());
-			} else {
-				node = new SDNNode(link.getSrcNode());
-				nodes.put(node.getId(), node);
-			}
-			link.setNode(node);
-			node.addLink(link);
-		}
-		return new ArrayList<SDNNode>(nodes.values());
-	}
-
-	// @formatter:off
 	public void   setSrcNode(String srcNode) {
 		this.srcNode = srcNode.replaceAll("\\:", ".");
 	}

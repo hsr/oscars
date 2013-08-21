@@ -72,7 +72,7 @@ public class FloodlightSDNTopologyService extends BaseSDNTopologyService
         // Retrieve a representation
         String response = cr.get(String.class);
 		
-		return SDNLink.extractSDNLinksFromJson(response);
+		return BaseSDNTopologyService.extractSDNLinksFromJson(response);
 	}
 	
     private static String getFloodlightURL() {
