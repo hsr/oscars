@@ -18,7 +18,7 @@ public class SDNNode extends SDNObject implements Comparable<SDNNode> {
 	private String id;
 
 	public SDNNode(String id) {
-		this.id = id;
+		this.id = id.replaceAll("\\:", ".");
 		this.capabilities = new ArrayList<SDNCapability>();
 		this.links = new ArrayList<SDNLink>();
 		this.inLinks = new ArrayList<SDNLink>();
@@ -42,9 +42,9 @@ public class SDNNode extends SDNObject implements Comparable<SDNNode> {
 
 	public void addLink(SDNLink link) throws Exception {
 		this.links.add(link);
-		if (link.getSrcNode().equals(this.id))
+		if (link.getSrcNode().getId().equals(this.id))
 			this.outLinks.add(link);
-		else if (link.getDstNode().equals(this.id))
+		else if (link.getDstNode().getId().equals(this.id))
 			this.inLinks.add(link);
 		else
 			throw new Exception("Link not connected to Node");
@@ -55,9 +55,19 @@ public class SDNNode extends SDNObject implements Comparable<SDNNode> {
 	public List<SDNLink> getInLinks() { return inLinks; }
 	public List<SDNLink> getOutLinks() { return outLinks; }
 
+	@Override
 	public int compareTo(SDNNode node) {
 		// Should we compare links as well?
 		return this.getId().compareTo(node.getId());
+	}
+	
+	@Override
+	public boolean equals(Object o) {
+		if (!o.getClass().equals(SDNNode.class))
+			return false;
+	
+		SDNNode node = (SDNNode) o;
+		return this.getId().equals(node.getId());
 	}
 
 }

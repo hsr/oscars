@@ -106,7 +106,7 @@ public abstract class BaseSDNTopologyService implements ISDNTopologyService {
 		return instance;
 	}
 	
-	private String createNMWGNode(SDNNode node) throws JDOMException, IOException {
+	private String createNMWGNode(SDNNode node) throws JDOMException, IOException, Exception {
 		String xmlNodeOpen = ""
 				+ "<CtrlPlane:node id=\"urn:ogf:network:domain=%s:node=%s\">"
 				+ "	<CtrlPlane:address>%s</CtrlPlane:address>";
@@ -142,6 +142,11 @@ public abstract class BaseSDNTopologyService implements ISDNTopologyService {
 
 		xml = String.format(xmlNodeOpen, this.getId(), node.getId(), "127.0.0.1");
 		for (SDNLink link : node.getOutLinks()) {
+			if (!link.getSrcNode().getId().equals(node.getId()))
+				throw new Exception("Node outLink mismatch: "
+						+ link.getSrcNode().getId() + " doesn't match with "
+						+ node.getId());
+			
 			// @formatter:off
 			xml += String.format(xmlPortOpen, this.getId(), node.getId(), link.getSrcPort());
 			
@@ -149,12 +154,12 @@ public abstract class BaseSDNTopologyService implements ISDNTopologyService {
 					+ "Adding link "
 					+ "urn:ogf:network:domain=%s:node=%s:port=%s:link=1 -> "
 					+ "urn:ogf:network:domain=%s:node=%s:port=%s:link=1",
-					this.getId(), node.getId(), link.getSrcPort(),
-					this.getId(), link.getDstNode(), link.getDstPort()));
+					this.getId(), link.getSrcNode().getId(), link.getSrcPort(),
+					this.getId(), link.getDstNode().getId(), link.getDstPort()));
 
 			xml += String.format(xmlLink, 
-					this.getId(), node.getId(), link.getSrcPort(), // src link args
-					this.getId(), link.getDstNode(), link.getDstPort()); // dst link args
+					this.getId(), link.getSrcNode().getId(), link.getSrcPort(), // src link args
+					this.getId(), link.getDstNode().getId(), link.getDstPort()); // dst link args
 			xml += xmlPortClose;
 			// @formatter:on
 		}
@@ -226,13 +231,16 @@ public abstract class BaseSDNTopologyService implements ISDNTopologyService {
 		SDNNode node;
 	
 		for (SDNLink link : links) {
-			if (nodes.containsKey(link.getSrcNode())) {
-				node = nodes.get(link.getSrcNode());
+			if (!link.isComplete())
+				throw new Exception("SDNLink needs to be complete!");
+			
+			if (nodes.containsKey(link.getSrcNode().getId())) {
+				node = nodes.get(link.getSrcNode().getId());
 			} else {
-				node = new SDNNode(link.getSrcNode());
+				node = link.getSrcNode();
 				nodes.put(node.getId(), node);
 			}
-			link.setNode(node);
+			link.setSrcNode(node);
 			node.addLink(link);
 		}
 		return new ArrayList<SDNNode>(nodes.values());
@@ -326,7 +334,6 @@ public abstract class BaseSDNTopologyService implements ISDNTopologyService {
 				String dst = hop.getLink().getId();
 	
 				if (src == null) {
-					
 					src = dst;
 					continue;
 				}
