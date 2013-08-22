@@ -315,14 +315,14 @@ public abstract class BaseSDNTopologyService implements ISDNTopologyService {
 	 * list of SDNLinks
 	 * 
 	 * @param hops
-	 * @return list of SDNLinks
+	 * @return list of SDNHops
 	 */
-	public static List<SDNLink> extractSDNLinks(List<CtrlPlaneHopContent> hops) {
-		List<SDNLink> links = new ArrayList<SDNLink>();
+	public static List<SDNHop> extractSDNHops(List<CtrlPlaneHopContent> ogfHops) {
+		List<SDNHop> hops = new ArrayList<SDNHop>();
 		String src = null;
 	
 		try {
-			for (CtrlPlaneHopContent hop : hops) {
+			for (CtrlPlaneHopContent hop : ogfHops) {
 				String dst = hop.getLink().getId();
 	
 				if (src == null) {
@@ -333,19 +333,20 @@ public abstract class BaseSDNTopologyService implements ISDNTopologyService {
 	
 				if (NMWGParserUtil.compareURNPart(src, dst,
 						NMWGParserUtil.NODE_TYPE) == 0) {
-					SDNLink l = new SDNLink(src, dst);
+					SDNHop h = new SDNHop(src, dst);
 
 					// TODO: check for capabilities
 					// TODO: change the design to avoid having multiple objects
 					// representing the same node
 					// TODO: come up with a better representation of dpid (node names)
 					// TODO: define a way to identify L1/L2 nodes
-					l.setNode(new SDNNode(l.getSrcNode().replaceAll("\\.", ":")));
-					if (l.getSrcNode().matches("^00.*")) {
-						l.addCapability(SDNCapability.VLAN);
-						System.out.println("WARNING: Adding VLAN capabitility for " + l.getSrcNode());
+
+					// h.setNode(new SDNNode(h.getNode().getId().replaceAll("\\.", ":")));
+					if (h.getNode().getId().matches("^00.*")) {
+						h.addCapability(SDNCapability.VLAN);
+						System.out.println("WARNING: Adding VLAN capabitility for " + h.getNode().getId());
 					}
-					links.add(l);
+					hops.add(h);
 				}
 				src = dst;
 			}
@@ -353,7 +354,7 @@ public abstract class BaseSDNTopologyService implements ISDNTopologyService {
 			return null;
 		}
 	
-		return links;
+		return hops;
 	}
 
 	/**

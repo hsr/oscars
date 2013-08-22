@@ -2,14 +2,16 @@ package net.es.oscars.topoBridge.sdn;
 
 import net.es.oscars.utils.topology.NMWGParserUtil;
 
-public class SDNLink extends SDNObject implements Comparable<SDNLink> {
+/**
+ * A SDNLink is a SDNConnection that connects two network devices. Unlike
+ * SDNHop, this class represents a connection between network devices. 
+ * 
+ * @author Henrique Rodrigues
+ */
+public class SDNLink extends SDNConnection implements Comparable<SDNLink> {
 	private SDNNode node = null;
 	private String srcNode = null;
 	private String dstNode = null;
-	private String srcPort = null;
-	private String dstPort = null;
-	private String srcLink = null;
-	private String dstLink = null;
 
 	/**
 	 * Empty constructor
@@ -18,12 +20,9 @@ public class SDNLink extends SDNObject implements Comparable<SDNLink> {
 	}
 
 	public SDNLink(SDNLink link) {
+		super(link);
 		this.srcNode = link.getSrcNode();
 		this.dstNode = link.getDstNode();
-		this.srcPort = link.getSrcPort();
-		this.dstPort = link.getDstPort();
-		this.srcLink = link.getSrcLink();
-		this.dstLink = link.getDstLink();
 		this.node = link.getNode();
 	}
 
@@ -35,15 +34,9 @@ public class SDNLink extends SDNObject implements Comparable<SDNLink> {
 	 * @param dstURN URN that describes destination of the link
 	 */
 	public SDNLink(String srcURN, String dstURN) {
+		super(srcURN, dstURN);
 		this.srcNode = NMWGParserUtil.getURNPart(srcURN, NMWGParserUtil.NODE_TYPE);
 		this.dstNode = NMWGParserUtil.getURNPart(dstURN, NMWGParserUtil.NODE_TYPE);
-		this.srcPort = NMWGParserUtil.getURNPart(srcURN, NMWGParserUtil.PORT_TYPE);
-		this.dstPort = NMWGParserUtil.getURNPart(dstURN, NMWGParserUtil.PORT_TYPE);
-		this.srcLink = NMWGParserUtil.getURNPart(srcURN, NMWGParserUtil.LINK_TYPE);
-		this.dstLink = NMWGParserUtil.getURNPart(dstURN, NMWGParserUtil.LINK_TYPE);
-		
-		// By default all nodes forward based on in/out port mappings
-		this.addCapability(SDNCapability.L1);
 	}
 
 	public SDNNode getNode() {
@@ -61,20 +54,7 @@ public class SDNLink extends SDNObject implements Comparable<SDNLink> {
 	 */
 	public boolean isComplete() {
 		return (this.srcNode != null) && (this.dstNode != null)
-				&& (this.srcPort != null) && (this.dstPort != null)
-				&& (this.srcLink != null) && (this.dstLink != null);
-	}
-
-	/**
-	 * Fill (src & dst)Link attributes if they are still set to null. This is
-	 * useful when the application using this class don't consider link
-	 * attributes on links as OSCARS do
-	 */
-	public void fillLinkAttributes() {
-		if (this.srcLink == null)
-			this.srcLink = "1";
-		if (this.dstLink == null)
-			this.dstLink = "1";
+				&& super.isComplete();
 	}
 
 	public SDNLink reverse() {
@@ -98,17 +78,9 @@ public class SDNLink extends SDNObject implements Comparable<SDNLink> {
 	}
 	public void   setDstNode(String dstNode) { 
 		this.dstNode = dstNode.replaceAll("\\:", ".");
-	}
-	public void   setSrcPort(String srcPort) { this.srcPort = srcPort; }
-	public void   setDstPort(String dstPort) { this.dstPort = dstPort; }
-	public void   setSrcLink(String srcLink) { this.srcLink = srcLink; }
-	public void   setDstLink(String dstLink) { this.dstLink = dstLink; }
+	}	
 	public String getSrcNode() { return srcNode; }
 	public String getDstNode() { return dstNode; }
-	public String getSrcPort() { return srcPort; }
-	public String getDstPort() { return dstPort; }
-	public String getSrcLink() { return srcLink; }
-	public String getDstLink() { return dstLink; }
 
 	@Override
 	public int compareTo(SDNLink link) {
@@ -136,10 +108,7 @@ public class SDNLink extends SDNObject implements Comparable<SDNLink> {
 	public int  hashCode() {
 		return this.srcNode.hashCode() +
 			   this.dstNode.hashCode() +
-			   this.srcPort.hashCode() +
-			   this.dstPort.hashCode() +
-			   this.srcLink.hashCode() +
-			   this.dstLink.hashCode();
+			   super.hashCode();
 	}
 
 }
