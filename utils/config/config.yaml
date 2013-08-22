@@ -1,8 +1,9 @@
 ---
 
 localDomain:
-    id: 'sdn:floodlight:testdomain:http://student6.es.net:8080'
+    id: 'sdn.floodlight.testdomain'
     mpls: 1
+    sdn: 'http://student6.es.net:8080'
 
 notifyNamespaces:
     idc:        'http://oscars.es.net/OSCARS/06'
