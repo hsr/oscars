@@ -2,7 +2,7 @@ package net.es.oscars.topoBridge.sdn;
 
 import net.es.oscars.utils.topology.NMWGParserUtil;
 
-public class SDNLink implements Comparable<SDNLink> {
+public class SDNLink extends SDNObject implements Comparable<SDNLink> {
 	private SDNNode node = null;
 	private String srcNode = null;
 	private String dstNode = null;
@@ -10,6 +10,41 @@ public class SDNLink implements Comparable<SDNLink> {
 	private String dstPort = null;
 	private String srcLink = null;
 	private String dstLink = null;
+
+	/**
+	 * Empty constructor
+	 */
+	public SDNLink() {
+	}
+
+	public SDNLink(SDNLink link) {
+		this.srcNode = link.getSrcNode();
+		this.dstNode = link.getDstNode();
+		this.srcPort = link.getSrcPort();
+		this.dstPort = link.getDstPort();
+		this.srcLink = link.getSrcLink();
+		this.dstLink = link.getDstLink();
+		this.node = link.getNode();
+	}
+
+	// @formatter:off
+	/**
+	 * Construct link from two URNs
+	 * 
+	 * @param srcURN URN that describes source of the link
+	 * @param dstURN URN that describes destination of the link
+	 */
+	public SDNLink(String srcURN, String dstURN) {
+		this.srcNode = NMWGParserUtil.getURNPart(srcURN, NMWGParserUtil.NODE_TYPE);
+		this.dstNode = NMWGParserUtil.getURNPart(dstURN, NMWGParserUtil.NODE_TYPE);
+		this.srcPort = NMWGParserUtil.getURNPart(srcURN, NMWGParserUtil.PORT_TYPE);
+		this.dstPort = NMWGParserUtil.getURNPart(dstURN, NMWGParserUtil.PORT_TYPE);
+		this.srcLink = NMWGParserUtil.getURNPart(srcURN, NMWGParserUtil.LINK_TYPE);
+		this.dstLink = NMWGParserUtil.getURNPart(dstURN, NMWGParserUtil.LINK_TYPE);
+		
+		// By default all nodes forward based on in/out port mappings
+		this.addCapability(SDNCapability.L1);
+	}
 
 	public SDNNode getNode() {
 		return node;
@@ -42,22 +77,6 @@ public class SDNLink implements Comparable<SDNLink> {
 			this.dstLink = "1";
 	}
 
-	/**
-	 * Empty constructor
-	 */
-	public SDNLink() {
-	}
-
-	public SDNLink(SDNLink link) {
-		this.srcNode = link.getSrcNode();
-		this.dstNode = link.getDstNode();
-		this.srcPort = link.getSrcPort();
-		this.dstPort = link.getDstPort();
-		this.srcLink = link.getSrcLink();
-		this.dstLink = link.getDstLink();
-		this.node = link.getNode();
-	}
-
 	public SDNLink reverse() {
 		SDNLink link = new SDNLink(this);
 		this.srcNode = link.getDstNode();
@@ -72,22 +91,6 @@ public class SDNLink implements Comparable<SDNLink> {
 
 	public SDNLink getReverse() {
 		return new SDNLink(this).reverse();
-	}
-
-	// @formatter:off
-	/**
-	 * Construct link from two URNs
-	 * 
-	 * @param srcURN URN that describes source of the link
-	 * @param dstURN URN that describes destination of the link
-	 */
-	public SDNLink(String srcURN, String dstURN) {
-		this.srcNode = NMWGParserUtil.getURNPart(srcURN, NMWGParserUtil.NODE_TYPE);
-		this.dstNode = NMWGParserUtil.getURNPart(dstURN, NMWGParserUtil.NODE_TYPE);
-		this.srcPort = NMWGParserUtil.getURNPart(srcURN, NMWGParserUtil.PORT_TYPE);
-		this.dstPort = NMWGParserUtil.getURNPart(dstURN, NMWGParserUtil.PORT_TYPE);
-		this.srcLink = NMWGParserUtil.getURNPart(srcURN, NMWGParserUtil.LINK_TYPE);
-		this.dstLink = NMWGParserUtil.getURNPart(dstURN, NMWGParserUtil.LINK_TYPE);
 	}
 
 	public void   setSrcNode(String srcNode) {

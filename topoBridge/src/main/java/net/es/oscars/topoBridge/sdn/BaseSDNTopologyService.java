@@ -318,6 +318,7 @@ public abstract class BaseSDNTopologyService implements ISDNTopologyService {
 				String dst = hop.getLink().getId();
 	
 				if (src == null) {
+					
 					src = dst;
 					continue;
 				}
@@ -325,11 +326,17 @@ public abstract class BaseSDNTopologyService implements ISDNTopologyService {
 				if (NMWGParserUtil.compareURNPart(src, dst,
 						NMWGParserUtil.NODE_TYPE)) {
 					SDNLink l = new SDNLink(src, dst);
-	
+
 					// TODO: check for capabilities
 					// TODO: change the design to avoid having multiple objects
 					// representing the same node
+					// TODO: come up with a better representation of dpid (node names)
+					// TODO: define a way to identify L1/L2 nodes
 					l.setNode(new SDNNode(l.getSrcNode().replaceAll("\\.", ":")));
+					if (l.getSrcNode().matches("^00.*")) {
+						l.addCapability(SDNCapability.VLAN);
+						System.out.println("WARNING: Adding VLAN capabitility for " + l.getSrcNode());
+					}
 					links.add(l);
 				}
 				src = dst;
