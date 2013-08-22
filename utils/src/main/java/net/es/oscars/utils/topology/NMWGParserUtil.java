@@ -156,9 +156,9 @@ public class NMWGParserUtil {
      * @param urn1 the first URN
      * @param urn2 the second URN
      * @param type the part of the URN to compare. One of: DOMAIN_TYPE, NODE_TYPE, PORT_TYPE, LINK_TYPE 
-     * @return a boolean
+     * @return 0 if equal, positive int if first > second, negative int otherwise.
      */
-    public static boolean compareURNPart(String urn1, String urn2, int type){
-       	return getURNPart(urn1,type).equals(getURNPart(urn2,type));
+    public static int compareURNPart(String urn1, String urn2, int type){
+       	return getURNPart(urn1,type).compareTo(getURNPart(urn2,type));
     }
 }

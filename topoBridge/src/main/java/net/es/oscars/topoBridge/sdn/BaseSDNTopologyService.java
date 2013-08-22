@@ -324,7 +324,7 @@ public abstract class BaseSDNTopologyService implements ISDNTopologyService {
 				}
 	
 				if (NMWGParserUtil.compareURNPart(src, dst,
-						NMWGParserUtil.NODE_TYPE)) {
+						NMWGParserUtil.NODE_TYPE) == 0) {
 					SDNLink l = new SDNLink(src, dst);
 
 					// TODO: check for capabilities
