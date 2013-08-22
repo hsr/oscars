@@ -118,8 +118,8 @@ public abstract class BaseSDNTopologyService implements ISDNTopologyService {
 				+ "<CtrlPlane:granularity>1000000</CtrlPlane:granularity>";
 		
 		String xmlLink = ""
-				+ "<CtrlPlane:link id=\"urn:ogf:network:domain=%s:node=%s:port=%s:link=link*\">"
-				+ "	<CtrlPlane:remoteLinkId>urn:ogf:network:domain=%s:node=%s:port=%s:link=link*</CtrlPlane:remoteLinkId>"
+				+ "<CtrlPlane:link id=\"urn:ogf:network:domain=%s:node=%s:port=%s:link=1\">"
+				+ "	<CtrlPlane:remoteLinkId>urn:ogf:network:domain=%s:node=%s:port=%s:link=1</CtrlPlane:remoteLinkId>"
 				+ "	<CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>"
 				+ "	<CtrlPlane:SwitchingCapabilityDescriptors>"
 				+ "		<CtrlPlane:switchingcapType/>"
@@ -144,6 +144,14 @@ public abstract class BaseSDNTopologyService implements ISDNTopologyService {
 		for (SDNLink link : node.getOutLinks()) {
 			// @formatter:off
 			xml += String.format(xmlPortOpen, this.getId(), node.getId(), link.getSrcPort());
+			
+			log.debug(String.format(""
+					+ "Adding link "
+					+ "urn:ogf:network:domain=%s:node=%s:port=%s:link=1 -> "
+					+ "urn:ogf:network:domain=%s:node=%s:port=%s:link=1",
+					this.getId(), node.getId(), link.getSrcPort(),
+					this.getId(), link.getDstNode(), link.getDstPort()));
+
 			xml += String.format(xmlLink, 
 					this.getId(), node.getId(), link.getSrcPort(), // src link args
 					this.getId(), link.getDstNode(), link.getDstPort()); // dst link args

@@ -86,6 +86,8 @@ public class TopoBridgeCore {
         log.debug(netLogger.start("getLocalTopology"));
         Document domain = null;
 
+        log.debug("Getting topology for domain " + localDomainId);
+        
 		// @formatter:off
 	   	/* Check for SDNTopologyIdentifier. If domainId is a String following the 
 	   	 * format sdn.<topologyservice>.<param>, interpret each part of the ID 
