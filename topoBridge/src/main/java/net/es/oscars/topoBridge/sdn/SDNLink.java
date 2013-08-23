@@ -78,9 +78,10 @@ public class SDNLink extends SDNConnection implements Comparable<SDNLink> {
 	
 	@Override
 	public boolean equals(Object o) {
-		if (!o.getClass().equals(SDNLink.class))
-				return false;
-		
+		if (this == o) { return true; }
+        if (o == null) { return false; }
+        if (!(o instanceof SDNLink)) { return false; }
+        
 		SDNLink link = (SDNLink) o;
 		if ((this.srcNode.equals(link.getSrcNode())) &&
 			(this.dstNode.equals(link.getDstNode())) &&
