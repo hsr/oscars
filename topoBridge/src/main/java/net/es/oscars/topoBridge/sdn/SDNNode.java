@@ -63,11 +63,16 @@ public class SDNNode extends SDNObject implements Comparable<SDNNode> {
 	
 	@Override
 	public boolean equals(Object o) {
-		if (!o.getClass().equals(SDNNode.class))
-			return false;
-	
+		if (this == o) { return true; }
+        if (o == null) { return false; }
+        if (!(o instanceof SDNNode)) { return false; }
+        
 		SDNNode node = (SDNNode) o;
 		return this.getId().equals(node.getId());
 	}
-
+	
+	@Override
+	public int hashCode() {
+		return this.id.hashCode();
+	}
 }
