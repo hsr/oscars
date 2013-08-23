@@ -87,5 +87,11 @@ public class SDNHop extends SDNConnection implements Comparable<SDNHop> {
 		return this.node.hashCode() +
 			   super.hashCode();
 	}
-
+	
+	@Override
+	public String toString() {
+		return String.format("SDNHop(SDNNode(%s), %s:%s -> %s:%s)", 
+				this.node.getId(), this.srcPort, this.srcLink,
+				this.dstPort, this.dstLink);
+	}
 }
