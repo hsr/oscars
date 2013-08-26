@@ -2,6 +2,15 @@ package net.es.oscars.topoBridge.sdn;
 
 import net.es.oscars.utils.topology.NMWGParserUtil;
 
+/**
+ * A SDNConnection is an abstract class for objects that represent
+ * links between two points described by an OSCARS URN. Examples
+ * of SDNConnections are a intra-device hops, which connect two
+ * URNs with the same node (device) name, and inter-device links,
+ * which connect two URNs with different nodes (devices). 
+ * 
+ * @author Henrique Rodrigues
+ */
 public abstract class SDNConnection extends SDNObject {
 	protected String srcPort = null;
 	protected String dstPort = null;
