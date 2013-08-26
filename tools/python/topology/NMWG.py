@@ -2,11 +2,12 @@
 
 # TODO FIXME: Write some OO code instead of repeatedly replace string contents
 
-# Two placeholders/arguments for this string:
+# Three placeholders/arguments for this string:
 #  1 - domain id
 #  2 - domain id
+#  3 - domain id
 NMWGXMLHeaderOpen = """
-<CtrlPlane:topology xmlns:CtrlPlane="http://ogf.org/schema/network/topology/ctrlPlane/20080828/" id="testdomain-1">
+<CtrlPlane:topology xmlns:CtrlPlane="http://ogf.org/schema/network/topology/ctrlPlane/20080828/" id="%s">
 <xsd:documentation xmlns:xsd="http://www.w3.org/2001/XMLSchema" lang="en">Auto generated based on Floodlight's Topology Service</xsd:documentation>
 <CtrlPlane:idcId>%s</CtrlPlane:idcId>
 <CtrlPlane:domain id="%s">
@@ -52,8 +53,8 @@ NMWGXMLPortOpen = """
 # TODO: add placeholders for network metrics below (trafficEngineeringMetric,interfaceMTU,...)
 # TODO: Add new placeholders to links. Currently each port has a single link
 NMWGXMLLink = """
-<CtrlPlane:link id="urn:ogf:network:domain=%s:node=%s:port=%s:link=link*">
-	<CtrlPlane:remoteLinkId>urn:ogf:network:domain=%s:node=%s:port=%s:link*</CtrlPlane:remoteLinkId>
+<CtrlPlane:link id="urn:ogf:network:domain=%s:node=%s:port=%s:link=1">
+	<CtrlPlane:remoteLinkId>urn:ogf:network:domain=%s:node=%s:port=%s:link=1</CtrlPlane:remoteLinkId>
 	<CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
 	<CtrlPlane:SwitchingCapabilityDescriptors>
 		<CtrlPlane:switchingcapType/>
@@ -80,7 +81,7 @@ NMWGXMLHeaderClose = """
 """
 
 def NMWGXML_Domain (domain, nodes):
-    DomainOpen = NMWGXMLHeaderOpen % (domain, domain);
+    DomainOpen = NMWGXMLHeaderOpen % (domain, domain, domain);
     return '%s%s%s' % (DomainOpen, nodes, NMWGXMLHeaderClose)
 
 # Given source and destination description of a pair of links (each composed 
