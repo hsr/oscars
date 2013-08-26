@@ -24,6 +24,7 @@ import json
 import argparse
 import io
 import time
+import pprint
 
 
 from NMWG import *
@@ -38,61 +39,77 @@ controllerRestIp = args.controllerRestIp
 domain           = args.domain
 outputFile       = args.output
 
-command = "curl -s http://%s/wm/topology/links/json" % (args.controllerRestIp)
-result = os.popen(command).read()
+class topology(dict):
+    """docstring for topology"""
+    def __init__(self, jsonSwitches):
+        super(topology, self).__init__()
+        for switch in jsonSwitches:
+    
+            switch_dpid = switch['dpid']
+            self[switch_dpid] = {}
+            
+            for port in switch['ports']:
+                portNumber = port['portNumber']
+                if str(portNumber) == '65534':
+                    continue # Skip OVS local port
+                if not self[switch_dpid].has_key(portNumber):
+                    self[switch_dpid][portNumber] = None
 
-f = open('floodlight_'+outputFile, 'w');
-f.write(result)
-f.close()
+    def addLink(self, jsonLink, reverse=False):
+        srcSwitch, srcPort = jsonLink['src-switch'],jsonLink['src-port']
+        dstSwitch, dstPort = jsonLink['dst-switch'],jsonLink['dst-port']
+        if reverse:
+            srcSwitch, dstSwitch = dstSwitch, srcSwitch
+            srcPort, dstPort = dstPort, srcPort
+        
+        if not self.has_key(srcSwitch):
+            raise Exception('Node %s does not exist!' % srcSwitch);
+        self[srcSwitch][srcPort] = {'switch': dstSwitch, 'port': dstPort}
+    
+    def addBidirectionalLink(self, jsonLink):
+        self.addLink(jsonLink)
+        self.addLink(jsonLink, reverse=True)
 
-topologyLinks = json.loads(result)
+def getJSON(url):
+    return json.loads(os.popen('curl -s %s ' % url).read())
 
-topologyNodes = {}
+switches = getJSON('http://%s/wm/core/controller/switches/json' % (args.controllerRestIp))
+internalLinks = getJSON("http://%s/wm/topology/links/json" % (args.controllerRestIp))
 
 # Build a graph (python dictionary) indexed by
 # node id (= Floodlight dpid)
-for l in topologyLinks:
-    srcNode = l['src-switch'].replace(':','.')
-    dstNode = l['dst-switch'].replace(':','.')
-    
-    srcPort = l['src-port']
-    dstPort = l['dst-port']
-    
-    if not topologyNodes.has_key(srcNode):
-        topologyNodes[srcNode] = {
-            'links' : []
-        }
-    if not topologyNodes.has_key(dstNode):
-        topologyNodes[dstNode] = {
-            'links' : []
-        }
-    
-    # TODO: check for bidirectional links
-    topologyNodes[srcNode]['links'] += [{
-        'srcNode': srcNode,
-        'srcPort': srcPort,
-        'dstNode': dstNode,
-        'dstPort': dstPort,
-    }]
-    topologyNodes[dstNode]['links'] += [{
-        'srcNode': dstNode,
-        'srcPort': dstPort,
-        'dstNode': srcNode,
-        'dstPort': srcPort,
-    }]
+floodlightTopology = topology(switches)
+for link in internalLinks:
+    floodlightTopology.addBidirectionalLink(link)
+
+print 'Floodlight topology:'
+pprint.PrettyPrinter(depth=4).pprint(floodlightTopology)
+# sys.exit(1)
 
 # Create NMWG XML file from graph (topologyNodes)
 nodes=''
-for nodeID,n in topologyNodes.items():
+for srcSwitch,ports in floodlightTopology.items():
     nodePorts = ''
-    for l in n['links']:
-        # print l['srcNode']+l['srcPort'], '->', l['dstNode']+l['dstPort']
-        nodeLink = NMWGXML_Link(domain,l['srcNode'],l['srcPort'],
-                                domain,l['dstNode'],l['dstPort'])
+    
+
+    for srcPort,port in ports.items():
+        dstDomain = 'external'
+        dstSwitch = '00:00:00:00:00:00:00:00'
+        dstPort = 0
+        if port: 
+            # if port connecting srcPort isn't defined, this is a remote link
+            dstSwitch = port['switch']
+            dstPort = port['port']
+            dstDomain = domain
+        
+        srcSwitch = srcSwitch.replace(':', '.')
+        dstSwitch = dstSwitch.replace(':', '.')
+        nodeLink = NMWGXML_Link(domain,srcSwitch,srcPort,
+                                dstDomain,dstSwitch,dstPort)
         # TODO: this is assuming that a node's port only has one link. FIXME for multiple
         # links per port
-        nodePorts += NMWGXML_Port(domain, l['srcNode'], l['srcPort'], nodeLink)
-    nodes += NMWGXML_Node (domain, nodeID, nodePorts, '127.0.0.1')
+        nodePorts += NMWGXML_Port(domain, srcSwitch, srcPort, nodeLink)
+    nodes += NMWGXML_Node (domain, srcSwitch, nodePorts, '127.0.0.1')
 
 try: 
     f = open(outputFile, 'w');
