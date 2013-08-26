@@ -312,9 +312,9 @@ public abstract class BaseSDNTopologyService implements ISDNTopologyService {
 				link.setDstPort(jp.getText());
 			else if (n == "direction" || n == "type") // ignore direction and
 														// type for now
-				jp.getText(); // do we have to call this to advance the head?
+				jp.getText();
 		}
-	
+
 		return links;
 	}
 
@@ -322,37 +322,65 @@ public abstract class BaseSDNTopologyService implements ISDNTopologyService {
 	 * Extract links from a CtrlPlaneHopContent object and returns them as a
 	 * list of SDNLinks
 	 * 
+	 * There are two special handling cases in this function that deserves some
+	 * discussion: circuit entry hops and exit hops. Suppose that we're given a
+	 * reservation like:
+	 * 
+	 * A.port1,A.port2,...,B.port1,B.port2
+	 * 
+	 * In this case, all the hops are "complete", i.e. there is no hop with only
+	 * one port specified in the reservation. This means that all traffic coming
+	 * from A.port1 should be forwarded to B.port2 no matter what, regardless of
+	 * flow distinction.
+	 * 
+	 * Now supposed that we're given a reservation like:
+	 * A.port2,D.port1,D.port2,...,C.port1,C.port2,B.port1
+	 * 
+	 * What traffic should be forwarded through the circuit in this case? With
+	 * the SDN PSS implementation, the hop A is said to be an Entry Hop to the
+	 * circuit, and B is said to be an Exit Hop. The traffic that will be
+	 * forwarded through the circuit will depend on the existence of an OFMatch
+	 * specified by the user. If the user specifies an OFMatch, then that will be
+	 * used to choose what traffic will flow through the circuit. However,
+	 * if no OFMatch is specified, the SDN PSS leaves this decision to the switch and
+	 * don't install any rules on A or B.
+	 * 
 	 * @param hops
 	 * @return list of SDNHops
 	 */
 	public static List<SDNHop> extractSDNHops(List<CtrlPlaneHopContent> ogfHops) {
 		List<SDNHop> hops = new ArrayList<SDNHop>();
 		String src = null;
-	
+
 		try {
+			int count = 0;
 			for (CtrlPlaneHopContent hop : ogfHops) {
 				String dst = hop.getLink().getId();
-	
+				count++;
+
 				if (src == null) {
 					src = dst;
 					continue;
 				}
-	
+
 				if (NMWGParserUtil.compareURNPart(src, dst,
 						NMWGParserUtil.NODE_TYPE) == 0) {
 					SDNHop h = new SDNHop(src, dst);
-
 					// TODO: check for capabilities
 					// TODO: change the design to avoid having multiple objects
 					// representing the same node
 					// TODO: come up with a better representation of dpid (node names)
 					// TODO: define a way to identify L1/L2 nodes
-
-					// h.setNode(new SDNNode(h.getNode().getId().replaceAll("\\.", ":")));
-					if (h.getNode().getId().matches("^00.*")) {
-						h.addCapability(SDNCapability.VLAN);
-						System.out.println("WARNING: Adding VLAN capabitility for " + h.getNode().getId());
-					}
+					hops.add(h);
+				} else if (count == 2) {
+					// This hop is an entry hop
+					System.out.println("This reservation has an entry hop");
+					SDNHop h = new SDNHop(SDNHop.ENTRY_HOP_URN, src);
+					hops.add(h);
+				} else if (count == ogfHops.size()) {
+					// This hop is an exit hop
+					System.out.println("This reservation has an exit hop");
+					SDNHop h = new SDNHop(dst, SDNHop.EXIT_HOP_URN);
 					hops.add(h);
 				}
 				src = dst;
