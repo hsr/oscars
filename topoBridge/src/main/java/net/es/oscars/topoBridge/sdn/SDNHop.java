@@ -168,18 +168,4 @@ public class SDNHop extends SDNConnection implements Comparable<SDNHop> {
 				this.node.getId(), this.srcPort, this.srcLink,
 				this.dstPort, this.dstLink);
 	}
-	
-	public boolean hasSource() {
-		if (this.dstPort == "0" &&
-			this.srcLink == "0")
-			return true;
-		return false;
-	}
-	
-	public boolean hasExit() {
-		if (this.dstPort == "0" &&
-			this.srcLink == "0")
-			return true;
-		return false;
-	}
 }
