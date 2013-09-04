@@ -6,31 +6,34 @@ import net.es.oscars.utils.topology.NMWGParserUtil;
  * A SDNHop is a SDNConnection that takes place within devices. Unlike SDNLink,
  * they share a common SDNNode, which is the node where this hop is installed.
  * 
- * There are two special cases for SDNHops that deserves some discussion: entry
- * hops and exit hops. Suppose that we're given a circuit reservation like:
- * 
- * A.port1,A.port2,...,B.port1,B.port2
- * 
- * In this case, all the hops are "complete", i.e. there is no hop with only one
- * port specified in the reservation. This means that all traffic coming from
- * A.port1 should be forwarded to B.port2 no matter what, regardless of flow
- * distinction.
- * 
- * Now supposed that we're given a reservation like:
- * A.port2,D.port1,D.port2,...,C.port1,C.port2,B.port1
- * 
- * What traffic should be forwarded through the circuit in this case? With the
- * SDN PSS implementation, the hop A is said to be an Entry Hop to the circuit,
- * and B is said to be an Exit Hop. The traffic that will be forwarded through
- * the circuit will depend on the existence of an OFMatch specified by the user.
- * If the user specifies an OFMatch, then that will be used to choose what
- * traffic will flow through the circuit. However, if no OFMatch is specified,
- * the SDN PSS leaves this decision to the switch and don't install any rules on
- * A or B.
- * 
  * @author Henrique Rodrigues
  */
 public class SDNHop extends SDNConnection implements Comparable<SDNHop> {
+	/**
+	 * 
+	 * There are two special cases for SDNHops that deserves some discussion: entry
+	 * hops and exit hops. Suppose that we're given a circuit reservation like:
+	 * 
+	 * A.port1,A.port2,...,B.port1,B.port2
+	 * 
+	 * In this case, all the hops are "complete", i.e. there is no hop with only one
+	 * port specified in the reservation. This means that all traffic coming from
+	 * A.port1 should be forwarded to B.port2 no matter what, regardless of flow
+	 * distinction.
+	 * 
+	 * Now supposed that we're given a reservation like:
+	 * A.port2,D.port1,D.port2,...,C.port1,C.port2,B.port1
+	 * 
+	 * What traffic should be forwarded through the circuit in this case? With the
+	 * SDN PSS implementation, the hop A is said to be an Entry Hop to the circuit,
+	 * and B is said to be an Exit Hop. The traffic that will be forwarded through
+	 * the circuit will depend on the existence of an OFMatch specified by the user.
+	 * If the user specifies an OFMatch, then that will be used to choose what
+	 * traffic will flow through the circuit. However, if no OFMatch is specified,
+	 * the SDN PSS leaves this decision to the switch and don't install any rules on
+	 * A or B.
+	 * 
+	 */
 	private SDNNode node = null;
 	public static String ENTRY_HOP_URN = "urn:ogf:network:domain=domain:node=00.00.00.00.00.00.00.00:port=0:link=0";
 	public static String EXIT_HOP_URN = "urn:ogf:network:domain=domain:node=FF.FF.FF.FF.FF.FF.FF.FF:port=255:link=255";
@@ -106,6 +109,12 @@ public class SDNHop extends SDNConnection implements Comparable<SDNHop> {
 		return (this.node != null) && super.isComplete();
 	}
 
+	/**
+	 * Reverse dst and src end-points inplace, i.e. change the
+	 * object for which the method was invoked.
+	 * 
+	 * @return same object, with dst and src swapped 
+	 */
 	public SDNHop reverse() {
 		SDNHop hop = new SDNHop(this);
 		this.srcPort = hop.getDstPort();
@@ -119,7 +128,14 @@ public class SDNHop extends SDNConnection implements Comparable<SDNHop> {
 		
 		return this;
 	}
-
+	
+	/**
+	 * This method makes a copy of the current object and
+	 * return the "reversed" copy
+	 * 
+	 * @return a new object, copy of this, but with dst 
+	 * 			and src swapped 
+	 */
 	public SDNHop getReverse() {
 		return new SDNHop(this).reverse();
 	}
