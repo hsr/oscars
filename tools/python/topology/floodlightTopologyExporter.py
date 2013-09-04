@@ -31,6 +31,7 @@ from NMWG import *
 
 parser = argparse.ArgumentParser(description=sys.argv[0])
 parser.add_argument('--controller', dest='controllerRestIp', action='store', default='localhost:8080', help='controller IP:RESTport, e.g., localhost:8080 or A.B.C.D:8080')
+parser.add_argument('--inputfile', dest='inputfile', action='store', default='', help='Read topology from file')
 parser.add_argument('--output', dest='output', action='store', default='topology.xml', help='The output file. Defaults to topology.xml')
 parser.add_argument('--domain', dest='domain', action='store', default='testdomain-1', help='The domain name to use. Defaults to testdomain-1')
 
@@ -73,8 +74,17 @@ class topology(dict):
 def getJSON(url):
     return json.loads(os.popen('curl -s %s ' % url).read())
 
+def getJSONFromFile(filename):
+    file = open(filename, 'r')
+    contents = file.read();
+    file.close()
+    return json.loads(contents)
+
 switches = getJSON('http://%s/wm/core/controller/switches/json' % (args.controllerRestIp))
-internalLinks = getJSON("http://%s/wm/topology/links/json" % (args.controllerRestIp))
+if len(args.inputfile) > 0:
+    internalLinks = getJSONFromFile(args.inputfile)
+else:
+    internalLinks = getJSON("http://%s/wm/topology/links/json" % (args.controllerRestIp))
 
 # Build a graph (python dictionary) indexed by
 # node id (= Floodlight dpid)
