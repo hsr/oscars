@@ -1,0 +1,101 @@
+[
+    {
+        "direction": "bidirectional", 
+        "dst-port": 1,
+        "dst-switch": "11:11:00:00:00:00:00:05", 
+        "src-port": 2, 
+        "src-switch": "00:00:00:00:00:00:00:04", 
+        "type": "internal",
+		"capacity": 1e9
+    }, 
+    {
+        "direction": "bidirectional", 
+        "dst-port": 2, 
+        "dst-switch": "00:00:00:00:00:00:00:09", 
+        "src-port": 1, 
+        "src-switch": "00:00:00:00:00:00:00:08", 
+        "type": "internal",
+		"capacity": 1e9
+    }, 
+    {
+        "direction": "bidirectional", 
+        "dst-port": 1, 
+        "dst-switch": "11:11:00:00:00:00:00:02", 
+        "src-port": 1, 
+        "src-switch": "00:00:00:00:00:00:00:01", 
+        "type": "internal",
+		"capacity": 1e8
+    }, 
+    {
+        "direction": "bidirectional", 
+        "dst-port": 1, 
+        "dst-switch": "11:11:00:00:00:00:00:06", 
+        "src-port": 3, 
+        "src-switch": "11:11:00:00:00:00:00:02", 
+        "type": "internal",
+		"capacity": 1e8
+    }, 
+    {
+        "direction": "bidirectional", 
+        "dst-port": 4, 
+        "dst-switch": "11:11:00:00:00:00:00:02", 
+        "src-port": 3, 
+        "src-switch": "00:00:00:00:00:00:00:01", 
+        "type": "internal",
+		"capacity": 1e9
+    }, 
+    {
+        "direction": "bidirectional", 
+        "dst-port": 4, 
+        "dst-switch": "11:11:00:00:00:00:00:06", 
+        "src-port": 3, 
+        "src-switch": "00:00:00:00:00:00:00:07", 
+        "type": "internal",
+		"capacity": 1e9
+    }, 
+    {
+        "direction": "bidirectional", 
+        "dst-port": 1, 
+        "dst-switch": "11:11:00:00:00:00:00:03", 
+        "src-port": 2, 
+        "src-switch": "11:11:00:00:00:00:00:02", 
+        "type": "internal",
+		"capacity": 1e9
+    }, 
+    {
+        "direction": "bidirectional", 
+        "dst-port": 3, 
+        "dst-switch": "11:11:00:00:00:00:00:06", 
+        "src-port": 1, 
+        "src-switch": "00:00:00:00:00:00:00:07", 
+        "type": "internal",
+		"capacity": 1e8
+    }, 
+    {
+        "direction": "bidirectional", 
+        "dst-port": 1, 
+        "dst-switch": "00:00:00:00:00:00:00:09", 
+        "src-port": 2, 
+        "src-switch": "00:00:00:00:00:00:00:01", 
+        "type": "internal",
+		"capacity": 1e10
+    }, 
+    {
+        "direction": "bidirectional", 
+        "dst-port": 2, 
+        "dst-switch": "11:11:00:00:00:00:00:06", 
+        "src-port": 2, 
+        "src-switch": "11:11:00:00:00:00:00:05", 
+        "type": "internal",
+		"capacity": 1e9
+    }, 
+    {
+        "direction": "bidirectional", 
+        "dst-port": 2, 
+        "dst-switch": "11:11:00:00:00:00:00:03", 
+        "src-port": 1, 
+        "src-switch": "00:00:00:00:00:00:00:04", 
+        "type": "internal",
+		"capacity": 1e9
+    }
+]

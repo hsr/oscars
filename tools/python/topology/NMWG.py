@@ -29,15 +29,20 @@ NMWGXMLNodeOpen = """
 #  2 - node   id
 #  3 - port   id
 #
+#  4 - capacity
+#  5 - maximumReservableCapacity
+#  6 - minimumReservableCapacity
+#  7 - granularity
+#
 # Note that node = network device
 #
 # TODO: add placeholders for network capacity/reservation and granularity
 NMWGXMLPortOpen = """
 <CtrlPlane:port id="urn:ogf:network:domain=%s:node=%s:port=%s">
-<CtrlPlane:capacity>1000000000</CtrlPlane:capacity>
-<CtrlPlane:maximumReservableCapacity>1000000000</CtrlPlane:maximumReservableCapacity>
-<CtrlPlane:minimumReservableCapacity>1000000</CtrlPlane:minimumReservableCapacity>
-<CtrlPlane:granularity>1000000</CtrlPlane:granularity>
+<CtrlPlane:capacity>%d</CtrlPlane:capacity>
+<CtrlPlane:maximumReservableCapacity>%d</CtrlPlane:maximumReservableCapacity>
+<CtrlPlane:minimumReservableCapacity>%d</CtrlPlane:minimumReservableCapacity>
+<CtrlPlane:granularity>%d</CtrlPlane:granularity>
 """
 
 # Six placeholders/arguments for this string:
@@ -62,7 +67,7 @@ NMWGXMLLink = """
 		<CtrlPlane:switchingCapabilitySpecificInfo>
 			<CtrlPlane:capability/>
 			<CtrlPlane:interfaceMTU>9000</CtrlPlane:interfaceMTU>
-			<CtrlPlane:vlanRangeAvailability>2-4094</CtrlPlane:vlanRangeAvailability>
+			<CtrlPlane:vlanRangeAvailability>0-4094</CtrlPlane:vlanRangeAvailability>
 		</CtrlPlane:switchingCapabilitySpecificInfo>
 	</CtrlPlane:SwitchingCapabilityDescriptors>
 </CtrlPlane:link>
@@ -91,8 +96,14 @@ def NMWGXML_Link (srcDomain, srcNode, srcPort, dstDomain, dstNode, dstPort):
     
 # Given a domain, a node, port and set of links (obtained using NMWGXML_Link) in the
 # format of an XML string, this function returns a XML representation of a NMWG port.
-def NMWGXML_Port (domain, node, port, links):
-    PortOpen = NMWGXMLPortOpen % (domain, node, port);
+#
+# Optional arguments are port capacity, maximumReservableCapacity, 
+# minimumReservableCapacity and granularity Default values are 1G, 
+# 1G, 1M, 1M respectively.
+def NMWGXML_Port (domain, node, port, links, 
+                  capacity=1E9, maxReservable=1E9, minReservable=1E6, granularity=1E6):
+    PortOpen = NMWGXMLPortOpen % (domain, node, port, capacity, 
+                                  maxReservable, minReservable, granularity);
     return '%s%s%s' % (PortOpen, links, NMWGXMLPortClose);
     
 # Given a domain, a node id, and a set of ports (obtained using NMWGXML_Port) in the
