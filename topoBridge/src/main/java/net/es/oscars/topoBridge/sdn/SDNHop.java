@@ -85,6 +85,9 @@ public class SDNHop extends SDNConnection implements Comparable<SDNHop> {
 			);
 		}
 		
+		// TODO: here we are using the node id to check if it is a L0/1 or L2 switch.
+		// This should be replaced with some mechanism to identify the capabilities 
+		// of a node. 
 		if (this.node.getId().matches("^00.*")) {
 			this.addCapability(SDNCapability.L2);
 			System.out
