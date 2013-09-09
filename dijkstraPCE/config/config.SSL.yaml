@@ -6,4 +6,3 @@ pce-runtime:
     url: 'https://localhost:10000/OSCARS/PCE'
 
 link-evaluators:
-    - class: 'net.es.oscars.pce.dijkstra.VlanLinkEvaluator'
