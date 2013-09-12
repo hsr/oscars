@@ -9,9 +9,9 @@ SYNOPSIS
  
 DESCRIPTION
  
-    This program extracts Floodlight network topology information using Floodlight's 
-    REST interface and creates an XML file with the extracted topology using the
-    NMWG format
+    This program extracts Floodlight network topology information using
+    Floodlight's REST interface and creates an XML file with the extracted
+    topology in NMWG format.
 
 @author Henrique Rodrigues hsr@cs.ucsd.edu
 
@@ -77,9 +77,18 @@ class oscarsTopology(topology):
     def addLink(self, jsonLink, reverse=False, capacity=1e9):
         srcSwitch, srcPort = jsonLink['src-switch'],jsonLink['src-port']
         dstSwitch, dstPort = jsonLink['dst-switch'],jsonLink['dst-port']
+        
+        srcLink = '1'
+        if jsonLink.has_key('src-link'):
+            srcLink = jsonLink['src-link']
+        dstLink = '1'
+        if jsonLink.has_key('dst-link'):
+            dstLink = jsonLink['dst-link']
+        
         if reverse:
             srcSwitch, dstSwitch = dstSwitch, srcSwitch
             srcPort, dstPort = dstPort, srcPort
+            srcLink, dstLink = dstLink, srcLink
         
         if (jsonLink.has_key('capacity')):
             capacity = jsonLink['capacity']
@@ -89,13 +98,14 @@ class oscarsTopology(topology):
         
         self[srcSwitch][srcPort] = {'switch': dstSwitch,
                                     'port': dstPort,
+                                    'link': dstLink,
                                     'capacity': capacity,
                                     'maxReservation': capacity,
                                     'minReservation': 1,
                                     'granularity': 1}
 
         # TODO: FIXME to use a proper L1 switch identification instead of
-        # using a pattern mathing on DPID
+        # using a pattern matching on DPID
         if srcSwitch.rfind('11:11:') == 0 or dstSwitch.rfind('11:11:') == 0:
             self[srcSwitch][srcPort]['minReservation'] = capacity
             self[srcSwitch][srcPort]['granularity']    = capacity
@@ -105,13 +115,21 @@ class oscarsTopology(topology):
         self.addLink(jsonLink, reverse=True)
 
 def getJSON(url):
-    return json.loads(os.popen('curl -s %s ' % url).read())
+    try:
+        return json.loads(os.popen('curl -s %s ' % url).read())
+    except Exception, e:
+        print "Couldn't fetch file at the given URL. " + \
+              "Are you sure your controller is running?"
 
 def getJSONFromFile(filename):
-    file = open(filename, 'r')
-    contents = file.read();
-    file.close()
-    return json.loads(contents)
+    try:
+        file = open(filename, 'r')
+        contents = file.read();
+        file.close()
+        return json.loads(contents)
+    except Exception, e:
+        print "Couldn't read topology from specified file. " + \
+              "Are you sure the file %s exists?" % filename
 
 switches = getJSON('http://%s/wm/core/controller/switches/json' % \
     (args.controllerRestIp))
@@ -120,6 +138,9 @@ if len(args.inputfile) > 0:
 else:
     internalLinks = getJSON("http://%s/wm/topology/links/json" % \
         (args.controllerRestIp))
+
+if not switches or not internalLinks:
+    sys.exit(1)  
 
 # Build a graph (python dictionary) indexed by
 # node id (= Floodlight dpid)
@@ -135,37 +156,65 @@ pprint.PrettyPrinter(depth=4).pprint(floodlightTopology)
 nodes=''
 for srcSwitch,ports in floodlightTopology.items():
     nodePorts = ''
-    
 
     for srcPort,port in ports.items():
         dstDomain = 'external'
         dstSwitch = '00:00:00:00:00:00:00:00'
+        dstLink = '1'
         dstPort = 0
-        # Default external link capacity: 100G. Since this link is connecting us
-        # to another domain, "we don't really care" how much bandwidth we use
-        capacity, maxReservation, minReservation, granularity = 100e9, 100e9, 1, 1
+        
+        # Default external link capacity: 100G. Since this link is 
+        # connecting us to another domain, "we don't really care" 
+        # how much bandwidth we use
+        capacity, maxReservation, minReservation, granularity = \
+            100e9, 100e9, 1, 1
         if port: 
             # if port connecting srcPort isn't defined, this is a remote link
             dstSwitch = port['switch']
             dstPort = port['port']
+            dstLink = port['link']
             dstDomain = domain
             capacity = port['capacity']
             maxReservation = port['maxReservation']
             minReservation = port['minReservation']
             granularity = port['granularity']
             
-        
-        srcSwitch = srcSwitch.replace(':', '.')
-        dstSwitch = dstSwitch.replace(':', '.')
-        nodeLink = NMWGXML_Link(domain,srcSwitch,srcPort,
-                                dstDomain,dstSwitch,dstPort)
+
+        srcLink = '1'
+        try:
+            srcLink = floodlightTopology[dstSwitch][dstPort]['link']
+            # This might be confusing, why am I getting srcLink info from
+            # the destination? 
+            #
+            # A: The topology dict is indexed by src (Switch and Port),
+            #    and it contains information about the dst. Thus, to get
+            #    info about the src, you need to look at the dst.
+            # 
+            # There is a limitation with this scheme, however. 
+            # Ports facing external domains won't have link information 
+            # because they don't have a explicit link in the topology
+            # file specifying their link part.
+            #
+            # TODO: FIXME for ports facing external domains
+        except:
+            #print 'Could not find %s:%s' % (srcSwitch, srcPort)
+            pass
+
+        nodeLink = NMWGXML_Link(domain,
+                                srcSwitch.replace(':', '.'),srcPort,
+                                dstDomain,
+                                dstSwitch.replace(':', '.'),dstPort,
+                                srcLink=srcLink, dstLink=dstLink)
 
         # TODO: this is assuming that a node's port only has one link. 
         # FIXME for multiple links per port
-        nodePorts += NMWGXML_Port(domain, srcSwitch, srcPort, nodeLink, 
+        nodePorts += NMWGXML_Port(domain,
+                                  srcSwitch.replace(':', '.'), 
+                                  srcPort, nodeLink, 
                                   capacity, maxReservation, minReservation,
                                   granularity)
-    nodes += NMWGXML_Node (domain, srcSwitch, nodePorts, '127.0.0.1')
+    nodes += NMWGXML_Node (domain, srcSwitch.replace(':', '.'), 
+                           nodePorts, '127.0.0.1')
 
 try: 
     f = open(outputFile, 'w');

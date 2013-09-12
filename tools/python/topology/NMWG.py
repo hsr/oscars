@@ -58,8 +58,8 @@ NMWGXMLPortOpen = """
 # TODO: add placeholders for network metrics below (trafficEngineeringMetric,interfaceMTU,...)
 # TODO: Add new placeholders to links. Currently each port has a single link
 NMWGXMLLink = """
-<CtrlPlane:link id="urn:ogf:network:domain=%s:node=%s:port=%s:link=1">
-	<CtrlPlane:remoteLinkId>urn:ogf:network:domain=%s:node=%s:port=%s:link=1</CtrlPlane:remoteLinkId>
+<CtrlPlane:link id="urn:ogf:network:domain=%s:node=%s:port=%s:link=%s">
+	<CtrlPlane:remoteLinkId>urn:ogf:network:domain=%s:node=%s:port=%s:link=%s</CtrlPlane:remoteLinkId>
 	<CtrlPlane:trafficEngineeringMetric>100</CtrlPlane:trafficEngineeringMetric>
 	<CtrlPlane:SwitchingCapabilityDescriptors>
 		<CtrlPlane:switchingcapType/>
@@ -91,8 +91,8 @@ def NMWGXML_Domain (domain, nodes):
 
 # Given source and destination description of a pair of links (each composed 
 # domain, node and port), this function returns a XML representation of a NMWG Link.
-def NMWGXML_Link (srcDomain, srcNode, srcPort, dstDomain, dstNode, dstPort):
-    return NMWGXMLLink % (srcDomain, srcNode, srcPort, dstDomain, dstNode, dstPort);
+def NMWGXML_Link (srcDomain, srcNode, srcPort, dstDomain, dstNode, dstPort, srcLink='1', dstLink='1'):
+    return NMWGXMLLink % (srcDomain, srcNode, srcPort, srcLink, dstDomain, dstNode, dstPort, dstLink);
     
 # Given a domain, a node, port and set of links (obtained using NMWGXML_Link) in the
 # format of an XML string, this function returns a XML representation of a NMWG port.
