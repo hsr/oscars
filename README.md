@@ -3,7 +3,7 @@
 This repository is a git import of [OSCARS](http://www.es.net/services/virtual-circuits-oscars/), the ESnet's circuit reservation system. The original repository can be found [here](https://oscars.es.net/repos/).
 
 ## Why? 
-In the summer of 2013, I worked with the integration of [OSCARS](http://www.es.net/services/virtual-circuits-oscars/ OSCARS) and [Floodlight](http://www.projectfloodlight.org/floodlight/). In the SDN context, OSCARS is an application that controls the [es.net](http://es.net/) 100G network and Floodlight is a SDN controller that communicates with network devices using [OpenFlow](http://www.openflow.org/). I used this repository to keep track of my changes to OSCARS.
+In the summer of 2013, I worked with the integration of [OSCARS](http://www.es.net/services/virtual-circuits-oscars/ OSCARS) and [Floodlight](http://www.projectfloodlight.org/floodlight/). In the SDN context, OSCARS is an application that controls the [ESnet](http://es.net/) 100G network and Floodlight is a SDN controller that communicates with network devices using [OpenFlow](http://www.openflow.org/). I used this repository to keep track of my changes to OSCARS.
 
 ## Usage
 
@@ -16,9 +16,11 @@ The first step is to get a copy of the repository and its submodules:
 
 #### Configuration
 
-**To use the SDN Path Setup Subsystem (PSS):** change the PSS module you want to use in `oscars/tools/utils/config/config.yaml ` to `SDN` instead of `STUB`. You also need to change maven's project object model at `oscars/pom.xml` to build the SDN PSS instead of the original Stub PSS. Replace `<module>stubPSS</module>` with `<module>sdnPSS</module>`.
+**To use the SDN Path Setup Subsystem (PSS):** change the PSS module you want to use in `oscars/utils/config/config.yaml ` to `SDN` instead of `STUB`. You also need to change maven's project object model at `oscars/pom.xml` to build the SDN PSS instead of the original Stub PSS. Replace `<module>stubPSS</module>` with `<module>sdnPSS</module>`. **NOTE** that if you are using this fork of OSCARS, the SDN PSS is already configured as the default PSS to be compiled and loaded, and you can skip this step.
 
-**(Optional) To fetch topology from Floodlight:** change the local domain id in `oscars/tools/utils/config/config.yaml ` to a valid SDN Topology Service Identification (TSI)  `sdn:<controller name>:<yourdomain>`. An example of a valid TSI would be `sdn:floodlight:my.domain`. This TSI instruct OSCARS's Topology Bridge module to use the Floodlight Topology Service implementation of ISDNTopologyService to fetch the topology (for more information, see net.es.oscars.topoBridge.sdn.ISDNTopologyService). You also need to add the parameter 'sdn' at the same level of the id you changed and set it to your controller's URL. Here is a complete example for domain `testdomain` and Floodlight's REST interface listening on port `8080` of server `floodlight.es.net`:
+**To configure your topology in the SDNPSS format:** if you are using SDNPSS to configure your devices, you need to create a NMWG topology file that contains the necessary information of network devices.  Follow the instructions given in the SDNPSS repository's [README.md](https://github.com/hsr/oscars-sdnpss/blob/master/README.md) file. 
+
+**(Optional) To fetch topology from Floodlight:** change the local domain id in `oscars/utils/config/config.yaml ` to a valid SDN Topology Service Identification (TSI)  `sdn:<controller name>:<yourdomain>`. An example of a valid TSI would be `sdn:floodlight:my.domain`. This TSI instruct OSCARS's Topology Bridge module to use the Floodlight Topology Service implementation of ISDNTopologyService to fetch the topology (for more information, see net.es.oscars.topoBridge.sdn.ISDNTopologyService). You also need to add the parameter 'sdn' at the same level of the id you changed and set it to your controller's URL. Here is a complete example for domain `testdomain` and Floodlight's REST interface listening on port `8080` of server `floodlight.es.net`:
 
 	...
     localDomain:
