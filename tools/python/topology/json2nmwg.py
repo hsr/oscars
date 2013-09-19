@@ -9,9 +9,13 @@ SYNOPSIS
  
 DESCRIPTION
  
-    This program extracts Floodlight network topology information using
-    Floodlight's REST interface and creates an XML file with the extracted
-    topology in NMWG format.
+    This program reads a JSON file with a network topology information
+    and creates an XML file with the topology in NMWG format.
+    
+    The input can be fetched from Floodlight using its REST API or can be
+    read from a file. The list of network devices and their ports, however,
+    can only be fetched from Floodlight. This makes a Floodlight Controller
+    a pre-requisite to transform a json topology file to an NMWG topology.
 
 @author Henrique Rodrigues hsr@cs.ucsd.edu
 
