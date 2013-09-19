@@ -1,19 +1,63 @@
 [
     {
         "direction": "bidirectional", 
-        "dst-port": 1,
-        "dst-switch": "11:11:00:00:00:00:00:05",
+        "dst-port": 1, 
+        "dst-switch": "11:11:00:00:00:00:00:03",
+		"dst-link": "aa.aa.00.00.01.03/10.0.0.3",
+        "src-port": 3, 
+        "src-switch": "11:11:00:00:00:00:00:02",
+		"src-link": "aa.aa.00.00.03.02/10.0.0.2",
+        "type": "internal",
+		"capacity": 1e8
+    }, 
+    {
+        "direction": "bidirectional", 
+        "dst-port": 4, 
+        "dst-switch": "11:11:00:00:00:00:00:04",
+		"dst-link": "aa.aa.00.00.04.04/10.0.0.4",
         "src-port": 2, 
-        "src-switch": "00:00:00:00:00:00:00:04", 
+        "src-switch": "00:00:00:00:00:00:00:05", 
+        "type": "internal",
+		"capacity": 1e9
+    }, 
+    {
+        "direction": "bidirectional", 
+        "dst-port": 1, 
+        "dst-switch": "11:11:00:00:00:00:00:04",
+		"dst-link": "aa.aa.00.00.01.04/10.0.0.4",
+        "src-port": 4, 
+        "src-switch": "11:11:00:00:00:00:00:02", 
         "type": "internal",
 		"capacity": 1e9
     }, 
     {
         "direction": "bidirectional", 
         "dst-port": 2, 
-        "dst-switch": "00:00:00:00:00:00:00:09", 
+        "dst-switch": "11:11:00:00:00:00:00:02",
+		"dst-link": "aa.aa.00.00.02.02/10.0.0.2",
+        "src-port": 2, 
+        "src-switch": "00:00:00:00:00:00:00:01", 
+        "type": "internal",
+		"capacity": 1e8
+    },
+    {
+        "direction": "bidirectional", 
+        "dst-port": 2, 
+        "dst-switch": "11:11:00:00:00:00:00:04",
+		"dst-link": "aa.aa.00.00.02.04/10.0.0.4",
+        "src-port": 2, 
+        "src-switch": "11:11:00:00:00:00:00:03", 
+		"src-link": "aa.aa.00.00.02.03/10.0.0.3",
+        "type": "internal",
+		"capacity": 1e8
+    }, 
+    {
+        "direction": "bidirectional", 
+        "dst-port": 3, 
+        "dst-switch": "11:11:00:00:00:00:00:04", 
+		"dst-link": "aa.aa.00.00.03.04/10.0.0.4",
         "src-port": 1, 
-        "src-switch": "00:00:00:00:00:00:00:08", 
+        "src-switch": "00:00:00:00:00:00:00:05", 
         "type": "internal",
 		"capacity": 1e9
     }, 
@@ -24,85 +68,6 @@
 		"dst-link": "aa.aa.00.00.01.02/10.0.0.2",
         "src-port": 1, 
         "src-switch": "00:00:00:00:00:00:00:01", 
-        "type": "internal",
-		"capacity": 1e8
-    }, 
-    {
-        "direction": "bidirectional", 
-        "dst-port": 1, 
-        "dst-switch": "11:11:00:00:00:00:00:06",
-		"dst-link": "aa.aa.00.00.01.06/10.0.0.6",
-        "src-port": 3, 
-        "src-switch": "11:11:00:00:00:00:00:02", 
-		"src-link": "aa.aa.00.00.03.02/10.0.0.2",
-        "type": "internal",
-		"capacity": 1e8
-    }, 
-    {
-        "direction": "bidirectional", 
-        "dst-port": 4, 
-        "dst-switch": "11:11:00:00:00:00:00:02", 
-		"dst-link": "aa.aa.00.00.04.02/10.0.0.2",
-        "src-port": 3, 
-        "src-switch": "00:00:00:00:00:00:00:01", 
-        "type": "internal",
-		"capacity": 1e9
-    }, 
-    {
-        "direction": "bidirectional", 
-        "dst-port": 4, 
-        "dst-switch": "11:11:00:00:00:00:00:06",
-		"dst-link": "aa.aa.00.00.04.06/10.0.0.6", 
-        "src-port": 3, 
-        "src-switch": "00:00:00:00:00:00:00:07", 
-        "type": "internal",
-		"capacity": 1e9
-    }, 
-    {
-        "direction": "bidirectional", 
-        "dst-port": 1, 
-        "dst-switch": "11:11:00:00:00:00:00:03", 
-        "src-port": 2, 
-        "src-switch": "11:11:00:00:00:00:00:02",
-		"src-link": "aa.aa.00.00.02.02/10.0.0.2",
-        "type": "internal",
-		"capacity": 1e9
-    }, 
-    {
-        "direction": "bidirectional", 
-        "dst-port": 3, 
-        "dst-switch": "11:11:00:00:00:00:00:06", 
-		"dst-link": "aa.aa.00.00.03.06/10.0.0.6",
-        "src-port": 1, 
-        "src-switch": "00:00:00:00:00:00:00:07", 
-        "type": "internal",
-		"capacity": 1e8
-    }, 
-    {
-        "direction": "bidirectional", 
-        "dst-port": 1, 
-        "dst-switch": "00:00:00:00:00:00:00:09", 
-        "src-port": 2, 
-        "src-switch": "00:00:00:00:00:00:00:01", 
-        "type": "internal",
-		"capacity": 1e10
-    }, 
-    {
-        "direction": "bidirectional", 
-        "dst-port": 2, 
-        "dst-switch": "11:11:00:00:00:00:00:06", 
-		"dst-link": "aa.aa.00.00.03.06/10.0.0.6",
-        "src-port": 2, 
-        "src-switch": "11:11:00:00:00:00:00:05", 
-        "type": "internal",
-		"capacity": 1e9
-    }, 
-    {
-        "direction": "bidirectional", 
-        "dst-port": 2, 
-        "dst-switch": "11:11:00:00:00:00:00:03", 
-        "src-port": 1, 
-        "src-switch": "00:00:00:00:00:00:00:04", 
         "type": "internal",
 		"capacity": 1e9
     }
