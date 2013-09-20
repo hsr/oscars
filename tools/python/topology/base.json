@@ -18,7 +18,7 @@
         "src-port": 2, 
         "src-switch": "00:00:00:00:00:00:00:05", 
         "type": "internal",
-		"capacity": 1e9
+		"capacity": 1e8
     }, 
     {
         "direction": "bidirectional", 
@@ -27,6 +27,7 @@
 		"dst-link": "aa.aa.00.00.01.04/10.0.0.4",
         "src-port": 4, 
         "src-switch": "11:11:00:00:00:00:00:02", 
+		"src-link": "aa.aa.00.00.01.02/10.0.0.2",
         "type": "internal",
 		"capacity": 1e9
     }, 
