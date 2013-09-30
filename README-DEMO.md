@@ -5,7 +5,7 @@ This document describes how to run the multilayer demo using the multilayerdemo 
  - **OSCARS:** [http://github.com/hsr/oscars](http://github.com/hsr/oscars)
  - **OSCARS SDN PSS:** [http://github.com/hsr/oscars-sdnpss](http://github.com/hsr/oscars-sdnpss)
 
-**NOTE:** Don't forget to change the OSCARS topology. You can use the python script `json2nmwg.py` under `oscars/tools/python/topology` to generate your NMWG topology file. However, this requires Floodlight to be running, and need to be postponed until later on.
+**NOTE:** Don't forget to change the OSCARS topology. You can use the python script `json2nmwg.py` under `oscars/tools/python/topology` to generate your NMWG topology file. However, this requires Floodlight to be running, and need to be postponed until you start Floodlight. Use `json2nmwg.py --help` to check the list of arguments.
 
 After you have OSCARS installed, download and import the virtual machine to your server. Start the machine and make sure that the OSCARS server have connectivity to it. Both the username and password for the multilayerdemo VM is `mininet`.
 
@@ -34,6 +34,8 @@ Open a new console and start the version of Floodlight available on the VM:
       -cf target/bin/floodlightdefault.properties
 
 Now you should be able to access the Floodlight UI using your browser. The Floodlight UI URL is `http://<multilayerdemo vm ip>:8080/ui/index.html`
+
+With Floodlight running, you can generate the NMWG topology file for OSCARS using the `json2nmwg.py` script as mentioned before (if you have not done so).
 
 ---
 
